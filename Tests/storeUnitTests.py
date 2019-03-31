@@ -2,7 +2,7 @@ import unittest
 from Service.service import SystemInterface
 
 
-class TestStringMethods(unittest.TestCase):
+class TestStore(unittest.TestCase):
 
     service = SystemInterface()
 
@@ -10,7 +10,8 @@ class TestStringMethods(unittest.TestCase):
         manager = {'name': 'mana', 'password': '123456'}
         manager["name"]
 
-    def test_upper(self):
+    def addToCartTest(self):
+        service.add_to_cart()
         self.assertEqual('foo'.upper(), 'FOO')
 
     def test_isupper(self):
