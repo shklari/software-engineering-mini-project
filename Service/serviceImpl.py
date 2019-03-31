@@ -4,8 +4,15 @@ from Domain.System import System
 
 class ServiceImpl(ServiceInterface):
 
-    def init(self, system_manager, collecting, supplying, integrity):
-        pass
+    # assumes the init function receives the username and password of the system manager
+    def init(self, sm_username, sm_password):
+        if System.init_system(sm_username, sm_password) is not None:
+            print("System initialized successfully")
+            # if init_system returns the system manager object, keep it in a field???
+            return True
+        else:
+            print("System failed to initialize")
+            return False
 
     def sign_up(self, username, password):
         if System.sign_up(username, password):
@@ -56,19 +63,19 @@ class ServiceImpl(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, item, quantity):
+    def add_item_to_inventory(self, item, store, quantity):
         pass
 
-    def remove_item_from_inventory(self, item, quantity):
+    def remove_item_from_inventory(self, item, store, quantity):
         pass
 
     def edit_item_price(self, item, new_price):
         pass
 
-    def add_new_owner(self, owner, new_owner):
+    def add_new_owner(self, new_owner):
         pass
 
-    def add_new_manager(self, owner, new_manager):
+    def add_new_manager(self, new_manager):
         pass
 
     def set_price(self, new_price):
