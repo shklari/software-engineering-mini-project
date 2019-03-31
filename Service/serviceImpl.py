@@ -1,34 +1,16 @@
 from Service.service import ServiceInterface
-from Domain.System import System
 
 
 class ServiceImpl(ServiceInterface):
 
-    # assumes the init function receives the username and password of the system manager
-    def init(self, sm_username, sm_password):
-        if System.init_system(sm_username, sm_password) is not None:
-            print("System initialized successfully")
-            # if init_system returns the system manager object, keep it in a field???
-            return True
-        else:
-            print("System failed to initialize")
-            return False
+    def init(self, system_manager, collecting, supplying, integrity):
+        pass
 
     def sign_up(self, username, password):
-        if System.sign_up(username, password):
-            print("Signed up successfully")
-            return True
-        else:
-            print("Sign up failed")
-            return False
+        pass
 
     def login(self, username, password):
-        if System.login(username, password):
-            print("Logged in")
-            return True
-        else:
-            print("Login failed. Please check username and password are correct")
-            return False
+        pass
 
     def search(self, param):
         pass
@@ -43,9 +25,6 @@ class ServiceImpl(ServiceInterface):
         pass
 
     def remove_client(self, client):
-        pass
-
-    def get_cart(self, store):
         pass
 
     def add_to_cart(self, store, items):
@@ -63,19 +42,19 @@ class ServiceImpl(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, item, store, quantity):
+    def add_item_to_inventory(self, user, item, quantity):
         pass
 
-    def remove_item_from_inventory(self, item, store, quantity):
+    def remove_item_from_inventory(self, user, item, quantity):
         pass
 
     def edit_item_price(self, item, new_price):
         pass
 
-    def add_new_owner(self, new_owner):
+    def add_new_owner(self, owner, new_owner):
         pass
 
-    def add_new_manager(self, new_manager):
+    def add_new_manager(self, owner, new_manager):
         pass
 
     def set_price(self, new_price):

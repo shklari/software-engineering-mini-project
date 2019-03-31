@@ -1,7 +1,7 @@
 
 
 # Interface
-class Store(object):
+class Store:
 
     def __init__(self, name):
         self.name = name

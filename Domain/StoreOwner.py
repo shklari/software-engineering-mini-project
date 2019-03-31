@@ -1,4 +1,4 @@
-from Domain import Client
+from Domain.Client import Client
 # Interface
 
 

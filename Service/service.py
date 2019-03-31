@@ -7,7 +7,7 @@ from abc import abstractmethod
 class ServiceInterface(object):
 
     @abstractmethod  # 1.1 ?????
-    def init(self, sm_username, sm_password): pass
+    def init(self, system_manager, collecting, supplying, integrity): pass
 
     @abstractmethod  # 2.2
     def sign_up(self, username, password): pass
@@ -30,9 +30,6 @@ class ServiceInterface(object):
     @abstractmethod  # 6.2
     def remove_client(self, client): pass
 
-    @abstractmethod  # 2.7
-    def get_cart(self, store): pass
-
     @abstractmethod  # 2.6
     def add_to_cart(self, store, items): pass
 
@@ -42,26 +39,32 @@ class ServiceInterface(object):
     @abstractmethod  # 2.8
     def buy_item(self, item): pass
 
+    @abstractmethod  # 4.4
+    def remove_owner(self, owner): pass
+
+    @abstractmethod  # 4.6
+    def remove_manager(self, manager): pass
+
     @abstractmethod  # 4.1.1
-    def add_item_to_inventory(self, item, store, quantity): pass
+    def add_item_to_inventory(self, user, item, quantity): pass
 
     @abstractmethod  # 4.1.2
-    def remove_item_from_inventory(self, item, store, quantity): pass
+    def remove_item_from_inventory(self, user, item, quantity): pass
 
     @abstractmethod  # 4.1.3
     def edit_item_price(self, item, new_price): pass
 
     @abstractmethod  # 4.3
-    def add_new_owner(self, new_owner): pass
+    def add_new_owner(self, owner, new_owner): pass
 
     @abstractmethod  # 4.4
-    def remove_owner(self, owner_to_remove): pass
+    def remove_owner(self, owner, owner_to_remove): pass
 
     @abstractmethod  # 4.5
-    def add_new_manager(self, new_manager): pass
+    def add_new_manager(self, owner, new_manager): pass
 
     @abstractmethod  # 4.6
-    def remove_manager(self, manager_to_remove): pass
+    def remove_manager(self, owner, manager_to_remove): pass
 
     @abstractmethod  # 4.1.3
     def set_price(self, new_price): pass
