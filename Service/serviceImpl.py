@@ -1,4 +1,5 @@
 from Service.service import ServiceInterface
+from Domain.System import System
 
 
 class ServiceImpl(ServiceInterface):
@@ -7,10 +8,20 @@ class ServiceImpl(ServiceInterface):
         pass
 
     def sign_up(self, username, password):
-        pass
+        if System.sign_up(username, password):
+            print("Signed up successfully")
+            return True
+        else:
+            print("Sign up failed")
+            return False
 
     def login(self, username, password):
-        pass
+        if System.login(username, password):
+            print("Logged in")
+            return True
+        else:
+            print("Login failed. Please check username and password are correct")
+            return False
 
     def search(self, param):
         pass

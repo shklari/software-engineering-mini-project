@@ -30,6 +30,9 @@ class ServiceInterface(object):
     @abstractmethod  # 6.2
     def remove_client(self, client): pass
 
+    # @abstractmethod  # 2.7
+    def get_cart(self, store): pass
+
     @abstractmethod  # 2.6
     def add_to_cart(self, store, items): pass
 
