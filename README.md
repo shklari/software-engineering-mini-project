@@ -4,6 +4,6 @@ Workshop On Software Engineering Project
 
 pip3 install virtualenv
 
-python3 -m venv tutorial-env
+py -m venv tutorial-env
 
 pip install -r requirements.txt
