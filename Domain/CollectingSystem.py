@@ -1,5 +1,3 @@
-
-
 # Interface
 class CollectingSystem(object):
 

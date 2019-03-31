@@ -1,6 +1,7 @@
+from .CollectingSystem import CollectingSystem
 
 
-# Interface
-class Bascket(object):
-
-    def __init__(self): pass
+class Basket:
+    def __init__(self):
+        self.carts = []
+        self.collectingSystem = CollectingSystem()
