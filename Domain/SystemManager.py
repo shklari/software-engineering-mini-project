@@ -1,14 +1,18 @@
-from Domain import Client
+from Domain.Client import Client
 
 
 class SystemManager(Client):
 
     def __init__(self, new_name, new_password):
         super(new_name, new_password)
+        self.sys_manager = None
 
-    def get_system_manager(self, system_manager_user_name, system_manager_password):
-        manager = 0
-        if self.system_manager is None:
-            manager = SystemManager(system_manager_user_name, system_manager_password)
+    @staticmethod
+    def get_instance(self, system_manager_user_name, system_manager_password):
+        if self.sys_manager is None:
+            self.sys_manager = SystemManager(system_manager_user_name, system_manager_password)
 
-        return manager
+        return self.sys_manager
+
+    def get_sys_manager(self):
+        return self.sys_manager

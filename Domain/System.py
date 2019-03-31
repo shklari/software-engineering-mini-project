@@ -1,8 +1,8 @@
-from .User import User
-from .Client import Client
-from .Store import Store
-from .StoreOwner import StoreOwner
-from .SystemManager import SystemManager
+from Domain.User import User
+from Domain.Client import Client
+from Domain.Store import Store
+from Domain.StoreOwner import StoreOwner
+from Domain.SystemManager import SystemManager
 
 
 class System:
@@ -14,8 +14,9 @@ class System:
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
-        self.sign_up(system_manager_user_name, system_manager_password)
-        manager = self.get_system_manager(system_manager_user_name, system_manager_password)
+        if not self.sign_up(system_manager_user_name, system_manager_password):
+            return None
+        manager = SystemManager.get_instance(system_manager_user_name, system_manager_password)
         self.clients[manager.username] = manager
         self.system_manager = manager
         self.cur_user = User()
@@ -120,3 +121,4 @@ class System:
                 self.stors.remove(store)
         del self.clients[client_to_remove]
         return True
+
