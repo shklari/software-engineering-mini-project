@@ -11,7 +11,7 @@ class ServiceBridge(ServiceInterface):
     def login(self, username, password):
         pass
 
-    def search(self, param):
+    def search(self, param, ):
         pass
 
     def buy_items(self, items):
@@ -41,10 +41,10 @@ class ServiceBridge(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, item, quantity):
+    def add_item_to_inventory(self, store, item, quantity):
         pass
 
-    def remove_item_from_inventory(self, item, quantity):
+    def remove_item_from_inventory(self, store, item, quantity):
         pass
 
     def edit_item_price(self, item, new_price):

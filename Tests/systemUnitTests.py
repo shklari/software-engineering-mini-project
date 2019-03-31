@@ -1,6 +1,6 @@
 import unittest
 from django.test import TestCase
-from Service.serviceBridge import SystemInterface
+from Service.serviceBridge import ServiceBridge
 
 
 class CollectingSystem(object):
@@ -60,7 +60,9 @@ class IntegritySystem(object):
 class AllTestCase(TestCase):
 
     def setUp(self) -> None:
-        self.system = SystemInterface()
+        self.item = 0
+        self.store = 0
+        self.system = ServiceBridge()
         self.manager = {"bascket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
@@ -94,12 +96,18 @@ class AllTestCase(TestCase):
         self.assertEqual(False, self.system.login("try1", "try123"))
         self.assertEqual(False, self.system.login("try2", "try123"))
 
-    #2.5 need to do
-
+    # 2.5
     def test_search(self):
-        item = {"name": "shaioz", "price": 11, "category": "omo", "rank": 4}
-        store = self.system.create_store("shaiozim baam")
-        store.add_item_to_inventory()
+        self.item = {"name": "shaioz", "price": 11, "category": "omo", "rank": 4}
+        self.store = self.system.create_store("shaiozim baam")
+        self.system.add_item_to_inventory(self.store, self.item, 1)
+        self.assertEqual(self.system.search("shaioz")[0].category, "omo")
+        self.assertEqual(self.system.search("omo")[0].name, "shaioz")
+        self.assertEqual(self.system.search("avabash"), [])
+
+    # 2.6
+    def test_add_to_cart(self):
+        self.system.add_to_cart(self.store, [self.item])
 
 
 
