@@ -31,3 +31,9 @@ class Store(object):
 
     # 4.6
     def remove_manager(self, owner, manager_to_remove): pass
+
+    def search_item_by_name(self, item_name): pass
+
+    def search_item_by_price(self, price): pass
+
+    def search_item_by_category(self, category): pass
