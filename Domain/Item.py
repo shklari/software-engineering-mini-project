@@ -1,7 +1,7 @@
 
 
 # Interface
-class Item(object):
+class Item:
 
     def __init__(self, name, price, category, rank):
         self.name = name

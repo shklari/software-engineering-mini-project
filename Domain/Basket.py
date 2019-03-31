@@ -1,4 +1,4 @@
-from Domain import CollectingSystem
+from Domain.CollectingSystem import CollectingSystem
 
 
 class Basket:

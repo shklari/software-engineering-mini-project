@@ -10,7 +10,7 @@ class System:
     def __init__(self):
         self.system_manager = 0
         self.cur_user = 0
-        self.clients = dict.fromkeys(['username', 'client'])
+        self.clients = {}
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
@@ -23,7 +23,7 @@ class System:
         return self.cur_user
 
     def sign_up(self, username, password):
-        if self.clients[username] is not None:
+        if username in self.clients:
             print("This user name is taken")
             return False
         if password is None:
@@ -58,7 +58,7 @@ class System:
             self.cur_user.logged_in = False
             new_user = User()
             self.cur_user = new_user
-            return new_user
+            return True
 
     def search(self, param):
         ret_list = []
@@ -97,6 +97,7 @@ class System:
         flag = False
         for item in items:
             flag = self.cur_user.buy_item(item)
+            # if false then stop the purchase
         return flag
 
     def create_store(self, name):
@@ -122,4 +123,7 @@ class System:
         del self.clients[client_to_remove]
         return True
 
-#kaki
+
+if __name__ == '__main__':
+    ebay = System()
+    ebay.init_system('shaioz', 1234)
