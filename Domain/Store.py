@@ -3,9 +3,10 @@
 # Interface
 class Store(object):
 
-    def __init__(self, name):
+    def __init__(self, name, rank):
         self.name = name
-        self.inventory = []
+        self.rank = rank
+        self.inventory = dict.fromkeys(['item_name', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
 
@@ -32,8 +33,23 @@ class Store(object):
     # 4.6
     def remove_manager(self, owner, manager_to_remove): pass
 
-    def search_item_by_name(self, item_name): pass
+    def search_item_by_name(self, item_name):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.name == item_name:
+                result_list += item
+        return result_list
 
-    def search_item_by_price(self, price): pass
+    def search_item_by_price(self, price):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.price == price:
+                result_list += item
+        return result_list
 
-    def search_item_by_category(self, category): pass
+    def search_item_by_category(self, category):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.category == category:
+                result_list += item
+        return result_list

@@ -3,10 +3,11 @@
 # Interface
 class Item(object):
 
-    def __init__(self, name, price, policy=0):
+    def __init__(self, name, price, category, rank):
         self.name = name
         self.price = price
-        self.policy = policy
+        self.category = category
+        self.rank = rank
 
     def set_policy(self, new_policy): pass
 
