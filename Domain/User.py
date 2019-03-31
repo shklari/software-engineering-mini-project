@@ -1,9 +1,9 @@
-# Interface
-class User(object):
+from .Basket import Basket
 
-    basket = 0
 
-    def _init_(self): pass
+class User:
+    def __init__(self):
+        self.basket = Basket()
 
     # @abstractmethod # 2.6
     def add_to_cart(self, store, items): pass
