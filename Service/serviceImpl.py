@@ -3,6 +3,9 @@ from Service.service import ServiceInterface
 
 class ServiceImpl(ServiceInterface):
 
+    def init(self, system_manager, collecting, supplying, integrity):
+        pass
+
     def sign_up(self, username, password):
         pass
 
@@ -57,6 +60,4 @@ class ServiceImpl(ServiceInterface):
     def set_price(self, new_price):
         pass
 
-    def init(self, system_manager, collecting, supplying, integrity):
-        pass
 
