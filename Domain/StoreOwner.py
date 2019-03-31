@@ -8,8 +8,8 @@ class StoreOwner(Client):
     appointees = []
     managers = []
 
-    def _init_(self, new_name, new_password, appointer=0):
-        super(new_name, new_password)
+    def _init_(self, username, password, appointer=0):
+        super(username, password)
         self.appointer = appointer
         self.appointees = []
         self.managers = []
