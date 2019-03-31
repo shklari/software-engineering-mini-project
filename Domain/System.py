@@ -2,6 +2,7 @@ from .User import User
 from .Client import Client
 from .Store import Store
 from .StoreOwner import StoreOwner
+from .SystemManager import SystemManager
 
 
 class System:
@@ -97,4 +98,13 @@ class System:
             return new_store
         return False
 
-    def remove_client(self, client): pass
+    def remove_client(self, client_name):
+        if not isinstance(self.cur_user, SystemManager):
+            print("You can't remove a client, you are not the system manager")
+            return False
+        client_to_remove = self.clients[client_name]
+        for store in self.stores:
+            if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
+                self.stors.remove(store)
+        del self.clients[client_to_remove]
+        return True
