@@ -3,10 +3,11 @@
 # Interface
 class Store(object):
 
-    def __init__(self, name, rank):
+    def __init__(self, name):
         self.name = name
-        self.rank = rank
-        self.inventory = dict.fromkeys(['item_name', 'quantity'])
+        # default: no rank
+        self.rank = -1
+        self.inventory = dict.fromkeys(['item', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
 

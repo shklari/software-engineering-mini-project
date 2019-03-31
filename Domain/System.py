@@ -1,5 +1,7 @@
 from .User import User
 from .Client import Client
+from .Store import Store
+from .StoreOwner import StoreOwner
 
 
 class System:
@@ -64,12 +66,35 @@ class System:
                 result_list += item
         return result_list
 
+    def filter_by_item_rank(self, item_list, low, high):
+        result_list = []
+        for item in item_list:
+            if low <= item.rank <= high:
+                result_list += item
+        return result_list
+
+    def filter_by_item_category(self, item_list, category):
+        result_list = []
+        for item in item_list:
+            if item.category == category:
+                result_list += item
+        return result_list
+
     def buy_items(self, items):
         flag = False
         for item in items:
             flag = self.cur_user.buy_item(item)
         return flag
 
-    def create_store(self, name): pass
+    def create_store(self, name):
+        new_owner = self.cur_user
+        if new_owner.logged_in and name not in self.stores:
+            new_store = Store(name)
+            if not isinstance(new_owner, StoreOwner):
+                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
+            new_store.storeOwners.append(new_owner)
+            self.stores += new_store
+            return new_store
+        return False
 
     def remove_client(self, client): pass

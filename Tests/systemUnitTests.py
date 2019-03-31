@@ -1,26 +1,11 @@
 import unittest
+from django.test import TestCase
+from Service.service import SystemInterface
 
-from Service.service import SystemInterface, CollectingSystem, SupplyingSystem, IntegritySystem
 
+class InitTestCase(TestCase):
 
-class AllTestCase(unittest.TestCase):
-
-    system = SystemInterface()
-    def setUp(self):
-
-        self.manager = {"backet": 0, "name": "man", "password": "123456"}
-        self.collecting = CollectingSystem()
-        self.supplying = SupplyingSystem()
-        self.integrity = IntegritySystem()
-
-    def test_bad_systems(self):
-        for(i in range(0, 1)):
-            for(j in range(0, 1)):
-                for(k in range(0, 1)):
-                    self.assertEqual((i == 1 and j == 1 and k == 1), self.system.init(self.manager, self.collecting, self.supplying, self.integrity))
-                    self.collecting.switch()
-                self.supplying.switch()
-            self.integrity.switch()
+    manager =
 
 
 class TestStringMethods(unittest.TestCase):
