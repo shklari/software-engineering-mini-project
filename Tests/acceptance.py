@@ -14,4 +14,4 @@ class InitTestCase(TestCase):
 
     def setUp(self):
 
-        manager = SystemManager("mana", "123456")
+       # manager = SystemManager("mana", "123456")
