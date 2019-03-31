@@ -1,5 +1,11 @@
 import unittest
+from django.test import TestCase
 from Service.service import SystemInterface
+
+
+class InitTestCase(TestCase):
+
+    manager =
 
 
 class TestStringMethods(unittest.TestCase):

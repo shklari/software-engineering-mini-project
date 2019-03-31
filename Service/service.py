@@ -1,10 +1,66 @@
+
+
+class CollectingSystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
+
+
+class SupplyingSystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
+
+
+class IntegritySystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
+
+
 # Interface
 
 
 class SystemInterface(object):
 
     # @abstractmethod # 1.1 ?????
-    def init(self, system_manager): pass
+    def init(self, system_manager, collecting, supplying, integrity): pass
 
     # @abstractmethod # 2.2
     def sign_up(self, username, password): pass
