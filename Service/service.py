@@ -83,6 +83,9 @@ class SystemInterface(object):
     # @abstractmethod # 6.2
     def remove_client(self, client): pass
 
+
+class StoreInterface(object):
+
     # @abstractmethod # 2.6
     def add_to_cart(self, store, items): pass
 

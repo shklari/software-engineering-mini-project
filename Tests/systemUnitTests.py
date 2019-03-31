@@ -1,11 +1,5 @@
 import unittest
-from django.test import TestCase
 from Service.service import SystemInterface
-
-
-class InitTestCase(TestCase):
-
-    manager =
 
 
 class TestStringMethods(unittest.TestCase):
@@ -13,8 +7,7 @@ class TestStringMethods(unittest.TestCase):
     service = SystemInterface()
 
     def setUp(self):
-        manager = {'name': 'mana', 'password': '123456'}
-        manager["name"]
+        storeManager = {'name': 'mana', 'password': '123456'}
 
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')
