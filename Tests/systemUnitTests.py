@@ -57,9 +57,23 @@ class IntegritySystem(object):
             return True
 
 
-class InitTestCase(TestCase):
+class AllTestCase(TestCase):
 
-    manager =
+    def setUp(self) -> None:
+        self.system = SystemInterface()
+        self.manager = {"bascket": 0, "name": "man", "password": "123456"}
+        self.collecting = CollectingSystem()
+        self.supplying = SupplyingSystem()
+        self.integrity = IntegritySystem()
+
+    def test_init(self):
+        for i in range(0, 1):
+            for j in range(0, 1):
+                for k in range(0, 1):
+                    self.assertEqual((i == 1 and j == 1 and k == 1), self.system.init(self.manager, self.collecting, self.supplying, self.integrity))
+                    self.collecting.switch()
+                self.supplying.switch()
+            self.integrity.switch()
 
 
 class TestStringMethods(unittest.TestCase):
