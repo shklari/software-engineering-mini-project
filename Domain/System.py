@@ -7,11 +7,17 @@ from .SystemManager import SystemManager
 
 class System:
 
-    def __init__(self, system_manager):
-        self.sys_manager = system_manager
+    def __init__(self):
+        self.system_manager = 0
         self.cur_user = User()
         self.clients = dict.fromkeys(['username', 'client'])
         self.stores = []
+
+    def init_system(self, system_manager_user_name, system_manager_password):
+        self.sign_up(system_manager_user_name, system_manager_password)
+        manager = self.get_system_manager(system_manager_user_name, system_manager_password)
+        self.clients[manager.username] = manager
+        self.system_manager = manager
 
     def sign_up(self, username, password):
         if self.clients[username] is not None:
@@ -39,7 +45,7 @@ class System:
         else:
             client_to_check.logged_in = True
             self.cur_user = client_to_check
-            return client_to_check
+            return True
 
     def logout(self):
         if not self.cur_user.logged_in:
@@ -60,21 +66,24 @@ class System:
 
         return ret_list
 
-    def filter_by_price_range(self, item_list, low, high):
+    @staticmethod
+    def filter_by_price_range(item_list, low, high):
         result_list = []
         for item in item_list:
             if low <= item.price <= high:
                 result_list += item
         return result_list
 
-    def filter_by_item_rank(self, item_list, low, high):
+    @staticmethod
+    def filter_by_item_rank(item_list, low, high):
         result_list = []
         for item in item_list:
             if low <= item.rank <= high:
                 result_list += item
         return result_list
 
-    def filter_by_item_category(self, item_list, category):
+    @staticmethod
+    def filter_by_item_category(item_list, category):
         result_list = []
         for item in item_list:
             if item.category == category:
@@ -93,6 +102,7 @@ class System:
             new_store = Store(name)
             if not isinstance(new_owner, StoreOwner):
                 new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
+                self.clients[new_owner.username] = new_owner
             new_store.storeOwners.append(new_owner)
             self.stores += new_store
             return new_store
