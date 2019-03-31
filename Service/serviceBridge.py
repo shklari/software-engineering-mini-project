@@ -1,4 +1,4 @@
-from Service.service import SystemInterface
+from Service.service import ServiceInterface
 
 class CollectingSystem(object):
 
@@ -54,7 +54,7 @@ class IntegritySystem(object):
             return True
 
 
-class ServiceBridge(SystemInterface):
+class ServiceBridge(ServiceInterface):
     def init(self, system_manager, collecting, supplying, integrity):
         pass
 
