@@ -1,7 +1,60 @@
-from Service.service import SystemInterface
+from Service.service import ServiceInterface
+
+class CollectingSystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
 
 
-class ServiceBridge(SystemInterface):
+class SupplyingSystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
+
+
+class IntegritySystem(object):
+
+    def __init__(self):
+        self.flag = 0
+
+    def switch(self):
+        if self.flag == 0:
+            self.flag = 1
+        else:
+            self.flag = 0
+
+    def init(self):
+        if self.flag == 0:
+            return False
+        else:
+            return True
+
+
+class ServiceBridge(ServiceInterface):
     def init(self, system_manager, collecting, supplying, integrity):
         pass
 
