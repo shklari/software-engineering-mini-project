@@ -107,27 +107,26 @@ class AllTestCase(TestCase):
 
     # 2.6
     def test_add_to_cart(self):
-        self.system.add_to_cart(self.store, [self.item])
+        items = self.system.search("shaioz")
+        self.assertEqual(True, self.system.add_to_cart(self.store, items))
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "rank": 5}
+        self.assertEqual(False, self.system.add_to_cart(self.store, [item2]))
+        store2 = self.system.create_store("yossi")
+        self.assertEqual(False, self.system.add_to_cart(store2, [item2]))
 
-
-
-
-
-
-
-
+    # 2.7               ####################need to add test edit
+    def test_get_cart(self):
+        self.assertEqual(self.store.name, self.system.get_cart("shaiozim baam").storeName)
+        self.assertEqual(self.item, self.system.get_cart("shaiozim baam").items[0])
 
 
 class TestStringMethods(unittest.TestCase):
 
-    service = SystemInterface()
-
     def setUp(self):
-        manager = {'name': 'mana', 'password': '123456'}
-        manager["name"]
+        self.manager = 'FOO'
 
     def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+        self.assertEqual('foo'.upper(), self.manager)
 
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())

@@ -2,7 +2,7 @@ from Service.service import ServiceInterface
 
 
 class ServiceBridge(ServiceInterface):
-    def init(self, system_manager, collecting, supplying, integrity):
+    def init(self, sm_username, sm_password):
         pass
 
     def sign_up(self, username, password):
@@ -41,19 +41,19 @@ class ServiceBridge(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, store, item, quantity):
+    def add_item_to_inventory(self, item, store, quantity):
         pass
 
-    def remove_item_from_inventory(self, store, item, quantity):
+    def remove_item_from_inventory(self, item, store, quantity):
         pass
 
     def edit_item_price(self, item, new_price):
         pass
 
-    def add_new_owner(self, owner, new_owner):
+    def add_new_owner(self, new_owner):
         pass
 
-    def add_new_manager(self, owner, new_manager):
+    def add_new_manager(self, new_manager):
         pass
 
     def set_price(self, new_price):
