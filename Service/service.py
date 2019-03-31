@@ -1,69 +1,15 @@
 from abc import abstractmethod
 
 
-class CollectingSystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
-class SupplyingSystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
-class IntegritySystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
 # Interface
 
 
-class SystemInterface(object):
+class ServiceInterface(object):
 
-    @abstractmethod # 1.1 ?????
+    @abstractmethod  # 1.1 ?????
     def init(self, system_manager, collecting, supplying, integrity): pass
 
-    @abstractmethod # 2.2
+    @abstractmethod  # 2.2
     def sign_up(self, username, password): pass
 
     @abstractmethod # 2.3
@@ -93,10 +39,10 @@ class SystemInterface(object):
     @abstractmethod # 2.8
     def buy_item(self, item): pass
 
-    @abstractmethod # 2.8
+    @abstractmethod # 4.4
     def remove_owner(self, owner): pass
 
-    @abstractmethod # 2.8
+    @abstractmethod # 4.6
     def remove_manager(self, manager): pass
 
     @abstractmethod # 4.1.1
@@ -123,8 +69,3 @@ class SystemInterface(object):
     @abstractmethod # 4.1.3
     def set_price(self, new_price): pass
 
-    @abstractmethod # 7 ?????
-    def collect(self, amount, credit_details): pass
-
-    @abstractmethod # 8 ?????
-    def get_supply(self, user, items): pass
