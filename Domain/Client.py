@@ -1,10 +1,8 @@
-from Domain import User
+from .User import User
 
 
-# Interface
-class ClientUser(User):
-
-    def __init__(self, name, price, policy=0):
-        self.name = name
-        self.price = price
-        self.policy = policy
+class Client(User):
+    def __init__(self, username, password):
+        super(Client, self).__init__()
+        self.username = username
+        self.password = password
