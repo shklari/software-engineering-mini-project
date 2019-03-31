@@ -9,7 +9,7 @@ class System:
 
     def __init__(self):
         self.system_manager = 0
-        self.cur_user = User()
+        self.cur_user = 0
         self.clients = dict.fromkeys(['username', 'client'])
         self.stores = []
 
@@ -18,6 +18,8 @@ class System:
         manager = self.get_system_manager(system_manager_user_name, system_manager_password)
         self.clients[manager.username] = manager
         self.system_manager = manager
+        self.cur_user = User()
+        return self.cur_user
 
     def sign_up(self, username, password):
         if self.clients[username] is not None:
