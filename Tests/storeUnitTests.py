@@ -1,17 +1,17 @@
 import unittest
-from Service.service import SystemInterface
+from Service.service import SystemInterface , StoreInterface
 
 
 class TestStore(unittest.TestCase):
 
-    service = SystemInterface()
+    service = StoreInterface()
 
     def setUp(self):
         manager = {'name': 'mana', 'password': '123456'}
         manager["name"]
 
     def addToCartTest(self):
-        service.add_to_cart()
+        self.service.add_to_cart()
         self.assertEqual('foo'.upper(), 'FOO')
 
     def test_isupper(self):
