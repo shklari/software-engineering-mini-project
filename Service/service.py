@@ -1,60 +1,6 @@
 from abc import abstractmethod
 
 
-class CollectingSystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
-class SupplyingSystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
-class IntegritySystem(object):
-
-    def __init__(self):
-        self.flag = 0
-
-    def switch(self):
-        if self.flag == 0:
-            self.flag = 1
-        else:
-            self.flag = 0
-
-    def init(self):
-        if self.flag == 0:
-            return False
-        else:
-            return True
-
-
 # Interface
 
 
