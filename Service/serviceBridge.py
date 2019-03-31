@@ -79,8 +79,8 @@ class ServiceBridge(ServiceInterface):
     def remove_client(self, client):
         pass
 
-    def add_to_cart(self, store, items):
-        pass
+    def add_to_cart(self, user, store, items): #2.6
+        return True
 
     def edit_cart(self, cart, params):
         pass
