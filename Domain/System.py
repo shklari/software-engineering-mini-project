@@ -9,7 +9,6 @@ class System:
         self.cur_user = User()
         self.clients = dict.fromkeys(['username', 'client'])
         self.stores = []
-#
 
     def sign_up(self, username, password):
         if self.clients[username] is not None:
@@ -24,25 +23,27 @@ class System:
             return True
 
     def login(self, username, password):
-        if isinstance(self.cur_user, Client):
-            print("You are already logged in")
-            return False
         client_to_check = self.clients[username]
         if client_to_check is None:
             print("No such user")
+            return False
+        if client_to_check.logged_in:
+            print("You are already logged in")
             return False
         elif client_to_check.password != password:
             print("Wrong password")
             return False
         else:
+            client_to_check.logged_in = True
             self.cur_user = client_to_check
             return client_to_check
 
     def logout(self):
-        if not isinstance(self.cur_user, Client):
+        if not self.cur_user.logged_in:
             print("You can't log out until you log in")
             return False
         else:
+            self.cur_user.logged_in = False
             new_user = User()
             self.cur_user = new_user
             return new_user
@@ -55,6 +56,13 @@ class System:
             ret_list += s.search_item_by_price(param)
 
         return ret_list
+
+    def filter_by_price_range(self, item_list, low, high):
+        result_list = []
+        for item in item_list:
+            if low <= item.price <= high:
+                result_list += item
+        return result_list
 
     def buy_items(self, items):
         flag = False
