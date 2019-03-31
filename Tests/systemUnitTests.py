@@ -1,6 +1,6 @@
 import unittest
 from django.test import TestCase
-from Service.service import SystemInterface
+from Service.serviceBridge import SystemInterface
 
 
 class CollectingSystem(object):
@@ -66,6 +66,7 @@ class AllTestCase(TestCase):
         self.supplying = SupplyingSystem()
         self.integrity = IntegritySystem()
 
+    # 1.1 # init will succeed only if the external systems.init() will return true
     def test_init(self):
         for i in range(0, 1):
             for j in range(0, 1):
@@ -74,6 +75,39 @@ class AllTestCase(TestCase):
                     self.collecting.switch()
                 self.supplying.switch()
             self.integrity.switch()
+
+    # 2.2
+    def test_signup(self):
+        self.assertEqual(False, self.system.sign_up("need to fail", ""))
+        self.assertEqual(False, self.system.sign_up("", "need to fail"))
+        self.assertEqual(True, self.system.sign_up("try1", "try123"))
+        self.assertEqual(False, self.system.sign_up("try1", "try123"))
+        self.assertEqual(True, self.system.sign_up("try2", "try123"))
+        self.assertEqual(False, self.system.sign_up("try1", "try111"))
+
+    # 2.3
+    def test_login(self):
+        self.assertEqual(False, self.system.login("need to fail", ""))
+        self.assertEqual(False, self.system.login("", "need to fail"))
+        self.assertEqual(False, self.system.login("try1", "try111"))
+        self.assertEqual(True, self.system.login("try1", "try123"))
+        self.assertEqual(False, self.system.login("try1", "try123"))
+        self.assertEqual(False, self.system.login("try2", "try123"))
+
+    #2.5 need to do
+
+    def test_search(self):
+        item = {"name": "shaioz", "price": 11, "category": "omo", "rank": 4}
+        store = self.system.create_store("shaiozim baam")
+        store.add_item_to_inventory()
+
+
+
+
+
+
+
+
 
 
 class TestStringMethods(unittest.TestCase):

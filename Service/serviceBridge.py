@@ -1,7 +1,7 @@
-from Service.service import SystemInterface
+from Service.service import ServiceInterface
 
 
-class ServiceBridge(SystemInterface):
+class ServiceBridge(ServiceInterface):
     def init(self, system_manager, collecting, supplying, integrity):
         pass
 
@@ -41,10 +41,10 @@ class ServiceBridge(SystemInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, user, item, quantity):
+    def add_item_to_inventory(self, item, quantity):
         pass
 
-    def remove_item_from_inventory(self, user, item, quantity):
+    def remove_item_from_inventory(self, item, quantity):
         pass
 
     def edit_item_price(self, item, new_price):
