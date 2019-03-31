@@ -1,4 +1,4 @@
-from .Basket import Basket
+from Domain.Basket import Basket
 
 
 class User:
