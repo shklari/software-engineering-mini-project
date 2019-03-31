@@ -38,6 +38,9 @@ class ServiceImpl(ServiceInterface):
     def remove_client(self, client):
         pass
 
+    def get_cart(self, store):
+        pass
+
     def add_to_cart(self, store, items):
         pass
 
@@ -53,10 +56,10 @@ class ServiceImpl(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    def add_item_to_inventory(self, user, item, quantity):
+    def add_item_to_inventory(self, item, quantity):
         pass
 
-    def remove_item_from_inventory(self, user, item, quantity):
+    def remove_item_from_inventory(self, item, quantity):
         pass
 
     def edit_item_price(self, item, new_price):

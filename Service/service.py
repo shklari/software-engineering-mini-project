@@ -30,7 +30,7 @@ class ServiceInterface(object):
     @abstractmethod  # 6.2
     def remove_client(self, client): pass
 
-    # @abstractmethod  # 2.7
+    @abstractmethod  # 2.7
     def get_cart(self, store): pass
 
     @abstractmethod  # 2.6
@@ -49,10 +49,10 @@ class ServiceInterface(object):
     def remove_manager(self, manager): pass
 
     @abstractmethod  # 4.1.1
-    def add_item_to_inventory(self, user, item, quantity): pass
+    def add_item_to_inventory(self, item, quantity): pass
 
     @abstractmethod  # 4.1.2
-    def remove_item_from_inventory(self, user, item, quantity): pass
+    def remove_item_from_inventory(self, item, quantity): pass
 
     @abstractmethod  # 4.1.3
     def edit_item_price(self, item, new_price): pass
