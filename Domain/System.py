@@ -9,6 +9,7 @@ class System:
         self.cur_user = User()
         self.clients = dict.fromkeys(['username', 'client'])
         self.stores = []
+#
 
     def sign_up(self, username, password):
         if self.clients[username] is not None:
