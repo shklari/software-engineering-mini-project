@@ -30,8 +30,8 @@ class ServiceImpl(ServiceInterface):
             print("Login failed. Please check username and password are correct")
             return False
 
-    def search(self, param):
-        items_list = System.search(param)
+    def search(self, keyword):
+        items_list = System.search(keyword)
         if len(items_list) == 0:
             print("No item matching the search")
             return []
@@ -56,18 +56,32 @@ class ServiceImpl(ServiceInterface):
             return False
 
     def create_store(self, name):
-        pass
+        created = System.create_store(name)
+        if not created:
+            print("Could not create store" + name)
+            return False
+        else:
+            print("New store created")
+            print("Name: " + created.name)
+            print("Owners: " + created.storeOwners)
+            owners = []
+            for o in created.storeOwners:
+                owners.append({'username': o.username})
+            return {'name': created.name, 'storeOwners': owners}
 
-    def remove_client(self, client):
+    def remove_user(self, client):
         pass
 
     def get_cart(self, store):
         pass
 
+    def get_item_from_cart(self, cart, item):
+        pass
+
     def add_to_cart(self, store, items):
         pass
 
-    def edit_cart(self, cart, params):
+    def remove_from_cart(self, store_name, item):
         pass
 
     def buy_item(self, item):
@@ -85,7 +99,7 @@ class ServiceImpl(ServiceInterface):
     def remove_item_from_inventory(self, item, store, quantity):
         pass
 
-    def edit_item_price(self, item, new_price):
+    def edit_item_price(self, store, item, new_price):
         pass
 
     def add_new_owner(self, new_owner):
