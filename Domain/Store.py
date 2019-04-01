@@ -1,0 +1,107 @@
+from .StoreOwner import StoreOwner
+
+
+# Interface
+class Store(object):
+
+    def __init__(self, name):
+        self.name = name
+        self.rank = -1
+        self.inventory = dict.fromkeys(['item_name', 'quantity'])
+        self.storeOwners = []
+        self.storeManagers = []
+
+    # 4.1.1
+    def add_item_to_inventory(self, user, item, quantity):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    self.inventory[item] += quantity
+                else:
+                    self.inventory[item] = quantity
+                print("item has been successesfuly added to the store inventory!")
+                return True
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
+
+    # 4.1.2
+    def remove_item_from_inventory(self, user, item, quantity):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    if self.inventory[item] >= quantity:
+                        self.inventory[item] -= quantity
+                        print("items has been successfully removed from the store inventory!")
+                        return True
+                    else:
+                        print("not enough items for this quantity")
+                        return False
+                else:
+                    print("item is not in the inventory of this store")
+                    return False
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
+
+    # 4.1.3
+    # user field added
+    def edit_item_price(self, user, item, new_price):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    for k in self.inventory.keys():
+                        if item.name == k.name:
+                            k.set_price(new_price)
+                            print("item's price has been successfully updated!!")
+                            return True
+                else:
+                    print("item is not in the inventory of this store")
+                    return False
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
+
+    def set_policy(self, new_policy): pass
+
+    # 4.3
+    def add_new_owner(self, owner, new_owner): pass
+
+    # 4.4
+    def remove_owner(self, owner, owner_to_remove): pass
+
+    # 4.5
+    def add_new_manager(self, owner, new_manager): pass
+
+    # 4.6
+    def remove_manager(self, owner, manager_to_remove): pass
+
+    def search_item_by_name(self, item_name):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.name == item_name:
+                result_list += item
+        return result_list
+
+    def search_item_by_price(self, price):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.price == price:
+                result_list += item
+        return result_list
+
+    def search_item_by_category(self, category):
+        result_list = []
+        for item in self.inventory.keys():
+            if item.category == category:
+                result_list += item
+        return result_list
