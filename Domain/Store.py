@@ -12,7 +12,7 @@ class Store(object):
         self.inventory = dict.fromkeys(['item_name', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
-        self.discountPolicy = 0;
+        self.discountPolicy = 0
 
     def check_if_store_owner(self, user):
         if isinstance(user, User):
@@ -109,7 +109,7 @@ class Store(object):
             return True
 
     # 4.4
-    def remove_owner(self, owner, owner_to_remove):
+    def remove_owner(self, owner, owner_to_remove): pass
 
     # 4.4
     def add_new_manager(self, owner, new_manager): pass
@@ -121,19 +121,19 @@ class Store(object):
         result_list = []
         for item in self.inventory.keys():
             if item.name == item_name:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def search_item_by_price(self, price):
         result_list = []
         for item in self.inventory.keys():
             if item.price == price:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def search_item_by_category(self, category):
         result_list = []
         for item in self.inventory.keys():
             if item.category == category:
-                result_list += item
+                result_list.append(item)
         return result_list
