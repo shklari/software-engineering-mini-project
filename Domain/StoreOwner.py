@@ -9,7 +9,7 @@ class StoreOwner(Client):
     managers = []
 
     def __init__(self, username, password, appointer=0):
-        super(username, password)
+        super(StoreOwner, self).__init__(username, password)
         self.appointer = appointer
         self.appointees = []
         self.managers = []

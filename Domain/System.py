@@ -16,7 +16,7 @@ class System:
     def init_system(self, system_manager_user_name, system_manager_password):
         if not self.sign_up(system_manager_user_name, system_manager_password):
             return None
-        manager = SystemManager.get_instance(system_manager_user_name, system_manager_password)
+        manager = SystemManager(system_manager_user_name, system_manager_password)
         self.clients[manager.username] = manager
         self.system_manager = manager
         self.cur_user = User()
@@ -35,10 +35,10 @@ class System:
             return True
 
     def login(self, username, password):
-        client_to_check = self.clients[username]
-        if client_to_check is None:
+        if username not in self.clients:
             print("No such user")
             return False
+        client_to_check = self.clients[username]
         if client_to_check.logged_in:
             print("You are already logged in")
             return False
@@ -126,4 +126,14 @@ class System:
 
 if __name__ == '__main__':
     ebay = System()
-    ebay.init_system('shaioz', 1234)
+    ebay.sign_up('shaioz', 1234)
+    print(ebay.clients.get('shaioz').logged_in)
+    ebay.login('nuf', 123)
+    ebay.login('shaioz', 1234)
+    print(ebay.clients.get('shaioz').logged_in)
+    print(ebay.cur_user.username)
+    ebay.logout()
+    print(ebay.clients.get('shaioz').logged_in)
+    print(ebay.cur_user)
+    ebay.logout()
+
