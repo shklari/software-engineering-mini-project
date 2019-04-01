@@ -1,5 +1,4 @@
 from Domain.User import User
-# Interface
 
 
 class StoreOwner(User):

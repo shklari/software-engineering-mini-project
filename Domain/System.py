@@ -69,7 +69,6 @@ class System:
             ret_list.append(store.search_item_by_name(param))
             ret_list.append(store.search_item_by_category(param))
             ret_list.append(store.search_item_by_price(param))
-
         return ret_list
 
     @staticmethod
@@ -115,6 +114,9 @@ class System:
         if not isinstance(self.cur_user, SystemManager):
             print("You can't remove a user, you are not the system manager")
             return False
+        if username not in self.users:
+            print("This user does not exist")
+            return False
         user_to_remove = self.users[username]
         stores_to_remove = []
         for store in self.stores:
@@ -154,12 +156,12 @@ if __name__ == '__main__':
     print("Users are:")
     for u in amazon.users:
         print(amazon.users[u].username)
-    store = amazon.get_store('png')
+    store = amazon.get_store('pnb')
     if store:
         print("chosen store name is {}".format(store.name))
     else:
         print("no such store")
-    us = amazon.get_user('shaiz')
+    us = amazon.get_user('shaioz')
     if us:
         print("shais password is {}".format(us.password))
     else:
