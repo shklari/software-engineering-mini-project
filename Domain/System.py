@@ -115,7 +115,7 @@ class System:
         client_to_remove = self.clients[client_name]
         stores_to_remove = []
         for store in self.stores:
-            if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
+            if len(store.storeOwners) == 1 and client_to_remove.username == store.storeOwners[0].username:
                 stores_to_remove.append(store)
         for st in stores_to_remove:
             self.stores.remove(st)
