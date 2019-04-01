@@ -104,7 +104,7 @@ class System:
         if isinstance(self.cur_user, Client) and name not in self.stores:
             new_owner = self.cur_user
             new_store = Store(name)
-            if not isinstance(new_owner, StoreOwner):
+            if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
                 new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
                 self.clients[new_owner.username] = new_owner
                 self.cur_user = new_owner
@@ -121,10 +121,33 @@ class System:
         client_to_remove = self.clients[client_name]
         for store in self.stores:
             if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
-                self.stors.remove(store)
+                self.stores.remove(store)
         del self.clients[client_name]
         return True
 
+    @staticmethod
+    def print_stores(lst):
+        for stor in lst:
+            print(stor.name)
 
 
-
+if __name__ == '__main__':
+    ebay = System()
+    ebay.init_system('shaioz', 1234)
+    ebay.sign_up('inbar', 555)
+    ebay.login('shaioz', 1234)
+    ebay.create_store('pnb')
+    ebay.print_stores(ebay.stores)
+    ebay.logout()
+    ebay.login('inbar', 555)
+    ebay.create_store('zara')
+    ebay.print_stores(ebay.stores)
+    ebay.create_store('HM')
+    ebay.print_stores(ebay.stores)
+    ebay.logout()
+    ebay.login('shaioz', 1234)
+    ebay.remove_client('inbar')
+    ebay.print_stores(ebay.stores)
+    for us in ebay.clients:
+        print(us)
+        print(type(ebay.clients[us]))
