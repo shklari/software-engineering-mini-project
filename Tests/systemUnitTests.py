@@ -2,6 +2,7 @@ import unittest
 from django.test import TestCase
 from Service.serviceBridge import ServiceBridge
 
+# ############################ must run all in order
 
 class CollectingSystem(object):
 
@@ -20,6 +21,9 @@ class CollectingSystem(object):
         else:
             return True
 
+    def collect(self):
+        return self.init()
+
 
 class SupplyingSystem(object):
 
@@ -37,6 +41,9 @@ class SupplyingSystem(object):
             return False
         else:
             return True
+
+    def get_supply(self):
+        return self.init()
 
 
 class IntegritySystem(object):
@@ -57,7 +64,10 @@ class IntegritySystem(object):
             return True
 
 
-class AllTestCase(TestCase):
+class SystemTestCase(TestCase):
+
+    def __init__(self):
+        super()
 
     def setUp(self) -> None:
         self.item = 0
@@ -80,20 +90,32 @@ class AllTestCase(TestCase):
 
     # 2.2
     def test_signup(self):
+        # empty password
         self.assertEqual(False, self.system.sign_up("need to fail", ""))
+        # empty user name
         self.assertEqual(False, self.system.sign_up("", "need to fail"))
+        # should work
         self.assertEqual(True, self.system.sign_up("try1", "try123"))
+        # already exists
         self.assertEqual(False, self.system.sign_up("try1", "try123"))
+        # should work
         self.assertEqual(True, self.system.sign_up("try2", "try123"))
+        # already exists
         self.assertEqual(False, self.system.sign_up("try1", "try111"))
 
     # 2.3
     def test_login(self):
+        # empty password
         self.assertEqual(False, self.system.login("need to fail", ""))
+        # empty user name
         self.assertEqual(False, self.system.login("", "need to fail"))
+        # wrong password
         self.assertEqual(False, self.system.login("try1", "try111"))
+        # should work
         self.assertEqual(True, self.system.login("try1", "try123"))
+        # already logged in
         self.assertEqual(False, self.system.login("try1", "try123"))
+        # already logged in
         self.assertEqual(False, self.system.login("try2", "try123"))
 
     # 2.5
@@ -107,27 +129,75 @@ class AllTestCase(TestCase):
 
     # 2.6
     def test_add_to_cart(self):
-        self.system.add_to_cart(self.store, [self.item])
+        items = self.system.search("shaioz")
+        self.assertEqual(True, self.system.add_to_cart(self.store.name, items[0]))
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "rank": 5}
+        # item2 doesnt exist in shaiozim baam
+        self.assertEqual(False, self.system.add_to_cart(self.store.name, item2))
+        # avocadosh store doesnt exist
+        self.assertEqual(False, self.system.add_to_cart("avocadosh", item2))
 
+    # 2.7.1
+    def test_get_cart(self):
+        self.cart = self.system.get_cart("shaiozim baam")
+        self.assertEqual(self.store.name, self.cart.storeName)
+        self.assertEqual(self.item, self.cart.items[0])
+        self.assertEqual(None, self.system.get_cart("inbarim baam"))
 
+    # 2.7.2
+    def test_remove_from_cart(self):
+        cart1 = self.system.get_cart("shaiozim baam")
+        item = cart1.items[0]
+        length1 = len(cart1.items)
+        self.assertEqual(True, self.system.remove_from_cart("shaiozim baam", item))
+        cart2 = self.system.get_cart("shaiozim baam")
+        length2 = len(cart2.items)
+        self.assertEqual(length1 - 1, length2)
+        self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "glasses o mashu"))
+        self.assertEqual(False, self.system.remove_from_cart("inbarim baam", "glasses o mashu"))
 
+    # 2.8
+    def test_buy_item(self):
+        if(self.collecting.flag == 0):
+            self.collecting.switch()
+        self.collecting.switch()
+        # collecting system doesnt work properly
+        self.assertEqual(False, self.system.buy_item(self.item))
+        self.collecting.switch()
+        # should work
+        self.assertEqual(True, self.system.buy_item(self.item))
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "rank": 5}
+        # item doesnt exist
+        self.assertEqual(False, self.system.buy_item(item2))
+        # not available
+        self.assertEqual(False, self.system.buy_item(self.item))
 
+    # 3.1
+    def test_logout(self):
+        # user is logged in - should work
+        self.assertEqual(True, self.system.logout())
+        # user is loged out - shouldnt work
+        self.assertEqual(False, self.system.logout())
 
-
-
-
+    # 6.2
+    def test_remove_client(self):
+        self.assertEqual(False, self.system.remove_client("man"))
+        self.system.login("man", "123456")
+        # doesnt exist
+        self.assertEqual(False, self.system.remove_client("try3"))
+        # should work
+        self.assertEqual(True, self.system.remove_client("try2"))
+        # doesn't exist
+        self.assertEqual(False, self.system.remove_client("try2"))
 
 
 class TestStringMethods(unittest.TestCase):
 
-    service = SystemInterface()
-
     def setUp(self):
-        manager = {'name': 'mana', 'password': '123456'}
-        manager["name"]
+        self.manager = 'FOO'
 
     def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+        self.assertEqual('foo'.upper(), self.manager)
 
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
