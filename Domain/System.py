@@ -119,35 +119,11 @@ class System:
             print("You can't remove a client, you are not the system manager")
             return False
         client_to_remove = self.clients[client_name]
+        stores_to_remove = []
         for store in self.stores:
             if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
-                self.stores.remove(store)
+                stores_to_remove.append(store)
+        for st in stores_to_remove:
+            self.stores.remove(st)
         del self.clients[client_name]
         return True
-
-    @staticmethod
-    def print_stores(lst):
-        for stor in lst:
-            print(stor.name)
-
-
-if __name__ == '__main__':
-    ebay = System()
-    ebay.init_system('shaioz', 1234)
-    ebay.sign_up('inbar', 555)
-    ebay.login('shaioz', 1234)
-    ebay.create_store('pnb')
-    ebay.print_stores(ebay.stores)
-    ebay.logout()
-    ebay.login('inbar', 555)
-    ebay.create_store('zara')
-    ebay.print_stores(ebay.stores)
-    ebay.create_store('HM')
-    ebay.print_stores(ebay.stores)
-    ebay.logout()
-    ebay.login('shaioz', 1234)
-    ebay.remove_client('inbar')
-    ebay.print_stores(ebay.stores)
-    for us in ebay.clients:
-        print(us)
-        print(type(ebay.clients[us]))
