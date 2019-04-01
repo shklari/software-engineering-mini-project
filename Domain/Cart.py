@@ -1,10 +1,23 @@
-# Interface
+from Domain.System import System
 
 
-class Cart(object):
+class Cart:
 
-    def additem(self, item): pass
+    def __init__(self, store_name):
+        self.store = System.get_store(store_name)
+        self.item_list = []
 
-    def getitems(self): pass
+    def add_item_to_cart(self, item):
+        if item not in self.item_list:
+            self.item_list.append(item)
+            return True
+        return False
 
-    def removeitem(self, item): pass
+    def get_items(self):
+        return self.item_list
+
+    def remove_item_from_cart(self, item):
+        if item in self.item_list:
+            self.item_list.remove(item)
+            return True
+        return False
