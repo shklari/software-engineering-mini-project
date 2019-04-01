@@ -1,8 +1,8 @@
-from Domain.Client import Client
+from Domain.User import User
 # Interface
 
 
-class StoreOwner(Client):
+class StoreOwner(User):
 
     appointer = 0
     appointees = []

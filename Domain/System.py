@@ -63,9 +63,9 @@ class System:
     def search(self, param):
         ret_list = []
         for s in self.stores:
-            ret_list += s.search_item_by_name(param)
-            ret_list += s.search_item_by_category(param)
-            ret_list += s.search_item_by_price(param)
+            ret_list.append(s.search_item_by_name(param))
+            ret_list.append(s.search_item_by_category(param))
+            ret_list.append(s.search_item_by_price(param))
 
         return ret_list
 
@@ -74,7 +74,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.price <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -82,7 +82,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.rank <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -90,7 +90,7 @@ class System:
         result_list = []
         for item in item_list:
             if item.category == category:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def buy_items(self, items):
@@ -100,16 +100,10 @@ class System:
             # if false then stop the purchase
         return flag
 
-    def create_store(self, name):
-        if isinstance(self.cur_user, Client) and name not in self.stores:
-            new_owner = self.cur_user
-            new_store = Store(name)
-            if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
-                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
-                self.clients[new_owner.username] = new_owner
-                self.cur_user = new_owner
-                self.cur_user.logged_in = True
-            new_store.storeOwners.append(new_owner)
+    def create_store(self, store_name):
+        if isinstance(self.cur_user, Client) and store_name not in self.stores:
+            new_store = Store(store_name)
+            new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
         return False
