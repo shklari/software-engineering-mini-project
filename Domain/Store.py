@@ -1,5 +1,3 @@
-from typing import Dict, Any
-from .Item import Item
 from .StoreOwner import StoreOwner
 from .DiscountPolicy import DiscountPolicy
 from .ProcurementPolicy import ProcurementPolicy
@@ -9,8 +7,6 @@ from .StoreManager import StoreManager
 
 # Interface
 class Store(object):
-
-    # inventory: Dict[Item, Any]
 
     def __init__(self, name, rank):
         self.name = name
@@ -61,7 +57,7 @@ class Store(object):
             return True
 
     # 4.1.2
-    def remove_item_from_inventory(self, user, item, quantity):
+    def remove_item_by_quantity(self, user, item, quantity):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 if item in self.inventory:
@@ -72,6 +68,23 @@ class Store(object):
                     else:
                         print("not enough items for this quantity")
                         return False
+                else:
+                    print("item is not in the inventory of this store")
+                    return False
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner")
+            return True
+
+    def remove_item_from_inventory(self, user, item):
+        if isinstance(user, User) and user.logged_in:
+            if self.check_if_store_owner(user):
+                if item in self.inventory:
+                    del self.inventory[item]
+                    print("item has been successfully removed from the store inventory!")
+                    return True
                 else:
                     print("item is not in the inventory of this store")
                     return False
@@ -146,9 +159,15 @@ class Store(object):
                                         for i in x.get_appointees():
                                             self.remove_owner(owner_to_remove, i)
                                     self.storeOwners.remove(x)
-                                k.remove_appointee(owner_to_remove)
-                                print("store owner has been removed successfully!")
-                                return True
+                                    k.remove_appointee(owner_to_remove)
+                                    print("store owner has been removed successfully!")
+                                    return True
+                                for x in self.storeManagers:
+                                    if x.username == owner_to_remove:
+                                        self.storeManagers.remove(x)
+                                        k.remove_appointee(owner_to_remove)
+                                        print("store manager has been removed successfully!")
+                                        return True
                             print("the owner is not the appointer for this owner")
                             return False
                 else:
@@ -162,11 +181,11 @@ class Store(object):
             return True
 
     # 4.5
-    def add_new_manager(self, owner, new_manager):
+    def add_new_manager(self, owner, new_manager, permissions):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if not self.check_if_store_manager(new_manager):
-                    self.storeManagers.append(StoreManager(new_manager.username, new_manager.password, owner))
+                    self.storeManagers.append(StoreManager(new_manager.username, new_manager.password, owner, permissions))
                     for k in self.storeManagers:
                         if k.username == owner.username:
                             k.add_appointee(new_manager)
@@ -197,7 +216,30 @@ class Store(object):
             return False
 
     # 4.6
-    def remove_manager(self, owner, manager_to_remove): pass
+    def remove_manager(self, owner, manager_to_remove):
+        if isinstance(owner, User) and owner.logged_in:
+            if self.check_if_store_owner(owner):
+                if self.check_if_store_manager(manager_to_remove):
+                    for k in self.storeOwners:
+                        if k.username == owner.username:
+                            if k.is_appointee(manager_to_remove):
+                                for x in self.storeManagers:
+                                    if x.username == manager_to_remove:
+                                        self.storeManagers.remove(x)
+                                        k.remove_appointee(manager_to_remove)
+                                        print("store manager has been removed successfully!")
+                                        return True
+                            print("the owner is not the appointer for this manager")
+                            return False
+                else:
+                    print("user is not a manager of this store")
+                    return False
+            else:
+                print("user is no store manager for this store")
+                return False
+        else:
+            print("user is not logged in or not a store manager")
+            return True
 
     def search_item_by_name(self, item_name):
         result_list = []
