@@ -1,6 +1,6 @@
 from .StoreOwner import StoreOwner
 from .DiscountPolicy import DiscountPolicy
-from .User import User
+from .Guest import Guest
 
 
 # Interface
@@ -15,7 +15,7 @@ class Store(object):
         self.discountPolicy = 0
 
     def check_if_store_owner(self, user):
-        if isinstance(user, User):
+        if isinstance(user, Guest):
             for k in self.storeOwners:
                 if k.username == user.username:
                     return True
@@ -23,7 +23,7 @@ class Store(object):
 
     # 4.1.1
     def add_item_to_inventory(self, user, item, quantity):
-        if isinstance(user, User) and user.logged_in:
+        if isinstance(user, Guest) and user.logged_in:
             if self.check_if_store_owner(user):
                 if item in self.inventory:
                     self.inventory[item] += quantity
@@ -40,7 +40,7 @@ class Store(object):
 
     # 4.1.2
     def remove_item_from_inventory(self, user, item, quantity):
-        if isinstance(user, User) and user.logged_in:
+        if isinstance(user, Guest) and user.logged_in:
             if self.check_if_store_owner(user):
                 if item in self.inventory:
                     if self.inventory[item] >= quantity:
