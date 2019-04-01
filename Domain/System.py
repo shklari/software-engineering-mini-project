@@ -101,14 +101,16 @@ class System:
         return flag
 
     def create_store(self, name):
-        new_owner = self.cur_user
-        if new_owner.logged_in and name not in self.stores:
+        if isinstance(self.cur_user, Client) and name not in self.stores:
+            new_owner = self.cur_user
             new_store = Store(name)
             if not isinstance(new_owner, StoreOwner):
                 new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
                 self.clients[new_owner.username] = new_owner
+                self.cur_user = new_owner
+                self.cur_user.logged_in = True
             new_store.storeOwners.append(new_owner)
-            self.stores += new_store
+            self.stores.append(new_store)
             return new_store
         return False
 
@@ -120,20 +122,9 @@ class System:
         for store in self.stores:
             if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
                 self.stors.remove(store)
-        del self.clients[client_to_remove]
+        del self.clients[client_name]
         return True
 
 
-if __name__ == '__main__':
-    ebay = System()
-    ebay.sign_up('shaioz', 1234)
-    print(ebay.clients.get('shaioz').logged_in)
-    ebay.login('nuf', 123)
-    ebay.login('shaioz', 1234)
-    print(ebay.clients.get('shaioz').logged_in)
-    print(ebay.cur_user.username)
-    ebay.logout()
-    print(ebay.clients.get('shaioz').logged_in)
-    print(ebay.cur_user)
-    ebay.logout()
+
 
