@@ -34,10 +34,10 @@ class ServiceInterface(object):
     def get_cart(self, store): pass
 
     @abstractmethod  # 2.6
-    def add_to_cart(self, store, items): pass
+    def add_to_cart(self, store, item): pass
 
     @abstractmethod  # 2.7
-    def edit_cart(self, cart, params): pass
+    def remove_from_cart(self, cart, item): pass
 
     @abstractmethod  # 2.8
     def buy_item(self, item): pass
