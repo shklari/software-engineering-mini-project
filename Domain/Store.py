@@ -111,7 +111,7 @@ class Store(object):
     # 4.4
     def remove_owner(self, owner, owner_to_remove): pass
 
-    # 4.5
+    # 4.4
     def add_new_manager(self, owner, new_manager): pass
 
     # 4.6
