@@ -1,5 +1,5 @@
+from Domain.Guest import Guest
 from Domain.User import User
-from Domain.Client import Client
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
@@ -19,7 +19,7 @@ class System:
         manager = SystemManager(system_manager_user_name, system_manager_password)
         self.clients[manager.username] = manager
         self.system_manager = manager
-        self.cur_user = User()
+        self.cur_user = Guest()
         return self.cur_user
 
     def sign_up(self, username, password):
@@ -30,7 +30,7 @@ class System:
             print("Password can not be empty")
             return False
         else:
-            new_client = Client(username, password)
+            new_client = User(username, password)
             self.clients[username] = new_client
             return True
 
@@ -56,7 +56,7 @@ class System:
             return False
         else:
             self.cur_user.logged_in = False
-            new_user = User()
+            new_user = Guest()
             self.cur_user = new_user
             return True
 
@@ -101,7 +101,7 @@ class System:
         return flag
 
     def create_store(self, name):
-        if isinstance(self.cur_user, Client) and name not in self.stores:
+        if isinstance(self.cur_user, User) and name not in self.stores:
             new_owner = self.cur_user
             new_store = Store(name)
             if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
