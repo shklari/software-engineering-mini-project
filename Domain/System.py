@@ -1,5 +1,5 @@
-from Domain.Guest import Guest
 from Domain.User import User
+from Domain.Client import Client
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
@@ -19,7 +19,7 @@ class System:
         manager = SystemManager(system_manager_user_name, system_manager_password)
         self.clients[manager.username] = manager
         self.system_manager = manager
-        self.cur_user = Guest()
+        self.cur_user = User()
         return self.cur_user
 
     def sign_up(self, username, password):
@@ -30,7 +30,7 @@ class System:
             print("Password can not be empty")
             return False
         else:
-            new_client = User(username, password)
+            new_client = Client(username, password)
             self.clients[username] = new_client
             return True
 
@@ -56,7 +56,7 @@ class System:
             return False
         else:
             self.cur_user.logged_in = False
-            new_user = Guest()
+            new_user = User()
             self.cur_user = new_user
             return True
 
@@ -100,16 +100,10 @@ class System:
             # if false then stop the purchase
         return flag
 
-    def create_store(self, name):
-        if isinstance(self.cur_user, User) and name not in self.stores:
-            new_owner = self.cur_user
-            new_store = Store(name)
-            if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
-                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
-                self.clients[new_owner.username] = new_owner
-                self.cur_user = new_owner
-                self.cur_user.logged_in = True
-            new_store.storeOwners.append(new_owner)
+    def create_store(self, store_name):
+        if isinstance(self.cur_user, Client) and store_name not in self.stores:
+            new_store = Store(store_name)
+            new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
         return False
