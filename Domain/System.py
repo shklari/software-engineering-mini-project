@@ -63,9 +63,9 @@ class System:
     def search(self, param):
         ret_list = []
         for s in self.stores:
-            ret_list += s.search_item_by_name(param)
-            ret_list += s.search_item_by_category(param)
-            ret_list += s.search_item_by_price(param)
+            ret_list.append(s.search_item_by_name(param))
+            ret_list.append(s.search_item_by_category(param))
+            ret_list.append(s.search_item_by_price(param))
 
         return ret_list
 
@@ -74,7 +74,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.price <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -82,7 +82,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.rank <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -90,7 +90,7 @@ class System:
         result_list = []
         for item in item_list:
             if item.category == category:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def buy_items(self, items):
