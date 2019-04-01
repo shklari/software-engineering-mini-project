@@ -1,17 +1,29 @@
-from .User import User
-from .Client import Client
+from Domain.User import User
+from Domain.Client import Client
+from Domain.Store import Store
+from Domain.StoreOwner import StoreOwner
+from Domain.SystemManager import SystemManager
 
 
 class System:
 
-    def __init__(self, system_manager):
-        self.sys_manager = system_manager
-        self.cur_user = User()
-        self.clients = dict.fromkeys(['username', 'client'])
+    def __init__(self):
+        self.system_manager = 0
+        self.cur_user = 0
+        self.clients = {}
         self.stores = []
 
+    def init_system(self, system_manager_user_name, system_manager_password):
+        if not self.sign_up(system_manager_user_name, system_manager_password):
+            return None
+        manager = SystemManager(system_manager_user_name, system_manager_password)
+        self.clients[manager.username] = manager
+        self.system_manager = manager
+        self.cur_user = User()
+        return self.cur_user
+
     def sign_up(self, username, password):
-        if self.clients[username] is not None:
+        if username in self.clients:
             print("This user name is taken")
             return False
         if password is None:
@@ -23,10 +35,10 @@ class System:
             return True
 
     def login(self, username, password):
-        client_to_check = self.clients[username]
-        if client_to_check is None:
+        if username not in self.clients:
             print("No such user")
             return False
+        client_to_check = self.clients[username]
         if client_to_check.logged_in:
             print("You are already logged in")
             return False
@@ -36,7 +48,7 @@ class System:
         else:
             client_to_check.logged_in = True
             self.cur_user = client_to_check
-            return client_to_check
+            return True
 
     def logout(self):
         if not self.cur_user.logged_in:
@@ -46,7 +58,7 @@ class System:
             self.cur_user.logged_in = False
             new_user = User()
             self.cur_user = new_user
-            return new_user
+            return True
 
     def search(self, param):
         ret_list = []
@@ -57,10 +69,27 @@ class System:
 
         return ret_list
 
-    def filter_by_price_range(self, item_list, low, high):
+    @staticmethod
+    def filter_by_price_range(item_list, low, high):
         result_list = []
         for item in item_list:
             if low <= item.price <= high:
+                result_list += item
+        return result_list
+
+    @staticmethod
+    def filter_by_item_rank(item_list, low, high):
+        result_list = []
+        for item in item_list:
+            if low <= item.rank <= high:
+                result_list += item
+        return result_list
+
+    @staticmethod
+    def filter_by_item_category(item_list, category):
+        result_list = []
+        for item in item_list:
+            if item.category == category:
                 result_list += item
         return result_list
 
@@ -68,8 +97,43 @@ class System:
         flag = False
         for item in items:
             flag = self.cur_user.buy_item(item)
+            # if false then stop the purchase
         return flag
 
-    def create_store(self, name): pass
+    def create_store(self, name):
+        new_owner = self.cur_user
+        if new_owner.logged_in and name not in self.stores:
+            new_store = Store(name)
+            if not isinstance(new_owner, StoreOwner):
+                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
+                self.clients[new_owner.username] = new_owner
+            new_store.storeOwners.append(new_owner)
+            self.stores += new_store
+            return new_store
+        return False
 
-    def remove_client(self, client): pass
+    def remove_client(self, client_name):
+        if not isinstance(self.cur_user, SystemManager):
+            print("You can't remove a client, you are not the system manager")
+            return False
+        client_to_remove = self.clients[client_name]
+        for store in self.stores:
+            if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
+                self.stors.remove(store)
+        del self.clients[client_to_remove]
+        return True
+
+
+if __name__ == '__main__':
+    ebay = System()
+    ebay.sign_up('shaioz', 1234)
+    print(ebay.clients.get('shaioz').logged_in)
+    ebay.login('nuf', 123)
+    ebay.login('shaioz', 1234)
+    print(ebay.clients.get('shaioz').logged_in)
+    print(ebay.cur_user.username)
+    ebay.logout()
+    print(ebay.clients.get('shaioz').logged_in)
+    print(ebay.cur_user)
+    ebay.logout()
+

@@ -1,9 +1,7 @@
-from Domain import Client
+from Domain.Client import Client
 
 
 class SystemManager(Client):
 
-    def _init_(self, new_name, new_password):
-        super(new_name, new_password)
-
-
+    def __init__(self, username, password):
+        super(SystemManager, self).__init__(username, password)

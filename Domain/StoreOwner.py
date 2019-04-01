@@ -1,4 +1,4 @@
-from Domain import Client
+from Domain.Client import Client
 # Interface
 
 
@@ -8,8 +8,8 @@ class StoreOwner(Client):
     appointees = []
     managers = []
 
-    def _init_(self, new_name, new_password, appointer=0):
-        super(new_name, new_password)
+    def __init__(self, username, password, appointer=0):
+        super(StoreOwner, self).__init__(username, password)
         self.appointer = appointer
         self.appointees = []
         self.managers = []
