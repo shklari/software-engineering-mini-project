@@ -1,5 +1,6 @@
 from .StoreOwner import StoreOwner
 from .DiscountPolicy import DiscountPolicy
+from .ProcurementPolicy import ProcurementPolicy
 from .User import User
 
 
@@ -12,7 +13,16 @@ class Store(object):
         self.inventory = dict.fromkeys(['item_name', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
-        self.discountPolicy = 0;
+        self.discountPolicy = 0
+        self.procPolicy = 0
+
+    def set_policy(self, new_policy):
+        if isinstance(new_policy, ProcurementPolicy):
+            self.procPolicy = new_policy;
+            print("new policy has updated")
+            return True
+        print("illegal policy")
+        return False
 
     def check_if_store_owner(self, user):
         if isinstance(user, User):
@@ -109,7 +119,7 @@ class Store(object):
             return True
 
     # 4.4
-    def remove_owner(self, owner, owner_to_remove):
+    def remove_owner(self, owner, owner_to_remove): pass
 
     # 4.5
     def add_new_manager(self, owner, new_manager): pass
