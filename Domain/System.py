@@ -32,6 +32,7 @@ class System:
         else:
             new_user = User(username, password)
             self.users[username] = new_user
+            print("Welcome, new user {}! You may now log in".format(username))
             return True
 
     def login(self, username, password):
@@ -48,6 +49,7 @@ class System:
         else:
             user_to_check.logged_in = True
             self.cur_user = user_to_check
+            print("Hey {}! You are now logged in".format(username))
             return True
 
     def logout(self):
@@ -58,6 +60,7 @@ class System:
             self.cur_user.logged_in = False
             new_user = Guest()
             self.cur_user = new_user
+            print("You are now logged out")
             return True
 
     def search(self, param):
@@ -120,4 +123,30 @@ class System:
         for st in stores_to_remove:
             self.stores.remove(st)
         del self.users[username]
+        print("System manager removed the user {}".format(username))
         return True
+
+
+if __name__ == '__main__':
+    amazon = System()
+    amazon.init_system('shaioz', 1234)
+    amazon.sign_up('ava bash', 666)
+    amazon.login('ava bash', 666)
+    amazon.create_store('zara')
+    amazon.create_store('pnb')
+    amazon.logout()
+    amazon.login('shaioz', 1234)
+    amazon.create_store('shais store')
+    print("Stores are:")
+    for s in amazon.stores:
+        print(s.name)
+    print("Users are:")
+    for u in amazon.users:
+        print(amazon.users[u].username)
+    amazon.remove_user('ava bash')
+    print("Stores are:")
+    for s in amazon.stores:
+        print(s.name)
+    print("Users are:")
+    for u in amazon.users:
+        print(u)

@@ -1,8 +1,8 @@
-from Domain.User import Guset
+from Domain.User import User
 # Interface
 
 
-class StoreOwner(Guset):
+class StoreOwner(User):
 
     appointer = 0
     appointees = []
