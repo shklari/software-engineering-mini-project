@@ -65,10 +65,10 @@ class System:
 
     def search(self, param):
         ret_list = []
-        for s in self.stores:
-            ret_list.append(s.search_item_by_name(param))
-            ret_list.append(s.search_item_by_category(param))
-            ret_list.append(s.search_item_by_price(param))
+        for store in self.stores:
+            ret_list.append(store.search_item_by_name(param))
+            ret_list.append(store.search_item_by_category(param))
+            ret_list.append(store.search_item_by_price(param))
 
         return ret_list
 
