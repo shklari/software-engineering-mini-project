@@ -1,6 +1,6 @@
 from .StoreOwner import StoreOwner
 from .DiscountPolicy import DiscountPolicy
-from .User import User
+from .Guest import Guest
 
 
 # Interface
@@ -12,10 +12,10 @@ class Store(object):
         self.inventory = dict.fromkeys(['item_name', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
-        self.discountPolicy = 0;
+        self.discountPolicy = 0
 
     def check_if_store_owner(self, user):
-        if isinstance(user, User):
+        if isinstance(user, Guest):
             for k in self.storeOwners:
                 if k.username == user.username:
                     return True
@@ -23,7 +23,7 @@ class Store(object):
 
     # 4.1.1
     def add_item_to_inventory(self, user, item, quantity):
-        if isinstance(user, User) and user.logged_in:
+        if isinstance(user, Guest) and user.logged_in:
             if self.check_if_store_owner(user):
                 if item in self.inventory:
                     self.inventory[item] += quantity
@@ -40,7 +40,7 @@ class Store(object):
 
     # 4.1.2
     def remove_item_from_inventory(self, user, item, quantity):
-        if isinstance(user, User) and user.logged_in:
+        if isinstance(user, Guest) and user.logged_in:
             if self.check_if_store_owner(user):
                 if item in self.inventory:
                     if self.inventory[item] >= quantity:
@@ -109,7 +109,7 @@ class Store(object):
             return True
 
     # 4.4
-    def remove_owner(self, owner, owner_to_remove):
+    def remove_owner(self, owner, owner_to_remove): pass
 
     # 4.5
     def add_new_manager(self, owner, new_manager): pass
@@ -121,19 +121,19 @@ class Store(object):
         result_list = []
         for item in self.inventory.keys():
             if item.name == item_name:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def search_item_by_price(self, price):
         result_list = []
         for item in self.inventory.keys():
             if item.price == price:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     def search_item_by_category(self, category):
         result_list = []
         for item in self.inventory.keys():
             if item.category == category:
-                result_list += item
+                result_list.append(item)
         return result_list

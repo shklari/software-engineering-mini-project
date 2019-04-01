@@ -100,16 +100,10 @@ class System:
             # if false then stop the purchase
         return flag
 
-    def create_store(self, name):
-        if isinstance(self.cur_user, Client) and name not in self.stores:
-            new_owner = self.cur_user
-            new_store = Store(name)
-            if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
-                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
-                self.clients[new_owner.username] = new_owner
-                self.cur_user = new_owner
-                self.cur_user.logged_in = True
-            new_store.storeOwners.append(new_owner)
+    def create_store(self, store_name):
+        if isinstance(self.cur_user, Client) and store_name not in self.stores:
+            new_store = Store(store_name)
+            new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
         return False
