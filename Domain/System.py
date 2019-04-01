@@ -1,5 +1,5 @@
 from Domain.User import User
-from Domain.Client import Client
+from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
@@ -10,44 +10,44 @@ class System:
     def __init__(self):
         self.system_manager = 0
         self.cur_user = 0
-        self.clients = {}
+        self.users = {}
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
         if not self.sign_up(system_manager_user_name, system_manager_password):
             return None
         manager = SystemManager(system_manager_user_name, system_manager_password)
-        self.clients[manager.username] = manager
+        self.users[manager.username] = manager
         self.system_manager = manager
-        self.cur_user = User()
+        self.cur_user = Guest()
         return self.cur_user
 
     def sign_up(self, username, password):
-        if username in self.clients:
+        if username in self.users:
             print("This user name is taken")
             return False
         if password is None:
             print("Password can not be empty")
             return False
         else:
-            new_client = Client(username, password)
-            self.clients[username] = new_client
+            new_user = User(username, password)
+            self.users[username] = new_user
             return True
 
     def login(self, username, password):
-        if username not in self.clients:
+        if username not in self.users:
             print("No such user")
             return False
-        client_to_check = self.clients[username]
-        if client_to_check.logged_in:
+        user_to_check = self.users[username]
+        if user_to_check.logged_in:
             print("You are already logged in")
             return False
-        elif client_to_check.password != password:
+        elif user_to_check.password != password:
             print("Wrong password")
             return False
         else:
-            client_to_check.logged_in = True
-            self.cur_user = client_to_check
+            user_to_check.logged_in = True
+            self.cur_user = user_to_check
             return True
 
     def logout(self):
@@ -56,7 +56,7 @@ class System:
             return False
         else:
             self.cur_user.logged_in = False
-            new_user = User()
+            new_user = Guest()
             self.cur_user = new_user
             return True
 
@@ -101,23 +101,23 @@ class System:
         return flag
 
     def create_store(self, store_name):
-        if isinstance(self.cur_user, Client) and store_name not in self.stores:
+        if isinstance(self.cur_user, User) and store_name not in self.stores:
             new_store = Store(store_name)
             new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
         return False
 
-    def remove_client(self, client_name):
+    def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
-            print("You can't remove a client, you are not the system manager")
+            print("You can't remove a user, you are not the system manager")
             return False
-        client_to_remove = self.clients[client_name]
+        user_to_remove = self.users[username]
         stores_to_remove = []
         for store in self.stores:
-            if len(store.storeOwners) == 1 and client_to_remove.username == store.storeOwners[0].username:
+            if len(store.storeOwners) == 1 and user_to_remove.username == store.storeOwners[0].username:
                 stores_to_remove.append(store)
         for st in stores_to_remove:
             self.stores.remove(st)
-        del self.clients[client_name]
+        del self.users[username]
         return True
