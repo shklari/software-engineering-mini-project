@@ -2,6 +2,9 @@ from Service.service import ServiceInterface
 
 
 class ServiceBridge(ServiceInterface):
+    def get_cart(self, store):
+        pass
+
     def init(self, sm_username, sm_password):
         pass
 
