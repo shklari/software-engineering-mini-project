@@ -126,6 +126,17 @@ class System:
         print("System manager removed the user {}".format(username))
         return True
 
+    def get_store(self, store_name):
+        for stor in self.stores:
+            if store_name == stor.name:
+                return stor
+        return None
+
+    def get_user(self, username):
+        if username in self.users:
+            return self.users[username]
+        return None
+
 
 if __name__ == '__main__':
     amazon = System()
@@ -143,6 +154,16 @@ if __name__ == '__main__':
     print("Users are:")
     for u in amazon.users:
         print(amazon.users[u].username)
+    store = amazon.get_store('png')
+    if store:
+        print("chosen store name is {}".format(store.name))
+    else:
+        print("no such store")
+    us = amazon.get_user('shaiz')
+    if us:
+        print("shais password is {}".format(us.password))
+    else:
+        print("no such user")
     amazon.remove_user('ava bash')
     print("Stores are:")
     for s in amazon.stores:
