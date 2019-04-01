@@ -57,7 +57,10 @@ class IntegritySystem(object):
             return True
 
 
-class AllTestCase(TestCase):
+class SystemTestCase(TestCase):
+
+    def __init__(self):
+        super()
 
     def setUp(self) -> None:
         self.item = 0
