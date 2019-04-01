@@ -1,3 +1,4 @@
+from .StoreOwner import StoreOwner
 
 
 # Interface
@@ -11,13 +12,64 @@ class Store(object):
         self.storeManagers = []
 
     # 4.1.1
-    def add_item_to_inventory(self, user, item, quantity): pass
+    def add_item_to_inventory(self, user, item, quantity):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    self.inventory[item] += quantity
+                else:
+                    self.inventory[item] = quantity
+                print("item has been successesfuly added to the store inventory!")
+                return True
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
 
     # 4.1.2
-    def remove_item_from_inventory(self, user, item, quantity): pass
+    def remove_item_from_inventory(self, user, item, quantity):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    if self.inventory[item] >= quantity:
+                        self.inventory[item] -= quantity
+                        print("items has been successfully removed from the store inventory!")
+                        return True
+                    else:
+                        print("not enough items for this quantity")
+                        return False
+                else:
+                    print("item is not in the inventory of this store")
+                    return False
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
 
     # 4.1.3
-    def edit_item_price(self, item, new_price): pass
+    # user field added
+    def edit_item_price(self, user, item, new_price):
+        if isinstance(user, StoreOwner) and user.logged_in:
+            if user in self.storeOwners:
+                if item in self.inventory:
+                    for k in self.inventory.keys():
+                        if item.name == k.name:
+                            k.set_price(new_price)
+                            print("item's price has been successfully updated!!")
+                            return True
+                else:
+                    print("item is not in the inventory of this store")
+                    return False
+            else:
+                print("user is no store owner for this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner at all")
+            return True
 
     def set_policy(self, new_policy): pass
 
