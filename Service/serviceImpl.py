@@ -13,13 +13,29 @@ class ServiceImpl(ServiceInterface):
         pass
 
     def search(self, param):
-        pass
+        items_list = System.search(param)
+        if len(items_list) == 0:
+            print("No item matching the search")
+            return []
+        for item in items_list:
+            print(item)
+        return items_list
 
     def buy_items(self, items):
-        pass
+        if not System.buy_items(items):
+            print("The purchase failed. The transaction is canceled")
+            return False
+        else:
+            print("Items purchased successfully")
+            return True
 
     def logout(self):
-        pass
+        if System.logout():
+            print("Logged out")
+            return True
+        else:
+            print("Can't logout")
+            return False
 
     def create_store(self, name):
         pass
