@@ -1,4 +1,4 @@
 # file: ~/.gitignore_global
-.idea
+.idea/
 .DS_Store
 venv/

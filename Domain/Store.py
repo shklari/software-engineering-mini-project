@@ -6,9 +6,9 @@ from .Guest import Guest
 # Interface
 class Store(object):
 
-    def __init__(self, name, rank):
+    def __init__(self, name):
         self.name = name
-        self.rank = rank
+        self.rank = -1
         self.inventory = dict.fromkeys(['item_name', 'quantity'])
         self.storeOwners = []
         self.storeManagers = []
@@ -111,7 +111,7 @@ class Store(object):
     # 4.4
     def remove_owner(self, owner, owner_to_remove): pass
 
-    # 4.5
+    # 4.4
     def add_new_manager(self, owner, new_manager): pass
 
     # 4.6
