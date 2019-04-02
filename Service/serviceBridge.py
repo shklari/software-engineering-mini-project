@@ -1,15 +1,11 @@
 from Service.service import ServiceInterface
 from Service.serviceImpl import ServiceImpl
 
-
 class ServiceBridge(ServiceInterface):
     real = None
 
     def __init__(self):
         self.real = ServiceImpl()
-
-    def remove_from_cart(self, store_name, item):
-        pass
 
     def get_item_from_cart(self, cart, item_name):
         pass
@@ -41,23 +37,20 @@ class ServiceBridge(ServiceInterface):
     def create_store(self, name):
         return True if self.real is None else self.real.create_store(name)
 
-    def remove_user(self, user):
-        return True if self.real is None else self.real.remove_client(user)
-
     def add_to_cart(self, store, items):
         return True if self.real is None else self.real.add_to_cart(store, items)
 
-    def edit_cart(self, cart, params):
-        return True if self.real is None else self.real.edit_cart(cart, params)
+    def remove_from_cart(self, storename, item):
+        return True if self.real is None else self.real.remove_from_cart(storename, item)
 
     def buy_item(self, item):
         return True if self.real is None else self.real.buy_item(item)
 
-    def remove_owner(self, owner):
-        return True if self.real is None else self.real.remove_owner(owner)
+    def remove_owner(self, storename, ownertoremove):
+        return True if self.real is None else self.real.remove_owner(storename, ownertoremove)
 
-    def remove_manager(self, manager):
-        return True if self.real is None else self.real.remove_manager(manager)
+    def remove_manager(self, store_name, manager_to_remove):
+        return True if self.real is None else self.real.remove_manager(store_name, manager_to_remove)
 
     def add_item_to_inventory(self, item, store, quantity):
         return True if self.real is None else self.real.add_item_to_inventory(item, store, quantity)
@@ -65,20 +58,12 @@ class ServiceBridge(ServiceInterface):
     def remove_item_from_inventory(self, item, store, quantity):
         return True if self.real is None else self.real.remove_item_from_inventory(item, store, quantity)
 
-    def edit_item_price(self, item, new_price):
-        return True if self.real is None else self.real.edit_item_price(item, new_price)
+    def edit_item_price(self, item, store_name, new_price):
+        return True if self.real is None else self.real.edit_item_price(item, store_name, new_price)
 
-    def add_new_owner(self, new_owner):
-        return True if self.real is None else self.real.add_new_owner(new_owner)
+    def add_new_owner(self, store_name, new_owner):
+        return True if self.real is None else self.real.add_new_owner(store_name, new_owner)
 
-    def add_new_manager(self, new_manager):
-        return True if self.real is None else self.real.add_new_manager(new_manager)
+    def add_new_manager(self, store_name, new_manager, permission):
+        return True if self.real is None else self.real.add_new_manager(store_name, new_manager, permission)
 
-    def set_price(self, new_price):
-        return True if self.real is None else self.real.set_price(new_price)
-
-    def collect(self, amount, credit_details):
-        return True if self.real is None else self.real.collect(amount, credit_details)
-
-    def get_supply(self, user, items):
-        return True if self.real is None else self.real.get_supply(user, items)
