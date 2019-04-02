@@ -9,11 +9,11 @@ from .Item import Item
 # Interface
 class Store(object):
 
-    def __init__(self, name):
+    def __init__(self, name, owner):
         self.name = name
         self.rank = 0
         self.inventory = []
-        self.storeOwners = []
+        self.storeOwners = [StoreOwner(owner.username, owner.password)]
         self.storeManagers = []
         self.discountPolicy = 0
         self.procPolicy = 0
@@ -45,15 +45,20 @@ class Store(object):
         if quantity >= 1:
             if isinstance(user, User) and user.logged_in:
                 if self.check_if_store_owner(user):
-                    for x in self.inventory:
-                        if x['name'].name == item['name']:
-                            x['quantity'] += quantity
-                        else:
-                            self.inventory.append({'name': item['name'],
-                                                   'val': Item(item['name'], item['price'], item['category']),
-                                                   'quantity': quantity})
+                    if len(self.inventory) == 0:
+                        self.inventory = [{'name': item['name'], 'val': Item(item['name'], item['price'], item['category']), 'quantity': quantity}]
                         print("item has been successfully added to the store inventory!")
                         return True
+                    else:
+                        for x in self.inventory:
+                            if x['val'].name == item['name']:
+                                x['quantity'] += quantity
+                            else:
+                                self.inventory.append({'name': item['name'],
+                                                       'val': Item(item['name'], item['price'], item['category'], self.name),
+                                                       'quantity': quantity})
+                            print("item has been successfully added to the store inventory!")
+                            return True
                 else:
                     print("user is no store owner for this store")
                     return False
