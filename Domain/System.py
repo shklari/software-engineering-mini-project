@@ -25,11 +25,14 @@ class System:
         return self.cur_user
 
     def sign_up(self, username, password):
+        if username is None or username == '':
+            print("Username can not be empty")
+            return False
+        if password is None or password == '':
+            print("Password can not be empty")
+            return False
         if username in self.users:
             print("This user name is taken")
-            return False
-        if password is None:
-            print("Password can not be empty")
             return False
         else:
             new_user = User(username, password)
@@ -42,6 +45,8 @@ class System:
             print("No such user")
             return False
         user_to_check = self.users[username]
+        if self.cur_user.logged_in:
+            print("Someone else is logged in")
         if user_to_check.logged_in:
             print("You are already logged in")
             return False
@@ -68,7 +73,9 @@ class System:
     def search(self, param):
         ret_list = []
         for store in self.stores:
-            ret_list.append(store.search_item_by_name(param))
+            boo = store.search_item_by_name(param)
+            if boo:
+                ret_list.append(store.search_item_by_name(param))
             ret_list.extend(store.search_item_by_category(param))
             ret_list.extend(store.search_item_by_price(param))
         return ret_list
@@ -116,6 +123,9 @@ class System:
     def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
             print("You can't remove a user, you are not the system manager")
+            return False
+        if self.system_manager.username == username:
+            print("You can't remove yourself silly")
             return False
         if username not in self.users:
             print("This user does not exist")
