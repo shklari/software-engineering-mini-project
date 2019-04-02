@@ -100,14 +100,14 @@ class System:
     def buy_items(self, items): # fixed by yosi
         amount = functools.reduce(lambda acc, item: (acc + item.price), items, 0)
         collecting_system = CollectingSystem()
-        bool = collecting_system.collect(amount, self.cur_user.creditDetails)
+        flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
-            bool = self.cur_user.remove_item_from_cart(item.store_name, item)
-        return bool
+            flag = self.cur_user.remove_item_from_cart(item.store_name, item)
+        return flag
 
     def create_store(self, store_name):
         if isinstance(self.cur_user, User) and store_name not in self.stores:
-            new_store = Store(store_name)
+            new_store = Store(store_name, self.cur_user)
             # new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
