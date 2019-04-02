@@ -43,14 +43,6 @@ class ServiceImpl(ServiceInterface):
             output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
         return output_list
 
-    def buy_items(self, items):
-        if not self.sys.buy_items(items):
-            print("The purchase failed. The transaction is canceled")
-            return False
-        else:
-            print("Items purchased successfully")
-            return True
-
     def logout(self):
         if self.sys.logout():
             print("Logged out")
@@ -149,6 +141,16 @@ class ServiceImpl(ServiceInterface):
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return inv
+
+    def decrease_item_quantity(self, store_name, item_name, quantity):
+        store = self.sys.get_store(store_name)
+        if store is None:
+            print("Error: can't remove items from store " + store_name)
+            return False
+        user = self.sys.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
 
     def edit_item_price(self, store_name, item_name, new_price):
         store = self.sys.get_store(store_name)
