@@ -8,7 +8,6 @@ class ServiceImpl(ServiceInterface):
     def init(self, sm_username, sm_password):
         if System.init_system(sm_username, sm_password) is not None:
             print("System initialized successfully")
-            # if init_system returns the system manager object, keep it in a field???
             return True
         else:
             print("System failed to initialize")
@@ -80,7 +79,14 @@ class ServiceImpl(ServiceInterface):
             return True
 
     def get_cart(self, store_name):
-        pass
+        curr_user = System.get_cur_user()
+        cart = curr_user.get_cart(store_name)
+        if not cart:
+            print(store_name + " cart doesn't exist")
+            return False
+        for i in cart.keys():
+            print("Item name: " + i + "quantity: " + cart[i])
+        return cart
 
     def get_item_from_cart(self, cart, item):
         pass
