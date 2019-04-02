@@ -1,5 +1,6 @@
 import unittest
 from Service.serviceBridge import ServiceBridge
+from Service.service import ServiceInterface
 
 # ############################ must run all in order
 
@@ -64,12 +65,19 @@ class IntegritySystem(object):
             return True
 
 
-class SystemTestCase(TestCase):
+class SystemTestCase(unittest.TestCase):
 
     def __init__(self):
         super()
+        self.item = {}
+        self.store = {}
+        self.system = ServiceBridge()
+        self.manager = {"bascket": 0, "name": "man", "password": "123456"}
+        self.collecting = CollectingSystem()
+        self.supplying = SupplyingSystem()
+        self.integrity = IntegritySystem()
 
-    def setUp(self) -> None:
+    def setup(self) -> None:
         self.item = 0
         self.store = 0
         self.system = ServiceBridge()
@@ -83,7 +91,8 @@ class SystemTestCase(TestCase):
         for i in range(0, 1):
             for j in range(0, 1):
                 for k in range(0, 1):
-                    self.assertEqual((i == 1 and j == 1 and k == 1), self.system.init(self.manager, self.collecting, self.supplying, self.integrity))
+                    inits = self.system.init(self.manager['name'], self.manager['password'])
+                    self.assertEqual((i == 1 and j == 1 and k == 1), inits)
                     self.collecting.switch()
                 self.supplying.switch()
             self.integrity.switch()
@@ -120,9 +129,9 @@ class SystemTestCase(TestCase):
 
     # 2.5
     def test_search(self):
-        self.item = {"name": "shaioz", "price": 11, "category": "omo", "rank": 4}
+        self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.store, self.item, 1)
+        self.system.add_item_to_inventory(self.item, self.store.name, 1)
         self.assertEqual(self.system.search("shaioz")[0].category, "omo")
         self.assertEqual(self.system.search("omo")[0].name, "shaioz")
         self.assertEqual(self.system.search("avabash"), [])
@@ -130,8 +139,8 @@ class SystemTestCase(TestCase):
     # 2.6
     def test_add_to_cart(self):
         items = self.system.search("shaioz")
-        self.assertEqual(True, self.system.add_to_cart(self.store.name, items[0]))
-        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "rank": 5}
+        self.assertEqual(True, self.system.add_to_cart(self.store['name'], items[0]))
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa"}
         # item2 doesnt exist in shaiozim baam
         self.assertEqual(False, self.system.add_to_cart(self.store.name, item2))
         # avocadosh store doesnt exist
@@ -140,25 +149,26 @@ class SystemTestCase(TestCase):
     # 2.7.1
     def test_get_cart(self):
         self.cart = self.system.get_cart("shaiozim baam")
-        self.assertEqual(self.store.name, self.cart.storeName)
-        self.assertEqual(self.item, self.cart.items[0])
+        self.assertEqual(self.store.name, self.cart.store_name)
+        self.assertIsNot(None, self.cart.items_and_quantities[self.item.name])
         self.assertEqual(None, self.system.get_cart("inbarim baam"))
 
     # 2.7.2
     def test_remove_from_cart(self):
         cart1 = self.system.get_cart("shaiozim baam")
-        item = cart1.items[0]
         length1 = len(cart1.items)
-        self.assertEqual(True, self.system.remove_from_cart("shaiozim baam", item))
+        self.assertEqual(True, self.system.remove_from_cart("shaiozim baam", "shaioz"))
         cart2 = self.system.get_cart("shaiozim baam")
         length2 = len(cart2.items)
         self.assertEqual(length1 - 1, length2)
+        # item doesnt exist
         self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "glasses o mashu"))
-        self.assertEqual(False, self.system.remove_from_cart("inbarim baam", "glasses o mashu"))
+        # store doesnt exist
+        self.assertEqual(False, self.system.remove_from_cart("inbarim baam", "shaioz"))
 
     # 2.8
     def test_buy_item(self):
-        if(self.collecting.flag == 0):
+        if self.collecting.flag == 0:
             self.collecting.switch()
         self.collecting.switch()
         # collecting system doesnt work properly
@@ -166,7 +176,7 @@ class SystemTestCase(TestCase):
         self.collecting.switch()
         # should work
         self.assertEqual(True, self.system.buy_item(self.item))
-        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "rank": 5}
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa"}
         # item doesnt exist
         self.assertEqual(False, self.system.buy_item(item2))
         # not available
@@ -176,19 +186,19 @@ class SystemTestCase(TestCase):
     def test_logout(self):
         # user is logged in - should work
         self.assertEqual(True, self.system.logout())
-        # user is loged out - shouldnt work
+        # user is already logged out - shouldnt work
         self.assertEqual(False, self.system.logout())
 
     # 6.2
-    def test_remove_client(self):
-        self.assertEqual(False, self.system.remove_client("man"))
+    def test_remove_user(self):
+        self.assertEqual(False, self.system.remove_user("man"))
         self.system.login("man", "123456")
         # doesnt exist
-        self.assertEqual(False, self.system.remove_client("try3"))
+        self.assertEqual(False, self.system.remove_user("try3"))
         # should work
-        self.assertEqual(True, self.system.remove_client("try2"))
+        self.assertEqual(True, self.system.remove_user("try2"))
         # doesn't exist
-        self.assertEqual(False, self.system.remove_client("try2"))
+        self.assertEqual(False, self.system.remove_user("try2"))
 
 
 if __name__ == '__main__':
