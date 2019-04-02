@@ -62,18 +62,19 @@ class TestStore(unittest.TestCase):
 
     def test_removeItemFromInventory(self):  # 4.1.2
         self.assertNotEqual(False, self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2))
-        inventory = self.service.remove_item_from_inventory(self.items[0]['name'], self.store1['name'], 2)
+        inventory = self.service.remove_item_from_inventory(self.items[0]['name'], self.store1['name'])
         self.assertNotEqual(inventory, False, 'remove item from inventory failed')
         ans = [item for item in inventory if item['name'] == self.items[0]['name']]
         self.assertEqual(len(ans), 0, 'remove item from inventory failed')
 
     def test_editItemFromInventory(self):  # 4.1.3
-        self.service.add_item_to_inventory(self.items[0], self.store1, 2)
+        self.assertNotEqual(False, self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2))
+        #self.service.add_item_to_inventory(self.items[0], self.store1, 2)
         item = self.service.edit_item_price(self.store1['name'], self.items[0]['name'], 100)
-        self.assertTrue(item['price'], 100, 'edit item from inventory failed')
+        self.assertEqual(item['price'], 100, 'edit item from inventory failed')
 
     def test_add_new_owner(self):  # 4.3
-        store = self.service.add_new_owner(self.owner['name'])
+        store = self.service.add_new_owner(self.store1['name'], self.owner['name'])
         self.assertNotEqual(store, False, 'add new owner failed')
         self.assertTrue({'username': self.manager['name']} in store['storeOwners'], 'add new owner failed')
         result = self.service.add_new_owner(self.owner['name'])
@@ -87,12 +88,12 @@ class TestStore(unittest.TestCase):
         self.assertFalse(result, 'remove owner failed')
 
     def test_add_new_manager(self):  # 4.5
-        permissions = {'Edit': False, 'Remove': False, 'Add': True}
+        permissions = None#{'Edit': False, 'Remove': False, 'Add': True}
         store = self.service.add_new_manager(self.manager['name'], permissions)
         self.assertNotEqual(store, False, 'add new manager failed')
         self.assertTrue({'username': self.manager['name']} in store['storeManagers'], 'add new manager failed')
 
-    def remove_manager(self):  # 4.6
+    def test_remove_manager(self):  # 4.6
         permissions = {'Edit': False, 'Remove': False, 'Add': True}
         store = self.service.remove_manager(self.manager['name'], permissions)
         self.assertNotEqual(store, False, 'add new manager failed')
@@ -100,5 +101,4 @@ class TestStore(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    #TestStore.test_createStore()
     unittest.main()
