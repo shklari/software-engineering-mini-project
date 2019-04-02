@@ -4,6 +4,8 @@ from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
+from passlib.hash import pbkdf2_sha256
+
 import functools
 
 
@@ -35,7 +37,8 @@ class System:
             print("This user name is taken")
             return False
         else:
-            new_user = User(username, password)
+            enc_password = pbkdf2_sha256 .hash(password)
+            new_user = User(username, enc_password)
             self.users[username] = new_user
             print("Welcome, new user {}! You may now log in".format(username))
             return True
