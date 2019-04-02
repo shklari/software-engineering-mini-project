@@ -86,7 +86,8 @@ class ServiceImpl(ServiceInterface):
 
     def add_to_cart(self, store_name, item_name, quantity):
         curr_user = self.sys.get_cur_user()
-        if not curr_user.add_to_cart(store_name, item_name, quantity):
+        store = self.sys.get_store(store_name)
+        if not curr_user.add_to_cart(store, item_name, quantity):
             print("Can't add item " + item_name + " to cart " + store_name)
             return False
         print("Item " + item_name + " added successfully to cart " + store_name)
@@ -151,6 +152,13 @@ class ServiceImpl(ServiceInterface):
         if user is None:
             print("Error: no current user")
             return False
+        if not store.remove_item_by_quantity(user, item_name, quantity):
+            print("Can't change quantity of item " + item_name)
+            return False
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'quantity': i['quantity']})
+        return inv
 
     def edit_item_price(self, store_name, item_name, new_price):
         store = self.sys.get_store(store_name)
@@ -168,68 +176,40 @@ class ServiceImpl(ServiceInterface):
         return {'name': ret.name, 'price': ret.price, 'category': ret.category}
 
     def add_new_owner(self, store_name, new_owner):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't edit store " + store_name)
-            return False
-        user = self.sys.get_cur_user()
-        if user is None:
-            print("Error: no current user")
-            return False
-        if not store.add_new_owner(user, new_owner):
+        if not self.sys.add_owner_to_store(store_name, new_owner):
             print("Can't add new owner " + new_owner + " to store " + store_name)
             return False
+        store = self.sys.get_store(store_name)
         owners = []
         for o in store.storeOwners:
             owners.append({'username': o.username})
         return {'name': store_name, 'storeOwners': owners}
 
     def add_new_manager(self, store_name, new_manager, permissions):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't edit store " + store_name)
-            return False
-        user = self.sys.get_cur_user()
-        if user is None:
-            print("Error: no current user")
-            return False
-        if not store.add_new_manager(user, new_manager, permissions):
+        if not self.sys.add_manager_to_store(store_name, new_manager, permissions):
             print("Can't add new manager " + new_manager + " to store " + store_name)
             return False
+        store = self.sys.get_store(store_name)
         managers = []
         for m in store.storeManagers:
             managers.append({'username': m.username})
         return {'name': store_name, 'storeManagers': managers}
 
     def remove_owner(self, store_name, owner_to_remove):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't edit store " + store_name)
-            return False
-        user = self.sys.get_cur_user()
-        if user is None:
-            print("Error: no current user")
-            return False
-        if not store.remove_owner(user, owner_to_remove):
+        if not self.sys.remove_owner_from_store(store_name, owner_to_remove):
             print("Can't remove owner " + owner_to_remove + " from store " + store_name)
             return False
+        store = self.sys.get_store(store_name)
         owners = []
         for o in store.storeOwners:
             owners.append({'username': o.username})
         return {'name': store_name, 'storeOwners': owners}
 
     def remove_manager(self, store_name, manager_to_remove):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't edit store " + store_name)
-            return False
-        user = self.sys.get_cur_user()
-        if user is None:
-            print("Error: no current user")
-            return False
-        if not store.remove_manager(user, manager_to_remove):
+        if not self.sys.remove_manager_from_store(store_name, manager_to_remove):
             print("Can't remove manager " + manager_to_remove + " from store " + store_name)
             return False
+        store = self.sys.get_store(store_name)
         managers = []
         for m in store.storeManagers:
             managers.append({'username': m.username})
