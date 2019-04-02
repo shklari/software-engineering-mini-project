@@ -8,14 +8,21 @@ class TestStore(unittest.TestCase):
     store1 = None
     store2 = None
     manager = None
+    sys_manager = None
     owner = None
     items = []
     user = None
+    system = None
 
     # store {'name', 'rank', 'inventory': [], 'storeOwners': [], 'storeManagers': [], 'discountPolicy'}
     # user {'username'}
     def setUp(self):
         self.owner = {'name': 'Joseph'}
+        self.sys_manager = {'name': 'shaioz', 'password': '123456'}
+        self.service.init(self.sys_manager['name'], self.sys_manager['password'])
+        #self.service.sign_up(self.sys_manager['name'], self.sys_manager['password'])
+        self.service.login(self.sys_manager['name'], self.sys_manager['password'])
+        self.system = self.service.init(self.sys_manager['name'], self.sys_manager['password'])
         self.manager = {'name': 'Itay', 'password': '123456'}
         self.store1 = {'name': 'EL', 'storeManagers': [], 'inventory': [], 'storeOwners': [], 'rank': 3}
         self.store2 = {'name': 'Fox', 'storeManagers': [], 'inventory': [], 'storeOwners': [], 'rank': 2}
@@ -30,6 +37,10 @@ class TestStore(unittest.TestCase):
         self.store2['storeManagers'] = self.manager
         self.store2['storeOwners'] = self.owner
         self.store2['inventory'] = [item1, item2]
+
+    def tearDown(self):
+        #self.widget.dispose()
+        #self.widget = None
 
     def test_createStore(self):# 3.2
         store = self.service.create_store(self.store1['name'])
