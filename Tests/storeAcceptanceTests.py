@@ -29,6 +29,10 @@ class TestStore(unittest.TestCase):
         self.store2['owner'] = self.owner
         self.store2['inventory'] = [item1, item2]
 
+    def test_createStore(self):# 3.2
+        store = self.service.create_store(self.store1['name'])
+        self.assertEqual(store['name'], self.store1['name'], 'create store failed')
+
     def test_addToCartTest(self):# 2.6
         result = self.service.add_to_cart(self.user, self.store1['name'], self.items[0]) #store name
         self.assertTrue(result, 'add to cart failed')
@@ -41,10 +45,13 @@ class TestStore(unittest.TestCase):
         item = self.service.get_Item_From_Cart(self.store1["name"], newitem['name'])
         self.assertEqual(item, self.items[0]['name'], 'add to cart failed')
 
-    def test_addItemToInventory(self):# 4.1.1
-        store = self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2)
-        self.assertTrue(self.items[0]['name'] in store['inventory'], 'add item to inventory failed')
-        self.assertEqual(self.items[0]['quantity'], 2, 'add item to inventory failed')
+    def test_addItemToInventory(self):# 4.1.1 [{'name': iphone , 'quantity': 2}]
+        inventory = self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2)
+        self.assertNotEqual(inventory, False, 'add item to inventory failed')
+        ans = [item for item in inventory if item['name'] == self.items[0]['name']]
+        self.assertEqual(len(ans), 1, 'many items with same name in inventory!')
+        self.assertEqual(ans[0]['name'], self.items[0]['name'], 'add item to inventory failed')
+        self.assertEqual(ans[0]['quantity'], 2, 'add item to inventory failed')
 
     def test_removeItemFromInventory(self):  # 4.1.2
         store = self.service.remove_item_from_inventory(self.items[0]['name'], self.store1['name'], 2)
@@ -69,6 +76,12 @@ class TestStore(unittest.TestCase):
 
     def test_add_new_manager(self):  # 4.5 Todo: finish
         self.service.add_new_manager(self.owner['name'])
+        self.assertTrue(item['price'], 100, 'edit item from inventory failed')
+        self.service.add_new_manager(self.user['name'])
+        self.assertTrue(item['price'], 100, 'edit item from inventory failed')
+
+    def remove_manager(self):  # 4.6 Todo: finish
+        self.service.remove_manager(self.owner['name'])
         self.assertTrue(item['price'], 100, 'edit item from inventory failed')
         self.service.add_new_manager(self.user['name'])
         self.assertTrue(item['price'], 100, 'edit item from inventory failed')
