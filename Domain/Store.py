@@ -12,9 +12,9 @@ class Store(object):
 
     # inventory: Dict[Item, Any]
 
-    def __init__(self, name, rank):
+    def __init__(self, name):
         self.name = name
-        self.rank = rank
+        self.rank = -1
         self.inventory = {}
         self.storeOwners = []
         self.storeManagers = []
