@@ -71,12 +71,11 @@ class Store(object):
             return False
 
     # 4.1.2
-    # item = Item(...)
-    def remove_item_by_quantity(self, user, item, quantity):
+    def remove_item_by_quantity(self, user, itemname, quantity):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item.name:
+                    if x['name'] == itemname:
                         if x['quantity'] >= quantity:
                             x['quantity'] -= quantity
                             print("items has been successfully removed from the store inventory!")
@@ -94,12 +93,11 @@ class Store(object):
             print("user is not logged in or not a store owner")
             return False
 
-    # item = Item(...)
-    def remove_item_from_inventory(self, user, item):
+    def remove_item_from_inventory(self, user, itemname):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item.name:
+                    if x['name'] == itemname:
                         self.inventory.remove(x)
                         print("item has been successfully removed from the store inventory!")
                         return True
@@ -114,12 +112,11 @@ class Store(object):
             return False
 
     # 4.1.3
-    # item = Item(...)
-    def edit_item_price(self, user, item, new_price):
+    def edit_item_price(self, user, itemname, new_price):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item.name:
+                    if x['name'] == itemname:
                         x['val'].set_price(new_price)
                         print("item's price has been successfully updated")
                         return True
