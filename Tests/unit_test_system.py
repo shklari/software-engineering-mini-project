@@ -25,10 +25,10 @@ class TestUser(UnitTestSystem):
         self.system.init_system('shaioz', 1234)
         self.assertTrue(self.system.sign_up('ava bash', 666))
         self.assertFalse(self.system.sign_up('ava bash', 666), 'user already exist')
-        self.assertFalse(self.system.sign_up('avokadosh', None))
-        self.assertFalse(self.system.sign_up('', 4444))
+        self.assertFalse(self.system.sign_up('avokadosh', None), 'invalid password')
+        self.assertFalse(self.system.sign_up('', 4444), 'invalid password')
         self.assertEqual(self.system.users['ava bash'].password, 666)
-        self.assertFalse(self.system.cur_user.logged_in)
+        self.assertFalse(self.system.cur_user.logged_in, 'ava is only signed up, mot logged in')
 
     def test_login(self):
         self.system.init_system('shaioz', 1234)
