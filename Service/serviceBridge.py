@@ -1,6 +1,7 @@
 from Service.service import ServiceInterface
 from Service.serviceImpl import ServiceImpl
 
+
 class ServiceBridge(ServiceInterface):
     real = None
 
