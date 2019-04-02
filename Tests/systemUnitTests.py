@@ -181,10 +181,11 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         self.cart = self.system.get_cart("shaiozim baam")
+        self.assertIsNot(False, self.cart)
         # test
-        self.assertEqual(self.store['name'], self.cart.store_name)
+        self.assertEqual(self.store['name'], self.cart['store_name'])
         self.assertIsNot(None, self.cart.items_and_quantities[self.item['name']])
         self.assertEqual(None, self.system.get_cart("inbarim baam"))
 
