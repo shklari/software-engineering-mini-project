@@ -1,3 +1,4 @@
+from Domain.System import System
 
 
 class Cart:
@@ -15,9 +16,9 @@ class Cart:
             self.items_and_quantities[item_name] = quantity
         return True
 
-    def get_item_if_available(self, item_name):
-        if item_name in self.store.inventory and self.store.inventory[item_name] > 0:
-            return self.store.inventory[item_name]
+    def get_item_if_available(self, item_name, store):
+        if item_name in store.inventory and store.inventory[item_name] > 0:
+            return store.inventory[item_name]
         return False
 
     def remove_item_from_cart(self, item_name):
