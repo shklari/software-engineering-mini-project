@@ -26,7 +26,7 @@ class ServiceBridge(ServiceInterface):
     def create_store(self, name):
         pass
 
-    def remove_client(self, client):
+    def remove_user(self, user):
         pass
 
     def add_to_cart(self, store, items):
