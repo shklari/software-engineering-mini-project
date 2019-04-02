@@ -42,10 +42,10 @@ class ServiceInterface(object):
         pass
 
     @abstractmethod  # 2.6 store_name is string
-    def add_to_cart(self, store_name, item): pass
+    def add_to_cart(self, store_name, item_name, quantity): pass
 
     @abstractmethod  # 2.7 store_name is string
-    def remove_from_cart(self, store_name, item): pass
+    def remove_from_cart(self, store_name, item_name): pass
 
     @abstractmethod  # 2.8 item is item dictionary
     def buy_item(self, item): pass

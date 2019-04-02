@@ -90,16 +90,26 @@ class ServiceImpl(ServiceInterface):
             return False
         for i in cart.keys():
             print("Item name: " + i + "quantity: " + cart[i])
-        return cart
+        return cart.items_and_quantities
 
     def get_item_from_cart(self, cart, item):
         pass
 
-    def add_to_cart(self, store_name, items):
-        pass
+    def add_to_cart(self, store_name, item_name, quantity):
+        curr_user = self.sys.get_cur_user()
+        if not curr_user.add_to_cart(store_name, item_name, quantity):
+            print("Can't add item " + item_name + " to cart " + store_name)
+            return False
+        print("Item " + item_name + " added successfully to cart " + store_name)
+        return curr_user.get_cart().items_and_quantities
 
-    def remove_from_cart(self, store_name, item):
-        pass
+    def remove_from_cart(self, store_name, item_name):
+        curr_user = self.sys.get_cur_user()
+        if not curr_user.remove_from_cart(store_name, item_name):
+            print("Can't remove item " + item_name + " from cart " + store_name)
+            return False
+        print("Item " + item_name + " removed from cart " + store_name)
+        return curr_user.get_cart().items_and_quantities
 
     def buy_item(self, item):
         pass
