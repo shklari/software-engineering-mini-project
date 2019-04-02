@@ -268,12 +268,12 @@ class Store(object):
         result_list = []
         for item in self.inventory:
             if item['val'].price == price:
-                result_list.append(item)
+                result_list.append(item['val'])
         return result_list
 
     def search_item_by_category(self, category):
         result_list = []
         for item in self.inventory:
             if item['val'].category == category:
-                result_list.append(item)
+                result_list.append(item['val'])
         return result_list
