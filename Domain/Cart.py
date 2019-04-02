@@ -1,6 +1,3 @@
-from Domain.System import System
-
-
 class Cart:
 
     def __init__(self, store_name):
