@@ -54,6 +54,7 @@ class StoreUnitTests(unittest.TestCase):
                 self.assertTrue(k['val'].price == 80)
         self.store.remove_item_from_inventory(self.user, self.item.name)
         self.assertFalse(self.store.edit_item_price(self.user, self.item.name, 30))
+        print("\n")
 
     def test_add_new_owner(self):
         self.assertTrue(self.store.add_new_owner(self.user, User('kushkush', '123456')))
@@ -61,6 +62,7 @@ class StoreUnitTests(unittest.TestCase):
         self.assertFalse(self.store.add_new_owner(User('avabash', '02468'), User('baba', '123456')))
         self.assertTrue(len(self.store.storeOwners) == 2)
         self.assertFalse(self.store.add_new_owner(self.user, User('kushkush', '123456')))
+        print("\n")
 
     def test_remove_owner(self):
         temp = User('kushkush', '123456')
@@ -80,8 +82,41 @@ class StoreUnitTests(unittest.TestCase):
                     if x.username == temp.username:
                         flag = False
         self.assertTrue(flag)
+        print("\n")
 
     def test_add_new_manager(self):
         temp = User('kushkush', '123456')
         temp.logged_in = True
-        self.assertTrue(self.store.add_new_manager(self.user, temp))
+        self.assertTrue(self.store.add_new_manager(self.user, temp, None))
+        flag = False
+        for k in self.store.storeManagers:
+            if k.username == temp.username:
+                flag = True
+        self.assertTrue(flag)
+        for k in self.store.storeOwners:
+            if k.username == self.user.username:
+                for x in k.appointees:
+                    if x.username == temp.username:
+                        flag = False
+        self.assertFalse(flag)
+        print("\n")
+
+    def test_remove_manager(self):
+        temp = User('kushkush', '123456')
+        temp.logged_in = True
+        self.store.add_new_manager(self.user, temp, None)
+        self.assertFalse(self.store.remove_manager(temp, self.user))
+        self.assertFalse(self.store.remove_manager(User('bablu', '111111'), temp))
+        self.assertTrue(self.store.remove_manager(self.user, temp))
+        flag = True
+        for k in self.store.inventory:
+            if k.username == temp.username:
+                flag = False
+        self.assertTrue(flag)
+        for k in self.store.storeOwners:
+            if k.username == self.user.username:
+                for x in k.appointees:
+                    if x.username == temp.username:
+                        flag = False
+        self.assertTrue(flag)
+        print("\n")
