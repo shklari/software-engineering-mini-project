@@ -139,37 +139,5 @@ class System:
             return self.users[username]
         return None
 
-
-if __name__ == '__main__':
-    amazon = System()
-    amazon.init_system('shaioz', 1234)
-    amazon.sign_up('ava bash', 666)
-    amazon.login('ava bash', 666)
-    amazon.create_store('zara')
-    amazon.create_store('pnb')
-    amazon.logout()
-    amazon.login('shaioz', 1234)
-    amazon.create_store('shais store')
-    print("Stores are:")
-    for s in amazon.stores:
-        print(s.name)
-    print("Users are:")
-    for u in amazon.users:
-        print(amazon.users[u].username)
-    store = amazon.get_store('pnb')
-    if store:
-        print("chosen store name is {}".format(store.name))
-    else:
-        print("no such store")
-    us = amazon.get_user('shaioz')
-    if us:
-        print("shais password is {}".format(us.password))
-    else:
-        print("no such user")
-    amazon.remove_user('ava bash')
-    print("Stores are:")
-    for s in amazon.stores:
-        print(s.name)
-    print("Users are:")
-    for u in amazon.users:
-        print(u)
+    def get_cur_user(self):
+        return self.cur_user
