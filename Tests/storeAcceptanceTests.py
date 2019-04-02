@@ -1,4 +1,7 @@
 import unittest
+
+import pytest
+
 from Service.serviceBridge import ServiceBridge
 
 
@@ -39,12 +42,14 @@ class TestStore(unittest.TestCase):
         self.store2['inventory'] = [item1, item2]
 
     def tearDown(self):
-        #self.widget.dispose()
-        #self.widget = None
+        print('')
 
+    @classmethod
     def test_createStore(self):# 3.2
+        print('create')
         store = self.service.create_store(self.store1['name'])
         self.assertEqual(store['name'], self.store1['name'], 'create store failed')
+
 
     def test_addToCartTest(self):# 2.6
         result = self.service.add_to_cart(self.user, self.store1['name'], self.items[0]) #store name
@@ -59,6 +64,7 @@ class TestStore(unittest.TestCase):
         self.assertEqual(item, self.items[0]['name'], 'add to cart failed')
 
     def test_addItemToInventory(self):# 4.1.1 [{'name': iphone , 'quantity': 2}]
+        print('add')
         inventory = self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2)
         self.assertNotEqual(inventory, False, 'add item to inventory failed')
         ans = [item for item in inventory if item['name'] == self.items[0]['name']]
@@ -105,4 +111,6 @@ class TestStore(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    runner = unittest.TestStore()
+    runner.run(test_createStore())
     unittest.main()
