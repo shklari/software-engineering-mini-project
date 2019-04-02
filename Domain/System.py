@@ -54,7 +54,7 @@ class System:
         if user_to_check.logged_in:
             print("You are already logged in")
             return False
-        elif pbkdf2_sha256.verify(password, user_to_check.password) != password:
+        elif not pbkdf2_sha256.verify(password, user_to_check.password):
             print("Wrong password")
             return False
         else:
