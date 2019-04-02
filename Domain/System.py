@@ -142,7 +142,11 @@ class System:
         return flag
 
     def create_store(self, store_name):
-        if isinstance(self.cur_user, User) and store_name not in self.stores:
+        b = False
+        for stur in self.stores:
+            if stur.name == store_name:
+                b = True
+        if isinstance(self.cur_user, User) and not b:
             new_store = Store(store_name, self.cur_user)
             self.stores.append(new_store)
             return new_store
