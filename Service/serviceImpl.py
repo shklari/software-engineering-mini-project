@@ -86,7 +86,8 @@ class ServiceImpl(ServiceInterface):
 
     def add_to_cart(self, store_name, item_name, quantity):
         curr_user = self.sys.get_cur_user()
-        if not curr_user.add_to_cart(store_name, item_name, quantity):
+        store = self.sys.get_store(store_name)
+        if not curr_user.add_to_cart(store, item_name, quantity):
             print("Can't add item " + item_name + " to cart " + store_name)
             return False
         print("Item " + item_name + " added successfully to cart " + store_name)
