@@ -1,5 +1,4 @@
 import unittest
-from django.test import TestCase
 from Service.serviceBridge import ServiceBridge
 
 # ############################ must run all in order
