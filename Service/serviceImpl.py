@@ -145,14 +145,70 @@ class ServiceImpl(ServiceInterface):
         return {'name': ret.name, 'price': ret.price, 'category': ret.category}
 
     def add_new_owner(self, store_name, new_owner):
-        pass
+        store = System.get_store(store_name)
+        if store is None:
+            print("Error: can't edit store " + store_name)
+            return False
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
+        if not store.add_new_owner(user, new_owner):
+            print("Can't add new owner " + new_owner + " to store " + store_name)
+            return False
+        owners = []
+        for o in store.storeOwners:
+            owners.append({'username': o.username})
+        return {'name': store_name, 'storeOwners': owners}
 
-    def add_new_manager(self, store_name, new_manager):
-        pass
+    def add_new_manager(self, store_name, new_manager, permissions):
+        store = System.get_store(store_name)
+        if store is None:
+            print("Error: can't edit store " + store_name)
+            return False
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
+        if not store.add_new_manager(user, new_manager, permissions):
+            print("Can't add new manager " + new_manager + " to store " + store_name)
+            return False
+        managers = []
+        for m in store.storeManagers:
+            managers.append({'username': m.username})
+        return {'name': store_name, 'storeManagers': managers}
 
     def remove_owner(self, store_name, owner_to_remove):
-        pass
+        store = System.get_store(store_name)
+        if store is None:
+            print("Error: can't edit store " + store_name)
+            return False
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
+        if not store.remove_owner(user, owner_to_remove):
+            print("Can't remove owner " + owner_to_remove + " from store " + store_name)
+            return False
+        owners = []
+        for o in store.storeOwners:
+            owners.append({'username': o.username})
+        return {'name': store_name, 'storeOwners': owners}
 
     def remove_manager(self, store_name, manager_to_remove):
-        pass
+        store = System.get_store(store_name)
+        if store is None:
+            print("Error: can't edit store " + store_name)
+            return False
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
+        if not store.remove_manager(user, manager_to_remove):
+            print("Can't remove manager " + manager_to_remove + " from store " + store_name)
+            return False
+        managers = []
+        for m in store.storeManagers:
+            managers.append({'username': m.username})
+        return {'name': store_name, 'storeManagers': managers}
 

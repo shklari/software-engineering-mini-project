@@ -66,7 +66,7 @@ class ServiceInterface(object):
     def remove_owner(self, store_name, owner_to_remove): pass
 
     @abstractmethod  # 4.5
-    def add_new_manager(self, store_name, new_manager): pass
+    def add_new_manager(self, store_name, new_manager, permissions): pass
 
     @abstractmethod  # 4.6
     def remove_manager(self, store_name, manager_to_remove): pass
