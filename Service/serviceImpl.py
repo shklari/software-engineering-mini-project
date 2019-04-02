@@ -94,12 +94,6 @@ class ServiceImpl(ServiceInterface):
     def buy_item(self, item):
         pass
 
-    def remove_owner(self, owner):
-        pass
-
-    def remove_manager(self, manager):
-        pass
-
     # item ::= {'name': string, 'prince': int, 'category': string}
     def add_item_to_inventory(self, item, store_name, quantity):
         store = System.get_store(store_name)
@@ -150,13 +144,15 @@ class ServiceImpl(ServiceInterface):
         ret = store.search_item_by_name(item['name'])
         return {'name': ret.name, 'price': ret.price, 'category': ret.category}
 
-    def add_new_owner(self, new_owner):
+    def add_new_owner(self, store_name, new_owner):
         pass
 
-    def add_new_manager(self, new_manager):
+    def add_new_manager(self, store_name, new_manager):
         pass
 
-    def set_price(self, new_price):
+    def remove_owner(self, store_name, owner_to_remove):
         pass
 
+    def remove_manager(self, store_name, manager_to_remove):
+        pass
 
