@@ -35,9 +35,11 @@ class ServiceImpl(ServiceInterface):
         if len(items_list) == 0:
             print("No item matching the search")
             return []
+        output_list = []
         for item in items_list:
             print(item)
-        return items_list
+            output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
+        return output_list
 
     def buy_items(self, items):
         if not System.buy_items(items):
@@ -99,31 +101,34 @@ class ServiceImpl(ServiceInterface):
         pass
 
     # item ::= {'name': string, 'prince': int, 'quantity': int}
-    def add_item_to_inventory(self, user, store_name, item, quantity):
+    def add_item_to_inventory(self, item, store_name, quantity):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't add items to store " + store_name)
             return False
+        # get curr user
         if not store.add_item_to_inventory(user, item, quantity):
             print("Error: can't add item " + item + " to store " + store_name)
             return False
         return {'name': store.name, 'inventory': store.inventory}
 
-    def remove_item_from_inventory(self, user, store_name, item, quantity):
+    def remove_item_from_inventory(self, item, store_name, quantity):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't remove items from store " + store_name)
             return False
+        # get curr user
         if not store.remove_item_from_inventory(user, item, quantity):
             print("Error: can't remove item " + item + " to store " + store_name)
             return False
         return {'name': store.name, 'inventory': store.inventory}
 
-    def edit_item_price(self, user, store_name, item, new_price):
+    def edit_item_price(self, item, store_name, new_price):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't edit items in store " + store_name)
             return False
+        # get curr user
         if not store.edit_item_price(user, item, new_price):
             print("Error: can't edit item " + item + " in store " + store_name)
             return False
