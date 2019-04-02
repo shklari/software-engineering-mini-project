@@ -37,7 +37,7 @@ class System:
             print("This user name is taken")
             return False
         else:
-            enc_password = pbkdf2_sha256 .hash(password)
+            enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password)
             self.users[username] = new_user
             print("Welcome, new user {}! You may now log in".format(username))
@@ -54,7 +54,7 @@ class System:
         if user_to_check.logged_in:
             print("You are already logged in")
             return False
-        elif user_to_check.password != password:
+        elif pbkdf2_sha256.verify(password, user_to_check.password) != password:
             print("Wrong password")
             return False
         else:
