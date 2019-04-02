@@ -109,7 +109,7 @@ class System:
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
-            flag = self.cur_user.remove_item_from_cart(item.store_name, item)
+            flag = self.cur_user.remove_from_cart(item.store_name, item)
         return flag
 
     def create_store(self, store_name):

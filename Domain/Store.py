@@ -41,12 +41,13 @@ class Store(object):
         return False
 
     # 4.1.1
+    # item = {'name': str, 'price': int, 'category': str}
     def add_item_to_inventory(self, user, item, quantity):
         if quantity >= 1:
             if isinstance(user, User) and user.logged_in:
                 if self.check_if_store_owner(user):
                     if len(self.inventory) == 0:
-                        self.inventory = [{'name': item['name'], 'val': Item(item['name'], item['price'], item['category']), 'quantity': quantity}]
+                        self.inventory = [{'name': item['name'], 'val': Item(item['name'], item['price'], item['category'], self.name), 'quantity': quantity}]
                         print("item has been successfully added to the store inventory!")
                         return True
                     else:
@@ -70,11 +71,11 @@ class Store(object):
             return False
 
     # 4.1.2
-    def remove_item_by_quantity(self, user, item, quantity):
+    def remove_item_by_quantity(self, user, itemname, quantity):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item['name']:
+                    if x['name'] == itemname:
                         if x['quantity'] >= quantity:
                             x['quantity'] -= quantity
                             print("items has been successfully removed from the store inventory!")
@@ -92,11 +93,11 @@ class Store(object):
             print("user is not logged in or not a store owner")
             return False
 
-    def remove_item_from_inventory(self, user, item):
+    def remove_item_from_inventory(self, user, itemname):
         if isinstance(user, User) and user.logged_in:
             if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item['name']:
+                    if x['name'] == itemname:
                         self.inventory.remove(x)
                         print("item has been successfully removed from the store inventory!")
                         return True
@@ -111,14 +112,13 @@ class Store(object):
             return False
 
     # 4.1.3
-    # user field added
-    def edit_item_price(self, user, item, new_price):
-        if isinstance(user, StoreOwner) and user.logged_in:
-            if user in self.storeOwners:
+    def edit_item_price(self, user, itemname, new_price):
+        if isinstance(user, User) and user.logged_in:
+            if self.check_if_store_owner(user):
                 for x in self.inventory:
-                    if x['name'] == item['name']:
+                    if x['name'] == itemname:
                         x['val'].set_price(new_price)
-                        print("item's price has been successfully updated!!")
+                        print("item's price has been successfully updated")
                         return True
                     else:
                         print("item is not in the inventory of this store")
@@ -140,6 +140,7 @@ class Store(object):
             return False
 
     # 4.3
+    # owner, new_owner = User(...)
     def add_new_owner(self, owner, new_owner):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
@@ -161,6 +162,7 @@ class Store(object):
             return False
 
     # 4.4
+    # owner, owner_to_remove = User(...)
     def remove_owner(self, owner, owner_to_remove):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
@@ -188,7 +190,7 @@ class Store(object):
                     print("user is not an owner of this store")
                     return False
             else:
-                print("user is no store owner for this store")
+                print("user is not an owner of this store")
                 return False
         else:
             print("user is not logged in or not a store owner")

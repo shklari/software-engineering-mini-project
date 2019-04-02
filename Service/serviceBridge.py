@@ -38,8 +38,8 @@ class ServiceBridge(ServiceInterface):
     def create_store(self, name):
         return True if self.real is None else self.real.create_store(name)
 
-    def add_to_cart(self, store, items):
-        return True if self.real is None else self.real.add_to_cart(store, items)
+    def add_to_cart(self, store_name, item_name, quantity):
+        return True if self.real is None else self.real.add_to_cart(store_name, item_name, quantity)
 
     def remove_from_cart(self, storename, item):
         return True if self.real is None else self.real.remove_from_cart(storename, item)
