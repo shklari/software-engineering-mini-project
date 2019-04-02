@@ -40,7 +40,7 @@ class ServiceImpl(ServiceInterface):
         output_list = []
         for item in items_list:
             print(item)
-            output_list.append({'name': item['name'], 'price': item['price'], 'category': item['category']})
+            output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
         return output_list
 
     def logout(self):
