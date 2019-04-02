@@ -67,6 +67,13 @@ class TestUser(UnitTestSystem):
                 if owner.username == 'ava bash':
                     found_avas_store = True
         self.assertTrue(found_avas_store, 'found avas stores')
+        found_avas_store = False
+        self.system.remove_user('ava bash')
+        for store in self.system.stores:
+            for owner in store.storeOwners:
+                if owner.username == 'ava bash':
+                    found_avas_store = True
+        self.assertFalse(found_avas_store, 'ava bash was removed so all of her stores are removed')
 
 
 class TestStore(UnitTestSystem):
