@@ -98,6 +98,7 @@ class ServiceImpl(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
+    # item ::= {'name': string, 'prince': int, 'quantity': int}
     def add_item_to_inventory(self, user, store_name, item, quantity):
         store = System.get_store(store_name)
         if store is None:
