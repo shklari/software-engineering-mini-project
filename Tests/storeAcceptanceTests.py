@@ -45,11 +45,13 @@ class TestStore(unittest.TestCase):
         item = self.service.get_Item_From_Cart(self.store1["name"], newitem['name'])
         self.assertEqual(item, self.items[0]['name'], 'add to cart failed')
 
-    def test_addItemToInventory(self):# 4.1.1
+    def test_addItemToInventory(self):# 4.1.1 [{'name': iphone , 'quantity': 2}]
         inventory = self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2)
-
-        self.assertTrue(self.items[0]['name'] in store['inventory'], 'add item to inventory failed')
-        self.assertEqual(self.items[0]['quantity'], 2, 'add item to inventory failed')
+        self.assertNotEqual(inventory, False, 'add item to inventory failed')
+        ans = [item for item in inventory if item['name'] == self.items[0]['name']]
+        self.assertEqual(len(ans), 1, 'many items with same name in inventory!')
+        self.assertEqual(ans[0]['name'], self.items[0]['name'], 'add item to inventory failed')
+        self.assertEqual(ans[0]['quantity'], 2, 'add item to inventory failed')
 
     def test_removeItemFromInventory(self):  # 4.1.2
         store = self.service.remove_item_from_inventory(self.items[0]['name'], self.store1['name'], 2)
