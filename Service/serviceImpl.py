@@ -92,9 +92,6 @@ class ServiceImpl(ServiceInterface):
             print("Item name: " + i + "quantity: " + cart[i])
         return cart.items_and_quantities
 
-    def get_item_from_cart(self, cart, item):
-        pass
-
     def add_to_cart(self, store_name, item_name, quantity):
         curr_user = self.sys.get_cur_user()
         if not curr_user.add_to_cart(store_name, item_name, quantity):
