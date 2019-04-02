@@ -36,24 +36,24 @@ class StoreUnitTests(unittest.TestCase):
 
     def test_remove_item(self):
         self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category': 'smoke'}, 3)
-        self.assertTrue(self.store.remove_item_by_quantity(self.user, self.item, 2))
+        self.assertTrue(self.store.remove_item_by_quantity(self.user, self.item.name, 2))
         for k in self.store.inventory:
             if k['name'] == self.item.name:
                 self.assertTrue(k['quantity'] == 1)
-        self.assertFalse(self.store.remove_item_by_quantity(self.user, self.item, 2))
-        self.assertFalse(self.store.remove_item_by_quantity(self.guest, self.item, 2))
-        self.assertFalse(self.store.remove_item_from_inventory(self.user, Item('bazuka', 20, 'candy', 'Puppies better')))
-        self.assertTrue(self.store.remove_item_from_inventory(self.user, self.item))
+        self.assertFalse(self.store.remove_item_by_quantity(self.user, self.item.name, 2))
+        self.assertFalse(self.store.remove_item_by_quantity(self.guest, self.item.name, 2))
+        self.assertFalse(self.store.remove_item_from_inventory(self.user, 'bazuka'))
+        self.assertTrue(self.store.remove_item_from_inventory(self.user, self.item.name))
         print("\n")
 
     def test_edit_item_price(self):
         self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category': 'smoke'}, 3)
-        self.assertTrue(self.store.edit_item_price(self.user, self.item, 80))
+        self.assertTrue(self.store.edit_item_price(self.user, self.item.name, 80))
         for k in self.store.inventory:
             if k['name'] == self.item.name:
                 self.assertTrue(k['val'].price == 80)
-        self.store.remove_item_from_inventory(self.user, {'name': self.item.name, 'price': 20, 'category': 'smoke'})
-        self.assertFalse(self.store.edit_item_price(self.user, self.item , 30))
+        self.store.remove_item_from_inventory(self.user, self.item.name)
+        self.assertFalse(self.store.edit_item_price(self.user, self.item.name, 30))
 
     def test_add_new_owner(self):
         self.assertTrue(self.store.add_new_owner(self.user, User('kushkush', '123456')))
@@ -69,3 +69,19 @@ class StoreUnitTests(unittest.TestCase):
         self.assertFalse(self.store.remove_owner(temp, self.user))
         self.assertFalse(self.store.remove_owner(User('bablu', '111111'), temp))
         self.assertTrue(self.store.remove_owner(self.user, temp))
+        flag = True
+        for k in self.store.inventory:
+            if k.username == temp.username:
+                flag = False
+        self.assertTrue(flag)
+        for k in self.store.storeOwners:
+            if k.username == self.user.username:
+                for x in k.appointees:
+                    if x.username == temp.username:
+                        flag = False
+        self.assertTrue(flag)
+
+    def test_add_new_manager(self):
+        temp = User('kushkush', '123456')
+        temp.logged_in = True
+        self.assertTrue(self.store.add_new_manager(self.user, temp))
