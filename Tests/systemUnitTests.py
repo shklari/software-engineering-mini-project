@@ -147,9 +147,9 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
-        self.assertEqual(self.system.search("shaioz")[0].category, "omo")
+        self.assertEqual(self.system.search("shaioz")[0]['category'], "omo")
         self.assertEqual(self.system.search("omo")[0].name, "shaioz")
         self.assertEqual(self.system.search("avabash"), [])
 
@@ -162,11 +162,11 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         items = self.system.search("shaioz")
         item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa"}
         # test
-        self.assertEqual(True, self.system.add_to_cart(self.store['name'], items[0].name, 1))
+        self.assertEqual(True, self.system.add_to_cart(self.store['name'], items[0]['name'], 1))
         # item2 doesnt exist in shaiozim baam
         self.assertEqual(False, self.system.add_to_cart(self.store['name'], item2['name'], 2))
         # avocadosh store doesnt exist
@@ -181,10 +181,11 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         self.cart = self.system.get_cart("shaiozim baam")
+        self.assertIsNot(False, self.cart)
         # test
-        self.assertEqual(self.store['name'], self.cart.store_name)
+        self.assertEqual(self.store['name'], self.cart['store_name'])
         self.assertIsNot(None, self.cart.items_and_quantities[self.item['name']])
         self.assertEqual(None, self.system.get_cart("inbarim baam"))
 
