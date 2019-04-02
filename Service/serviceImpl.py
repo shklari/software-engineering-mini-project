@@ -43,14 +43,6 @@ class ServiceImpl(ServiceInterface):
             output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
         return output_list
 
-    def buy_items(self, items):
-        if not self.sys.buy_items(items):
-            print("The purchase failed. The transaction is canceled")
-            return False
-        else:
-            print("Items purchased successfully")
-            return True
-
     def logout(self):
         if self.sys.logout():
             print("Logged out")
@@ -133,7 +125,7 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return inv
 
-    def remove_item_from_inventory(self, item, store_name):
+    def remove_item_from_inventory(self, item_name, store_name):
         store = self.sys.get_store(store_name)
         if store is None:
             print("Error: can't remove items from store " + store_name)
@@ -142,15 +134,25 @@ class ServiceImpl(ServiceInterface):
         if user is None:
             print("Error: no current user")
             return False
-        if not store.remove_item_from_inventory(user, item):
-            print("Error: can't remove item " + item + " to store " + store_name)
+        if not store.remove_item_from_inventory(user, item_name):
+            print("Error: can't remove item " + item_name + " to store " + store_name)
             return False
         inv = []
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return inv
 
-    def edit_item_price(self, item, store_name, new_price):
+    def decrease_item_quantity(self, store_name, item_name, quantity):
+        store = self.sys.get_store(store_name)
+        if store is None:
+            print("Error: can't remove items from store " + store_name)
+            return False
+        user = self.sys.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
+
+    def edit_item_price(self, store_name, item_name, new_price):
         store = self.sys.get_store(store_name)
         if store is None:
             print("Error: can't edit items in store " + store_name)
@@ -159,10 +161,10 @@ class ServiceImpl(ServiceInterface):
         if user is None:
             print("Error: no current user")
             return False
-        if not store.edit_item_price(user, item, new_price):
-            print("Error: can't edit item " + item + " in store " + store_name)
+        if not store.edit_item_price(user, item_name, new_price):
+            print("Error: can't edit item " + item_name + " in store " + store_name)
             return False
-        ret = store.search_item_by_name(item['name'])
+        ret = store.search_item_by_name(item_name)
         return {'name': ret.name, 'price': ret.price, 'category': ret.category}
 
     def add_new_owner(self, store_name, new_owner):

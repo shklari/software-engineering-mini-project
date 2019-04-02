@@ -25,11 +25,14 @@ class System:
         return self.cur_user
 
     def sign_up(self, username, password):
+        if username is None or username == '':
+            print("Username can not be empty")
+            return False
+        if password is None or password == '':
+            print("Password can not be empty")
+            return False
         if username in self.users:
             print("This user name is taken")
-            return False
-        if password is None:
-            print("Password can not be empty")
             return False
         else:
             new_user = User(username, password)
@@ -42,6 +45,9 @@ class System:
             print("No such user")
             return False
         user_to_check = self.users[username]
+        if self.cur_user.logged_in:
+            print("Someone else is logged in")
+            return False
         if user_to_check.logged_in:
             print("You are already logged in")
             return False
@@ -68,7 +74,9 @@ class System:
     def search(self, param):
         ret_list = []
         for store in self.stores:
-            ret_list.append(store.search_item_by_name(param))
+            boo = store.search_item_by_name(param)
+            if boo:
+                ret_list.append(store.search_item_by_name(param))
             ret_list.extend(store.search_item_by_category(param))
             ret_list.extend(store.search_item_by_price(param))
         return ret_list
@@ -97,6 +105,34 @@ class System:
                 result_list.append(item)
         return result_list
 
+    def add_owner_to_store(self, store_name, new_owner):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_owner_obj = self.get_user(new_owner)
+        return False if new_owner_obj is None else store.add_new_owner(self.cur_user, new_owner_obj)
+
+    def remove_owner_from_store(self, store_name, owner_to_remove):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_owner_obj = self.get_user(owner_to_remove)
+        return False if new_owner_obj is None else store.remove_owner(self.cur_user, new_owner_obj)
+
+    def add_manager_to_store(self, store_name, new_manager, permissions):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_manager_obj = self.get_user(new_manager)
+        return False if new_manager_obj is None else store.add_new_manager(self.cur_user, new_manager_obj, permissions)
+
+    def remove_manager_from_store(self, store_name, manager_to_remove):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_manager_obj = self.get_user(manager_to_remove)
+        return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
+
     def buy_items(self, items): # fixed by yosi
         amount = functools.reduce(lambda acc, item: (acc + item.price), items, 0)
         collecting_system = CollectingSystem()
@@ -116,6 +152,9 @@ class System:
     def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
             print("You can't remove a user, you are not the system manager")
+            return False
+        if self.system_manager.username == username:
+            print("You can't remove yourself silly")
             return False
         if username not in self.users:
             print("This user does not exist")

@@ -9,6 +9,9 @@ class Basket:
     def get_carts(self):
         return self.carts
 
+    def add_cart(self, cart):
+        self.carts.append(cart)
+
     def get_cart_by_store(self, storeName):
         for cart in self.carts:
             if cart.get_store_name() == storeName:

@@ -13,7 +13,8 @@ class Guest:
         cart = self.basket.get_cart_by_store(store)
         if not cart:
             cart = Cart(store)
-        cart.add_item_to_cart(item, quantity)
+            self.basket.add_cart(cart)
+        cart.add_item_to_cart(store, item, quantity)
 
     # @abstractmethod # 2.7
     def get_cart(self, store):
