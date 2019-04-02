@@ -1,8 +1,10 @@
+from Domain.CollectingSystem import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
+import functools
 
 
 class System:
@@ -67,8 +69,8 @@ class System:
         ret_list = []
         for store in self.stores:
             ret_list.append(store.search_item_by_name(param))
-            ret_list.append(store.search_item_by_category(param))
-            ret_list.append(store.search_item_by_price(param))
+            ret_list.extend(store.search_item_by_category(param))
+            ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
@@ -95,12 +97,14 @@ class System:
                 result_list.append(item)
         return result_list
 
-    def buy_items(self, items):
-        flag = False
+    def buy_items(self, items): # fixed by yosi
+        ans = False
+        amount = functools.reduce(lambda acc, item: (acc + item.price), items, 0)
+        collecting_system = CollectingSystem()
+        ans = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
-            flag = self.cur_user.buy_item(item)
-            # if false then stop the purchase
-        return flag
+            ans = self.cur_user.remove_item_from_cart(item.store_name, item)
+        return ans
 
     def create_store(self, store_name):
         if isinstance(self.cur_user, User) and store_name not in self.stores:

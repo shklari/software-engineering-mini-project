@@ -1,5 +1,4 @@
 import unittest
-from django.test import TestCase
 from Service.serviceBridge import ServiceBridge
 
 # ############################ must run all in order
@@ -190,26 +189,6 @@ class SystemTestCase(TestCase):
         self.assertEqual(True, self.system.remove_client("try2"))
         # doesn't exist
         self.assertEqual(False, self.system.remove_client("try2"))
-
-
-class TestStringMethods(unittest.TestCase):
-
-    def setUp(self):
-        self.manager = 'FOO'
-
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), self.manager)
-
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
 
 
 if __name__ == '__main__':
