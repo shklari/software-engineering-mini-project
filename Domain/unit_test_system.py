@@ -22,14 +22,17 @@ class TestInit(UnitTestSystem):
 class TestUser(UnitTestSystem):
 
     def test_sign_up(self):
-        # self.system.init_system('shaioz', 1234)
+        self.system.init_system('shaioz', 1234)
         self.assertTrue(self.system.sign_up('ava bash', 666))
         self.assertFalse(self.system.sign_up('ava bash', 666))
         self.assertFalse(self.system.sign_up('avokadosh', None))
         self.assertEqual(self.system.users['ava bash'].password, 666)
+        self.assertFalse(self.system.cur_user.logged_in)
 
     def test_login(self):
-        self.fail()
+        self.system.init_system('shaioz', 1234)
+        self.assertFalse(self.system.cur_user.logged_in)
+
 
     def test_logout(self):
         self.fail()
