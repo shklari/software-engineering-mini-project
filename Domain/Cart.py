@@ -30,3 +30,5 @@ class Cart:
             return True
         return False
 
+    def get_store_name(self):
+        return self.store_name

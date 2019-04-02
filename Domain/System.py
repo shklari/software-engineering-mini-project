@@ -1,8 +1,10 @@
+from Domain.CollectingSystem import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
+import functools
 
 
 class System:
@@ -67,8 +69,8 @@ class System:
         ret_list = []
         for store in self.stores:
             ret_list.append(store.search_item_by_name(param))
-            ret_list.append(store.search_item_by_category(param))
-            ret_list.append(store.search_item_by_price(param))
+            ret_list.extend(store.search_item_by_category(param))
+            ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
@@ -95,12 +97,14 @@ class System:
                 result_list.append(item)
         return result_list
 
-    def buy_items(self, items):
-        flag = False
+    def buy_items(self, items): # fixed by yosi
+        ans = False
+        amount = functools.reduce(lambda acc, item: (acc + item.price), items, 0)
+        collecting_system = CollectingSystem()
+        ans = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
-            flag = self.cur_user.buy_item(item)
-            # if false then stop the purchase
-        return flag
+            ans = self.cur_user.remove_item_from_cart(item.store_name, item)
+        return ans
 
     def create_store(self, store_name):
         if isinstance(self.cur_user, User) and store_name not in self.stores:
@@ -139,37 +143,5 @@ class System:
             return self.users[username]
         return None
 
-
-if __name__ == '__main__':
-    amazon = System()
-    amazon.init_system('shaioz', 1234)
-    amazon.sign_up('ava bash', 666)
-    amazon.login('ava bash', 666)
-    amazon.create_store('zara')
-    amazon.create_store('pnb')
-    amazon.logout()
-    amazon.login('shaioz', 1234)
-    amazon.create_store('shais store')
-    print("Stores are:")
-    for s in amazon.stores:
-        print(s.name)
-    print("Users are:")
-    for u in amazon.users:
-        print(amazon.users[u].username)
-    store = amazon.get_store('pnb')
-    if store:
-        print("chosen store name is {}".format(store.name))
-    else:
-        print("no such store")
-    us = amazon.get_user('shaioz')
-    if us:
-        print("shais password is {}".format(us.password))
-    else:
-        print("no such user")
-    amazon.remove_user('ava bash')
-    print("Stores are:")
-    for s in amazon.stores:
-        print(s.name)
-    print("Users are:")
-    for u in amazon.users:
-        print(u)
+    def get_cur_user(self):
+        return self.cur_user
