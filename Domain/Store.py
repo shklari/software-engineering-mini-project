@@ -202,9 +202,8 @@ class Store(object):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if not self.check_if_store_manager(new_manager):
-                    self.storeManagers.append(
-                        StoreManager(new_manager.username, new_manager.password, owner, permissions))
-                    for k in self.storeManagers:
+                    self.storeManagers.append(StoreManager(new_manager.username, new_manager.password, owner, permissions))
+                    for k in self.storeOwners:
                         if k.username == owner.username:
                             k.add_appointee(new_manager)
                     print("new store manager has been added successfully!")
@@ -242,7 +241,7 @@ class Store(object):
                         if k.username == owner.username:
                             if k.is_appointee(manager_to_remove):
                                 for x in self.storeManagers:
-                                    if x.username == manager_to_remove:
+                                    if x.username == manager_to_remove.username:
                                         self.storeManagers.remove(x)
                                         k.remove_appointee(manager_to_remove)
                                         print("store manager has been removed successfully!")
