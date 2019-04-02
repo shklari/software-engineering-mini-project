@@ -56,7 +56,7 @@ class TestUser(UnitTestSystem):
         self.system.create_store('zara')
         self.system.create_store('pnb')
         self.system.logout()
-        self.system.login('shai oz', 1234)
+        self.system.login('shaioz', 1234)
         self.assertFalse(self.system.remove_user('shaioz'), 'system manager can not remove himself')
         self.assertFalse(self.system.remove_user('inbar'), 'user does not exist')
         self.assertTrue(self.system.remove_user('avokadosh'), 'removing a user from user list')
