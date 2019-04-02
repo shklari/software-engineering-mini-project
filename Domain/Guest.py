@@ -1,3 +1,4 @@
+from Domain.Cart import Cart
 from .Basket import Basket
 
 
@@ -10,6 +11,8 @@ class Guest:
     # @abstractmethod # 2.6
     def add_to_cart(self, store, item, quantity):
         cart = self.basket.get_cart_by_store(store)
+        if not cart:
+            cart = Cart(store)
         cart.add_item_to_cart(item, quantity)
 
     # @abstractmethod # 2.7

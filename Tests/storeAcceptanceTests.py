@@ -61,7 +61,7 @@ class TestStore(unittest.TestCase):
         self.assertEqual(ans[0]['quantity'], 2, 'add item to inventory failed')
 
     def test_removeItemFromInventory(self):  # 4.1.2
-         = self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2)
+        self.assertNotEqual(False, self.service.add_item_to_inventory(self.items[0], self.store1['name'], 2))
         inventory = self.service.remove_item_from_inventory(self.items[0]['name'], self.store1['name'], 2)
         self.assertNotEqual(inventory, False, 'remove item from inventory failed')
         ans = [item for item in inventory if item['name'] == self.items[0]['name']]
