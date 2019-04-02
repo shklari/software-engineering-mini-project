@@ -67,8 +67,8 @@ class System:
         ret_list = []
         for store in self.stores:
             ret_list.append(store.search_item_by_name(param))
-            ret_list.append(store.search_item_by_category(param))
-            ret_list.append(store.search_item_by_price(param))
+            ret_list.extend(store.search_item_by_category(param))
+            ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
