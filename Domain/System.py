@@ -47,6 +47,7 @@ class System:
         user_to_check = self.users[username]
         if self.cur_user.logged_in:
             print("Someone else is logged in")
+            return False
         if user_to_check.logged_in:
             print("You are already logged in")
             return False
