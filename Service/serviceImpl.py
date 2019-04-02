@@ -67,7 +67,8 @@ class ServiceImpl(ServiceInterface):
         else:
             print("New store created")
             print("Name: " + created.name)
-            print("Owners: " + created.storeOwners)
+            print("Owners: ")
+            print(created.storeOwners)
             owners = []
             for o in created.storeOwners:
                 owners.append({'username': o.username})
