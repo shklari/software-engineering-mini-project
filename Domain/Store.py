@@ -9,9 +9,9 @@ from .Item import Item
 # Interface
 class Store(object):
 
-    def __init__(self, name, rank):
+    def __init__(self, name):
         self.name = name
-        self.rank = rank
+        self.rank = 0
         self.inventory = []
         self.storeOwners = []
         self.storeManagers = []
@@ -42,23 +42,27 @@ class Store(object):
 
     # 4.1.1
     def add_item_to_inventory(self, user, item, quantity):
-        if isinstance(user, User) and user.logged_in:
-            if self.check_if_store_owner(user):
-                for x in self.inventory:
-                    if x['name'].name == item['name']:
-                        x['quantity'] += quantity
-                    else:
-                        self.inventory.append({'name': item['name'],
-                                               'val': Item(item['name'], item['price'], item['category']),
-                                               'quantity': quantity})
-                    print("item has been successfully added to the store inventory!")
-                    return True
+        if quantity >= 1:
+            if isinstance(user, User) and user.logged_in:
+                if self.check_if_store_owner(user):
+                    for x in self.inventory:
+                        if x['name'].name == item['name']:
+                            x['quantity'] += quantity
+                        else:
+                            self.inventory.append({'name': item['name'],
+                                                   'val': Item(item['name'], item['price'], item['category']),
+                                                   'quantity': quantity})
+                        print("item has been successfully added to the store inventory!")
+                        return True
+                else:
+                    print("user is no store owner for this store")
+                    return False
             else:
-                print("user is no store owner for this store")
+                print("user is not logged in or not a store owner")
                 return False
         else:
-            print("user is not logged in or not a store owner")
-            return True
+            print("invalid quantity")
+            return False
 
     # 4.1.2
     def remove_item_by_quantity(self, user, item, quantity):
@@ -81,7 +85,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     def remove_item_from_inventory(self, user, item):
         if isinstance(user, User) and user.logged_in:
@@ -99,7 +103,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     # 4.1.3
     # user field added
@@ -119,7 +123,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     def set_discount_policy(self, new_policy):
         if isinstance(new_policy, DiscountPolicy):
@@ -149,7 +153,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     # 4.4
     def remove_owner(self, owner, owner_to_remove):
@@ -183,9 +187,10 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     # 4.5
+    # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean}
     def add_new_manager(self, owner, new_manager, permissions):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
@@ -205,7 +210,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store owner")
-            return True
+            return False
 
     def set_permissions_to_manager(self, owner, manager, permissions):
         for k in self.storeOwners:
@@ -245,7 +250,7 @@ class Store(object):
                 return False
         else:
             print("user is not logged in or not a store manager")
-            return True
+            return False
 
     def search_item_by_name(self, item_name):
         for item in self.inventory:

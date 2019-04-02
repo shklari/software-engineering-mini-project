@@ -3,8 +3,9 @@ from abc import abstractmethod
 # Interface
 
 # store {'name', 'rank', 'inventory': [], 'storeOwners': [], 'storeManagers': [], 'discountPolicy'}
-# item {'name', 'price', 'category', 'rank', 'procPolicy'}
+# item {'name', 'price', 'category'}
 # user {'username'}
+# cart {'store_name', 'items': []}
 
 
 class ServiceInterface(object):
@@ -50,26 +51,23 @@ class ServiceInterface(object):
     def buy_item(self, item): pass
 
     @abstractmethod  # 4.1.1 item is item dictionary, store_name is string
-    def add_item_to_inventory(self, user, item, store_name, quantity): pass
+    def add_item_to_inventory(self, item, store_name, quantity): pass
 
     @abstractmethod  # 4.1.2 item is item dictionary, store_name is string
-    def remove_item_from_inventory(self, user, item, store_name, quantity): pass
+    def remove_item_from_inventory(self, item, store_name, quantity): pass
 
     @abstractmethod  # 4.1.3
-    def edit_item_price(self, user, store_name, item, new_price): pass
+    def edit_item_price(self, store_name, item, new_price): pass
 
     @abstractmethod  # 4.3
-    def add_new_owner(self, new_owner): pass
+    def add_new_owner(self, store_name, new_owner): pass
 
     @abstractmethod  # 4.4
-    def remove_owner(self, owner_to_remove): pass
+    def remove_owner(self, store_name, owner_to_remove): pass
 
     @abstractmethod  # 4.5
-    def add_new_manager(self, new_manager): pass
+    def add_new_manager(self, store_name, new_manager): pass
 
     @abstractmethod  # 4.6
-    def remove_manager(self, manager_to_remove): pass
-
-    @abstractmethod  # 4.1.3
-    def set_price(self, new_price): pass
+    def remove_manager(self, store_name, manager_to_remove): pass
 
