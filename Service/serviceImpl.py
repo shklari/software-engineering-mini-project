@@ -108,8 +108,12 @@ class ServiceImpl(ServiceInterface):
         print("Item " + item_name + " removed from cart " + store_name)
         return curr_user.get_cart().items_and_quantities
 
-    def buy_item(self, item):
-        pass
+    def buy_items(self, items):
+        if not self.sys.buy_items(items):
+            print("Can't buy requested items. Transaction cancelled")
+            return False
+        print("Transaction succeeded. Items removed from basket")
+        return True
 
     # item ::= {'name': string, 'prince': int, 'category': string}
     def add_item_to_inventory(self, item, store_name, quantity):
@@ -129,7 +133,7 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return inv
 
-    def remove_item_from_inventory(self, item, store_name, quantity):
+    def remove_item_from_inventory(self, item, store_name):
         store = self.sys.get_store(store_name)
         if store is None:
             print("Error: can't remove items from store " + store_name)
@@ -138,7 +142,7 @@ class ServiceImpl(ServiceInterface):
         if user is None:
             print("Error: no current user")
             return False
-        if not store.remove_item_from_inventory(user, item, quantity):
+        if not store.remove_item_from_inventory(user, item):
             print("Error: can't remove item " + item + " to store " + store_name)
             return False
         inv = []
