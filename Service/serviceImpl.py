@@ -100,39 +100,55 @@ class ServiceImpl(ServiceInterface):
     def remove_manager(self, manager):
         pass
 
-    # item ::= {'name': string, 'prince': int, 'quantity': int}
+    # item ::= {'name': string, 'prince': int, 'category': string}
     def add_item_to_inventory(self, item, store_name, quantity):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't add items to store " + store_name)
             return False
-        # get curr user
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
         if not store.add_item_to_inventory(user, item, quantity):
             print("Error: can't add item " + item + " to store " + store_name)
             return False
-        return {'name': store.name, 'inventory': store.inventory}
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'quantity': i['quantity']})
+        return inv
 
     def remove_item_from_inventory(self, item, store_name, quantity):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't remove items from store " + store_name)
             return False
-        # get curr user
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
         if not store.remove_item_from_inventory(user, item, quantity):
             print("Error: can't remove item " + item + " to store " + store_name)
             return False
-        return {'name': store.name, 'inventory': store.inventory}
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'quantity': i['quantity']})
+        return inv
 
     def edit_item_price(self, item, store_name, new_price):
         store = System.get_store(store_name)
         if store is None:
             print("Error: can't edit items in store " + store_name)
             return False
-        # get curr user
+        user = System.get_cur_user()
+        if user is None:
+            print("Error: no current user")
+            return False
         if not store.edit_item_price(user, item, new_price):
             print("Error: can't edit item " + item + " in store " + store_name)
             return False
-        # complete!!
+        ret = store.search_item_by_name(item['name'])
+        return {'name': ret.name, 'price': ret.price, 'category': ret.category}
 
     def add_new_owner(self, new_owner):
         pass

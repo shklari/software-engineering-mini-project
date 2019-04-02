@@ -57,7 +57,7 @@ class ServiceInterface(object):
     def remove_item_from_inventory(self, item, store_name, quantity): pass
 
     @abstractmethod  # 4.1.3
-    def edit_item_price(self, item, store_name, new_price): pass
+    def edit_item_price(self, store_name, item, new_price): pass
 
     @abstractmethod  # 4.3
     def add_new_owner(self, new_owner): pass
