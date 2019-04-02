@@ -20,7 +20,7 @@ class Cart:
         boo = False
         for k in store.inventory:
             if k['name'] == item_name:
-                if k['quntity'] > 0:
+                if k['quantity'] > 0:
                     boo = True
         if store.search_item_by_name(item_name) and boo:
             return store.search_item_by_name(item_name)
