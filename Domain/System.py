@@ -144,7 +144,6 @@ class System:
     def create_store(self, store_name):
         if isinstance(self.cur_user, User) and store_name not in self.stores:
             new_store = Store(store_name, self.cur_user)
-            # new_store.storeOwners.append(StoreOwner(self.cur_user.username, self.cur_user.password))
             self.stores.append(new_store)
             return new_store
         return False
