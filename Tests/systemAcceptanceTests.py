@@ -183,9 +183,13 @@ class SystemTestCase(unittest.TestCase):
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
+        # test
+        self.cart = self.system.get_cart("shaiozim baam")
+        # cart doesnt exist
+        self.assertEqual(False, self.cart)
+        self.assertIsNot(False, self.system.add_to_cart("shaiozim baam", "shaioz", 1))
         self.cart = self.system.get_cart("shaiozim baam")
         self.assertIsNot(False, self.cart)
-        # test
         self.assertEqual(self.store['name'], self.cart['store_name'])
         self.assertIsNot(None, self.cart.items_and_quantities[self.item['name']])
         self.assertEqual(None, self.system.get_cart("inbarim baam"))
@@ -201,6 +205,8 @@ class SystemTestCase(unittest.TestCase):
         self.store = self.system.create_store("shaiozim baam")
         self.system.add_item_to_inventory(self.item, self.store.name, 1)
         # test
+        self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "shaioz"))
+        self.assertIsNot(False, self.system.add_to_cart("shaiozim baam", "shaioz", 1))
         cart1 = self.system.get_cart("shaiozim baam")
         length1 = len(cart1.items)
         self.assertEqual(True, self.system.remove_from_cart("shaiozim baam", "shaioz"))
@@ -221,21 +227,21 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam")
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
         if self.collecting.flag == 0:
             self.collecting.switch()
         self.collecting.switch()
         # collecting system doesnt work properly
-        self.assertEqual(False, self.system.buy_item(self.item))
+        self.assertEqual(False, self.system.buy_items([self.item]))
         self.collecting.switch()
         # should work
-        self.assertEqual(True, self.system.buy_item(self.item))
+        self.assertEqual(True, self.system.buy_items([self.item]))
         item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa"}
         # item doesnt exist
-        self.assertEqual(False, self.system.buy_item(item2))
+        self.assertEqual(False, self.system.buy_items([item2]))
         # not available
-        self.assertEqual(False, self.system.buy_item(self.item))
+        self.assertEqual(False, self.system.buy_items([self.item]))
 
     # 3.1
     def test_logout(self):

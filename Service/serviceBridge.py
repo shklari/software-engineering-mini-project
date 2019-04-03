@@ -44,8 +44,8 @@ class ServiceBridge(ServiceInterface):
     def remove_from_cart(self, storename, item):
         return True if self.real is None else self.real.remove_from_cart(storename, item)
 
-    def buy_item(self, item):
-        return True if self.real is None else self.real.buy_item(item)
+    def buy_items(self, items):
+        return True if self.real is None else self.real.buy_items(items)
 
     def remove_owner(self, storename, ownertoremove):
         return True if self.real is None else self.real.remove_owner(storename, ownertoremove)
