@@ -72,7 +72,7 @@ class StoreUnitTests(unittest.TestCase):
         self.assertFalse(self.store.remove_owner(User('bablu', '111111'), temp))
         self.assertTrue(self.store.remove_owner(self.user, temp))
         flag = True
-        for k in self.store.inventory:
+        for k in self.store.storeOwners:
             if k.username == temp.username:
                 flag = False
         self.assertTrue(flag)
