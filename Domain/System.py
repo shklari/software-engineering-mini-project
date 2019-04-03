@@ -190,3 +190,8 @@ class System:
 
     def get_cur_user(self):
         return self.cur_user
+
+    def add_to_cart(self, store_name, item_name, quantity):
+        store = self.get_store(store_name)
+        item = store.get_item_if_available(item_name, quantity)
+        return self.cur_user.add_to_cart(store_name, item, quantity) if item else False
