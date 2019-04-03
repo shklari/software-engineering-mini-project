@@ -1,4 +1,4 @@
-from .CollectingSystem import CollectingSystem
+from .ExternalSystems import CollectingSystem
 
 
 class Basket:

@@ -1,4 +1,4 @@
-from Domain.CollectingSystem import CollectingSystem
+from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
