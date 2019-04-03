@@ -3,6 +3,7 @@ from Service.serviceImpl import ServiceImpl
 
 
 class ServiceBridge(ServiceInterface):
+
     real = None
 
     def __init__(self):
@@ -44,8 +45,11 @@ class ServiceBridge(ServiceInterface):
     def remove_from_cart(self, storename, item):
         return True if self.real is None else self.real.remove_from_cart(storename, item)
 
-    def buy_item(self, item):
-        return True if self.real is None else self.real.buy_item(item)
+    def buy_items(self, items):
+        return True if self.real is None else self.real.buy_items(items)
+
+    def decrease_item_quantity(self, store_name, item_name, quantity):
+        return True if self.real is None else self.real.decrease_item_quantity(store_name, item_name, quantity)
 
     def remove_owner(self, storename, ownertoremove):
         return True if self.real is None else self.real.remove_owner(storename, ownertoremove)

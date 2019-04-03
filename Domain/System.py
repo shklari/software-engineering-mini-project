@@ -1,4 +1,4 @@
-from Domain.CollectingSystem import CollectingSystem
+from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -138,7 +138,7 @@ class System:
         return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
 
     def buy_items(self, items): # fixed by yosi
-        amount = functools.reduce(lambda acc, item: (acc + item.price), items, 0)
+        amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
@@ -185,6 +185,7 @@ class System:
 
     def get_user(self, username):
         if username in self.users:
+            print(self.users[username])
             return self.users[username]
         return None
 

@@ -164,6 +164,7 @@ class Store(object):
     # 4.4
     # owner, owner_to_remove = User(...)
     def remove_owner(self, owner, owner_to_remove):
+        owners_to_remove = []
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if self.check_if_store_owner(owner_to_remove):
@@ -174,18 +175,19 @@ class Store(object):
                                     if x.username == owner_to_remove.username:
                                         for i in x.get_appointees():
                                             self.remove_owner(owner_to_remove, i)
-                                    self.storeOwners.remove(x)
+                                        owners_to_remove.append(x)
                                     k.remove_appointee(owner_to_remove)
-                                    print("store owner has been removed successfully!")
-                                    return True
                                 for x in self.storeManagers:
                                     if x.username == owner_to_remove:
                                         self.storeManagers.remove(x)
                                         k.remove_appointee(owner_to_remove)
-                                        print("store manager has been removed successfully!")
-                                        return True
-                            print("the owner is not the appointer for this owner")
-                            return False
+                                for x in owners_to_remove:
+                                    self.storeOwners.remove(x)
+                                print("store manager has been removed successfully!")
+                                return True
+                            else:
+                                print("the owner is not the appointer for this owner")
+                                return False
                 else:
                     print("user is not an owner of this store")
                     return False
@@ -195,6 +197,42 @@ class Store(object):
         else:
             print("user is not logged in or not a store owner")
             return False
+
+    def remove_owner1(self, owner, owner_to_remove):
+        remove_owners = []
+        owner_typy = 0
+        owner_to_remove_type = 0
+
+        for k in self.storeOwners:
+            if k.username == owner.username:
+                owner_typy = k
+            if k.username == owner_to_remove.username:
+                owner_to_remove_type = k
+
+        if isinstance(owner, User) and owner.logged_in:
+            if self.check_if_store_owner(owner):
+                if self.check_if_store_owner(owner_to_remove):
+                    for k in self.storeOwners:
+                        if k.username == owner_to_remove.username:
+                            if k.appointer.username == owner.username:
+                                for x in self.storeOwners:
+                                    if x.username == owner.username:
+                                        for y in x.appointees:
+                                            if y.username == owner_to_remove.username:
+                                                for
+                                                self.remove_owner1()
+                                                x.remove_appointee(owner_to_remove)
+
+                else:
+                    print("user is not an owner of this store")
+                    return False
+            else:
+                print("user is not an owner of this store")
+                return False
+        else:
+            print("user is not logged in or not a store owner")
+            return False
+
 
     # 4.5
     # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean}
