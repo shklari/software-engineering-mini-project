@@ -91,7 +91,7 @@ class ServiceImpl(ServiceInterface):
             print("Can't add item " + item_name + " to cart " + store_name)
             return False
         print("Item " + item_name + " added successfully to cart " + store_name)
-        return curr_user.get_cart().items_and_quantities
+        return curr_user.get_cart(store_name).items_and_quantities
 
     def remove_from_cart(self, store_name, item_name):
         curr_user = self.sys.get_cur_user()
