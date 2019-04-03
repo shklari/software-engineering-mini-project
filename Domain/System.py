@@ -20,7 +20,8 @@ class System:
     def init_system(self, system_manager_user_name, system_manager_password):
         if not self.sign_up(system_manager_user_name, system_manager_password):
             return None
-        manager = SystemManager(system_manager_user_name, system_manager_password)
+        enc_password = pbkdf2_sha256.hash(system_manager_password)
+        manager = SystemManager(system_manager_user_name, enc_password)
         self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
