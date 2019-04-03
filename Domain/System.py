@@ -178,6 +178,7 @@ class System:
 
     def get_user(self, username):
         if username in self.users:
+            print(self.users[username])
             return self.users[username]
         return None
 
