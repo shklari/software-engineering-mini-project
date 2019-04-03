@@ -14,11 +14,11 @@ class Guest:
         if not cart:
             cart = Cart(store)
             self.basket.add_cart(cart)
-        cart.add_item_to_cart(store, item, quantity)
+        return cart.add_item_to_cart(store, item, quantity)
 
     # @abstractmethod # 2.7
-    def get_cart(self, store):
-        return self.basket.get_cart_by_store(store)
+    def get_cart(self, store_name):
+        return self.basket.get_cart_by_store(store_name)
 
-    def remove_from_cart(self, store, item):
-        return self.basket.get_cart(store).remove_item_from_cart(item)
+    def remove_from_cart(self, store_name, item):
+        return self.basket.remove_item_from_cart(store_name, item)
