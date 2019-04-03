@@ -212,17 +212,14 @@ class Store(object):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if self.check_if_store_owner(owner_to_remove):
-                    for k in self.storeOwners:
-                        if k.username == owner_to_remove.username:
-                            if k.appointer.username == owner.username:
-                                for x in self.storeOwners:
-                                    if x.username == owner.username:
-                                        for y in x.appointees:
-                                            if y.username == owner_to_remove.username:
-                                                for
-                                                self.remove_owner1()
-                                                x.remove_appointee(owner_to_remove)
-
+                    if owner_typy.is_appointee(owner_to_remove_type):
+                        for k in self.storeOwners:
+                            if k.username == owner_to_remove.username:
+                                for i in k.appointees:
+                                    remove_owners.append(i)
+                    else:
+                        print("user is not the appointer")
+                        return False
                 else:
                     print("user is not an owner of this store")
                     return False
@@ -232,7 +229,6 @@ class Store(object):
         else:
             print("user is not logged in or not a store owner")
             return False
-
 
     # 4.5
     # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean}
@@ -315,3 +311,11 @@ class Store(object):
             if item['val'].category == category:
                 result_list.append(item['val'])
         return result_list
+
+    def get_item_if_available(self, item_name, quantity):
+        boo = False
+        for k in self.inventory:
+            if k['name'] == item_name:
+                if k['quantity'] >= quantity:
+                    boo = True
+        return self.search_item_by_name(item_name) if boo else False
