@@ -163,7 +163,7 @@ class Store(object):
 
     # 4.4
     # owner, owner_to_remove = User(...)
-    def remove_owner(self, owner, owner_to_remove):
+    def remove_owner1(self, owner, owner_to_remove):
         owners_to_remove = []
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
@@ -198,25 +198,31 @@ class Store(object):
             print("user is not logged in or not a store owner")
             return False
 
-    def remove_owner1(self, owner, owner_to_remove):
-        remove_owners = []
+    def remove_owner(self, owner, owner_to_remove):
         owner_typy = 0
         owner_to_remove_type = 0
-
         for k in self.storeOwners:
             if k.username == owner.username:
                 owner_typy = k
-            if k.username == owner_to_remove.username:
+            if k.username == owner_to_remove.username and owner.username != owner_to_remove.username:
                 owner_to_remove_type = k
+        if owner_typy == 0 or owner_to_remove == 0:
+            print("user is not an owner")
+            return False
+
+        else:
+            if owner_to_remove_type.appointer != owner:
+
 
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if self.check_if_store_owner(owner_to_remove):
                     if owner_typy.is_appointee(owner_to_remove_type):
-                        for k in self.storeOwners:
-                            if k.username == owner_to_remove.username:
-                                for i in k.appointees:
-                                    remove_owners.append(i)
+                        for tmp in owner_to_remove.appointees:
+                            self.remove_owner1(owner_to_remove_type, tmp)
+                        owner.appointees.remove(owner_to_remove)
+                        self.storeOwners.remove(owner_to_remove)
+                        return True
                     else:
                         print("user is not the appointer")
                         return False
