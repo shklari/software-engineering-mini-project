@@ -14,7 +14,7 @@ class System:
     def __init__(self):
         self.system_manager = 0
         self.cur_user = 0
-        self.users = {}
+        self.users = {}  # {username, user}
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
@@ -137,7 +137,7 @@ class System:
         new_manager_obj = self.get_user(manager_to_remove)
         return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
 
-    def buy_items(self, items): # fixed by yosi
+    def buy_items(self, items):  # fixed by yosi
         amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
