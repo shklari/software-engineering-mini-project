@@ -130,41 +130,6 @@ class SystemTestCase(unittest.TestCase):
         # already exists
         self.assertEqual(False, self.system.sign_up("try1", "try111"))
 
-    # 2.3
-    def test_login_success(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
-        # test
-        # should work
-        self.assertEqual(True, self.system.login("try1", "try123"))
-        self.assertEqual("try1", self.system.cur_user.username)
-        # already logged in
-        self.system.login("try2", "try123")
-        self.assertEqual("try1", self.system.cur_user.username)
-
-    # 2.3
-    def test_login_fail(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
-        # test
-        # empty password
-        self.assertEqual(False, self.system.login("need to fail", ""))
-        # empty user name
-        self.assertEqual(False, self.system.login("", "need to fail"))
-        # wrong password
-        self.assertEqual(False, self.system.login("try1", "try111"))
-        # should work
-        self.system.login("try1", "try123")
-        # already logged in
-        self.assertEqual(False, self.system.login("try1", "try123"))
-        # already logged in
-        self.assertEqual(False, self.system.login("try2", "try123"))
-        self.assertEqual("try1", self.system.cur_user.username)
-
     # 2.5
     def test_search_success(self):
         # setUp

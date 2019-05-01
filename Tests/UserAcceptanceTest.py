@@ -44,7 +44,7 @@ class SupplyingSystem(object):
         return self.init()
 
 
-class IntegritySystem(object):
+class ConsistencySystem(object):
 
     def __init__(self):
         self.flag = 1
@@ -69,7 +69,7 @@ class UserTestCase(unittest.TestCase):
     manager = {"bascket": 0, "name": "man", "password": "123456"}
     collecting = CollectingSystem()
     supplying = SupplyingSystem()
-    integrity = IntegritySystem()
+    consistency = ConsistencySystem()
 
     def setUp(self) -> None:
         self.item = 0
@@ -78,7 +78,42 @@ class UserTestCase(unittest.TestCase):
         self.manager = {"bascket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
-        self.integrity = IntegritySystem()
+        self.consistency = ConsistencySystem()
+
+    # 2.3
+    def test_login_success(self):
+        # setUp
+        self.system.init(self.manager['name'], self.manager['password'])
+        self.system.sign_up("try1", "try123")
+        self.system.sign_up("try2", "try123")
+        # test
+        # should work
+        self.assertEqual(True, self.system.login("try1", "try123"))
+        self.assertEqual("try1", self.system.cur_user.username)
+        # already logged in
+        self.system.login("try2", "try123")
+        self.assertEqual("try1", self.system.cur_user.username)
+
+    # 2.3
+    def test_login_fail(self):
+        # setUp
+        self.system.init(self.manager['name'], self.manager['password'])
+        self.system.sign_up("try1", "try123")
+        self.system.sign_up("try2", "try123")
+        # test
+        # empty password
+        self.assertEqual(False, self.system.login("need to fail", ""))
+        # empty user name
+        self.assertEqual(False, self.system.login("", "need to fail"))
+        # wrong password
+        self.assertEqual(False, self.system.login("try1", "try111"))
+        # should work
+        self.system.login("try1", "try123")
+        # already logged in
+        self.assertEqual(False, self.system.login("try1", "try123"))
+        # already logged in
+        self.assertEqual(False, self.system.login("try2", "try123"))
+        self.assertEqual("try1", self.system.cur_user.username)
 
     # 2.6
     # adding item for a cart
@@ -92,7 +127,6 @@ class UserTestCase(unittest.TestCase):
         self.store = self.system.create_store("shaiozim baam")
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         items = self.system.search("shaioz")
-        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa"}
         # test
         self.assertEqual(True, self.system.add_to_cart(self.store['name'], items[0]['name'], 1))
 
@@ -179,8 +213,6 @@ class UserTestCase(unittest.TestCase):
         # test
         self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "shaioz"))
         self.assertIsNot(False, self.system.add_to_cart("shaiozim baam", "shaioz", 1))
-        cart1 = self.system.get_cart("shaiozim baam")
-        length1 = len(cart1.items)
         self.system.remove_from_cart("shaiozim baam", "shaioz")
         # item doesnt exist
         self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "glasses o mashu"))
