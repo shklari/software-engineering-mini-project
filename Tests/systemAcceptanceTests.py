@@ -47,7 +47,7 @@ class SupplyingSystem(object):
         return self.init()
 
 
-class IntegritySystem(object):
+class ConsistencySystem(object):
 
     def __init__(self):
         self.flag = 1
@@ -72,7 +72,7 @@ class SystemTestCase(unittest.TestCase):
     manager = {"bascket": 0, "name": "man", "password": "123456"}
     collecting = CollectingSystem()
     supplying = SupplyingSystem()
-    integrity = IntegritySystem()
+    consistency = ConsistencySystem()
 
     def setUp(self) -> None:
         self.item = 0
@@ -81,13 +81,13 @@ class SystemTestCase(unittest.TestCase):
         self.manager = {"bascket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
-        self.integrity = IntegritySystem()
+        self.consistency = ConsistencySystem()
 
     # 1.1 # init will succeed only if the external systems.init() will return true
     def test_init(self):
         self.collecting.switch()
         self.supplying.switch()
-        self.integrity.switch()
+        self.consistency.switch()
         for i in range(0, 1):
             for j in range(0, 1):
                 for k in range(0, 1):
@@ -95,10 +95,10 @@ class SystemTestCase(unittest.TestCase):
                     self.assertEqual((i == 1 and j == 1 and k == 1), inits)
                     self.collecting.switch()
                 self.supplying.switch()
-            self.integrity.switch()
+            self.consistency.switch()
         self.collecting.switch()
         self.supplying.switch()
-        self.integrity.switch()
+        self.consistency.switch()
 
     # 2.2
     def test_signup_success(self):
