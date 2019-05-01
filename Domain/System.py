@@ -143,6 +143,7 @@ class System:
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
             flag = self.cur_user.remove_from_cart(item.store_name, item)
+            # Todo : remove items from store inventory
         return flag
 
     def create_store(self, store_name):
