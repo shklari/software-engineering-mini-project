@@ -1,4 +1,4 @@
-from Domain.CollectingSystem import CollectingSystem
+from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -143,6 +143,7 @@ class System:
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
             flag = self.cur_user.remove_from_cart(item.store_name, item)
+            # Todo : remove items from store inventory
         return flag
 
     def create_store(self, store_name):
@@ -191,3 +192,8 @@ class System:
 
     def get_cur_user(self):
         return self.cur_user
+
+    def add_to_cart(self, store_name, item_name, quantity):
+        store = self.get_store(store_name)
+        item = store.get_item_if_available(item_name, quantity)
+        return self.cur_user.add_to_cart(store_name, item, quantity) if item else False
