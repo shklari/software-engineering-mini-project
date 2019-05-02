@@ -109,11 +109,11 @@ class System:
                 result_list.append(item)
         return result_list
 
-    def add_owner_to_store(self, store_name, new_owner):
+    def add_owner_to_store(self, store_name, new_owner_name):
         store = self.get_store(store_name)
         if store is None:
             return False
-        new_owner_obj = self.get_user(new_owner)
+        new_owner_obj = self.get_user(new_owner_name)
         return False if new_owner_obj is None else store.add_new_owner(self.cur_user, new_owner_obj)
 
     def remove_owner_from_store(self, store_name, owner_to_remove):
@@ -123,11 +123,11 @@ class System:
         new_owner_obj = self.get_user(owner_to_remove)
         return False if new_owner_obj is None else store.remove_owner(self.cur_user, new_owner_obj)
 
-    def add_manager_to_store(self, store_name, new_manager, permissions):
+    def add_manager_to_store(self, store_name, new_manager_name, permissions):
         store = self.get_store(store_name)
         if store is None:
             return False
-        new_manager_obj = self.get_user(new_manager)
+        new_manager_obj = self.get_user(new_manager_name)
         return False if new_manager_obj is None else store.add_new_manager(self.cur_user, new_manager_obj, permissions)
 
     def remove_manager_from_store(self, store_name, manager_to_remove):
