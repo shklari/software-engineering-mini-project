@@ -23,8 +23,7 @@ class Store(object):
             self.procPolicy = new_policy
             print("new policy has updated")
             return True
-        #print("illegal policy")
-
+        print("illegal policy")
         return False
 
     def check_if_store_owner(self, user):
