@@ -164,59 +164,15 @@ class Store(object):
     # 4.4
     # owner, owner_to_remove = User(...)
     def remove_owner(self, owner, owner_to_remove):
-        owners_to_remove = []
-        if isinstance(owner, User) and owner.logged_in:
-            if self.check_if_store_owner(owner):
-                if self.check_if_store_owner(owner_to_remove):
-                    for k in self.storeOwners:
-                        if k.username == owner.username:
-                            if k.is_appointee(owner_to_remove):
-                                for x in self.storeOwners:
-                                    if x.username == owner_to_remove.username:
-                                        for i in x.get_appointees():
-                                            self.remove_owner(owner_to_remove, i)
-                                        owners_to_remove.append(x)
-                                    k.remove_appointee(owner_to_remove)
-                                for x in self.storeManagers:
-                                    if x.username == owner_to_remove:
-                                        self.storeManagers.remove(x)
-                                        k.remove_appointee(owner_to_remove)
-                                for x in owners_to_remove:
-                                    self.storeOwners.remove(x)
-                                print("store manager has been removed successfully!")
-                                return True
-                            else:
-                                print("the owner is not the appointer for this owner")
-                                return False
-                else:
-                    print("user is not an owner of this store")
-                    return False
-            else:
-                print("user is not an owner of this store")
-                return False
-        else:
-            print("user is not logged in or not a store owner")
-            return False
-
-    def remove_owner1(self, owner, owner_to_remove):
-        remove_owners = []
-        owner_typy = 0
-        owner_to_remove_type = 0
-
+        owner_type = 0
         for k in self.storeOwners:
             if k.username == owner.username:
-                owner_typy = k
-            if k.username == owner_to_remove.username:
-                owner_to_remove_type = k
-
+                owner_type = k
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if self.check_if_store_owner(owner_to_remove):
-                    if owner_typy.is_appointee(owner_to_remove_type):
-                        for k in self.storeOwners:
-                            if k.username == owner_to_remove.username:
-                                for i in k.appointees:
-                                    remove_owners.append(i)
+                    if owner_type.is_appointee(owner_to_remove):
+                        to_remove = self.remove_owner_rec(owner, owner_to_remove)
                     else:
                         print("user is not the appointer")
                         return False
@@ -229,6 +185,38 @@ class Store(object):
         else:
             print("user is not logged in or not a store owner")
             return False
+
+        for x in to_remove:
+            for y in self.storeOwners:
+                if x.username == y.username:
+                    self.storeOwners.remove(y)
+            for z in self.storeManagers:
+                if x.username == z.username:
+                    self.storeManagers.remove(z)
+        for x in owner_type.appointees:
+            if x.username == owner_to_remove.username:
+                owner_type.appointees.remove(x)
+        print("owner has been successfully removed")
+        return True
+
+    def remove_owner_rec(self, owner, owner_to_remove):
+        to_remove = []
+        owner_type = 0
+        owner_to_remove_type = 0
+        for k in self.storeOwners:
+            if k.username == owner.username:
+                owner_type = k
+            if k.username == owner_to_remove.username and owner.username != owner_to_remove.username:
+                owner_to_remove_type = k
+
+        if owner_type != 0 and owner_to_remove_type == 0:
+            return to_remove
+
+        for tmp in owner_to_remove_type.appointees:
+            to_remove.append(self.remove_owner_rec(owner_to_remove, tmp))
+        to_remove.append(owner_to_remove)
+        return to_remove
+
 
     # 4.5
     # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean}

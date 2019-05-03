@@ -13,7 +13,7 @@ class TestInit(UnitTestSystem):
         self.assertEqual(self.system.cur_user, 0)
         self.assertDictEqual(self.system.users, {})
         self.assertEqual(self.system.stores, [])
-        self.assertEqual(self.system.init_system('shaioz', None), None)
+        self.assertEqual(self.system.init_system('shaioz', None), None)  # empty password isn't valid.
         self.system.init_system('shaioz', '1234')
         self.assertEqual(self.system.system_manager.username, 'shaioz')
         self.assertGreater(len(self.system.users), 0)
@@ -24,10 +24,11 @@ class TestUser(UnitTestSystem):
     def test_sign_up(self):
         self.system.init_system('shaioz', '1234')
         self.assertTrue(self.system.sign_up('ava bash', '666'))
+        self.assertTrue(self.system.sign_up('shkalrk', '1234'))
         self.assertFalse(self.system.sign_up('ava bash', '666'), 'user already exist')
         self.assertFalse(self.system.sign_up('avokadosh', ''), 'invalid password')
-        self.assertFalse(self.system.sign_up('', '4444'), 'invalid password')
-        self.assertFalse(self.system.cur_user.logged_in, 'ava is only signed up, mot logged in')
+        self.assertFalse(self.system.sign_up('', '4444'), 'invalid username')
+        self.assertFalse(self.system.cur_user.logged_in, 'no user is logged in')
 
     def test_login(self):
         self.system.init_system('shaioz', '1234')
