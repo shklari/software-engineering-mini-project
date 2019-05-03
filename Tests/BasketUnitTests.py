@@ -25,12 +25,10 @@ class StoreUnitTests(unittest.TestCase):
         self.assertTrue(self.cart in self.basket.carts)
 
     def test_remove_item_from_cart(self):
-        self.cart.add_item_to_cart(self.store, 'bamba', 2)
+        self.cart.add_item_to_cart('bamba', 2)
         self.basket.add_cart(self.cart)
         self.assertEqual(len(self.basket.carts), 1)
         self.assertTrue(self.cart in self.basket.carts)
         self.basket.remove_item_from_cart(self.store.name, 'bamba')
-        self.assertFalse(self.cart.get_item_if_available('bamba', self.store))
+        self.assertFalse(self.cart.get_item_if_available('bamba'))
 
-if __name__ == '__main__':
-    unittest.main()
