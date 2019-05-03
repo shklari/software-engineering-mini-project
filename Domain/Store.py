@@ -186,16 +186,16 @@ class Store(object):
             print("user is not logged in or not a store owner")
             return False
 
-        indexSO = 0
-        indexSM = 0
         for x in to_remove:
-            if x.username == self.storeOwners[indexSO].username:
-                self.storeOwners.remove(self.storeOwners[indexSO])
-                indexSO += 1
-            else:
-                if x.username == self.storeManagers[indexSM].username:
-                    self.storeManagers.remove(self.storeManagers[indexSM])
-                    indexSM += 1
+            for y in self.storeOwners:
+                if x.username == y.username:
+                    self.storeOwners.remove(y)
+            for z in self.storeManagers:
+                if x.username == z.username:
+                    self.storeManagers.remove(z)
+        for x in owner_type.appointees:
+            if x.username == owner_to_remove.username:
+                owner_type.appointees.remove(x)
         print("owner has been successfully removed")
         return True
 
@@ -212,7 +212,7 @@ class Store(object):
         if owner_type != 0 and owner_to_remove_type == 0:
             return to_remove
 
-        for tmp in owner_to_remove.appointees:
+        for tmp in owner_to_remove_type.appointees:
             to_remove.append(self.remove_owner_rec(owner_to_remove, tmp))
         to_remove.append(owner_to_remove)
         return to_remove
