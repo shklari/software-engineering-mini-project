@@ -1,8 +1,12 @@
+from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
-from Domain.Client import Client
+from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.StoreOwner import StoreOwner
 from Domain.SystemManager import SystemManager
+from passlib.hash import pbkdf2_sha256
+
+import functools
 
 
 class System:
@@ -10,44 +14,54 @@ class System:
     def __init__(self):
         self.system_manager = 0
         self.cur_user = 0
-        self.clients = {}
+        self.users = {}  # {username, user}
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
         if not self.sign_up(system_manager_user_name, system_manager_password):
             return None
-        manager = SystemManager(system_manager_user_name, system_manager_password)
-        self.clients[manager.username] = manager
+        enc_password = pbkdf2_sha256.hash(system_manager_password)
+        manager = SystemManager(system_manager_user_name, enc_password)
+        self.users[manager.username] = manager
         self.system_manager = manager
-        self.cur_user = User()
+        self.cur_user = Guest()
         return self.cur_user
 
     def sign_up(self, username, password):
-        if username in self.clients:
-            print("This user name is taken")
+        if username is None or username == '':
+            print("Username can not be empty")
             return False
-        if password is None:
+        if password is None or password == '':
             print("Password can not be empty")
             return False
+        if username in self.users:
+            print("This user name is taken")
+            return False
         else:
-            new_client = Client(username, password)
-            self.clients[username] = new_client
+            enc_password = pbkdf2_sha256.hash(password)
+            new_user = User(username, enc_password)
+            self.users[username] = new_user
+            print("Welcome, new user {}! You may now log in".format(username))
             return True
 
     def login(self, username, password):
-        if username not in self.clients:
+        if username not in self.users:
             print("No such user")
             return False
-        client_to_check = self.clients[username]
-        if client_to_check.logged_in:
+        user_to_check = self.users[username]
+        if self.cur_user.logged_in:
+            print("Someone else is logged in")
+            return False
+        if user_to_check.logged_in:
             print("You are already logged in")
             return False
-        elif client_to_check.password != password:
+        elif not pbkdf2_sha256.verify(password, user_to_check.password):
             print("Wrong password")
             return False
         else:
-            client_to_check.logged_in = True
-            self.cur_user = client_to_check
+            user_to_check.logged_in = True
+            self.cur_user = user_to_check
+            print("Hey {}! You are now logged in".format(username))
             return True
 
     def logout(self):
@@ -56,17 +70,19 @@ class System:
             return False
         else:
             self.cur_user.logged_in = False
-            new_user = User()
+            new_user = Guest()
             self.cur_user = new_user
+            print("You are now logged out")
             return True
 
     def search(self, param):
         ret_list = []
-        for s in self.stores:
-            ret_list += s.search_item_by_name(param)
-            ret_list += s.search_item_by_category(param)
-            ret_list += s.search_item_by_price(param)
-
+        for store in self.stores:
+            boo = store.search_item_by_name(param)
+            if boo:
+                ret_list.append(store.search_item_by_name(param))
+            ret_list.extend(store.search_item_by_category(param))
+            ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
@@ -74,7 +90,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.price <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -82,7 +98,7 @@ class System:
         result_list = []
         for item in item_list:
             if low <= item.rank <= high:
-                result_list += item
+                result_list.append(item)
         return result_list
 
     @staticmethod
@@ -90,40 +106,94 @@ class System:
         result_list = []
         for item in item_list:
             if item.category == category:
-                result_list += item
+                result_list.append(item)
         return result_list
 
-    def buy_items(self, items):
-        flag = False
+    def add_owner_to_store(self, store_name, new_owner_name):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_owner_obj = self.get_user(new_owner_name)
+        return False if new_owner_obj is None else store.add_new_owner(self.cur_user, new_owner_obj)
+
+    def remove_owner_from_store(self, store_name, owner_to_remove):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_owner_obj = self.get_user(owner_to_remove)
+        return False if new_owner_obj is None else store.remove_owner(self.cur_user, new_owner_obj)
+
+    def add_manager_to_store(self, store_name, new_manager_name, permissions):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_manager_obj = self.get_user(new_manager_name)
+        return False if new_manager_obj is None else store.add_new_manager(self.cur_user, new_manager_obj, permissions)
+
+    def remove_manager_from_store(self, store_name, manager_to_remove):
+        store = self.get_store(store_name)
+        if store is None:
+            return False
+        new_manager_obj = self.get_user(manager_to_remove)
+        return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
+
+    def buy_items(self, items):  # fixed by yosi
+        amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
+        collecting_system = CollectingSystem()
+        flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         for item in items:
-            flag = self.cur_user.buy_item(item)
-            # if false then stop the purchase
+            flag = self.cur_user.remove_from_cart(item.store_name, item)
+            # Todo : remove items from store inventory
         return flag
 
-    def create_store(self, name):
-        if isinstance(self.cur_user, Client) and name not in self.stores:
-            new_owner = self.cur_user
-            new_store = Store(name)
-            if not isinstance(new_owner, StoreOwner) and not isinstance(new_owner, SystemManager):
-                new_owner = StoreOwner(self.cur_user.username, self.cur_user.password)
-                self.clients[new_owner.username] = new_owner
-                self.cur_user = new_owner
-                self.cur_user.logged_in = True
-            new_store.storeOwners.append(new_owner)
+    def create_store(self, store_name):
+        b = False
+        for stur in self.stores:
+            if stur.name == store_name:
+                b = True
+        if isinstance(self.cur_user, User) and not b:
+            new_store = Store(store_name, self.cur_user)
             self.stores.append(new_store)
             return new_store
         return False
 
-    def remove_client(self, client_name):
+    def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
-            print("You can't remove a client, you are not the system manager")
+            print("You can't remove a user, you are not the system manager")
             return False
-        client_to_remove = self.clients[client_name]
+        if self.system_manager.username == username:
+            print("You can't remove yourself silly")
+            return False
+        if username not in self.users:
+            print("This user does not exist")
+            return False
+        user_to_remove = self.users[username]
         stores_to_remove = []
         for store in self.stores:
-            if client_to_remove in store.storeOwners and len(store.storeOwners) == 1:
+            if len(store.storeOwners) == 1 and user_to_remove.username == store.storeOwners[0].username:
                 stores_to_remove.append(store)
         for st in stores_to_remove:
             self.stores.remove(st)
-        del self.clients[client_name]
+        del self.users[username]
+        print("System manager removed the user {}".format(username))
         return True
+
+    def get_store(self, store_name):
+        for stor in self.stores:
+            if store_name == stor.name:
+                return stor
+        return None
+
+    def get_user(self, username):
+        if username in self.users:
+            print(self.users[username])
+            return self.users[username]
+        return None
+
+    def get_cur_user(self):
+        return self.cur_user
+
+    def add_to_cart(self, store_name, item_name, quantity):
+        store = self.get_store(store_name)
+        item = store.get_item_if_available(item_name, quantity)
+        return self.cur_user.add_to_cart(store_name, item, quantity) if item else False

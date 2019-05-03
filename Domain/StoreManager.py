@@ -1,9 +1,12 @@
-from Domain import User
+from .User import User
 
+#interface
+class StoreManager (User):
 
-# Interface
-class StoreManager(User):
-
-    def __init__(self, new_name, new_password, appointer=0):
-        super().__init__(new_name, new_password)
+    def __init__(self, username, password, appointer, permissions=None):
+        super(StoreManager, self).__init__(username, password)
+        self.permissions = permissions
         self.appointer = appointer
+        if permissions is None:
+            self.permissions = {'Edit': False, 'Remove': False, 'Add': False}
+

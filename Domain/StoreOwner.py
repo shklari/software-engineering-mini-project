@@ -1,12 +1,7 @@
-from Domain.Client import Client
-# Interface
+from Domain.User import User
 
 
-class StoreOwner(Client):
-
-    appointer = 0
-    appointees = []
-    managers = []
+class StoreOwner(User):
 
     def __init__(self, username, password, appointer=0):
         super(StoreOwner, self).__init__(username, password)
@@ -22,3 +17,19 @@ class StoreOwner(Client):
 
     # @abstractmethod # 2.8
     def remove_manager(self, manager): pass
+
+    def add_appointee(self, user):
+        if isinstance(user, User):
+            self.appointees.append(user)
+
+    def remove_appointee(self, user):
+        if isinstance(user, User):
+            self.appointees.remove(user)
+
+    def get_appointees(self):
+        return self.appointees
+
+    def is_appointee(self, user):
+        if user in self.appointees:
+            return True
+        return False

@@ -1,10 +1,23 @@
-# Interface
 
 
-class Cart(object):
+class Cart:
 
-    def additem(self, item): pass
+    def __init__(self, store_name):
+        self.store_name = store_name
+        self.items_and_quantities = {}
 
-    def getitems(self): pass
+    def add_item_to_cart(self, item_name, quantity):
+        if item_name in self.items_and_quantities:
+            self.items_and_quantities[item_name] += quantity
+        else:
+            self.items_and_quantities[item_name] = quantity
+        return True
 
-    def removeitem(self, item): pass
+    def remove_item_from_cart(self, item_name):
+        if item_name in self.items_and_quantities:
+            del self.items_and_quantities[item_name]
+            return True
+        return False
+
+    def get_store_name(self):
+        return self.store_name
