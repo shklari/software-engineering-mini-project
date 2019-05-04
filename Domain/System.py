@@ -12,8 +12,8 @@ import functools
 class System:
 
     def __init__(self):
-        self.system_manager = 0
-        self.cur_user = 0
+        self.system_manager = None
+        self.cur_user = None
         self.users = {}  # {username, user}
         self.stores = []
 
@@ -152,14 +152,11 @@ class System:
 
     def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
-            print("You can't remove a user, you are not the system manager")
-            return False
+            return ResponseObject(False, False, "You can't remove a user, you are not the system manager")
         if self.system_manager.username == username:
-            print("You can't remove yourself silly")
-            return False
+            return ResponseObject(False, False, "You can't remove yourself silly")
         if username not in self.users:
-            print("This user does not exist")
-            return False
+            return ResponseObject(False, False, "This user does not exist")
         user_to_remove = self.users[username]
         stores_to_remove = []
         for store in self.stores:
@@ -168,8 +165,7 @@ class System:
         for st in stores_to_remove:
             self.stores.remove(st)
         del self.users[username]
-        print("System manager removed the user {}".format(username))
-        return True
+        return ResponseObject(True, True, "User " + username + " removed")
 
     def get_store(self, store_name):
         for stor in self.stores:

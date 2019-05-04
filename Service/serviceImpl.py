@@ -62,12 +62,11 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(True, {'name': created.name, 'storeOwners': owners}, message)
 
     def remove_user(self, username):
-        if not self.sys.remove_user(username):
-            print("Can't remove user")
-            return False
+        result = self.sys.remove_user(username)
+        if not result.success:
+            return ResponseObject(False, False, "Can't remove user\n" + result.message)
         else:
-            print("User " + username + "removed")
-            return True
+            return result
 
     def get_cart(self, store_name):
         curr_user = self.sys.get_cur_user()
