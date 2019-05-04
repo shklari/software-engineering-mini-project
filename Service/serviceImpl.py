@@ -99,13 +99,12 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, curr_user.get_cart().items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
     def buy_items(self, items):
-        if not self.sys.buy_items(items):
-            print("Can't buy requested items. Transaction cancelled")
-            return False
-        print("Transaction succeeded. Items removed from basket")
-        return True
+        result = self.sys.buy_items(items)
+        if not result.success:
+            return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
+        return ResponseObject(True, True, "Transaction succeeded. Items removed from basket\n" + result.message)
 
-    # item ::= {'name': string, 'prince': int, 'category': string}
+    # item ::= {'item_name': string, 'price': int, 'category': string, 'store_name': string}
     def add_item_to_inventory(self, item, store_name, quantity):
         store = self.sys.get_store(store_name)
         if store is None:

@@ -139,10 +139,12 @@ class System:
         if not flag:
             return ResponseObject(False, False, "Payment rejected")
         for item in items:
-            flag = self.cur_user.remove_from_cart(item.store_name, item)
+            removed = self.cur_user.remove_from_cart(item['store_name'], item['item_name'])
+            if not removed.success:
+                return ResponseObject(False, False, "Cannot purchase items " + item['item_name'] + "\n" + removed.message)
 
             # Todo : remove items from store inventory
-        return flag
+        return ResponseObject(True, True, "")
 
     def create_store(self, store_name):
         if not isinstance(self.cur_user, User):

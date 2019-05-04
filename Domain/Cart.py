@@ -35,9 +35,4 @@ class Cart:
         return True
 
 
-a = {"a": 1, "b": 30}
-print(a.get("b"))
-
-b = {'store_name': "zara"}
-print()
 
