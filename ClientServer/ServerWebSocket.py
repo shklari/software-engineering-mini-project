@@ -14,7 +14,9 @@ USERS = set()
 
 service = ServiceImpl()
 
-service.init("avabash", "123456")
+checkinit = service.init("avabash", "123456")
+
+print(checkinit.message)
 
 
 def state_event(obj):
