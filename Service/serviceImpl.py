@@ -33,36 +33,33 @@ class ServiceImpl(ServiceInterface):
     def search(self, keyword):
         items_list = self.sys.search(keyword)
         if len(items_list) == 0:
-            print("No item matching the search")
-            return []
+            return ResponseObject(False, [], "No item matching the search")
         output_list = []
         for item in items_list:
             print(item)
             output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
-        return output_list
+        return ResponseObject(True, output_list, "")
 
     def logout(self):
-        if self.sys.logout():
-            print("Logged out")
-            return True
+        result = self.sys.logout()
+        if result.success:
+            return result
         else:
-            print("Logout failed")
-            return False
+            return ResponseObject(False, False, "Logout failed.\n" + result.message)
 
     def create_store(self, name):
-        created = self.sys.create_store(name)
-        if not created:
-            print("Could not create store" + name)
-            return False
+        result = self.sys.create_store(name)
+        if not result.success:
+            return ResponseObject(False, None, "Could not create store \'" + name + "\'\n" + result.message)
         else:
-            print("New store created")
-            print("Name: " + created.name)
-            print("Owners: ")
-            print(created.storeOwners)
+            created = result.value
+            message = "New store created.\nName: " + created.name + "\nOwners: "
+            sowners = ",".join(created.storeOwners)
+            message += sowners
             owners = []
             for o in created.storeOwners:
                 owners.append({'username': o.username})
-            return {'name': created.name, 'storeOwners': owners}
+            return ResponseObject(True, {'name': created.name, 'storeOwners': owners}, message)
 
     def remove_user(self, username):
         if not self.sys.remove_user(username):

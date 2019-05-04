@@ -58,14 +58,12 @@ class System:
 
     def logout(self):
         if not self.cur_user.logged_in:
-            print("You can't log out until you log in")
-            return False
+            return ResponseObject(False, False, "You are not logged in")
         else:
             self.cur_user.logged_in = False
             new_user = Guest()
             self.cur_user = new_user
-            print("You are now logged out")
-            return True
+            return ResponseObject(True, True, "Logged out successfully")
 
     def search(self, param):
         ret_list = []
@@ -73,8 +71,8 @@ class System:
             boo = store.search_item_by_name(param)
             if boo:
                 ret_list.append(store.search_item_by_name(param))
-            ret_list.extend(store.search_item_by_category(param))
-            ret_list.extend(store.search_item_by_price(param))
+                ret_list.extend(store.search_item_by_category(param))
+                ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
@@ -139,15 +137,18 @@ class System:
         return flag
 
     def create_store(self, store_name):
+        if not isinstance(self.cur_user, User):
+            return ResponseObject(False, None, "You are not a subscriber in the system")
         b = False
         for stur in self.stores:
             if stur.name == store_name:
                 b = True
-        if isinstance(self.cur_user, User) and not b:
+        if b:
+            return ResponseObject(False, None, "Store already exists")
+        else:
             new_store = Store(store_name, self.cur_user)
             self.stores.append(new_store)
-            return new_store
-        return False
+            return ResponseObject(True, new_store, "")
 
     def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
