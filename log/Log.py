@@ -1,9 +1,11 @@
 import logging
+import os
 
 
 class Log(object):
-    LOG_FILE_EVENT = 'C:\\Users\\Inbar Naus\\PycharmProjects\\Software_Engineering_Project_2019-\\eventLog.Log'
-    LOG_FILE_ERROR = 'C:\\Users\\Inbar Naus\\PycharmProjects\\Software_Engineering_Project_2019-\\errorLog.Log'
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    LOG_FILE_EVENT = dir_path+"\\eventLog.Log"
+    LOG_FILE_ERROR = dir_path+"\\errorLog.Log"
 
     def __init__(self, msg, log):
         if log == '':
