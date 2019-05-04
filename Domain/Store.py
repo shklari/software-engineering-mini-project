@@ -4,6 +4,8 @@ from .ProcurementPolicy import ProcurementPolicy
 from .User import User
 from .StoreManager import StoreManager
 from .Item import Item
+from log.EventLog import EventLog
+from log.ErrorLog import ErrorLog
 
 
 # Interface
@@ -17,13 +19,17 @@ class Store(object):
         self.storeManagers = []
         self.discountPolicy = 0
         self.procPolicy = 0
+        self.eventLog = EventLog()
+        self.errorLog = ErrorLog()
 
     def set_proc_policy(self, new_policy):
         if isinstance(new_policy, ProcurementPolicy):
             self.procPolicy = new_policy
-            print("new policy has updated")
+            self.eventLog.logger.debug("new policy has updated")
+            # print("new policy has updated")
             return True
-        print("illegal policy")
+        self.errorLog.logger.error("illegal policy")
+        # print("illegal policy")
         return False
 
     def check_if_store_owner(self, user):
