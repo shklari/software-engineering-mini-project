@@ -10,11 +10,12 @@ class Guest:
 
     # @abstractmethod # 2.6
     def add_to_cart(self, store_name, item, quantity):
-        cart = self.basket.get_cart_by_store(store_name)
-        if not cart:
+        result = self.basket.get_cart_by_store(store_name)
+        cart = result.value
+        if not result.success:
             cart = Cart(store_name)
             self.basket.add_cart(cart)
-        return cart.add_item_to_cart(store_name, item, quantity)
+        cart.add_item_to_cart(item, quantity)
 
     # @abstractmethod # 2.7
     def get_cart(self, store_name):
