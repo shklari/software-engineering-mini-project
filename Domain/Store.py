@@ -25,9 +25,11 @@ class Store(object):
     def set_proc_policy(self, new_policy):
         if isinstance(new_policy, ProcurementPolicy):
             self.procPolicy = new_policy
-            print("new policy has updated")
+            self.eventLog.logger.debug("new policy has updated")
+            # print("new policy has updated")
             return True
-        print("illegal policy")
+        self.errorLog.logger.error("illegal policy")
+        # print("illegal policy")
         return False
 
     def check_if_store_owner(self, user):
