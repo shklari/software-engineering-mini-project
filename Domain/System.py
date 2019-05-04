@@ -1,4 +1,4 @@
-from Domain.ExternalSystems import CollectingSystem
+from Domain.ExternalSystems import *
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -128,6 +128,11 @@ class System:
         return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
 
     def buy_items(self, items):  # fixed by yosi
+        # check if items exist in basket??
+        supplying_system = SupplyingSystem()
+        for item_name in items:
+            if not supplying_system.get_supply(item_name):
+                return ResponseObject(False, False, "Item " + item_name + " is currently out of stock")
         amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)

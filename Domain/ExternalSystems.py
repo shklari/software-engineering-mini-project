@@ -17,7 +17,7 @@ class CollectingSystem(object):
             return True
 
     def collect(self, amount, credit_details):
-        return self.init()
+        return True
 
     # 7
     # @staticmethod
@@ -45,8 +45,8 @@ class SupplyingSystem(object):
         else:
             return True
 
-    def get_supply(self):
-        return self.init()
+    def get_supply(self, item):
+        return True
 
     # 8
     # @staticmethod

@@ -1,5 +1,5 @@
 from log.Log import Log
-from .Response import ResponseObject
+from Domain.Response import ResponseObject
 
 
 class Cart:
@@ -35,4 +35,9 @@ class Cart:
         return True
 
 
+a = {"a": 1, "b": 30}
+print(a.get("b"))
+
+b = {'store_name': "zara"}
+print()
 

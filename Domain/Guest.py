@@ -24,5 +24,5 @@ class Guest:
     def get_cart(self, store_name):
         return self.basket.get_cart_by_store(store_name)
 
-    def remove_from_cart(self, store_name, item):
-        return self.basket.remove_item_from_cart(store_name, item)
+    def remove_from_cart(self, store_name, item_name):
+        return self.basket.remove_item_from_cart(store_name, item_name)

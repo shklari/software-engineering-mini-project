@@ -29,10 +29,11 @@ class Basket:
         if not result.success:
             self.log.set_info("no such items to remove", "errorLog")
             return ResponseObject(False, False, result.message)
-        else:
-            cart = result.value
-            cart.remove_item_from_cart(item_name)
-            self.log.set_info("items has been successfully removed from cart", "eventLog")
-            return ResponseObject(True, True, "")
+        cart = result.value
+        removed = cart.remove_item_from_cart(item_name)
+        if not removed.success:
+            return removed
+        self.log.set_info("items has been successfully removed from cart", "eventLog")
+        return ResponseObject(True, True, "")
 
 
