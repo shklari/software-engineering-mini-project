@@ -1,5 +1,6 @@
 from Service.service import ServiceInterface
 from Domain.System import System
+from Domain.Response import ResponseObject
 
 
 class ServiceImpl(ServiceInterface):
@@ -9,70 +10,63 @@ class ServiceImpl(ServiceInterface):
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password):
-        if self.sys.init_system(sm_username, sm_password) is not None:
-            print("System initialized successfully")
-            return True
+        result = self.sys.init_system(sm_username, sm_password)
+        if result.success:
+            return ResponseObject(True, result.value, "System initialized successfully")
         else:
-            print("System failed to initialize")
-            return False
+            return ResponseObject(False, False, "System failed to initialize\n" + result.message)
 
     def sign_up(self, username, password):
-        if self.sys.sign_up(username, password):
-            print("Signed up successfully")
-            return True
+        result = self.sys.sign_up(username, password)
+        if result.success:
+            return ResponseObject(True, True, "Signed up successfully \n" + result.message)
         else:
-            print("Sign up failed")
-            return False
+            return ResponseObject(False, False, "Sign up failed \n" + result.message)
 
     def login(self, username, password):
-        if self.sys.login(username, password):
-            print("Logged in")
-            return True
+        result = self.sys.login(username, password)
+        if result.success:
+            return result
         else:
-            print("Login failed. Please check username and password are correct")
-            return False
+            return ResponseObject(False, False, "Login failed.\n" + result.message)
 
     def search(self, keyword):
         items_list = self.sys.search(keyword)
         if len(items_list) == 0:
-            print("No item matching the search")
-            return []
+            return ResponseObject(False, [], "No item matching the search")
         output_list = []
         for item in items_list:
             print(item)
             output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
-        return output_list
+        return ResponseObject(True, output_list, "")
 
     def logout(self):
-        if self.sys.logout():
-            print("Logged out")
-            return True
+        result = self.sys.logout()
+        if result.success:
+            return result
         else:
-            print("Logout failed")
-            return False
+            return ResponseObject(False, False, "Logout failed.\n" + result.message)
 
     def create_store(self, name):
-        created = self.sys.create_store(name)
-        if not created:
-            print("Could not create store" + name)
-            return False
+        result = self.sys.create_store(name)
+        if not result.success:
+            return ResponseObject(False, None, "Could not create store \'" + name + "\'\n" + result.message)
         else:
-            print("New store created")
-            print("Name: " + created.name)
-            print("Owners: ")
-            print(created.storeOwners)
+            created = result.value
+            message = "New store created.\nName: " + created.name + "\nOwners: "
+            sowners = ",".join(created.storeOwners)
+            message += sowners
             owners = []
             for o in created.storeOwners:
                 owners.append({'username': o.username})
-            return {'name': created.name, 'storeOwners': owners}
+            return ResponseObject(True, {'name': created.name, 'storeOwners': owners}, message)
 
     def remove_user(self, username):
-        if not self.sys.remove_user(username):
-            print("Can't remove user")
-            return False
+        result = self.sys.remove_user(username)
+        if not result.success:
+            return ResponseObject(False, False, "Can't remove user\n" + result.message)
         else:
-            print("User " + username + "removed")
-            return True
+            return result
 
     def get_cart(self, store_name):
         curr_user = self.sys.get_cur_user()

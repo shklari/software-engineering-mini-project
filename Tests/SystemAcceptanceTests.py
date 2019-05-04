@@ -91,7 +91,7 @@ class SystemTestCase(unittest.TestCase):
         for i in range(0, 1):
             for j in range(0, 1):
                 for k in range(0, 1):
-                    inits = self.system.init(self.manager['name'], self.manager['password'])
+                    inits = self.system.init(self.manager['name'], self.manager['password']).success
                     self.assertEqual((i == 1 and j == 1 and k == 1), inits)
                     self.collecting.switch()
                 self.supplying.switch()
@@ -106,11 +106,11 @@ class SystemTestCase(unittest.TestCase):
         self.system.init(self.manager['name'], self.manager['password'])
         # test
         # should work
-        self.assertEqual(True, self.system.sign_up("try1", "try123"))
+        self.assertEqual(True, (self.system.sign_up("try1", "try123")).success)
         # already exists
         self.system.sign_up("try1", "try123")
         # should work
-        self.assertEqual(True, self.system.sign_up("try2", "try123"))
+        self.assertEqual(True, (self.system.sign_up("try2", "try123")).success)
 
     # 2.2
     def test_signup_fail(self):
@@ -118,17 +118,17 @@ class SystemTestCase(unittest.TestCase):
         self.system.init(self.manager['name'], self.manager['password'])
         # test
         # empty password
-        self.assertEqual(False, self.system.sign_up("need to fail", ""))
+        self.assertEqual(False, (self.system.sign_up("need to fail", "")).success)
         # empty user name
-        self.assertEqual(False, self.system.sign_up("", "need to fail"))
+        self.assertEqual(False, (self.system.sign_up("", "need to fail")).success)
         # should work
         self.system.sign_up("try1", "try123")
         # already exists
-        self.assertEqual(False, self.system.sign_up("try1", "try123"))
+        self.assertEqual(False, (self.system.sign_up("try1", "try123")).success)
         # should work
         self.system.sign_up("try2", "try123")
         # already exists
-        self.assertEqual(False, self.system.sign_up("try1", "try111"))
+        self.assertEqual(False, (self.system.sign_up("try1", "try111")).success)
 
     # 2.5
     def test_search_success(self):
@@ -141,8 +141,8 @@ class SystemTestCase(unittest.TestCase):
         self.store = self.system.create_store("shaiozim baam")
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
-        self.assertEqual(self.system.search("shaioz")[0]['category'], "omo")
-        self.assertEqual(self.system.search("omo")[0]['name'], "shaioz")
+        self.assertEqual(self.system.search("shaioz").value[0]['category'], "omo")
+        self.assertEqual(self.system.search("omo").value[0]['name'], "shaioz")
 
     # 2.5
     def test_search_fail(self):
@@ -152,10 +152,10 @@ class SystemTestCase(unittest.TestCase):
         self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
-        self.store = self.system.create_store("shaiozim baam")
+        self.store = self.system.create_store("shaiozim baam").value
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
-        self.assertEqual(self.system.search("avabash"), [])
+        self.assertEqual(self.system.search("avabash").value, [])
 
     # 3.1
     def test_logout_success(self):
@@ -166,7 +166,7 @@ class SystemTestCase(unittest.TestCase):
         # user isn't logged in - shouldnt work
         self.system.login("try1", "try123")
         # user is logged in - should work
-        self.assertEqual(True, self.system.logout())
+        self.assertEqual(True, self.system.logout().success)
         for user in self.system.users:
             self.assertNotEqual("try1", user.username)
 
@@ -177,12 +177,12 @@ class SystemTestCase(unittest.TestCase):
         self.system.sign_up("try1", "try123")
         self.system.sign_up("try2", "try123")
         # user isn't logged in - shouldnt work
-        self.assertEqual(False, self.system.logout())
+        self.assertEqual(False, self.system.logout().success)
         self.system.login("try1", "try123")
         # user is logged in - should work
         self.system.logout()
         # user is already logged out - shouldnt work
-        self.assertEqual(False, self.system.logout())
+        self.assertEqual(False, self.system.logout().success)
 
     # 6.2
     def test_remove_user_success(self):
@@ -194,7 +194,7 @@ class SystemTestCase(unittest.TestCase):
         # test
         self.system.login("man", "123456")
         # should work
-        self.assertEqual(True, self.system.remove_user("try2"))
+        self.assertEqual(True, self.system.remove_user("try2").success)
         for user in self.system.users:
             self.assertNotEqual("try2", user.username)
 
@@ -207,13 +207,13 @@ class SystemTestCase(unittest.TestCase):
         self.system.login(self.manager['name'], self.manager['password'])
         # test
         # cant remove the system manager
-        self.assertEqual(False, self.system.remove_user("man"))
+        self.assertEqual(False, self.system.remove_user("man").success)
         self.system.login("man", "123456")
         # doesnt exist
-        self.assertEqual(False, self.system.remove_user("try3"))
+        self.assertEqual(False, self.system.remove_user("try3").success)
         self.system.remove_user("try2")
         # doesn't exist
-        self.assertEqual(False, self.system.remove_user("try2"))
+        self.assertEqual(False, self.system.remove_user("try2").success)
 
 
 if __name__ == '__main__':

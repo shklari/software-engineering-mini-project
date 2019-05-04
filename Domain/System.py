@@ -2,7 +2,7 @@ from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
-from Domain.StoreOwner import StoreOwner
+from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 
@@ -12,68 +12,58 @@ import functools
 class System:
 
     def __init__(self):
-        self.system_manager = 0
-        self.cur_user = 0
+        self.system_manager = None
+        self.cur_user = None
         self.users = {}  # {username, user}
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
-        if not self.sign_up(system_manager_user_name, system_manager_password):
-            return None
+        result = self.sign_up(system_manager_user_name, system_manager_password)
+        if not result.success:
+            return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password)
         self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
-        return self.cur_user
+        return ResponseObject(True, self.cur_user, "")
 
     def sign_up(self, username, password):
         if username is None or username == '':
-            print("Username can not be empty")
-            return False
+            return ResponseObject(False, False, "Username can not be empty")
         if password is None or password == '':
-            print("Password can not be empty")
-            return False
+            return ResponseObject(False, False, "Password can not be empty")
         if username in self.users:
-            print("This user name is taken")
-            return False
+            return ResponseObject(False, False, "This user name is already taken")
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password)
             self.users[username] = new_user
-            print("Welcome, new user {}! You may now log in".format(username))
-            return True
+            return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
 
     def login(self, username, password):
         if username not in self.users:
-            print("No such user")
-            return False
+            return ResponseObject(False, False, "Username doesn't exist")
         user_to_check = self.users[username]
         if self.cur_user.logged_in:
-            print("Someone else is logged in")
-            return False
+            return ResponseObject(False, False, "Someone else is logged in")
         if user_to_check.logged_in:
-            print("You are already logged in")
-            return False
+            return ResponseObject(False, False, "You are already logged in")
         elif not pbkdf2_sha256.verify(password, user_to_check.password):
-            print("Wrong password")
-            return False
+            return ResponseObject(False, False, "Wrong password")
         else:
             user_to_check.logged_in = True
             self.cur_user = user_to_check
-            print("Hey {}! You are now logged in".format(username))
-            return True
+            return ResponseObject(True, True, "Hey " + username + "! You are now logged in")
 
     def logout(self):
         if not self.cur_user.logged_in:
-            print("You can't log out until you log in")
-            return False
+            return ResponseObject(False, False, "You are not logged in")
         else:
             self.cur_user.logged_in = False
             new_user = Guest()
             self.cur_user = new_user
-            print("You are now logged out")
-            return True
+            return ResponseObject(True, True, "Logged out successfully")
 
     def search(self, param):
         ret_list = []
@@ -81,8 +71,8 @@ class System:
             boo = store.search_item_by_name(param)
             if boo:
                 ret_list.append(store.search_item_by_name(param))
-            ret_list.extend(store.search_item_by_category(param))
-            ret_list.extend(store.search_item_by_price(param))
+                ret_list.extend(store.search_item_by_category(param))
+                ret_list.extend(store.search_item_by_price(param))
         return ret_list
 
     @staticmethod
@@ -147,26 +137,26 @@ class System:
         return flag
 
     def create_store(self, store_name):
+        if not isinstance(self.cur_user, User):
+            return ResponseObject(False, None, "You are not a subscriber in the system")
         b = False
         for stur in self.stores:
             if stur.name == store_name:
                 b = True
-        if isinstance(self.cur_user, User) and not b:
+        if b:
+            return ResponseObject(False, None, "Store already exists")
+        else:
             new_store = Store(store_name, self.cur_user)
             self.stores.append(new_store)
-            return new_store
-        return False
+            return ResponseObject(True, new_store, "")
 
     def remove_user(self, username):
         if not isinstance(self.cur_user, SystemManager):
-            print("You can't remove a user, you are not the system manager")
-            return False
+            return ResponseObject(False, False, "You can't remove a user, you are not the system manager")
         if self.system_manager.username == username:
-            print("You can't remove yourself silly")
-            return False
+            return ResponseObject(False, False, "You can't remove yourself silly")
         if username not in self.users:
-            print("This user does not exist")
-            return False
+            return ResponseObject(False, False, "This user does not exist")
         user_to_remove = self.users[username]
         stores_to_remove = []
         for store in self.stores:
@@ -175,8 +165,7 @@ class System:
         for st in stores_to_remove:
             self.stores.remove(st)
         del self.users[username]
-        print("System manager removed the user {}".format(username))
-        return True
+        return ResponseObject(True, True, "User " + username + " removed")
 
     def get_store(self, store_name):
         for stor in self.stores:
