@@ -54,7 +54,9 @@ class ServiceImpl(ServiceInterface):
         else:
             created = result.value
             message = "New store created.\nName: " + created.name + "\nOwners: "
-            sowners = ",".join(created.storeOwners)
+            sowners = ""
+            for o in created.storeOwners:
+                sowners += o.username + ", "
             message += sowners
             owners = []
             for o in created.storeOwners:
