@@ -2,7 +2,7 @@ from Domain.ExternalSystems import CollectingSystem
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
-from Domain.StoreOwner import StoreOwner
+from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 
@@ -18,51 +18,43 @@ class System:
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
-        if not self.sign_up(system_manager_user_name, system_manager_password):
-            return None
+        result = self.sign_up(system_manager_user_name, system_manager_password)
+        if not result.success:
+            return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password)
         self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
-        return self.cur_user
+        return ResponseObject(True, self.cur_user, "")
 
     def sign_up(self, username, password):
         if username is None or username == '':
-            print("Username can not be empty")
-            return False
+            return ResponseObject(False, False, "Username can not be empty")
         if password is None or password == '':
-            print("Password can not be empty")
-            return False
+            return ResponseObject(False, False, "Password can not be empty")
         if username in self.users:
-            print("This user name is taken")
-            return False
+            return ResponseObject(False, False, "This user name is already taken")
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password)
             self.users[username] = new_user
-            print("Welcome, new user {}! You may now log in".format(username))
-            return True
+            return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
 
     def login(self, username, password):
         if username not in self.users:
-            print("No such user")
-            return False
+            return ResponseObject(False, False, "Username doesn't exist")
         user_to_check = self.users[username]
         if self.cur_user.logged_in:
-            print("Someone else is logged in")
-            return False
+            return ResponseObject(False, False, "Someone else is logged in")
         if user_to_check.logged_in:
-            print("You are already logged in")
-            return False
+            return ResponseObject(False, False, "You are already logged in")
         elif not pbkdf2_sha256.verify(password, user_to_check.password):
-            print("Wrong password")
-            return False
+            return ResponseObject(False, False, "Wrong password")
         else:
             user_to_check.logged_in = True
             self.cur_user = user_to_check
-            print("Hey {}! You are now logged in".format(username))
-            return True
+            return ResponseObject(True, True, "Hey " + username + "! You are now logged in")
 
     def logout(self):
         if not self.cur_user.logged_in:

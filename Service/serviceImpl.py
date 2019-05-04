@@ -1,5 +1,6 @@
 from Service.service import ServiceInterface
 from Domain.System import System
+from Domain.Response import ResponseObject
 
 
 class ServiceImpl(ServiceInterface):
@@ -9,28 +10,25 @@ class ServiceImpl(ServiceInterface):
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password):
-        if self.sys.init_system(sm_username, sm_password) is not None:
-            print("System initialized successfully")
-            return True
+        result = self.sys.init_system(sm_username, sm_password)
+        if result.success:
+            return ResponseObject(True, result.value, "System initialized successfully")
         else:
-            print("System failed to initialize")
-            return False
+            return ResponseObject(False, False, "System failed to initialize\n" + result.message)
 
     def sign_up(self, username, password):
-        if self.sys.sign_up(username, password):
-            print("Signed up successfully")
-            return True
+        result = self.sys.sign_up(username, password)
+        if result.success:
+            return ResponseObject(True, True, "Signed up successfully \n" + result.message)
         else:
-            print("Sign up failed")
-            return False
+            return ResponseObject(False, False, "Sign up failed \n" + result.message)
 
     def login(self, username, password):
-        if self.sys.login(username, password):
-            print("Logged in")
-            return True
+        result = self.sys.login(username, password)
+        if result.success:
+            return result
         else:
-            print("Login failed. Please check username and password are correct")
-            return False
+            return ResponseObject(False, False, "Login failed.\n" + result.message)
 
     def search(self, keyword):
         items_list = self.sys.search(keyword)
