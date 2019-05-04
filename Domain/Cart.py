@@ -11,7 +11,6 @@ class Cart:
             self.items_and_quantities[item_name] += quantity
         else:
             self.items_and_quantities[item_name] = quantity
-        return True
 
     def remove_item_from_cart(self, item_name):
         if item_name in self.items_and_quantities:
