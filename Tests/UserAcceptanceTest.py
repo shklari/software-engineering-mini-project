@@ -66,7 +66,7 @@ class UserTestCase(unittest.TestCase):
     item = {}
     store = {}
     system = ServiceBridge()
-    manager = {"bascket": 0, "name": "man", "password": "123456"}
+    manager = {"basket": 0, "name": "man", "password": "123456"}
     collecting = CollectingSystem()
     supplying = SupplyingSystem()
     consistency = ConsistencySystem()
@@ -75,7 +75,7 @@ class UserTestCase(unittest.TestCase):
         self.item = 0
         self.store = 0
         self.system = ServiceBridge()
-        self.manager = {"bascket": 0, "name": "man", "password": "123456"}
+        self.manager = {"basket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
         self.consistency = ConsistencySystem()

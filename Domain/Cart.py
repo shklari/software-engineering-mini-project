@@ -21,3 +21,10 @@ class Cart:
 
     def get_store_name(self):
         return self.store_name
+
+    def get_item_if_available(self, item_name):
+        if item_name not in self.items_and_quantities:
+            print("item is not available in store")
+            return False
+        self.items_and_quantities.get(item_name)
+        return True
