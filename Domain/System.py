@@ -191,4 +191,4 @@ class System:
         if not available:
             return ResponseObject(False, False, "Item " + item_name + "is not available")
         self.cur_user.add_to_cart(store_name, item_name, quantity)
-        return ResponseObject(True, True, "Item " + item_name + " added successfully to cart " + store_name)
+        return ResponseObject(True, True, "")

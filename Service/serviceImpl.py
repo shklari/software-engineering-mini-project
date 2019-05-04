@@ -54,7 +54,9 @@ class ServiceImpl(ServiceInterface):
         else:
             created = result.value
             message = "New store created.\nName: " + created.name + "\nOwners: "
-            sowners = ",".join(created.storeOwners)
+            sowners = ""
+            for o in created.storeOwners:
+                sowners += o.username + ", "
             message += sowners
             owners = []
             for o in created.storeOwners:
@@ -81,14 +83,13 @@ class ServiceImpl(ServiceInterface):
     def add_to_cart(self, store_name, item_name, quantity):
         result = self.sys.add_to_cart(store_name, item_name, quantity)
         if not result.success:
-            print()
             return ResponseObject(False, False, "Can't add item " + item_name + " to cart " + store_name + "\n" + result.message)
-        print("Item " + item_name + " added successfully to cart " + store_name)
         curr_user = self.sys.get_cur_user()
-        cart = curr_user.get_cart(store_name)
-        if not cart:
-            return cart
-        return cart.items_and_quantities
+        cart_result = curr_user.get_cart(store_name)
+        if not cart_result.success:
+            return ResponseObject(False, False, "Can't add item " + item_name + " to cart " + store_name + "\n" + cart_result.message)
+        cart = cart_result.value
+        return ResponseObject(True, cart.items_and_quantities, "Item " + item_name + " added successfully to cart " + store_name)
 
     def remove_from_cart(self, store_name, item_name):
         curr_user = self.sys.get_cur_user()
