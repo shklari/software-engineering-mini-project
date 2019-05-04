@@ -1,4 +1,5 @@
 from log.Log import Log
+from .Response import ResponseObject
 
 
 class Cart:
@@ -19,9 +20,9 @@ class Cart:
         if item_name in self.items_and_quantities:
             del self.items_and_quantities[item_name]
             self.log.set_info("items has been successfully removed from cart", "eventLog")
-            return True
+            return ResponseObject(True, True, "Item " + item_name + "has been successfully removed from cart")
         self.log.set_info("remove item fail: no such item in cart", "errorLog")
-        return False
+        return ResponseObject(False, False, "The item " + item_name + " doesn't exist in this cart")
 
     def get_store_name(self):
         return self.store_name
@@ -32,3 +33,6 @@ class Cart:
             return False
         self.items_and_quantities.get(item_name)
         return True
+
+
+

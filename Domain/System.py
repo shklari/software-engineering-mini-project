@@ -131,8 +131,11 @@ class System:
         amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
+        if not flag:
+            return ResponseObject(False, False, "Payment rejected")
         for item in items:
             flag = self.cur_user.remove_from_cart(item.store_name, item)
+
             # Todo : remove items from store inventory
         return flag
 

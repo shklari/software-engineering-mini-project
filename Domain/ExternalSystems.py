@@ -16,7 +16,7 @@ class CollectingSystem(object):
         else:
             return True
 
-    def collect(self):
+    def collect(self, amount, credit_details):
         return self.init()
 
     # 7
