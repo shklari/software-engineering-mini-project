@@ -167,8 +167,7 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         # user is logged in - should work
         self.assertEqual(True, self.system.logout().success)
-        for user in self.system.users:
-            self.assertNotEqual("try1", user.username)
+        self.assertEqual(False, self.system.real.sys.cur_user.logged_in)
 
     # 3.1
     def test_logout_fail(self):
@@ -195,8 +194,8 @@ class SystemTestCase(unittest.TestCase):
         self.system.login("man", "123456")
         # should work
         self.assertEqual(True, self.system.remove_user("try2").success)
-        for user in self.system.users:
-            self.assertNotEqual("try2", user.username)
+        for user in self.system.real.sys.users:
+            self.assertNotEqual("try2", user)
 
     # 6.2
     def test_remove_user_fail(self):
