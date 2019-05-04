@@ -170,8 +170,8 @@ class System:
     def get_store(self, store_name):
         for stor in self.stores:
             if store_name == stor.name:
-                return stor
-        return None
+                return ResponseObject(True, stor, "")
+        return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
 
     def get_user(self, username):
         if username in self.users:
@@ -183,6 +183,12 @@ class System:
         return self.cur_user
 
     def add_to_cart(self, store_name, item_name, quantity):
-        store = self.get_store(store_name)
-        item = store.get_item_if_available(item_name, quantity)
-        return self.cur_user.add_to_cart(store_name, item, quantity) if item else False
+        result = self.get_store(store_name)
+        if not result.success:
+            return ResponseObject(False, False, result.message)
+        store = result.value
+        available = store.get_item_if_available(item_name, quantity)
+        if not available:
+            return ResponseObject(False, False, "Item " + item_name + "is not available")
+        self.cur_user.add_to_cart(store_name, item_name, quantity)
+        return ResponseObject(True, True, "Item " + item_name + " added successfully to cart " + store_name)

@@ -6,7 +6,6 @@ class Log(object):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     LOG_FILE_EVENT = dir_path+"\\eventLog.Log"
     LOG_FILE_ERROR = dir_path+"\\errorLog.Log"
-    print(dir_path+"\\eventLog.Log")
 
     def __init__(self, msg, log):
         if log == '':

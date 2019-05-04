@@ -70,18 +70,19 @@ class ServiceImpl(ServiceInterface):
 
     def get_cart(self, store_name):
         curr_user = self.sys.get_cur_user()
-        cart = curr_user.get_cart(store_name)
-        if not cart:
-            print(store_name + " cart doesn't exist")
-            return False
+        result = curr_user.get_cart(store_name)
+        if not result.success:
+            return result
+        cart = result.value
         for i in cart.keys():
             print("Item name: " + i + "quantity: " + cart[i])
-        return cart.items_and_quantities
+        return ResponseObject(True, cart.items_and_quantities, "")
 
     def add_to_cart(self, store_name, item_name, quantity):
-        if not self.sys.add_to_cart(store_name, item_name, quantity):
-            print("Can't add item " + item_name + " to cart " + store_name)
-            return False
+        result = self.sys.add_to_cart(store_name, item_name, quantity)
+        if not result.success:
+            print()
+            return ResponseObject(False, False, "Can't add item " + item_name + " to cart " + store_name + "\n" + result.message)
         print("Item " + item_name + " added successfully to cart " + store_name)
         curr_user = self.sys.get_cur_user()
         cart = curr_user.get_cart(store_name)
