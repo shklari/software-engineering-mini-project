@@ -125,7 +125,7 @@ class ServiceImpl(ServiceInterface):
         return inv
 
     def remove_item_from_inventory(self, item_name, store_name):
-        store = self.sys.get_store(store_name)
+        store = self.sys.get_store(store_name).value
         if store is None:
             print("Error: can't remove items from store " + store_name)
             return False
