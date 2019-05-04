@@ -93,15 +93,13 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
-    if websocket.open:
-        try:
-            async for message in websocket:
-                data = json.loads(message)
-                await datahandler(data, websocket)
-        finally:
-            await unregister(websocket)
-    else:
-        print("not good yo")
+    while not websocket.open:
+        await websockets.connect('wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7')
+    try:
+        async for message in websocket:
+            data = json.loads(message)
+            await datahandler(data, websocket)
+    finally:
         await unregister(websocket)
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.7', 6789))
