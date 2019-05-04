@@ -89,10 +89,10 @@ class UserTestCase(unittest.TestCase):
         # test
         # should work
         self.assertEqual(True, self.system.login("try1", "try123").success)
-        self.assertEqual("try1", self.system.cur_user.username)
+        self.assertEqual("try1", self.system.real.sys.cur_user.username)
         # already logged in
         self.system.login("try2", "try123")
-        self.assertEqual("try1", self.system.cur_user.username)
+        self.assertEqual("try1", self.system.real.sys.cur_user.username)
 
     # 2.3
     def test_login_fail(self):
@@ -113,7 +113,7 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(False, self.system.login("try1", "try123").success)
         # already logged in
         self.assertEqual(False, self.system.login("try2", "try123").success)
-        self.assertEqual("try1", self.system.cur_user.username)
+        self.assertEqual("try1", self.system.real.sys.cur_user.username)
 
     # 2.6
     # adding item for a cart
