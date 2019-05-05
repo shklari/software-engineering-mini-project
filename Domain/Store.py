@@ -183,13 +183,13 @@ class Store(object):
                         to_remove = self.remove_owner_rec(owner, owner_to_remove)
                     else:
                         self.log.set_info("user is not the appointer", "errorLog")
-                        return ResponseObject(False, False, "User " + owner + " is not the appointer of user " + owner_to_remove)
+                        return ResponseObject(False, False, "User " + owner.username + " is not the appointer of user " + owner_to_remove.username)
                 else:
                     self.log.set_info("user is not an owner of this store", "errorLog")
-                    return ResponseObject(False, False, "User " + owner_to_remove + " is not an owner of this store")
+                    return ResponseObject(False, False, "User " + owner_to_remove.username + " is not an owner of this store")
             else:
                 self.log.set_info("user is not an owner of this store", "errorLog")
-                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
+                return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
@@ -240,10 +240,10 @@ class Store(object):
                     return ResponseObject(True, True, "")
                 else:
                     self.log.set_info("user is already a manager of this store", "errorLog")
-                    return ResponseObject(False, False, "User " + new_manager + " is already a manager of this store")
+                    return ResponseObject(False, False, "User " + new_manager.username + " is already a manager of this store")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
+                return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
@@ -277,13 +277,13 @@ class Store(object):
                                         self.log.set_info("store manager has been removed successfully!", "eventLog")
                                         return ResponseObject(True, True, "")
                             self.log.set_info("the owner is not the appointer for this manager", "errorLog")
-                            return ResponseObject(False, False, "The user " + owner + " is not the appointer of manager " + manager_to_remove)
+                            return ResponseObject(False, False, "The user " + owner.username + " is not the appointer of manager " + manager_to_remove.username)
                 else:
                     self.log.set_info("user is not a manager of this store", "errorLog")
-                    return ResponseObject(False, False, "User " + manager_to_remove + " is not a manager of this store")
+                    return ResponseObject(False, False, "User " + manager_to_remove.username + " is not a manager of this store")
             else:
                 self.log.set_info("user is no store manager for this store", "errorLog")
-                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
+                return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store manager", "errorLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
