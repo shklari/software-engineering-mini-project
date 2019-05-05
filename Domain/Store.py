@@ -107,16 +107,16 @@ class Store(object):
                     if x['name'] == itemname:
                         self.inventory.remove(x)
                         self.log.set_info("item has been successfully removed from the store inventory!", "eventLog")
-                        return True
+                        return ResponseObject(True, True, "")
                     else:
                         self.log.set_info("item is not in the inventory of this store", "errorLog")
-                        return False
+                        return ResponseObject(False, False, "Item " + itemname + " doesn't exist in the inventory of " + self.name)
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     # 4.1.3
     def edit_item_price(self, user, itemname, new_price):
