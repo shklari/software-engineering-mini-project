@@ -76,9 +76,7 @@ class ServiceImpl(ServiceInterface):
         if not result.success:
             return result
         cart = result.value
-        for i in cart.keys():
-            print("Item name: " + i + "quantity: " + cart[i])
-        return ResponseObject(True, cart.items_and_quantities, "")
+        return ResponseObject(True, {'store_name': cart.store_name, 'items_and_quantities': cart.items_and_quantities}, "")
 
     def add_to_cart(self, store_name, item_name, quantity):
         result = self.sys.add_to_cart(store_name, item_name, quantity)

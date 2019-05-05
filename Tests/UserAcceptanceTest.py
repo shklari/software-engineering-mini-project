@@ -160,10 +160,10 @@ class UserTestCase(unittest.TestCase):
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
         self.assertIsNot(False, self.system.add_to_cart("shaiozim baam", "shaioz", 1).success)
-        self.cart = self.system.get_cart("shaiozim baam").value
-        self.assertIsNot(False, self.cart)
-        self.assertEqual(self.store['name'], self.cart['store_name'])
-        self.assertIsNot(None, self.cart.items_and_quantities[self.item['name']])
+        self.cart = self.system.get_cart("shaiozim baam")
+        self.assertIsNot(False, self.cart.success)
+        self.assertEqual(self.store['name'], self.cart.value['store_name'])
+        self.assertIsNot(None, self.cart.value['items_and_quantities'][self.item['name']])
 
     # 2.7.1
     def test_get_cart_fail(self):
