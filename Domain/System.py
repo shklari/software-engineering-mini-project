@@ -139,11 +139,17 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_manager_from_store(self, store_name, manager_to_remove):
-        store = self.get_store(store_name)
-        if store is None:
-            return False
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
         new_manager_obj = self.get_user(manager_to_remove)
-        return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
+        if new_manager_obj is None:
+            return ResponseObject(False, False, manager_to_remove + " is not a user in the system")
+        remove = store.remove_manager(self.cur_user, new_manager_obj)
+        if not remove.success:
+            return remove
+        return ResponseObject(True, True, "")
 
     def buy_items(self, items):
         # check if items exist in basket??

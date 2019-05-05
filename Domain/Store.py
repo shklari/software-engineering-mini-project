@@ -274,18 +274,18 @@ class Store(object):
                                         self.storeManagers.remove(x)
                                         k.remove_appointee(manager_to_remove)
                                         self.log.set_info("store manager has been removed successfully!", "eventLog")
-                                        return True
+                                        return ResponseObject(True, True, "")
                             self.log.set_info("the owner is not the appointer for this manager", "errorLog")
-                            return False
+                            return ResponseObject(False, False, "The user " + owner + " is not the appointer of manager " + manager_to_remove)
                 else:
                     self.log.set_info("user is not a manager of this store", "errorLog")
-                    return False
+                    return ResponseObject(False, False, "User " + manager_to_remove + " is not a manager of this store")
             else:
                 self.log.set_info("user is no store manager for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store manager", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def search_item_by_name(self, item_name):
         for item in self.inventory:

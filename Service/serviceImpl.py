@@ -200,12 +200,12 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, {'name': store_name, 'storeOwners': owners}, "Owner " + owner_to_remove + " was successfully removed from the store's owners")
 
     def remove_manager(self, store_name, manager_to_remove):
-        if not self.sys.remove_manager_from_store(store_name, manager_to_remove):
-            print("Can't remove manager " + manager_to_remove + " from store " + store_name)
-            return False
-        store = self.sys.get_store(store_name)
+        result = self.sys.remove_manager_from_store(store_name, manager_to_remove)
+        if not result.success:
+            return ResponseObject(False, False, "Can't remove manager " + manager_to_remove + " from store " + store_name + "\n" + result.message)
+        store = self.sys.get_store(store_name).value
         managers = []
         for m in store.storeManagers:
             managers.append({'username': m.username})
-        return {'name': store_name, 'storeManagers': managers}
+        return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
