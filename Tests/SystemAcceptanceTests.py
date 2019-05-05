@@ -138,10 +138,11 @@ class SystemTestCase(unittest.TestCase):
         self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
-        self.store = self.system.create_store("shaiozim baam")
+        self.store = self.system.create_store("shaiozim baam").value
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
         self.assertEqual(self.system.search("shaioz").value[0]['category'], "omo")
+        print(self.system.search("omo").value)
         self.assertEqual(self.system.search("omo").value[0]['name'], "shaioz")
 
     # 2.5
