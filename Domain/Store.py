@@ -127,9 +127,10 @@ class Store(object):
                         x['val'].set_price(new_price)
                         self.log.set_info("item's price has been successfully updated", "eventLog")
                         return ResponseObject(True, True, "")
-                    else:
-                        self.log.set_info("item is not in the inventory of this store", "errorLog")
-                        return ResponseObject(False, False, "Item " + itemname + " doesn't exist in" + self.name + "'s inventory")
+
+                self.log.set_info("item is not in the inventory of this store", "errorLog")
+                return ResponseObject(False, False, "Item " + itemname + " doesn't exist in" + self.name + "'s inventory")
+
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
                 return ResponseObject(False, False, "User is not an owner of store " + self.name)
@@ -160,10 +161,10 @@ class Store(object):
                     return ResponseObject(True, True, "")
                 else:
                     self.log.set_info("user is already an owner of this store", "errorLog")
-                    return ResponseObject(False, False, "User" + new_owner + " is already an owner of this store")
+                    return ResponseObject(False, False, "User" + new_owner.username + " is already an owner of this store")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
+                return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
