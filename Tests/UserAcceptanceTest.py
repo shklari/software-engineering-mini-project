@@ -124,7 +124,7 @@ class UserTestCase(unittest.TestCase):
         self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
-        self.store = self.system.create_store("shaiozim baam")
+        self.store = self.system.create_store("shaiozim baam").value
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         items = self.system.search("shaioz").value
         # test
@@ -176,9 +176,9 @@ class UserTestCase(unittest.TestCase):
         self.store = self.system.create_store("shaiozim baam").value
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
-        self.cart = self.system.get_cart("shaiozim baam")
+        self.cart = self.system.get_cart("shaiozim baam").value
         # cart doesnt exist
-        self.assertEqual(False, self.cart)
+        self.assertEqual(None, self.cart)
         self.system.add_to_cart("shaiozim baam", "shaioz", 1)
         self.assertEqual(None, self.system.get_cart("inbarim baam").value)
 
@@ -209,7 +209,8 @@ class UserTestCase(unittest.TestCase):
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
-        self.system.add_item_to_inventory(self.item, self.store.name, 1)
+        print(self.store)
+        self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
         self.assertEqual(False, self.system.remove_from_cart("shaiozim baam", "shaioz").success)
         self.assertIsNot(False, self.system.add_to_cart("shaiozim baam", "shaioz", 1).success)
