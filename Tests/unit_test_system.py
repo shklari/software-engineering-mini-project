@@ -33,18 +33,18 @@ class TestUser(UnitTestSystem):
     def test_login(self):
         self.system.init_system('shaioz', '1234')
         self.assertFalse(self.system.cur_user.logged_in, 'no one is signed in')
-        self.assertFalse(self.system.login('avokadosh', '9876'), 'user not signed up')
+        self.assertFalse(self.system.login('avokadosh', '9876').success, 'user not signed up')
         self.system.sign_up('avokadosh', '9876')
-        self.assertFalse(self.system.login('avokadosh', '9877'), 'wrong password')
-        self.assertTrue(self.system.login('avokadosh', '9876'))
+        self.assertFalse(self.system.login('avokadosh', '9877').success, 'wrong password')
+        self.assertTrue(self.system.login('avokadosh', '9876').success)
         self.assertTrue(self.system.cur_user.logged_in)
-        self.assertFalse(self.system.login('avokadosh', '9876'), 'already logged in')
+        self.assertFalse(self.system.login('avokadosh', '9876').success, 'already logged in')
 
     def test_logout(self):
         self.system.init_system('shaioz', '1234')
-        self.assertFalse(self.system.logout(), 'no one is signed in')
+        self.assertFalse(self.system.logout().success, 'no one is signed in')
         self.system.login('shaioz', '1234')
-        self.assertTrue(self.system.logout())
+        self.assertTrue(self.system.logout().success)
         self.assertFalse(self.system.cur_user.logged_in, 'user in now logged out')
 
     def test_remove_user(self):
@@ -52,15 +52,15 @@ class TestUser(UnitTestSystem):
         self.system.sign_up('ava bash', '666')
         self.system.sign_up('avokadosh', '9876')
         self.system.login('ava bash', '666')
-        self.assertFalse(self.system.remove_user('avokadosh'), 'ava is not system manager')
+        self.assertFalse(self.system.remove_user('avokadosh').success, 'ava is not system manager')
         self.system.create_store('zara')
         self.system.create_store('pnb')
         self.system.logout()
         self.system.login('shaioz', '1234')
-        self.assertFalse(self.system.remove_user('shaioz'), 'system manager can not remove himself')
-        self.assertFalse(self.system.remove_user('inbar'), 'user does not exist')
-        self.assertTrue(self.system.remove_user('avokadosh'), 'removing a user from user list')
-        self.assertFalse(self.system.remove_user('avokadosh'), 'user does not exist anymore')
+        self.assertFalse(self.system.remove_user('shaioz').success, 'system manager can not remove himself')
+        self.assertFalse(self.system.remove_user('inbar').success, 'user does not exist')
+        self.assertTrue(self.system.remove_user('avokadosh').success, 'removing a user from user list')
+        self.assertFalse(self.system.remove_user('avokadosh').success, 'user does not exist anymore')
         found_avas_store = False
         for store in self.system.stores:
             for owner in store.storeOwners:
@@ -79,11 +79,11 @@ class TestUser(UnitTestSystem):
 class TestStore(UnitTestSystem):
     def test_create_store(self):
         self.system.init_system('shaioz', '1234')
-        self.assertFalse(self.system.create_store('zara'), 'not logged in yet')
+        self.assertFalse(self.system.create_store('zara').success, 'not logged in yet')
         self.assertEqual(len(self.system.stores), 0)
         self.system.login('shaioz', '1234')
-        self.assertTrue(self.system.create_store('zara'))
-        self.assertFalse(self.system.create_store('zara'), 'store name already exists')
+        self.assertTrue(self.system.create_store('zara').success)
+        self.assertFalse(self.system.create_store('zara').success, 'store name already exists')
         self.assertEqual(len(self.system.stores), 1)
         self.assertEqual(self.system.stores[0].name, 'zara')
 

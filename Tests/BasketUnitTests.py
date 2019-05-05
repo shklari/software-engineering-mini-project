@@ -30,5 +30,5 @@ class StoreUnitTests(unittest.TestCase):
         self.assertEqual(len(self.basket.carts), 1)
         self.assertTrue(self.cart in self.basket.carts)
         self.basket.remove_item_from_cart(self.store.name, 'bamba')
-        self.assertFalse(self.cart.get_item_if_available('bamba'))
+        self.assertFalse(self.cart.get_item_if_available('bamba').success)
 
