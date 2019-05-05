@@ -71,8 +71,6 @@ class TestStoreAction(SystemIntegrationTests):
         self.assertTrue(self.system.sign_up('ava bash', '666'))
         self.assertTrue(self.system.sign_up('inbar', '9876'))
         self.assertTrue(self.system.sign_up('shklark', '6789'))
-        inbar = self.system.get_user('inbar')
-        itay = self.system.get_user('shklark')
         self.assertTrue(self.system.login('ava bash', '666'))
         self.assertTrue(self.system.create_store('avastore'))
         self.assertTrue(self.system.add_owner_to_store('avastore', 'inbar'))
