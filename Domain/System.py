@@ -102,7 +102,7 @@ class System:
     def add_owner_to_store(self, store_name, new_owner_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
-            return ResponseObject(False, False, "Store " + store_name + " doesn't exist in the system")
+            return store_result
         store = store_result.value
         new_owner_obj = self.get_user(new_owner_name)
         if new_owner_obj is None:
@@ -120,11 +120,17 @@ class System:
         return False if new_owner_obj is None else store.remove_owner(self.cur_user, new_owner_obj)
 
     def add_manager_to_store(self, store_name, new_manager_name, permissions):
-        store = self.get_store(store_name)
-        if store is None:
-            return False
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
         new_manager_obj = self.get_user(new_manager_name)
-        return False if new_manager_obj is None else store.add_new_manager(self.cur_user, new_manager_obj, permissions)
+        if new_manager_obj is None:
+            return ResponseObject(False, False, new_manager_name + " is not a user in the system")
+        add = store.add_new_manager(self.cur_user, new_manager_obj, permissions)
+        if not add.success:
+            return add
+        return ResponseObject(True, True, "")
 
     def remove_manager_from_store(self, store_name, manager_to_remove):
         store = self.get_store(store_name)

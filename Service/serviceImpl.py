@@ -173,21 +173,21 @@ class ServiceImpl(ServiceInterface):
         result = self.sys.add_owner_to_store(store_name, new_owner)
         if not result.success:
             return ResponseObject(False, False, "Can't add new owner " + new_owner + " to store " + store_name + "\n" + result.message)
-        store = self.sys.get_store(store_name).value
+        store = self.sys.get_store(store_name).value  # already checked if store exists in add_owner_to_store in system
         owners = []
         for o in store.storeOwners:
             owners.append({'username': o.username})
         return ResponseObject(True, {'name': store_name, 'storeOwners': owners}, "New owner " + new_owner + " added successfully to store " + store_name)
 
     def add_new_manager(self, store_name, new_manager, permissions):
-        if not self.sys.add_manager_to_store(store_name, new_manager, permissions):
-            print("Can't add new manager " + new_manager + " to store " + store_name)
-            return False
-        store = self.sys.get_store(store_name)
+        result = self.sys.add_manager_to_store(store_name, new_manager, permissions)
+        if not result.success:
+            return ResponseObject(False, False, "Can't add new manager " + new_manager + " to store " + store_name + "\n" + result.message)
+        store = self.sys.get_store(store_name).value
         managers = []
         for m in store.storeManagers:
             managers.append({'username': m.username})
-        return {'name': store_name, 'storeManagers': managers}
+        return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "New manager " + new_manager + " added successfully to store " + store_name)
 
     def remove_owner(self, store_name, owner_to_remove):
         if not self.sys.remove_owner_from_store(store_name, owner_to_remove):

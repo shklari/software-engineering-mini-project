@@ -236,16 +236,16 @@ class Store(object):
                         if k.username == owner.username:
                             k.add_appointee(new_manager)
                     self.log.set_info("new store manager has been added successfully!", "eventLog")
-                    return True
+                    return ResponseObject(True, True, "")
                 else:
                     self.log.set_info("user is already a manager of this store", "errorLog")
-                    return False
+                    return ResponseObject(False, False, "User " + new_manager + " is already a manager of this store")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def set_permissions_to_manager(self, owner, manager, permissions):
         for k in self.storeOwners:
