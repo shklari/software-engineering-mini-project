@@ -108,9 +108,9 @@ class Store(object):
                         self.inventory.remove(x)
                         self.log.set_info("item has been successfully removed from the store inventory!", "eventLog")
                         return ResponseObject(True, True, "")
-                    else:
-                        self.log.set_info("item is not in the inventory of this store", "errorLog")
-                        return ResponseObject(False, False, "Item " + itemname + " doesn't exist in the inventory of " + self.name)
+
+                self.log.set_info("item is not in the inventory of this store", "errorLog")
+                return ResponseObject(False, False, "Item " + itemname + " doesn't exist in the inventory of " + self.name)
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
                 return ResponseObject(False, False, "User is not an owner of store " + self.name)
