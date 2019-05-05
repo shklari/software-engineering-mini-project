@@ -100,11 +100,17 @@ class System:
         return result_list
 
     def add_owner_to_store(self, store_name, new_owner_name):
-        store = self.get_store(store_name)
-        if store is None:
-            return False
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False, "Store " + store_name + " doesn't exist in the system")
+        store = store_result.value
         new_owner_obj = self.get_user(new_owner_name)
-        return False if new_owner_obj is None else store.add_new_owner(self.cur_user, new_owner_obj)
+        if new_owner_obj is None:
+            return ResponseObject(False, False, new_owner_name + " is not a user in the system")
+        add = store.add_new_owner(self.cur_user, new_owner_obj)
+        if not add.success:
+            return add
+        return ResponseObject(True, True, "")
 
     def remove_owner_from_store(self, store_name, owner_to_remove):
         store = self.get_store(store_name)

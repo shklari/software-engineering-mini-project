@@ -157,16 +157,16 @@ class Store(object):
                         if k.username == owner.username:
                             k.add_appointee(new_owner)
                     self.log.set_info("new store owner has been added successfully!", "eventLog")
-                    return True
+                    return ResponseObject(True, True, "")
                 else:
                     self.log.set_info("user is already an owner of this store", "errorLog")
-                    return False
+                    return ResponseObject(False, False, "User" + new_owner + " is already an owner of this store")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     # 4.4
     # owner, owner_to_remove = User(...)

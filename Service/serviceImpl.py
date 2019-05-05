@@ -170,14 +170,14 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, {'name': ret.name, 'price': ret.price, 'category': ret.category}, "The price of item " + item_name + " was successfully changed")
 
     def add_new_owner(self, store_name, new_owner):
-        if not self.sys.add_owner_to_store(store_name, new_owner):
-            print("Can't add new owner " + new_owner + " to store " + store_name)
-            return False
-        store = self.sys.get_store(store_name)
+        result = self.sys.add_owner_to_store(store_name, new_owner)
+        if not result.success:
+            return ResponseObject(False, False, "Can't add new owner " + new_owner + " to store " + store_name + "\n" + result.message)
+        store = self.sys.get_store(store_name).value
         owners = []
         for o in store.storeOwners:
             owners.append({'username': o.username})
-        return {'name': store_name, 'storeOwners': owners}
+        return ResponseObject(True, {'name': store_name, 'storeOwners': owners}, "New owner " + new_owner + " added successfully to store " + store_name)
 
     def add_new_manager(self, store_name, new_manager, permissions):
         if not self.sys.add_manager_to_store(store_name, new_manager, permissions):
