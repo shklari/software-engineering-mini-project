@@ -154,19 +154,20 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, True, "The quantity of item " + item_name + " was successfully decreased")
 
     def edit_item_price(self, store_name, item_name, new_price):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't edit items in store " + store_name)
-            return False
+        store_result = self.sys.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False, "Error: can't edit items in store " + store_name + "\n" + store_result.message)
+        store = store_result.value
         user = self.sys.get_cur_user()
         if user is None:
-            print("Error: no current user")
-            return False
-        if not store.edit_item_price(user, item_name, new_price):
-            print("Error: can't edit item " + item_name + " in store " + store_name)
-            return False
+            return ResponseObject(False, False, "Error: no current user")
+        edit = store.edit_item_price(user, item_name, new_price)
+        if not edit.success:
+            return ResponseObject(False, False, "Error: can't edit item " + item_name + " in store " + store_name + "\n" + edit.message)
         ret = store.search_item_by_name(item_name)
-        return {'name': ret.name, 'price': ret.price, 'category': ret.category}
+        if not ret:
+            return ResponseObject(False, False, "Error: item " + item_name + "doesn't exist in this store's inventory")
+        return ResponseObject(True, {'name': ret.name, 'price': ret.price, 'category': ret.category}, "The price of item " + item_name + " was successfully changed")
 
     def add_new_owner(self, store_name, new_owner):
         if not self.sys.add_owner_to_store(store_name, new_owner):

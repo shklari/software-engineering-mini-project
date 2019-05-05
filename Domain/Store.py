@@ -126,16 +126,16 @@ class Store(object):
                     if x['name'] == itemname:
                         x['val'].set_price(new_price)
                         self.log.set_info("item's price has been successfully updated", "eventLog")
-                        return True
+                        return ResponseObject(True, True, "")
                     else:
                         self.log.set_info("item is not in the inventory of this store", "errorLog")
-                        return False
+                        return ResponseObject(False, False, "Item " + itemname + " doesn't exist in" + self.name + "'s inventory")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def set_discount_policy(self, new_policy):
         if isinstance(new_policy, DiscountPolicy):
