@@ -104,23 +104,22 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
         return ResponseObject(True, True, "Transaction succeeded. Items removed from basket\n" + result.message)
 
-    # item ::= {'item_name': string, 'price': int, 'category': string, 'store_name': string}
+    # item ::= {'name': string, 'price': int, 'category': string, 'store_name': string}
     def add_item_to_inventory(self, item, store_name, quantity):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't add items to store " + store_name)
-            return False
+        store_result = self.sys.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False, "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        store = store_result.value
         user = self.sys.get_cur_user()
         if user is None:
-            print("Error: no current user")
-            return False
-        if not store.add_item_to_inventory(user, item, quantity):
-            print("Error: can't add item " + item + " to store " + store_name)
-            return False
+            return ResponseObject(False, False, "Error: no current user")
+        add = store.add_item_to_inventory(user, item, quantity)
+        if not add.success:
+            return ResponseObject(False, False, "Error: can't add item " + item['name'] + " to store " + store_name + "\n" + add.message)
         inv = []
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return inv
+        return ResponseObject(True, inv, "Item " + item['name'] + " added successfully to " + store_name + " inventory")
 
     def remove_item_from_inventory(self, item_name, store_name):
         store = self.sys.get_store(store_name).value

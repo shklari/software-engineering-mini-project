@@ -127,21 +127,21 @@ class System:
         new_manager_obj = self.get_user(manager_to_remove)
         return False if new_manager_obj is None else store.remove_manager(self.cur_user, new_manager_obj)
 
-    def buy_items(self, items):  # fixed by yosi
+    def buy_items(self, items):
         # check if items exist in basket??
         supplying_system = SupplyingSystem()
-        for item_name in items:
-            if not supplying_system.get_supply(item_name):
-                return ResponseObject(False, False, "Item " + item_name + " is currently out of stock")
-        amount = functools.reduce(lambda acc, item: (acc + item['price']), items, 0)
+        for item in items:
+            if not supplying_system.get_supply(item['name']):
+                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
+        amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
         if not flag:
             return ResponseObject(False, False, "Payment rejected")
         for item in items:
-            removed = self.cur_user.remove_from_cart(item['store_name'], item['item_name'])
+            removed = self.cur_user.remove_from_cart(item['store_name'], item['name'])
             if not removed.success:
-                return ResponseObject(False, False, "Cannot purchase items " + item['item_name'] + "\n" + removed.message)
+                return ResponseObject(False, False, "Cannot purchase items " + item['name'] + "\n" + removed.message)
 
             # Todo : remove items from store inventory
         return ResponseObject(True, True, "")

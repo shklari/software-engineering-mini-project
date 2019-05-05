@@ -5,6 +5,7 @@ from .User import User
 from .StoreManager import StoreManager
 from .Item import Item
 from log.Log import Log
+from Domain.Response import ResponseObject
 
 
 # Interface
@@ -54,7 +55,7 @@ class Store(object):
                                            'val': Item(item['name'], item['price'], item['category'], self.name),
                                            'quantity': quantity}]
                         self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
-                        return True
+                        return ResponseObject(True, True, "")
                     else:
                         for x in self.inventory:
                             if x['val'].name == item['name']:
@@ -64,16 +65,16 @@ class Store(object):
                                                        'val': Item(item['name'], item['price'], item['category'], self.name),
                                                        'quantity': quantity})
                             self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
-                            return True
+                            return ResponseObject(True, True, "")
                 else:
                     self.log.set_info('user is no store owner for this store', 'errorLog')
-                    return False
+                    return ResponseObject(False, False, "User is not an owner of store " + self.name)
             else:
                 self.log.set_info('user is not logged in or not a store owner', 'errorLog')
-                return False
+                return ResponseObject(False, False, "User is not logged in or is not a store owner")
         else:
             self.log.set_info('invalid quantity', 'errorLog')
-            return False
+            return ResponseObject(False, False, "Invalid quantity")
 
     # 4.1.2
     def remove_item_by_quantity(self, user, itemname, quantity):
