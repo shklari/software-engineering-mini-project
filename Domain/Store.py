@@ -289,10 +289,11 @@ class Store(object):
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def search_item_by_name(self, item_name):
+        result_list = []
         for item in self.inventory:
             if item['name'] == item_name:
-                return item['val']
-        return False
+                result_list.append(item['val'])
+        return result_list
 
     def search_item_by_price(self, price):
         result_list = []
