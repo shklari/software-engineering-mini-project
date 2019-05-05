@@ -96,9 +96,9 @@ class TestStore(unittest.TestCase):
 
     def test_remove_owner(self):  # 4.4
         result = self.service.add_new_owner(self.store1['name'], self.owner['name'])
-        self.assertNotEqual(result.success, False, 'add new owner failed')
+        self.assertNotEqual(result.success, True, 'add new owner failed')
         store = self.service.remove_owner(self.store1['name'], self.owner['name']) # based on add new owner
-        self.assertNotEqual(store.success, False, 'remove owner failed')
+        self.assertNotEqual(store.success, True, 'remove owner failed')
         self.assertTrue({'username': self.owner['name']} not in store.value['storeOwners'], 'remove owner failed')
         result = self.service.remove_owner(self.user['name']).success
         self.assertFalse(result, 'remove owner failed')

@@ -96,7 +96,7 @@ class ServiceImpl(ServiceInterface):
         result = curr_user.remove_from_cart(store_name, item_name)
         if not result.success:
             return ResponseObject(False, False, "Can't remove item " + item_name + " from cart " + store_name + "\n" + result.message)
-        return ResponseObject(True, curr_user.get_cart().items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
+        return ResponseObject(True, curr_user.get_cart(store_name).items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
     def buy_items(self, items):
         result = self.sys.buy_items(items)
@@ -135,7 +135,7 @@ class ServiceImpl(ServiceInterface):
         inv = []
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return ResponseObject(True, True, "Item " + item_name + " removed from " + store_name + " inventory")
+        return ResponseObject(True, inv, "Item " + item_name + " removed from " + store_name + " inventory")
 
     def decrease_item_quantity(self, store_name, item_name, quantity):
         store_result = self.sys.get_store(store_name)
@@ -151,7 +151,7 @@ class ServiceImpl(ServiceInterface):
         inv = []
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return ResponseObject(True, True, "The quantity of item " + item_name + " was successfully decreased")
+        return ResponseObject(True, inv, "The quantity of item " + item_name + " was successfully decreased")
 
     def edit_item_price(self, store_name, item_name, new_price):
         store_result = self.sys.get_store(store_name)
