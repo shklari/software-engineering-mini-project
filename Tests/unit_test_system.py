@@ -9,8 +9,8 @@ class UnitTestSystem(TestCase):
 
 class TestInit(UnitTestSystem):
     def test_init_system(self):
-        self.assertEqual(self.system.system_manager, 0)
-        self.assertEqual(self.system.cur_user, 0)
+        self.assertEqual(self.system.system_manager, None)
+        self.assertEqual(self.system.cur_user, None)
         self.assertDictEqual(self.system.users, {})
         self.assertEqual(self.system.stores, [])
         self.assertEqual(self.system.init_system('shaioz', None).success, False)  # empty password isn't valid.
