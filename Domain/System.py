@@ -113,11 +113,17 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_owner_from_store(self, store_name, owner_to_remove):
-        store = self.get_store(store_name)
-        if store is None:
-            return False
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
         new_owner_obj = self.get_user(owner_to_remove)
-        return False if new_owner_obj is None else store.remove_owner(self.cur_user, new_owner_obj)
+        if new_owner_obj is None:
+            return ResponseObject(False, False, owner_to_remove + " is not a user in the system")
+        remove = store.remove_owner(self.cur_user, new_owner_obj)
+        if not remove.success:
+            return remove
+        return ResponseObject(True, True, "")
 
     def add_manager_to_store(self, store_name, new_manager_name, permissions):
         store_result = self.get_store(store_name)

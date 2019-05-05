@@ -182,16 +182,16 @@ class Store(object):
                         to_remove = self.remove_owner_rec(owner, owner_to_remove)
                     else:
                         self.log.set_info("user is not the appointer", "errorLog")
-                        return False
+                        return ResponseObject(False, False, "User " + owner + " is not the appointer of user " + owner_to_remove)
                 else:
                     self.log.set_info("user is not an owner of this store", "errorLog")
-                    return False
+                    return ResponseObject(False, False, "User " + owner_to_remove + " is not an owner of this store")
             else:
                 self.log.set_info("user is not an owner of this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User " + owner + " is not an owner of this store")
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
         for x in to_remove:
             for y in self.storeOwners:
@@ -204,7 +204,7 @@ class Store(object):
             if x.username == owner_to_remove.username:
                 owner_type.appointees.remove(x)
         self.log.set_info("owner has been successfully removed", "eventLog")
-        return True
+        return ResponseObject(True, True, "")
 
     def remove_owner_rec(self, owner, owner_to_remove):
         to_remove = []
