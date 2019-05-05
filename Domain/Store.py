@@ -86,19 +86,19 @@ class Store(object):
                             x['quantity'] -= quantity
                             self.log.set_info("items has been successfully removed from the store inventory!",
                                               "eventLog")
-                            return True
+                            return ResponseObject(True, True, "")
                         else:
                             self.log.set_info("not enough items for this quantity", "errorLog")
-                            return False
+                            return ResponseObject(False, False, "Item " + itemname + " doesn't exist in this quantity")
                     else:
                         self.log.set_info("item is not in the inventory of this store", "errorLog")
-                        return False
+                        return ResponseObject(False, False, "Item doesn't exist in this store's inventory")
             else:
                 self.log.set_info("user is no store owner for this store", "errorLog")
-                return False
+                return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
             self.log.set_info("user is not logged in or not a store owner", "errorLog")
-            return False
+            return ResponseObject(False, False, "User is not logged in or is not a store owner")
 
     def remove_item_from_inventory(self, user, itemname):
         if isinstance(user, User) and user.logged_in:

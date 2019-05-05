@@ -138,21 +138,20 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, True, "Item " + item_name + " removed from " + store_name + " inventory")
 
     def decrease_item_quantity(self, store_name, item_name, quantity):
-        store = self.sys.get_store(store_name)
-        if store is None:
-            print("Error: can't remove items from store " + store_name)
-            return False
+        store_result = self.sys.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" + store_result.message)
+        store = store_result.value
         user = self.sys.get_cur_user()
         if user is None:
-            print("Error: no current user")
-            return False
-        if not store.remove_item_by_quantity(user, item_name, quantity):
-            print("Can't change quantity of item " + item_name)
-            return False
+            return ResponseObject(False, False, "Error: no current user")
+        decrease = store.remove_item_by_quantity(user, item_name, quantity)
+        if not decrease.success:
+            return ResponseObject(False, False, "Can't change quantity of item " + item_name + "\n" + decrease.message)
         inv = []
         for i in store.inventory:
             inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return inv
+        return ResponseObject(True, True, "The quantity of item " + item_name + " was successfully decreased")
 
     def edit_item_price(self, store_name, item_name, new_price):
         store = self.sys.get_store(store_name)
