@@ -68,7 +68,9 @@ class System:
     def search(self, param):
         ret_list = []
         for store in self.stores:
-            ret_list.extend(store.search_item_by_name(param))
+            boo = store.search_item_by_name(param)
+            if boo:
+                ret_list.append(boo)
             ret_list.extend(store.search_item_by_category(param))
             ret_list.extend(store.search_item_by_price(param))
         return ret_list
