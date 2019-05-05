@@ -94,7 +94,7 @@ class ServiceImpl(ServiceInterface):
         result = curr_user.remove_from_cart(store_name, item_name)
         if not result.success:
             return ResponseObject(False, False, "Can't remove item " + item_name + " from cart " + store_name + "\n" + result.message)
-        return ResponseObject(True, curr_user.get_cart(store_name).items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
+        return ResponseObject(True, curr_user.get_cart(store_name).value.items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
     def buy_items(self, items):
         result = self.sys.buy_items(items)
