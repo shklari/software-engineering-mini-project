@@ -1,10 +1,10 @@
-from Domain.ExternalSystems import *
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
 from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
+from Domain.ExternalSystems import CollectingSystem, SupplyingSystem, TraceabilitySystem
 
 import functools
 
@@ -18,6 +18,11 @@ class System:
         self.stores = []
 
     def init_system(self, system_manager_user_name, system_manager_password):
+        collecting = CollectingSystem()
+        supplying = SupplyingSystem()
+        trace = TraceabilitySystem()
+        if (not collecting.init()) or (not supplying.init()) or (not trace.init()):
+            return ResponseObject(False, None, "Problem with one of our external systems")
         result = self.sign_up(system_manager_user_name, system_manager_password)
         if not result.success:
             return ResponseObject(False, None, "System manager could not sign up")

@@ -89,9 +89,16 @@ class SystemTestCase(unittest.TestCase):
         self.supplying.switch()
         self.consistency.switch()
         for i in range(0, 1):
+            print("i: ")
+            print(i)
             for j in range(0, 1):
+                print("j: ")
+                print(j)
                 for k in range(0, 1):
+                    print("k: ")
+                    print(k)
                     inits = self.system.init(self.manager['name'], self.manager['password']).success
+                    print(inits)
                     self.assertEqual((i == 1 and j == 1 and k == 1), inits)
                     self.collecting.switch()
                 self.supplying.switch()
