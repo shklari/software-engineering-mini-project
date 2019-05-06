@@ -102,5 +102,5 @@ async def looper(websocket, path):
     finally:
         await unregister(websocket)
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.7', 6789))
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
 asyncio.get_event_loop().run_forever()

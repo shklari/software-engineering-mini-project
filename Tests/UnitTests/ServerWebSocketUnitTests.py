@@ -1,35 +1,38 @@
 import unittest
 import json
-import websocket
+import websockets
 import asyncio
 
 
-# class ServerWebSocketUnitTests(unittest.TestCase):
+async def test_signup():
+    async with websockets.connect('ws://127.0.0.1:6789') as websocket:
+        try:
+            name = {"action": "signup", "username": "ava", "password": "123456"}
+            await websocket.send(json.dumps(name))
+            greeting = await websocket.recv()
+            ans = json.loads(greeting)
+            print(ans)
+            unittest.TestCase().assertEqual("success", ans['action'])
 
-async def hello():
-    ws = websocket.WebSocket("wss:\\100.10.102.7:6789")
-    name = {"action": "signup", "username": "ava", "password": "123456"}
-    await ws.send(json.dumps(name))
-    print(name)
+            name = {"action": "signup", "username": "ava", "password": "123456"}
+            await websocket.send(json.dumps(name))
+            greeting = await websocket.recv()
+            ans = json.loads(greeting)
+            print(ans)
+            unittest.TestCase().assertEqual("fail", ans['action'])
 
-    greeting = await ws.receive()
-    print(greeting)
-    # self.assertEqual("success", greeting['action'])
+            name = {"action": "signup", "username": "avabatshushan", "password": "123456"}
+            await websocket.send(json.dumps(name))
+            greeting = await websocket.recv()
+            ans = json.loads(greeting)
+            print(ans)
+            unittest.TestCase().assertEqual("success", ans['action'])
 
-    name = {"action": "signup", "username": "ava", "password": "123456"}
-
-    await ws.send(json.dumps(name))
-    print(name)
-
-    greeting = await ws.receive()
-    print(greeting)
-    # self.assertEqual("fail", greeting['action'])
+        except Exception as e:
+            print(e)
 
 
-asyncio.get_event_loop().run_until_complete(hello())
-# asyncio.get_event_loop().run_until_complete(websockets.serve(hello, '10.100.102.7', 6789))
-
-
+asyncio.get_event_loop().run_until_complete(test_signup())
 
 
 
