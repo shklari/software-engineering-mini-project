@@ -93,12 +93,14 @@ class TestStore(unittest.TestCase):
         self.assertTrue({'username': self.owner['name']} in store.value['storeOwners'], 'add new owner failed')
         result = self.service.add_new_owner(self.store1['name'], self.owner['name']).success
         self.assertFalse(result, 'add new owner failed')
+        self.service.remove_owner(self.store1['name'], self.owner['name'])
 
     def test_remove_owner(self):  # 4.4
         result = self.service.add_new_owner(self.store1['name'], self.owner['name'])
         self.assertTrue(result.success, 'add new owner failed')
         store = self.service.remove_owner(self.store1['name'], self.owner['name']) # based on add new owner
         self.assertTrue(store.success, 'remove owner failed')
+        print(store.value)
         self.assertTrue({'username': self.owner['name']} not in [store.value['storeOwners']], 'remove owner failed')
         result = self.service.remove_owner(self.store1['name'], self.owner['name']).success
         self.assertFalse(result, 'remove owner failed')
