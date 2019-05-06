@@ -94,7 +94,7 @@ async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     while not websocket.open:
-        await websockets.connect('wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7')
+        await websockets.connect('ws://100.10.102.7:6789')
     try:
         async for message in websocket:
             data = json.loads(message)
