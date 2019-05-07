@@ -408,7 +408,7 @@
 
     <script>
             var signup = document.getElementById('signup') // querySelector('.button'),
-                websocket = new WebSocket("ws://10.100.102.7:6789/echo");
+                //websocket = new WebSocket("ws://10.100.102.7:6789");
             //websocket.onopen = () => websocket.send('hello');
             signup.onclick = function (event) {
                 websocket.send(JSON.stringify({action: 'signup' , username:'inbar' , password:'1234' }));
@@ -432,4 +432,3 @@
 
 	</body>
 </html>
-

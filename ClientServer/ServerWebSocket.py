@@ -94,11 +94,12 @@ async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     try:
+        await websocket.send(state_event())
         async for message in websocket:
             data = json.loads(message)
             await datahandler(data, websocket)
     finally:
         await unregister(websocket)
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.7', 6789))
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.8', 6789))
 asyncio.get_event_loop().run_forever()
