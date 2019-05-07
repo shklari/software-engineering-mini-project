@@ -3,7 +3,7 @@ from abc import abstractmethod
 # Interface
 
 # store {'name', 'rank', 'inventory': [], 'storeOwners': [], 'storeManagers': [], 'discountPolicy'}
-# item {'name', 'price', 'category'}
+# item {'item_name', 'price', 'category', 'store_name'}
 # user {'username'}
 # cart {'store_name', 'items': []}
 

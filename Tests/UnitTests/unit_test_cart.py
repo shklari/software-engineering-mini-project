@@ -13,9 +13,9 @@ class UnitTestCart(TestCase):
     def test_add_item_to_cart(self):
         self.system.init_system('shaioz', '1234')
         self.system.login('shaioz', '1234')
-        zara = self.system.create_store('zara')
-        self.assertTrue(zara.add_item_to_inventory(self.system.cur_user, self.shirt, 4))
-        self.assertTrue(self.system.add_item_to_cart('shirt', 3))
+        zara = self.system.create_store('zara').value
+        self.assertTrue(zara.add_item_to_inventory(self.system.cur_user, self.shirt, 4).success)
+        self.assertTrue(self.system.add_to_cart('zara', 'shirt', 3).success)
 
     def test_get_item_if_available(self):
         self.assertTrue(True)

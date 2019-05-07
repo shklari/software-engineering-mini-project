@@ -45,8 +45,8 @@ async def helper(answer, action, websocket):
 
 
 async def datahandler(data, websocket):
-    print(data)
     if data['action'] == 'signup':
+        print(data['username'] + ' ' + data['password'])
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
         ans = service.login(data['username'], data['password'])
@@ -93,13 +93,15 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
+    # while not websocket.open:
+     #   await websockets.connect('ws://100.10.102.7:6789')
     try:
-        await websocket.send(state_event())
         async for message in websocket:
             data = json.loads(message)
+            print(data)
             await datahandler(data, websocket)
     finally:
         await unregister(websocket)
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.8', 6789))
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
 asyncio.get_event_loop().run_forever()
