@@ -93,11 +93,12 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
-    while not websocket.open:
-        await websockets.connect('ws://100.10.102.7:6789')
+    # while not websocket.open:
+     #   await websockets.connect('ws://100.10.102.7:6789')
     try:
         async for message in websocket:
             data = json.loads(message)
+            print(data)
             await datahandler(data, websocket)
     finally:
         await unregister(websocket)
