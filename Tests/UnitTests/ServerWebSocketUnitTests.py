@@ -125,6 +125,10 @@ async def help_remove_user():
             ans = json.loads(greeting)
             unittest.TestCase().assertEqual("fail", ans['action'])
 
+            name = {"action": "logout"}
+            await websocket.send(json.dumps(name))
+            await websocket.recv()
+
         except Exception as e:
             print(e)
 
