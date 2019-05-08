@@ -28,20 +28,24 @@ def users_event():
 
 
 async def register(websocket):
+    print("register:")
     print(websocket)
     USERS.add(websocket)
 
 
 async def unregister(websocket):
+    print("unregister:")
     USERS.remove(websocket)
 
 
 async def helper(answer, action, websocket):
     print("got " + action + " request")
     if answer.success:
-        await websocket.send(state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message}))
+        ans = state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message})
     else:
-        await websocket.send(state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message}))
+        ans = state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message})
+    print(ans)
+    await websocket.send(ans)
 
 
 async def datahandler(data, websocket):
@@ -93,14 +97,78 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
-    while not websocket.open:
-        await websockets.connect('wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7')
+    # while not websocket.open:
+    #   await websockets.connect('ws://100.10.102.7:6789')
     try:
+        if websocket.open:
+            async for message in websocket:
+                print(message)
+                data = json.loads(message)
+                print(data)
+                await datahandler(data, websocket)
+    except Exception as e:
+        print(e)
+    finally:
+        if websocket.open:
+            await unregister(websocket)
+
+
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
+asyncio.get_event_loop().run_forever()
+
+
+
+# ###### inbarrrrrrrrrrrrrrrrrrrrrrrrr
+
+logging.basicConfig()
+
+STATE = {'value': 0}
+
+USERS = set()
+
+def state_event():
+    return json.dumps({'type': 'state', **STATE})
+
+def users_event():
+    return json.dumps({'type': 'users', 'count': len(USERS)})
+
+async def notify_state():
+    if USERS:       # asyncio.wait doesn't accept an empty list
+        message = state_event()
+        await asyncio.wait([user.send(message) for user in USERS])
+
+async def notify_users():
+    if USERS:       # asyncio.wait doesn't accept an empty list
+        message = users_event()
+        await asyncio.wait([user.send(message) for user in USERS])
+
+async def register(websocket):
+    USERS.add(websocket)
+    await notify_users()
+
+async def unregister(websocket):
+    USERS.remove(websocket)
+    await notify_users()
+
+async def counter(websocket, path):
+    # register(websocket) sends user_event() to websocket
+    await register(websocket)
+    try:
+        await websocket.send(state_event())
         async for message in websocket:
             data = json.loads(message)
-            await datahandler(data, websocket)
+            if data['action'] == 'minus':
+                STATE['value'] -= 1
+                await notify_state()
+            elif data['action'] == 'plus':
+                STATE['value'] += 1
+                await notify_state()
+            else:
+                logging.error(
+                    "unsupported event: {}", data)
     finally:
         await unregister(websocket)
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '10.100.102.7', 6789))
+asyncio.get_event_loop().run_until_complete(
+    websockets.serve(counter, 'localhost', 6789))
 asyncio.get_event_loop().run_forever()
