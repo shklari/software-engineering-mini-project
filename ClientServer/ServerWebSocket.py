@@ -98,8 +98,8 @@ async def looper(websocket, path):
     try:
         async for message in websocket:
             data = json.loads(message)
-            print(data)
-            await datahandler(data, websocket)
+            print(message)
+            await datahandler(message, websocket)
     finally:
         await unregister(websocket)
 

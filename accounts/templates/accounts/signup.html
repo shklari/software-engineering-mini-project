@@ -24,6 +24,32 @@ hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
+.popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
 
 /* Set a style for all buttons */
 button {
@@ -96,17 +122,30 @@ button:hover {
     <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
     {% csrf_token %}
     <div class="clearfix">
-      <button onclick="window.location.href='/'" type="button" class="cancelbtn">Cancel</button>
+      <button onclick="window.location.href='/'" type="button" class="cancelbtn">Cancel
+      <span class="popuptext" id="myPopup">A Simple Popup!</span>
+      </button>
       <button id='signupbtn' class="signupbtn">Sign Up</button>
     </div>
   </div>
 </form>
-
-<script src="{% static 'js/client.js' %}"></script>
+<script src="{% static 'js/client.js' %}" async></script>
 <script type="text/javascript">
     var btn = document.getElementById('signupbtn');
+    var yossi = {msg: ''};
+    var ev =  (res) =>{
+    var popup = document.getElementById("myPopup");
+        popup.textContent=res;
+        popup.classList.toggle("show");
+    }
     btn.onclick = function (event){
-       res = send_msg({action: 'signup', username: 'inbar', password: '1234'});}
+    var res = send_msg({action: 'signup', username: 'inbar', password: '1234'},ev);
+
+
+
+    //console.log(res);
+
+    }
 
 </script>
 </body>
