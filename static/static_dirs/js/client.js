@@ -8,7 +8,7 @@ function send_msg(msg)
     console.log("try to send ....");
     websocket.send(JSON.stringify(msg));
     websocket.onmessage = function (event) {
-        data = JSON.parse(event.data);
+        let data = JSON.parse(event.data);
         switch (data.action) {
             case 'success':
                 console.log("1");
