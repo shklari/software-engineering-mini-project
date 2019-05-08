@@ -193,8 +193,8 @@ class System:
                 self.log.set_info("buy items failed", "errorLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item['name'] + "\n" + removed.message)
 
-            # Todo : remove items from store inventory
-            self.log.set_info("buy items succeeded", "eventLog")
+        # Todo : remove items from store inventory
+        self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def create_store(self, store_name):
