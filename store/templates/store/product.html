@@ -66,11 +66,159 @@
 	</head>
 	<body>
 		<style type="text/css">
-            .button {
-                cursor: pointer;
-                user-select: none;
-            }
+           /* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.log {
+  display: none;
+}
+/* Extra styles for the cancel button */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container_lg {
+  padding: 16px;
+    width: 100%;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 40%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+
+    .cancelbtn {
+        width: 100%;
+    }
+}
         </style>
+
+        <div id="id01" class="modal">
+  <form class="modal-content animate" action="/action_page.php">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <img src="{% static 'images/img_avatar2.png' %}" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container_lg">
+      <label for="uname"><b>Username</b></label>
+      <input id="username" type="text" placeholder="Enter Username" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input id="password" type="password" placeholder="Enter Password" name="psw" required>
+
+      <button type="submit" id="loginbtn">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+
+    </div>
+
+    <div class="container_lg" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </form>
+</div>
+
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
@@ -103,8 +251,9 @@
 				</div>
 				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
 					<ul>
-                        <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i> signup</a></li>
-                        <li class="login"><a href="/login/" class="login"><i class="icon-login"></i> login</a></li>
+                        <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
+                        <li class="login"><a id="login" class="login" ><i class="icon-login"></i> login</a></li>
+                        <li class="logout" ><a id="logout" class="log"><i class="icon-log-out"></i>logout</a></li>
 						<li class="search">
 							<div class="input-group">
 						      <input type="text" placeholder="Search..">
@@ -407,27 +556,45 @@
 	<script src="{% static 'js/main.js' %}"></script>
 
     <script>
-            var signup = document.getElementById('signup') // querySelector('.button'),
-                //websocket = new WebSocket("ws://10.100.102.7:6789");
-            //websocket.onopen = () => websocket.send('hello');
-            signup.onclick = function (event) {
-                websocket.send(JSON.stringify({action: 'signup' , username:'inbar' , password:'1234' }));
+        // Get the modal
+        var modal = document.getElementById('id01');
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+        }
+        document.getElementById("login").onclick = function (event) {
+            document.getElementById('login').style.display='none';
+            document.getElementById('logout').style.display='block';
+            document.getElementById('id01').style.display='block';
+        }
+        var btn = document.getElementById('loginbtn');
+    var onsuccess =  (res) =>{
+        alert(res);
+        window.location.href = '/';
+
+    }
+
+    var onfailure = (res) =>{
+        alert(res);
+        //window.location.href = '/';
+    }
+    btn.onclick = function (event){
+        var username = document.getElementById('username').value;
+        var psw = document.getElementById('password').value;
+        if(username == '') {
+            alert('Username field is empty !');
+            return;
+        }
+
+        if(psw==''){
+            alert('Password field is empty ! ');
+            return;
             }
-            websocket.onmessage = function (event) {
-                print('clicked :)')
-                data = JSON.parse(event.data);
-                switch (data.action) {
-                    case 'success':
-                        print('successsssss')
-                        break;
-                    case 'failed':
-                        print('successsssss')
-                        break;
-                    default:
-                        console.error(
-                            "unsupported event", data);
-                }
-            };
+        send_msg({action: 'login', username: username, password: psw},onsuccess, onfailure);
+
+    }
         </script>
 
 	</body>
