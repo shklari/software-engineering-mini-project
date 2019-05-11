@@ -1,10 +1,11 @@
 //const WebSocket = require('ws');
 
-function send_msg(msg, ev)
+function send_msg(msg, onsuccess , onfailure)
 {
 
     try {
-        websocket = new WebSocket("ws://10.100.102.7:6789");
+        //websocket = new WebSocket("ws://10.100.102.8:6789");
+        websocket = new WebSocket("ws://192.168.0.125:6789");
         console.info("try to send ....");
         var json = JSON.stringify(msg);
         console.log(json);
@@ -18,11 +19,11 @@ function send_msg(msg, ev)
             switch (data.action) {
                 case 'success':
                     console.log('success');
-                    ev(data.message);
+                    onsuccess(data.message);
                     break;
                 case 'fail':
                     console.log('fail');
-                    ev(data.message);
+                    onfailure(data.message);
                     break;
                 default:
                     console.log(
