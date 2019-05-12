@@ -6,7 +6,7 @@ from .StoreManager import StoreManager
 from .Item import Item
 from log.Log import Log
 from Domain.Response import ResponseObject
-from Domain.Discounts import *
+from Domain.Discounts.ComposedDiscount import *
 
 
 # Interface
@@ -33,14 +33,14 @@ class Store(object):
         return False
 
     def check_if_store_owner(self, user):
-        if isinstance(user, StoreOwner):
+        if isinstance(user, User):  # fixxxxx (check instance of store owner)
             for k in self.storeOwners:
                 if k.username == user.username:
                     return True
         return False
 
     def check_if_store_manager(self, user):
-        if isinstance(user, StoreManager):
+        if isinstance(user, User):  # fixxxx (check instance of store manager)
             for k in self.storeManagers:
                 if k.username == user.username:
                     return True
@@ -321,7 +321,7 @@ class Store(object):
     # discount is a Discount object
     def add_store_discount(self, user, discount):
         if not isinstance(user, User):
-            return ResponseObject(False, False, "User " + user.username + " is not recognized in the system")
+            return ResponseObject(False, False, "The user is not recognized in the system")
         if not user.logged_in:
             return ResponseObject(False, False, "User " + user.username + " is not logged in")
         if self.check_if_store_owner(user) or (self.check_if_store_manager(user) and user.permissions['Discounts']):
@@ -334,7 +334,7 @@ class Store(object):
 
     def add_discount_to_item(self, user, item_name, discount):
         if not isinstance(user, User):
-            return ResponseObject(False, False, "User " + user.username + " is not recognized in the system")
+            return ResponseObject(False, False, "The user is not recognized in the system")
         if not user.logged_in:
             return ResponseObject(False, False, "User " + user.username + " is not logged in")
         item = self.search_item_by_name(item_name)

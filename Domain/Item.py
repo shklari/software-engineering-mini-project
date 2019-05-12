@@ -1,4 +1,4 @@
-from Domain.Discounts import *
+from Domain.Discounts.ComposedDiscount import *
 
 
 # Interface
