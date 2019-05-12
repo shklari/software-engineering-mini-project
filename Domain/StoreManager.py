@@ -1,5 +1,6 @@
 from .User import User
 
+
 #interface
 class StoreManager (User):
 
