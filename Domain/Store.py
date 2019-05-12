@@ -6,6 +6,7 @@ from .StoreManager import StoreManager
 from .Item import Item
 from log.Log import Log
 from Domain.Response import ResponseObject
+from Domain.Discounts import *
 
 
 # Interface
@@ -20,6 +21,7 @@ class Store(object):
         self.discountPolicy = 0
         self.procPolicy = 0
         self.log = Log("", "")
+        self.discount = ComposedDiscount(0, 0, True, "")
         # self.errorLog = ErrorLog()
 
     def set_proc_policy(self, new_policy):
@@ -315,3 +317,10 @@ class Store(object):
                 if k['quantity'] >= quantity:
                     boo = True
         return self.search_item_by_name(item_name) if boo else False
+
+    # discount is a Discount object
+    def add_store_discount(self, user, discount):
+
+
+
+

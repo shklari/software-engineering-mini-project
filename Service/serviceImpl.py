@@ -121,7 +121,7 @@ class ServiceImpl(ServiceInterface):
 
     def remove_item_from_inventory(self, item_name, store_name):
         store_result = self.sys.get_store(store_name)
-        if not store_result:
+        if not store_result.success:
             return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" + store_result.message)
         store = store_result.value
         user = self.sys.get_cur_user()
