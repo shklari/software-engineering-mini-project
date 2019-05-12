@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import websockets
+from Service.RealTimeAlert import RealTimeAlert
 
 from Service.serviceImpl import ServiceImpl
 
@@ -15,6 +16,8 @@ USERS = set()
 service = ServiceImpl()
 
 checkinit = service.init("avabash", "123456")
+
+alert = RealTimeAlert()
 
 print(checkinit.message)
 
@@ -49,6 +52,7 @@ async def helper(answer, action, websocket):
 
 
 async def datahandler(data, websocket):
+    service.web = websocket
     if data['action'] == 'signup':
         print(data['username'] + ' ' + data['password'])
         ans = service.sign_up(data['username'], data['password'])
@@ -86,6 +90,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
+    elif data['action'] == 'alert':
+        ans = alert.notify()
     else:
         logging.error(
             "unsupported event: {}", data)

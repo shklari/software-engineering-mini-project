@@ -1,12 +1,15 @@
 from Service.service import ServiceInterface
 from Domain.System import System
 from Domain.Response import ResponseObject
+from .RealTimeAlert import RealTimeAlert
 
 
 class ServiceImpl(ServiceInterface):
 
     def __init__(self):
         self.sys = System()
+        self.ownersAlert = RealTimeAlert()
+
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password):
@@ -148,6 +151,9 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't change quantity of item " + item_name + "\n" + decrease.message)
         inv = []
         for i in store.inventory:
+            if i['name'] == item_name:
+                if i['quantity'] == 0:
+                    self.ownersAlert.notify("item " + item_name + " is out of stock!")
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "The quantity of item " + item_name + " was successfully decreased")
 
