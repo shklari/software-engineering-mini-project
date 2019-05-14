@@ -2,6 +2,9 @@
 import asyncio
 import json
 import logging
+import threading
+from ClientServer.Thread import MyThread
+
 import websockets
 from Service.RealTimeAlert import RealTimeAlert
 
@@ -16,10 +19,24 @@ USERS = set()
 service = ServiceImpl()
 
 checkinit = service.init("avabash", "123456")
-
-alert = RealTimeAlert()
+ws = 0
+alert = service.ownersAlert
 
 print(checkinit.message)
+
+
+async def run():
+    while (1):
+        if not alert.tasks.empty():
+            task = alert.tasks.get()
+            await task['ws'].send(task['message'])
+
+
+def guest_to_users(username, client):
+    for guest in service.guests:
+        if guest['ip'] == client['ip']:
+            service.users.append({'ip': client['ip'], 'port': client['port'], 'username': username,'ws': client['ws']})
+            service.guests.remove(guest)
 
 
 def state_event(obj):
@@ -57,6 +74,7 @@ async def datahandler(data, websocket):
         print(data['username'] + ' ' + data['password'])
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
+        guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
         ans = service.login(data['username'], data['password'])
     elif data['action'] == 'search':
         ans = service.search(data['keyword'])
@@ -98,12 +116,16 @@ async def datahandler(data, websocket):
 
 
 async def looper(websocket, path):
+    ws = websocket
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     # while not websocket.open:
     #   await websockets.connect('ws://100.10.102.7:6789')
     try:
         if websocket.open:
+            client = websocket.local_address
+            service.guests.append({'ip': client[0], 'port': client[1], 'ws': websocket})
+            alert.notify("hello guest", 'guest')
             async for message in websocket:
                 print(message)
                 data = json.loads(message)
@@ -115,7 +137,11 @@ async def looper(websocket, path):
         if websocket.open:
             await unregister(websocket)
 
+t = MyThread()
+t.set(alert)
+t.start()
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
 asyncio.get_event_loop().run_forever()
+
 
