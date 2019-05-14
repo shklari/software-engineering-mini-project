@@ -1,9 +1,9 @@
-from .StoreOwner import StoreOwner
-from .DiscountPolicy import DiscountPolicy
-from .ProcurementPolicy import ProcurementPolicy
-from .User import User
-from .StoreManager import StoreManager
-from .Item import Item
+from Domain.StoreOwner import StoreOwner
+from Domain.DiscountPolicy import DiscountPolicy
+from Domain.ProcurementPolicy import ProcurementPolicy
+from Domain.User import User
+from Domain.StoreManager import StoreManager
+from Domain.Item import Item
 from log.Log import Log
 from Domain.Response import ResponseObject
 from Domain.Discounts.ComposedDiscount import *
@@ -326,6 +326,7 @@ class Store(object):
             return ResponseObject(False, False, "User " + user.username + " is not logged in")
         if self.check_if_store_owner(user) or (self.check_if_store_manager(user) and user.permissions['Discounts']):
             self.discount.add_discount(discount)
+            self.set_double_discount(self.discount.double & discount.double)
             return ResponseObject(True, self.discount, "")
         else:
             return ResponseObject(False, False,
@@ -347,6 +348,25 @@ class Store(object):
             return ResponseObject(False, False,
                                   "User " + user.username +
                                   " is not a store owner or a store manager with the right permissions")
+
+    def set_double_discount(self, double):
+        self.discount.double = double
+
+    def apply_store_discount(self, price):
+        return self.discount.apply_discount(price)
+
+    def apply_discounts(self, item_name):
+        item = self.search_item_by_name(item_name)
+        if not item:
+            return ResponseObject(False, False, "Item " + item_name + " doesn't exist in store " + self.name)
+        else:
+            new_price = self.apply_store_discount(item.price)
+            if self.discount.double:
+                new_price = item.apply_discount(new_price)
+                item.set_price(new_price)
+                new_price = item.apply_discount()
+            return ResponseObject(True, new_price, "")
+
 
 
 
