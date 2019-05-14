@@ -7,7 +7,7 @@ from Domain.Item import Item
 from log.Log import Log
 from Domain.Response import ResponseObject
 from Domain.Discounts.ComposedDiscount import *
-
+from Domain.BuyingPolicy import *
 
 # Interface
 class Store(object):
@@ -22,6 +22,7 @@ class Store(object):
         self.procPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")
+        self.buying_policy = ImmediateBuyingPolicy()
         # self.errorLog = ErrorLog()
 
     def set_proc_policy(self, new_policy):
@@ -367,9 +368,36 @@ class Store(object):
                 new_price = item.apply_discount()
             return ResponseObject(True, new_price, "")
 
+    def set_buying_policy(self, policy, user):
+        check = self.check_access(user, 'Policy')
+        if not check.success:
+            return check.success
+        self.buying_policy = policy
+        return ResponseObject(True, self.buying_policy, "")
 
+    def add_buying_policy(self, policy):
+        if self.buying_policy.is_composite():
+            self.buying_policy.add_policy(policy)
+        else:
+            comp = CompositeBuyingPolicy()
+            comp.add_policy(self.buying_policy)
+            comp.add_policy(policy)
+            self.buying_policy = comp
 
+    def remove_buying_policy(self, policy):
+        if self.buying_policy == policy:
+            self.buying_policy = ImmediateBuyingPolicy()
+        elif self.buying_policy.is_composite():
+            self.buying_policy.remove_policy(policy)
 
+    def check_access(self, user, query):
+        if not isinstance(user, User):
+            return ResponseObject(False, False, "The user is not recognized in the system")
+        if not user.logged_in:
+            return ResponseObject(False, False, "User " + user.username + " is not logged in")
+        if self.check_if_store_owner(user) or (self.check_if_store_manager(user) and user.permissions[query]):
+            return ResponseObject(True, True, "User " + user.username + " is not logged in")
+        return ResponseObject(False, False, "User " + user.username + " has no permission")
 
 
 
