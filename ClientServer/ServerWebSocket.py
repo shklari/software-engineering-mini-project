@@ -90,8 +90,6 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
-    elif data['action'] == 'alert':
-        ans = alert.notify()
     else:
         logging.error(
             "unsupported event: {}", data)
