@@ -6,6 +6,7 @@ from .StoreManager import StoreManager
 from .Item import Item
 from log.Log import Log
 from Domain.Response import ResponseObject
+from Domain.Discounts.ComposedDiscount import *
 
 
 # Interface
@@ -20,6 +21,7 @@ class Store(object):
         self.discountPolicy = 0
         self.procPolicy = 0
         self.log = Log("", "")
+        self.discount = ComposedDiscount(0, 0, True, "")
         # self.errorLog = ErrorLog()
 
     def set_proc_policy(self, new_policy):
@@ -31,14 +33,14 @@ class Store(object):
         return False
 
     def check_if_store_owner(self, user):
-        if isinstance(user, User):
+        if isinstance(user, User):  # fixxxxx (check instance of store owner)
             for k in self.storeOwners:
                 if k.username == user.username:
                     return True
         return False
 
     def check_if_store_manager(self, user):
-        if isinstance(user, User):
+        if isinstance(user, User):  # fixxxx (check instance of store manager)
             for k in self.storeManagers:
                 if k.username == user.username:
                     return True
@@ -226,7 +228,7 @@ class Store(object):
         return to_remove
 
     # 4.5
-    # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean}
+    # permissions = {'Edit': Boolean, 'Remove': Boolean, 'Add': Boolean, 'Discounts': Boolean}
     def add_new_manager(self, owner, new_manager, permissions):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
@@ -315,3 +317,39 @@ class Store(object):
                 if k['quantity'] >= quantity:
                     boo = True
         return self.search_item_by_name(item_name) if boo else False
+
+    # discount is a Discount object
+    def add_store_discount(self, user, discount):
+        if not isinstance(user, User):
+            return ResponseObject(False, False, "The user is not recognized in the system")
+        if not user.logged_in:
+            return ResponseObject(False, False, "User " + user.username + " is not logged in")
+        if self.check_if_store_owner(user) or (self.check_if_store_manager(user) and user.permissions['Discounts']):
+            self.discount.add_discount(discount)
+            return ResponseObject(True, self.discount, "")
+        else:
+            return ResponseObject(False, False,
+                                  "User " + user.username +
+                                  " is not a store owner or a store manager with the right permissions")
+
+    def add_discount_to_item(self, user, item_name, discount):
+        if not isinstance(user, User):
+            return ResponseObject(False, False, "The user is not recognized in the system")
+        if not user.logged_in:
+            return ResponseObject(False, False, "User " + user.username + " is not logged in")
+        item = self.search_item_by_name(item_name)
+        if not item:
+            return ResponseObject(False, False, "Item " + item_name + " doesn't exist in this store's inventory")
+        elif self.check_if_store_owner(user) or (self.check_if_store_manager(user) and user.permissions['Discounts']):
+            item.add_discount(discount)
+            return ResponseObject(True, item, "")
+        else:
+            return ResponseObject(False, False,
+                                  "User " + user.username +
+                                  " is not a store owner or a store manager with the right permissions")
+
+
+
+
+
+

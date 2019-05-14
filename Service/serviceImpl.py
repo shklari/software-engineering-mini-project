@@ -1,12 +1,15 @@
 from Service.service import ServiceInterface
 from Domain.System import System
 from Domain.Response import ResponseObject
+from .RealTimeAlert import RealTimeAlert
 
 
 class ServiceImpl(ServiceInterface):
 
     def __init__(self):
         self.sys = System()
+        self.ownersAlert = RealTimeAlert()
+
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password):
@@ -121,7 +124,7 @@ class ServiceImpl(ServiceInterface):
 
     def remove_item_from_inventory(self, item_name, store_name):
         store_result = self.sys.get_store(store_name)
-        if not store_result:
+        if not store_result.success:
             return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" + store_result.message)
         store = store_result.value
         user = self.sys.get_cur_user()
@@ -148,6 +151,9 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't change quantity of item " + item_name + "\n" + decrease.message)
         inv = []
         for i in store.inventory:
+            if i['name'] == item_name:
+                if i['quantity'] == 0:
+                    self.ownersAlert.notify("item " + item_name + " is out of stock!")
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "The quantity of item " + item_name + " was successfully decreased")
 
@@ -207,3 +213,12 @@ class ServiceImpl(ServiceInterface):
             managers.append({'username': m.username})
         return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
+    def get_total_system_inventory(self):
+        items_list = self.sys.get_total_system_inventory()
+        if len(items_list) == 0:
+            return ResponseObject(False, [], "No item matching the search")
+        output_list = []
+        for itm in items_list:
+            print(itm)
+            output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
+        return ResponseObject(True, output_list, "")
