@@ -20,7 +20,6 @@ class Store(object):
         self.discountPolicy = 0
         self.procPolicy = 0
         self.log = Log("", "")
-        # self.errorLog = ErrorLog()
 
     def set_proc_policy(self, new_policy):
         if isinstance(new_policy, ProcurementPolicy):
