@@ -23,7 +23,7 @@ class Item(object):
     def add_discount(self, new_discount):
         self.discount.add_discount(new_discount)
 
-    def get_discount(self):
+    def apply_discount(self):
         return self.discount.apply_discount(self.price)
 
 
