@@ -3,6 +3,7 @@ from Domain.Store import Store
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Discounts.ImmediateDiscount import *
+from Domain.Discounts.ComposedDiscount import *
 
 
 class StoreDiscountUnitTests(unittest.TestCase):
@@ -25,6 +26,11 @@ class StoreDiscountUnitTests(unittest.TestCase):
         self.assertTrue(self.store.add_store_discount(self.admin, discount).success)
         self.assertFalse(self.store.add_store_discount(self.user, discount).success)
         self.assertFalse(self.store.add_store_discount(self.guest, discount).success)
+        discount2 = ImmediateDiscount(0.1, 1, False, "")
+        self.assertTrue(self.store.add_store_discount(self.admin, discount2).success)
+        self.assertFalse(self.store.discount.double)
+        composed = ComposedDiscount(0.5, 2, True, "")
+        self.assertTrue(self.store.add_store_discount(self.admin, composed).success)
 
     def test_add_discount_to_item(self):
         discount = ImmediateDiscount(0.2, 2, True, "stam")
@@ -33,6 +39,13 @@ class StoreDiscountUnitTests(unittest.TestCase):
         self.assertFalse(self.store.add_discount_to_item(self.user, 'Balishag', discount).success)
         self.assertFalse(self.store.add_discount_to_item(self.guest, 'Balishag', discount).success)
         self.assertTrue(self.store.add_discount_to_item(self.admin, 'Balishag', discount).success)
+        composed = ComposedDiscount(0.5, 1, True, "50% discount on all items!")
+        self.assertTrue(self.store.add_discount_to_item(self.admin, 'Balishag', composed).success)
+
+    def test_apply_store_discount(self):
+        self.assertEqual(self.store.apply_store_discount())
+
+
 
 
 
