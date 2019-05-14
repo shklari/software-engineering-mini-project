@@ -1,4 +1,5 @@
 from .Guest import Guest
+from .BuyingPolicy import *
 
 
 class User(Guest):
@@ -8,3 +9,4 @@ class User(Guest):
         super(User, self).__init__()
         self.username = username
         self.password = password
+        self.buying_policy = ImmediateBuyingPolicy()

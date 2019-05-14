@@ -175,8 +175,26 @@ class System:
 
     def buy_items(self, items):
         # check if items exist in basket??
+        if not self.get_cur_user().buying_policy.apply_policy():
+            self.log.set_info("buy items failed: user policy", "errorLog")
+            return ResponseObject(False, False, "buy items failed: User " + self.cur_user + " policy")
         supplying_system = SupplyingSystem()
         for item in items:
+            store = self.get_store(item['store_name'])
+            if not store.success:
+                self.log.set_info("buy items failed: store does not exist", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
+            if not store.value.policy.apply_policy():
+                self.log.set_info("buy items failed: store policy", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " policy")
+            tmp_item = store.value.search_item_by_name(item['name'])
+            if not tmp_item:
+                self.log.set_info("buy items failed: item is not in store's inventory", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Item " + item['name'] + " is not in "
+                                      + item['store_name'])
+            if not tmp_item.buying_policy.apply_policy():
+                self.log.set_info("buy items failed: item policy", "errorLog")
+                return ResponseObject(False, False, "Item " + item['name'] + "'s policy isn't allowing buying it")
             if not supplying_system.get_supply(item['name']):
                 self.log.set_info("buy items failed: item is out of stock", "errorLog")
                 return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")

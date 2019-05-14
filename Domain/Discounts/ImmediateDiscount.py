@@ -10,3 +10,6 @@ class ImmediateDiscount(Discount):
         if self.time > 0:
             return price * (1 - self.percent)
         return price
+
+    def set_discount_time(self, time):
+        self.time = time
