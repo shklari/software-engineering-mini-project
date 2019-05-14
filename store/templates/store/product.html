@@ -1,5 +1,5 @@
 {%load static%}
-
+{%load staticfiles %}
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -60,7 +60,7 @@
 	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
+	<script src="{% static 'js/respond.min.js' %}"></script>
 	<![endif]-->
 
 	</head>
@@ -192,7 +192,7 @@ span.psw {
         </style>
 
         <div id="id01" class="modal">
-  <form class="modal-content animate" action="/action_page.php">
+  <div class="modal-content animate">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
       <img src="{% static 'images/img_avatar2.png' %}" alt="Avatar" class="avatar">
@@ -205,7 +205,7 @@ span.psw {
       <label for="psw"><b>Password</b></label>
       <input id="password" type="password" placeholder="Enter Password" name="psw" required>
 
-      <button type="submit" id="loginbtn">Login</button>
+      <button id="loginbtn" type="submit">Login</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
@@ -216,13 +216,14 @@ span.psw {
       <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
       <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
-  </form>
+  </div>
 </div>
 
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
-	<nav class="fh5co-nav" role="navigation">
+    
+	 <nav class="fh5co-nav" role="navigation">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-xs-2">
@@ -252,8 +253,17 @@ span.psw {
 				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
 					<ul>
                         <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
-                        <li class="login"><a id="login" class="login" ><i class="icon-login"></i> login</a></li>
-                        <li class="logout" ><a id="logout" class="log"><i class="icon-log-out"></i>logout</a></li>
+                        <li class="login">
+
+                            <script src="{% static 'js/cookieMonster.js' %}"></script>
+                            <script>
+                                var cookie = read_cookie('login');
+                            if (cookie==null || cookie =='false'){
+                                document.write("<a id='login'><i class='icon-login'></i> login</a>");
+                            } else {
+                                document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
+                            }
+                            </script></li>
 						<li class="search">
 							<div class="input-group">
 						      <input type="text" placeholder="Search..">
@@ -262,7 +272,7 @@ span.psw {
 						      </span>
 						    </div>
 						</li>
-						<li class="shopping-cart"><a href="#" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
+						<li class="shopping-cart"><a href="shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
 
 					</ul>
 				</div>
@@ -270,6 +280,7 @@ span.psw {
 			
 		</div>
 	</nav>
+
 
 	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url({%static 'images/img_bg_2.jpg' %});">
 		<div class="overlay"></div>
@@ -554,27 +565,48 @@ span.psw {
 	<script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
 	<!-- Main -->
 	<script src="{% static 'js/main.js' %}"></script>
-
+    <script src="{% static 'js/client.js' %}"></script>
     <script>
         // Get the modal
         var modal = document.getElementById('id01');
         // When the user clicks anywhere outside of the modal, close it
+        var onsuccess =  (res) =>{
+        alert(res);
+        window.location.href = '/';
+        document.cookie = "login = true;";
+        window.location.href = '/';
+        }
         window.onclick = function(event) {
           if (event.target == modal) {
               modal.style.display = "none";
           }
         }
-        document.getElementById("login").onclick = function (event) {
-            document.getElementById('login').style.display='none';
-            document.getElementById('logout').style.display='block';
+        var logout_onsuccess =  (res) =>{
+        alert(res);
+        document.cookie = "login = false;";
+        window.location.href = '/';
+        };
+        var logout_onfailure =  (res) =>{
+        alert(res);
+        };
+        if(document.getElementById('login')!=undefined){
+            document.getElementById('login').onclick = function (event) {
             document.getElementById('id01').style.display='block';
+            }
         }
+        else{
+            document.getElementById('logout').onclick = function (event) {
+                send_msg({action:'logout'},logout_onsuccess, logout_onfailure);
+            };
+        }
+
         var btn = document.getElementById('loginbtn');
     var onsuccess =  (res) =>{
         alert(res);
         window.location.href = '/';
-
-    }
+        document.cookie = "login = true;";
+        window.location.href = '/';
+    };
 
     var onfailure = (res) =>{
         alert(res);
@@ -592,7 +624,7 @@ span.psw {
             alert('Password field is empty ! ');
             return;
             }
-        send_msg({action: 'login', username: username, password: psw},onsuccess, onfailure);
+        send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
 
     }
         </script>

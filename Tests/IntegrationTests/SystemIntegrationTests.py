@@ -76,3 +76,29 @@ class TestStoreAction(SystemIntegrationTests):
         self.assertTrue(self.system.add_owner_to_store('avastore', 'inbar').success)
         self.assertTrue(self.system.add_manager_to_store('avastore', 'shklark', 7).success)
 
+    def test_good_get_total_system_inventory(self):
+        self.assertTrue(self.system.sign_up('ava bash', '666').success)
+        self.assertTrue(self.system.login('ava bash', '666').success)
+        ava = self.system.get_cur_user()
+        avaStore = self.system.create_store('avaStore')
+        self.assertTrue(avaStore.success)
+        gun = {'name': "glock", 'price': 5000, 'category': "weapon"}
+        axe = {'name': "axe", 'price': 200, 'category': "weapon"}
+        bamba = {'name': "bamba", 'price': 5, 'category': "snak"}
+        self.assertTrue((avaStore.value.add_item_to_inventory(ava, gun, 14)).success)
+        self.assertTrue((avaStore.value.add_item_to_inventory(ava, axe, 502)).success)
+        self.assertTrue((avaStore.value.add_item_to_inventory(ava, bamba, 80)).success)
+        self.system.logout()
+        self.assertTrue((self.system.sign_up('inbar', '9876')).success)
+        self.assertTrue((self.system.login("inbar", '9876')).success)
+        inbar = self.system.get_cur_user()
+        inbarStore = self.system.create_store('inbarStore')
+        self.assertTrue(inbarStore.success)
+        bread = {'name': "bread", 'price': 4, 'category': "food"}
+        hala = {'name': "hala", 'price': 8, 'category': "food"}
+        self.assertTrue((inbarStore.value.add_item_to_inventory(inbar, bread, 100)).success)
+        self.assertTrue((inbarStore.value.add_item_to_inventory(inbar, hala, 150)).success)
+        inv = self.system.get_total_system_inventory()
+        self.assertTrue(len(inv.value) == 5)
+        print("the inventory is:\n")
+        print(inv.value)

@@ -124,7 +124,7 @@ class ServiceImpl(ServiceInterface):
 
     def remove_item_from_inventory(self, item_name, store_name):
         store_result = self.sys.get_store(store_name)
-        if not store_result:
+        if not store_result.success:
             return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" + store_result.message)
         store = store_result.value
         user = self.sys.get_cur_user()
@@ -213,3 +213,12 @@ class ServiceImpl(ServiceInterface):
             managers.append({'username': m.username})
         return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
+    def get_total_system_inventory(self):
+        items_list = self.sys.get_total_system_inventory()
+        if len(items_list) == 0:
+            return ResponseObject(False, [], "No item matching the search")
+        output_list = []
+        for itm in items_list:
+            print(itm)
+            output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
+        return ResponseObject(True, output_list, "")
