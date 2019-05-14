@@ -180,6 +180,7 @@ class System:
             if not supplying_system.get_supply(item['name']):
                 self.log.set_info("buy items failed: item is out of stock", "errorLog")
                 return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
+        # TODO: apply discount
         amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
         collecting_system = CollectingSystem()
         flag = collecting_system.collect(amount, self.cur_user.creditDetails)
@@ -190,10 +191,10 @@ class System:
             removed = self.cur_user.remove_from_cart(item['store_name'], item['name'])
             if not removed.success:
                 self.log.set_info("buy items failed", "errorLog")
-                return ResponseObject(False, False, "Cannot purchase items " + item['name'] + "\n" + removed.message)
+                return ResponseObject(False, False, "Cannot purchase item " + item['name'] + "\n" + removed.message)
 
-            # Todo : remove items from store inventory
-            self.log.set_info("buy items succeeded", "eventLog")
+        # Todo : remove items from store inventory
+        self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def create_store(self, store_name):
