@@ -13,3 +13,6 @@ class ImmediateDiscount(Discount):
 
     def set_discount_time(self, time):
         self.time = time
+
+    def set_double(self, double):
+        self.double = double

@@ -363,7 +363,7 @@ class Store(object):
         else:
             new_price = item.apply_discount()
             if self.discount.double:
-                new_price = self.discount.apply_discount(item)
+                new_price = self.apply_store_discount(item)
             return ResponseObject(True, new_price, "")
 
     def set_buying_policy(self, policy, user):
