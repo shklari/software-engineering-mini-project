@@ -2,7 +2,6 @@ import unittest
 from Domain.Store import Store
 from Domain.User import User
 from Domain.Guest import Guest
-from Domain.Item import Item
 from Domain.Discounts.ImmediateDiscount import *
 
 
