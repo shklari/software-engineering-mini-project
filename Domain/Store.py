@@ -1,6 +1,5 @@
 from Domain.StoreOwner import StoreOwner
 from Domain.DiscountPolicy import DiscountPolicy
-from Domain.ProcurementPolicy import ProcurementPolicy
 from Domain.User import User
 from Domain.StoreManager import StoreManager
 from Domain.Item import Item
@@ -19,19 +18,10 @@ class Store(object):
         self.storeOwners = [StoreOwner(owner.username, owner.password)]
         self.storeManagers = []
         self.discountPolicy = 0
-        self.procPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")
         self.buying_policy = ImmediateBuyingPolicy()
         # self.errorLog = ErrorLog()
-
-    def set_proc_policy(self, new_policy):
-        if isinstance(new_policy, ProcurementPolicy):
-            self.procPolicy = new_policy
-            self.log.set_info("new policy has updated", "eventLog")
-            return True
-        self.log.set_info("illegal policy", "errorLog")
-        return False
 
     def check_if_store_owner(self, user):
         if isinstance(user, User):  # fixxxxx (check instance of store owner)
