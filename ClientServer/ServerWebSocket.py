@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import websockets
+from Service.RealTimeAlert import RealTimeAlert
 
 from Service.serviceImpl import ServiceImpl
 
@@ -16,6 +17,8 @@ service = ServiceImpl()
 
 checkinit = service.init("avabash", "123456")
 
+alert = RealTimeAlert()
+
 print(checkinit.message)
 
 
@@ -28,23 +31,28 @@ def users_event():
 
 
 async def register(websocket):
+    print("register:")
     print(websocket)
     USERS.add(websocket)
 
 
 async def unregister(websocket):
+    print("unregister:")
     USERS.remove(websocket)
 
 
 async def helper(answer, action, websocket):
     print("got " + action + " request")
     if answer.success:
-        await websocket.send(state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message}))
+        ans = state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message})
     else:
-        await websocket.send(state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message}))
+        ans = state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message})
+    print(ans)
+    await websocket.send(ans)
 
 
 async def datahandler(data, websocket):
+    service.web = websocket
     if data['action'] == 'signup':
         print(data['username'] + ' ' + data['password'])
         ans = service.sign_up(data['username'], data['password'])
@@ -70,7 +78,6 @@ async def datahandler(data, websocket):
         ans = service.add_item_to_inventory(data['item'], data['store_name'], data['quantity'])
     elif data['action'] == 'remove_item_from_inventory':
         ans = service.remove_item_from_inventory(data['item_name'], data['store_name'])
-        await websocket.send(state_event(ans))
     elif data['action'] == 'decrease_item_quantity':
         ans = service.decrease_item_quantity(data['store_name'], data['item_name'], data['quantity'])
     elif data['action'] == 'edit_item_price':
@@ -83,6 +90,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
+    elif data['action'] == 'alert':
+        ans = alert.notify()
     else:
         logging.error(
             "unsupported event: {}", data)
@@ -93,14 +102,22 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # register(websocket) sends user_event() to websocket
     await register(websocket)
-    while not websocket.open:
-        await websockets.connect('ws://100.10.102.7:6789')
+    # while not websocket.open:
+    #   await websockets.connect('ws://100.10.102.7:6789')
     try:
-        async for message in websocket:
-            data = json.loads(message)
-            await datahandler(data, websocket)
+        if websocket.open:
+            async for message in websocket:
+                print(message)
+                data = json.loads(message)
+                print(data)
+                await datahandler(data, websocket)
+    except Exception as e:
+        print(e)
     finally:
-        await unregister(websocket)
+        if websocket.open:
+            await unregister(websocket)
+
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
 asyncio.get_event_loop().run_forever()
+

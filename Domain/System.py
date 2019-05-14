@@ -265,3 +265,9 @@ class System:
         self.cur_user.add_to_cart(store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
+
+    def get_total_system_inventory(self):
+        retList = []
+        for stur in self.stores:
+            retList.extend(stur.inventory)
+        return ResponseObject(True, retList, "")

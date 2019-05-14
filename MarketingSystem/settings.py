@@ -50,8 +50,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static','static_dirs'),
+]
 ROOT_URLCONF = 'MarketingSystem.urls'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 TEMPLATES = [
     {
@@ -70,7 +73,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MarketingSystem.wsgi.application'
+#WSGI_APPLICATION = 'MarketingSystem.wsgi.application'
+ASGI_APPLICATION = 'MarketingSystem.routing.application'
 
 
 # Database
@@ -121,3 +125,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+#CLIENT_URL = '/../../../ClientServer/client'
