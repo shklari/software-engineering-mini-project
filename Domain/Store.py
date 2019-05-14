@@ -361,11 +361,9 @@ class Store(object):
         if not item:
             return ResponseObject(False, False, "Item " + item_name + " doesn't exist in store " + self.name)
         else:
-            new_price = self.apply_store_discount(item.price)
+            new_price = item.apply_discount()
             if self.discount.double:
-                new_price = item.apply_discount(new_price)
-                item.set_price(new_price)
-                new_price = item.apply_discount()
+                new_price = self.discount.apply_discount(new_price)
             return ResponseObject(True, new_price, "")
 
     def set_buying_policy(self, policy, user):
