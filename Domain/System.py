@@ -175,6 +175,9 @@ class System:
 
     def buy_items(self, items):
         # check if items exist in basket??
+        if not self.get_cur_user().buying_policy.apply_policy():
+            self.log.set_info("buy items failed: user policy", "errorLog")
+            return ResponseObject(False, False, "buy items failed: User " + self.cur_user + " policy")
         supplying_system = SupplyingSystem()
         for item in items:
             store = self.get_store(item['store_name'])
