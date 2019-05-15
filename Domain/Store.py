@@ -353,8 +353,8 @@ class Store(object):
     def set_double_discount(self, double):
         self.discount.double = double
 
-    def apply_store_discount(self, item):
-        return self.discount.apply_discount(item.price)
+    def apply_store_discount(self, price):
+        return self.discount.apply_discount(price)
 
     def apply_discounts(self, item_name):
         item = self.search_item_by_name(item_name)
@@ -363,7 +363,7 @@ class Store(object):
         else:
             new_price = item.apply_discount()
             if self.discount.double:
-                new_price = self.apply_store_discount(item)
+                new_price = self.apply_store_discount(new_price)
             return ResponseObject(True, new_price, "")
 
     def set_buying_policy(self, policy, user):

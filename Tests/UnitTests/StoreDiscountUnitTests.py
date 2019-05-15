@@ -46,13 +46,29 @@ class StoreDiscountUnitTests(unittest.TestCase):
         self.assertTrue(self.store.add_discount_to_item(self.admin, 'Balishag', composed).success)
 
     def test_apply_store_discount(self):
-        self.assertEqual(self.store.apply_store_discount(self.item2), 500)
+        self.assertEqual(self.store.apply_store_discount(100), 100)
         discount = ImmediateDiscount(0.2, 2, True, "stam")
         self.assertTrue(self.store.add_store_discount(self.admin, discount).success)
-        self.assertEqual(int(self.store.apply_store_discount(self.item2)), 400)
+        self.assertEqual(int(self.store.apply_store_discount(100)), 80)
         composed = ComposedDiscount(0.5, 1, True, "50% discount on all items!")
         self.assertTrue(self.store.add_store_discount(self.admin, composed).success)
-        self.assertEqual(int(self.store.apply_store_discount(self.item2)), 200)
+        self.assertEqual(int(self.store.apply_store_discount(100)), 40)
+        discount.set_double(False)
+        self.assertEqual(int(self.store.apply_store_discount(100)), 80)
+
+    def test_apply_discounts(self):
+        self.assertFalse(self.store.apply_discounts('iRobot').success)
+        self.store.add_item_to_inventory(self.admin, {'name': self.item2.name, 'price': self.item2.price,
+                                                      'category': self.item2.category}, 10)
+        discount = ImmediateDiscount(0.2, 2, True, "20% on all items!")
+        self.assertTrue(self.store.add_store_discount(self.admin, discount).success)
+        self.assertTrue(self.store.apply_discounts('iRobot').success)
+        self.assertEqual(int(self.store.apply_discounts('iRobot').value), 400)
+        item_discount = ImmediateDiscount(0.5, 2, True, "50% on iRobots!")
+        self.assertTrue(self.store.add_discount_to_item(self.admin, 'iRobot', item_discount).success)
+        self.assertEqual(int(self.store.apply_discounts('iRobot').value), 200)
+        self.store.set_double_discount(False)
+        self.assertEqual(int(self.store.apply_discounts('iRobot').value), 250)
 
 
 
