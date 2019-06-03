@@ -125,7 +125,7 @@ async def looper(websocket, path):
         if websocket.open:
             client = websocket.local_address
             service.guests.append({'ip': client[0], 'port': client[1], 'ws': websocket})
-            alert.notify("hello guest", 'guest')
+            # alert.notify("hello guest", 'guest')
             async for message in websocket:
                 print(message)
                 data = json.loads(message)

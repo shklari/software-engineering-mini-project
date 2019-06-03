@@ -20,7 +20,7 @@ class Store(object):
         self.discountPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")
-        self.buying_policy = ImmediateBuyingPolicy()
+        self.policy = ImmediateBuyingPolicy()
         # self.errorLog = ErrorLog()
 
     def check_if_store_owner(self, user):

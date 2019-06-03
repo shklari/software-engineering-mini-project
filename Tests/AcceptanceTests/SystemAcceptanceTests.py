@@ -22,7 +22,7 @@ class CollectingSystem(object):
         else:
             return True
 
-    def collect(self):
+    def collect(self, item, credit_details):
         return self.init()
 
 
@@ -43,7 +43,7 @@ class SupplyingSystem(object):
         else:
             return True
 
-    def get_supply(self):
+    def get_supply(self, name):
         return self.init()
 
 
@@ -85,18 +85,17 @@ class SystemTestCase(unittest.TestCase):
 
     # 1.1 # init will succeed only if the external systems.init() will return true
     def test_init(self):
+        # set up stub ext systems:
+        self.system.real.sys.collecting_system = self.collecting
+        self.system.real.sys.supplying_system = self.supplying
+        self.system.real.sys.traceability_system = self.consistency
+        #test
         self.collecting.switch()
         self.supplying.switch()
         self.consistency.switch()
         for i in range(0, 1):
-            print("i: ")
-            print(i)
             for j in range(0, 1):
-                print("j: ")
-                print(j)
                 for k in range(0, 1):
-                    print("k: ")
-                    print(k)
                     inits = self.system.init(self.manager['name'], self.manager['password']).success
                     print(inits)
                     self.assertEqual((i == 1 and j == 1 and k == 1), inits)
@@ -180,7 +179,7 @@ class SystemTestCase(unittest.TestCase):
     # 3.1
     def test_logout_fail(self):
         # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
+        print(self.system.init(self.manager['name'], self.manager['password']).success)
         self.system.sign_up("try1", "try123")
         self.system.sign_up("try2", "try123")
         # user isn't logged in - shouldnt work
