@@ -19,8 +19,11 @@ class CollectingSystem(object):
         else:
             return True
 
-    def collect(self, item, credit_details):
-        return self.init()
+    def collect(self, amount, credit_details):
+        if self.flag == 0:
+            return 0
+        else:
+            return amount
 
 
 class SupplyingSystem(object):
