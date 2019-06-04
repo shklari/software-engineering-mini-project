@@ -21,7 +21,7 @@ class ServiceBridge(ServiceInterface):
     def init(self, sm_username, sm_password):
         return True if self.real is None else self.real.init(sm_username, sm_password)
 
-    def sign_up(self, username, password):
+    def sign_up(self, username, password, age, country):
         return True if self.real is None else self.real.sign_up(username, password)
 
     def login(self, username, password):

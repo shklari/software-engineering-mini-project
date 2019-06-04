@@ -82,9 +82,11 @@ async def datahandler(data, websocket):
     service.web = websocket
     print(data)
     if data['action'] == 'signup':
-        ans = service.sign_up(data['username'], data['password'])
+        ans = service.sign_up(data['username'], data['password'], data['age'], data['country'])
+        print(data['age'] + '  ' + data['country'])
     elif data['action'] == 'login':
-        guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
+        guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1],
+                                          'ws': websocket})
         ans = service.login(data['username'], data['password'])
     elif data['action'] == 'search':
         ans = service.search(data['keyword'])
@@ -118,6 +120,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
+    elif data['action'] == 'get_store':
+        ans = service.get_store(data['store_name'])
     else:
         logging.error(
             "unsupported event: {}", data)
