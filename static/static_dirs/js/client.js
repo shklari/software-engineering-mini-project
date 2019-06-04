@@ -21,7 +21,7 @@ function send_msg(msg, onsuccess , onfailure)
                     alert(data.message);
                 case 'success':
                     console.log('success');
-                    onsuccess(data.message,data.return_val);
+                    onsuccess(data.message,data.return_val );
                     break;
                 case 'fail':
                     console.log('fail');
