@@ -27,6 +27,7 @@ service.sign_up("storeowner2", "111")
 service.sign_up("storeman1", "111")
 service.login("storeowner1", "111")
 service.create_store("osem")
+service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 # service.logout()
 
 # #######################################TEST
@@ -116,6 +117,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
+    elif data['action'] == 'edit_product':
+        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'])
     else:
         logging.error(
             "unsupported event: {}", data)

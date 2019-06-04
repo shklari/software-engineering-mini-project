@@ -144,11 +144,11 @@ button:hover {
 
     var onfailure = (res) =>{
         alert(res);
-        window.location.href = '/addpro';
+        window.location.href = '/add_item_to_inventory';
     }
     btn.onclick = function (event){
         var productname = document.getElementById('productname').value;
-        var price = document.getElementById('price').value;
+        var price = +document.getElementById('price').value;
         var category = document.getElementById('category').value;
         var storename = document.getElementById('storename').value;
         if(productname == '') {

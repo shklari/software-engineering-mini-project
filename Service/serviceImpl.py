@@ -140,6 +140,35 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "Item " + item_name + " removed from " + store_name + " inventory")
 
+    def edit_product(self, itemname, store_name, quantity, price):
+        store_result = self.sys.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False,
+                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        store = store_result.value
+        user = self.sys.get_cur_user()
+        if user is None:
+            return ResponseObject(False, False, "Error: no current user")
+        item = store.search_item_by_name(itemname)
+        if not item:
+            return ResponseObject(False, False,
+                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+        add = store.add_item_to_inventory(user, {'name': itemname, 'price': price, 'category': ''}, quantity)
+        if not add.success:
+            return ResponseObject(False, False, "Error: can't add item " + itemname[
+                'name'] + " to store " + store_name + "\n" + add.message)
+        if price > 0:
+            add = store.edit_item_price(user, itemname, price)
+            if not add.success:
+                return ResponseObject(False, False, "Error: can't edit " + itemname[
+                    'name'] + "'s price in" + store_name + "store\n" + add.message)
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'quantity': i['quantity']})
+        return ResponseObject(True, inv, "Item " + itemname + " edited successfully in " + store_name + " inventory")
+
+
+
     def decrease_item_quantity(self, store_name, item_name, quantity):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
