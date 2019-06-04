@@ -112,8 +112,18 @@ button:hover {
     <label for="storename"><b>Storename</b></label>
     <input id='storename' type="text" placeholder="Enter Username" name="storename" required>
 
-    <label for="permissions"><b>Permissions</b></label>
-    <input id='permissions' type="text" placeholder="Enter permissions" name="permissions" required>
+
+    <label>
+      <input id="editPer" type="checkbox" checked="checked" style="margin-bottom:15px"> Permission to edit?
+    </label>
+
+    <label>
+      <input id="removePer" type="checkbox" checked="checked" style="margin-bottom:15px"> Permission to remove?
+    </label>
+
+    <label>
+      <input id="addPer" type="checkbox" checked="checked" style="margin-bottom:15px"> Permission to add?
+    </label>
 
     {% csrf_token %}
     <div class="clearfix">
@@ -139,7 +149,10 @@ button:hover {
     btn.onclick = function (event){
         var username = document.getElementById('username').value;
         var storename = document.getElementById('storename').value;
-        var permissions = document.getElementById('permissions').value
+        edit = document.getElementById('editPer').checked == "checked" ? "true" : "false";
+        remove = document.getElementById('removePer').checked == "checked" ? "true" : "false";
+        add = document.getElementById('addPer').checked == "checked" ? "true" : "false";
+        var permissions = {Edit: edit, Remove: remove, Add: add};
         if(username == '') {
             alert('Username field is empty !');
             return;
@@ -150,7 +163,8 @@ button:hover {
             return;
         }
 
-        send_msg({action: 'add_new_manager', store_name: storename, new_manager: username, permissions: permissions},onsuccess, onfailure);
+        send_msg({action: 'add_new_manager', store_name: storename, new_manager: username, permissions: permissions},
+          onsuccess, onfailure);
 
     }
 
