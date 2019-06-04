@@ -21,8 +21,8 @@ class ServiceImpl(ServiceInterface):
         else:
             return ResponseObject(False, False, "System failed to initialize\n" + result.message)
 
-    def sign_up(self, username, password):
-        result = self.sys.sign_up(username, password)
+    def sign_up(self, username, password, age, country):
+        result = self.sys.sign_up(username, password, age, country)
         if result.success:
             return ResponseObject(True, True, "Signed up successfully \n" + result.message)
         else:
@@ -228,3 +228,6 @@ class ServiceImpl(ServiceInterface):
             print(itm)
             output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
         return ResponseObject(True, output_list, "")
+
+    def get_store(self, store_name):
+        store = self.sys.get_store(store_name)

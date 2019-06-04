@@ -14,7 +14,7 @@ class ServiceInterface(object):
     def init(self, sm_username, sm_password): pass
 
     @abstractmethod  # 2.2 username, password are strings
-    def sign_up(self, username, password): pass
+    def sign_up(self, username, password, age, country): pass
 
     @abstractmethod  # 2.3 username, password are strings
     def login(self, username, password): pass

@@ -250,8 +250,21 @@ label {
   }
 }
 </style>
+      <script>
+        function load_inventory(){
+          var storename = getElementById("store_name").value;
+          var onfailure = (ret) => {
+            alert(res);
+            window.location.href = '/';
+          }
+          var onsuccess = (ret) => {
+
+          send_msg({action: "get_store", store_name: storename})
+        }
+       </script>
+
     </head>
-<body>
+<body onload="load_inventory()">
   <table id="products">
   </table>
 <div class="store">
