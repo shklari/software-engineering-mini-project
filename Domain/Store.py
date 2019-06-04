@@ -146,7 +146,7 @@ class Store(object):
         if isinstance(owner, User) and owner.logged_in:
             if self.check_if_store_owner(owner):
                 if not self.check_if_store_owner(new_owner):
-                    self.storeOwners.append(StoreOwner(new_owner.username, new_owner.password, owner))
+                    self.storeOwners.append(StoreOwner(new_owner.username, new_owner.password, new_owner.age, new_owner.country, owner))
                     for k in self.storeOwners:
                         if k.username == owner.username:
                             k.add_appointee(new_owner)
@@ -225,7 +225,7 @@ class Store(object):
             if self.check_if_store_owner(owner):
                 if not self.check_if_store_manager(new_manager):
                     self.storeManagers.append(
-                        StoreManager(new_manager.username, new_manager.password, owner, permissions))
+                        StoreManager(new_manager.username, new_manager.password, new_manager.age, new_manager.country, owner, permissions))
                     for k in self.storeOwners:
                         if k.username == owner.username:
                             k.add_appointee(new_manager)
