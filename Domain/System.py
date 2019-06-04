@@ -23,7 +23,7 @@ class System:
         self.traceability_system = TraceabilitySystem()
 
     def init_system(self, system_manager_user_name, system_manager_password):
-        if not self.supplying_system.init() or not self.traceability_system.init() or self.collecting_system.init():
+        if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
             ret = False
         else:
             ret = True
