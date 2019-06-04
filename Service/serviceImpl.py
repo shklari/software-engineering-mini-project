@@ -14,8 +14,8 @@ class ServiceImpl(ServiceInterface):
         self.ownersAlert = RealTimeAlert(self)
 
     # assumes the init function receives the username and password of the system manager
-    def init(self, sm_username, sm_password):
-        result = self.sys.init_system(sm_username, sm_password)
+    def init(self, sm_username, sm_password, age, country):
+        result = self.sys.init_system(sm_username, sm_password, age, country)
         if result.success:
             return ResponseObject(True, result.value, "System initialized successfully")
         else:
