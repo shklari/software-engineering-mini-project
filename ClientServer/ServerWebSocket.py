@@ -81,6 +81,7 @@ async def datahandler(data, websocket):
     print(data)
     if data['action'] == 'signup':
         ans = service.sign_up(data['username'], data['password'], data['age'], data['country'])
+        print(data['age'] + '  ' + data['country'])
     elif data['action'] == 'login':
         guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1],
                                           'ws': websocket})
@@ -112,7 +113,6 @@ async def datahandler(data, websocket):
     elif data['action'] == 'add_new_owner':
         ans = service.add_new_owner(data['store_name'], data['new_owner'])
     elif data['action'] == 'add_new_manager':
-        print(data['permissions'])
         ans = service.add_new_manager(data['store_name'], data['new_manager'], data['permissions'])
     elif data['action'] == 'remove_owner':
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
