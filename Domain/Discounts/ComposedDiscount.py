@@ -26,6 +26,12 @@ class ComposedDiscount(Discount):
                     return new_price
         return new_price
 
+    def set_discount_time(self, time):
+        self.time = time
+
+    def set_double(self, double):
+        self.double = double
+
 
 
 

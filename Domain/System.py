@@ -18,8 +18,15 @@ class System:
         self.users = {}  # {username, user}
         self.stores = []
         self.log = Log("", "")
+        self.supplying_system = SupplyingSystem()
+        self.collecting_system = CollectingSystem()
+        self.traceability_system = TraceabilitySystem()
 
     def init_system(self, system_manager_user_name, system_manager_password):
+        if not self.supplying_system.init() or not self.traceability_system.init() or self.collecting_system.init():
+            ret = False
+        else:
+            ret = True
         result = self.sign_up(system_manager_user_name, system_manager_password)
         if not result.success:
             self.log.set_info("System manager could not sign up", "errorLog")
@@ -29,7 +36,7 @@ class System:
         self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
-        return ResponseObject(True, self.cur_user, "")
+        return ResponseObject(ret, self.cur_user, "")
 
     def sign_up(self, username, password):
         if username is None or username == '':
@@ -175,15 +182,31 @@ class System:
 
     def buy_items(self, items):
         # check if items exist in basket??
-        supplying_system = SupplyingSystem()
+        if not self.get_cur_user().buying_policy.apply_policy():
+            self.log.set_info("buy items failed: user policy", "errorLog")
+            return ResponseObject(False, False, "buy items failed: User " + self.cur_user + " policy")
         for item in items:
-            if not supplying_system.get_supply(item['name']):
+            store = self.get_store(item['store_name'])
+            if not store.success:
+                self.log.set_info("buy items failed: store does not exist", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
+            if not store.value.policy.apply_policy():
+                self.log.set_info("buy items failed: store policy", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " policy")
+            tmp_item = store.value.search_item_by_name(item['name'])
+            if not tmp_item:
+                self.log.set_info("buy items failed: item is not in store's inventory", "errorLog")
+                return ResponseObject(False, False, "buy items failed: Item " + item['name'] + " is not in "
+                                      + item['store_name'])
+            if not tmp_item.buying_policy.apply_policy():
+                self.log.set_info("buy items failed: item policy", "errorLog")
+                return ResponseObject(False, False, "Item " + item['name'] + "'s policy isn't allowing buying it")
+            if not self.supplying_system.get_supply(item['name']):
                 self.log.set_info("buy items failed: item is out of stock", "errorLog")
                 return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
         # TODO: apply discount
         amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
-        collecting_system = CollectingSystem()
-        flag = collecting_system.collect(amount, self.cur_user.creditDetails)
+        flag = self.collecting_system.collect(amount, self.cur_user.creditDetails)
         if not flag:
             self.log.set_info("buy items failed: payment rejected", "errorLog")
             return ResponseObject(False, False, "Payment rejected")
