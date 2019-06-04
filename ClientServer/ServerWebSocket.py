@@ -22,11 +22,13 @@ service = ServiceImpl()
 checkinit = service.init("avabash", "123456")
 
 # #######################################TEST
-service.sign_up("storeowner1", "111")
+service.sign_up("try2", "111")
 service.sign_up("storeowner2", "111")
 service.sign_up("storeman1", "111")
-service.login("storeowner1", "111")
+service.login("storeowner2", "111")
 service.create_store("shaiozim baam")
+service.add_new_manager('shaiozim baam','try2',{'Edit':True,'Remove':True,'Add':True})
+service.logout()
 # service.logout()
 
 # #######################################TEST
