@@ -22,10 +22,12 @@ service = ServiceImpl()
 checkinit = service.init("avabash", "123456")
 
 # #######################################TEST
-service.sign_up("try1", "try1")
-service.login("try1", "try1")
+service.sign_up("storeowner1", "111")
+service.sign_up("storeowner2", "111")
+service.sign_up("storeman1", "111")
+service.login("storeowner1", "111")
 service.create_store("shaiozim baam")
-service.logout()
+# service.logout()
 
 # #######################################TEST
 ws = 0
@@ -76,6 +78,7 @@ async def helper(answer, action, websocket):
 
 async def datahandler(data, websocket):
     service.web = websocket
+    print(data)
     if data['action'] == 'signup':
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
