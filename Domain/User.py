@@ -12,3 +12,5 @@ class User(Guest):
         self.age = age
         self.country = country
         self.buying_policy = ImmediateBuyingPolicy()
+        self.age
+        self.country
