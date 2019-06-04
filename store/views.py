@@ -7,4 +7,4 @@ from . import models
 
 
 def index(request):
-    return render(request, 'store/product.html')
+    return render(request, 'store/home.html')
