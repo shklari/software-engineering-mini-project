@@ -27,6 +27,7 @@ service.sign_up("storeowner2", "111")
 service.sign_up("storeman1", "111")
 service.login("storeowner1", "111")
 service.create_store("osem")
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
 # service.logout()
 
 # #######################################TEST
