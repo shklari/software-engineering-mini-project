@@ -10,3 +10,5 @@ class User(Guest):
         self.username = username
         self.password = password
         self.buying_policy = ImmediateBuyingPolicy()
+        self.age
+        self.country

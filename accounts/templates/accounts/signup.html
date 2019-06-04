@@ -115,6 +115,12 @@ button:hover {
     <label for="psw-repeat"><b>Repeat Password</b></label>
     <input id='password2' type="password" placeholder="Repeat Password" name="psw-repeat" required>
 
+    <label><b>Age</b></label>
+    <input id='age' type="text" placeholder="Date Of birth" name="age" required>
+
+    <label><b>Country</b></label>
+    <input id='country' type="text" placeholder="Country" name="country" required>
+
     <label>
       <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
     </label>
@@ -143,18 +149,19 @@ button:hover {
     }
     btn.onclick = function (event){
         var username = document.getElementById('username').value;
+        var age = document.getElementById('age').value;
+        var country = document.getElementById('country').value;
         var psw = document.getElementById('password').value;
         var pswrep = document.getElementById('password2').value;
         if(username == '') {
             alert('Username field is empty !');
             return;
         }
-
         if(psw!=pswrep){
             alert('Passwords are not the same!');
             return;
-            }
-        send_msg({action: 'signup', username: username, password: psw},onsuccess, onfailure);
+        }
+        send_msg({action: 'signup', username: username, password: psw, age:age,country:country} , onsuccess, onfailure);
 
     }
 
