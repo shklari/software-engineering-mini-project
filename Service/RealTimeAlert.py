@@ -14,7 +14,7 @@ class RealTimeAlert(object):
         self.group({})
         websocket.getpeername()
 
-    def notify(self, message, group):
+    def notify(self, group, message):
         # lst = []
         # if group == 'guest':
         #     lst = self.service.guests
@@ -22,11 +22,14 @@ class RealTimeAlert(object):
         #     lst = self.service.users
 
         for member in group:
-            self.tasks.put({'ws': self.find_user_ws(member.username)['ws'], 'message': message})
+            cur = self.find_user_ws(member)
+            if not cur:
+                continue
+            self.tasks.put({'ws': cur['ws'], 'message': message})
 
     def find_user_ws(self, user):
         for x in self.service.users:
             if x.username == user:
                 return x
-        return False;
+        return False
 

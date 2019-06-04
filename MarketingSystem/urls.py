@@ -25,7 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shopping-cart/', LoginView.as_view(template_name='MarketingSystem/ShoppingCart.html'), name="shoppingCart"),
     path('add-new-owner/', LoginView.as_view(template_name='MarketingSystem/addNewOwner.html'), name="addNewOwner"),
+    path('add-new-manager/', LoginView.as_view(template_name='MarketingSystem/addNewManager.html'), name="addNewManager"),
+    path('remove-owner/', LoginView.as_view(template_name='MarketingSystem/removeOwner.html'), name="removeOwner"),
+    path('remove-manager/', LoginView.as_view(template_name='MarketingSystem/removeManager.html'), name="removeManager"),
     #path('', views.index, name='home'),
     path('', include('store.urls'), name='list'),
     path('', include('accounts.urls'), name='list'),
 ]
+

@@ -102,14 +102,14 @@ button:hover {
 
 <div style="border:1px solid #ccc">
   <div class="container">
-    <h1>Add New Owner</h1>
-    <p>Please fill in this form to add an owner.</p>
+    <h1>Remove Manager</h1>
+    <p>Please fill in this form to add an manager.</p>
     <hr>
 
-    <label for="username"><b>Username</b></label>
+    <label for="username"><b>Enter Username of Manager to Remove</b></label>
     <input id='username' type="text" placeholder="Enter Username" name="username" required>
 
-    <label for="storename"><b>Storename</b></label>
+    <label for="storename"><b>Enter Store Name</b></label>
     <input id='storename' type="text" placeholder="Enter Username" name="storename" required>
 
     {% csrf_token %}
@@ -131,13 +131,13 @@ button:hover {
 
     var onfailure = (res) =>{
         alert(res);
-        window.location.href = '/add-new-owner';
+        window.location.href = '/remove-new-manager';
     }
     btn.onclick = function (event){
         var username = document.getElementById('username').value;
         var storename = document.getElementById('storename').value;
         if(username == '') {
-            alert('Username field is empty !');
+            alert('Managername field is empty !');
             return;
         }
 
@@ -146,7 +146,7 @@ button:hover {
             return;
         }
 
-        send_msg({action: 'add_new_owner', store_name: storename, new_owner: username},onsuccess, onfailure);
+        send_msg({action: 'remove_manager', store_name: storename, manager_to_remove: username},onsuccess, onfailure);
 
     }
 
