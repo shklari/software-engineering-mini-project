@@ -26,7 +26,7 @@ service.sign_up("storeowner1", "111")
 service.sign_up("storeowner2", "111")
 service.sign_up("storeman1", "111")
 service.login("storeowner1", "111")
-service.create_store("shaiozim baam")
+service.create_store("osem")
 # service.logout()
 
 # #######################################TEST
