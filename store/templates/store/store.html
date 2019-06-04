@@ -1,5 +1,5 @@
 {%load static%}
-{%load staticfiles %}
+
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -11,12 +11,12 @@
 	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
 	<meta name="author" content="gettemplates.co" />
 
-	<!-- 
+	<!--
 	//////////////////////////////////////////////////////
 
-	FREE HTML5 TEMPLATE 
+	FREE HTML5 TEMPLATE
 	DESIGNED & DEVELOPED by FreeHTML5.co
-		
+
 	Website: 		http://freehtml5.co/
 	Email: 			info@freehtml5.co
 	Twitter: 		http://twitter.com/fh5co
@@ -38,7 +38,7 @@
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
 	<!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
 	<!-- Icomoon Icon Fonts-->
@@ -60,7 +60,7 @@
 	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
-	<script src="{% static 'js/respond.min.js' %}"></script>
+	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
 	</head>
@@ -189,175 +189,14 @@ span.psw {
         width: 100%;
     }
 }
-        </style>
+    </style>
 
-        <div id="id01" class="modal">
-  <div class="modal-content animate">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <img src="{% static 'images/img_avatar2.png' %}" alt="Avatar" class="avatar">
-    </div>
-
-    <div class="container_lg">
-      <label for="uname"><b>Username</b></label>
-      <input id="username" type="text" placeholder="Enter Username" name="uname" required>
-
-      <label for="psw"><b>Password</b></label>
-      <input id="password" type="password" placeholder="Enter Password" name="psw" required>
-
-      <button id="loginbtn" type="submit">Login</button>
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
-
-    </div>
-
-    <div class="container_lg" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-  </div>
-</div>
 
 	<div class="fh5co-loader"></div>
-	
+
 	<div id="page">
 
-         <!-- manager navigation bar -->
-	 <nav class="fh5co-nav" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 col-xs-6 text-center menu-1">
-					<ul>
-						<li class="has-dropdown">
-							<a href="home.html">Shop</a>
-							<ul class="dropdown">
-								<li><a href="single.html">Single Shop</a></li>
-							</ul>
-						</li>
-						<li><a href="about.html">About</a></li>
-						<li class="has-dropdown">
-							<a href="services.html">Services</a>
-							<ul class="dropdown">
-								<li><a href="#">Web Design</a></li>
-								<li><a href="#">eCommerce</a></li>
-								<li><a href="#">Branding</a></li>
-								<li><a href="#">API</a></li>
-							</ul>
-						</li>
-						<li><a href="contact.html">Contact</a></li>
-					</ul>
-				</div>
-				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
-					<ul>
-                        <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
-                        <li class="login">
 
-                            <script src="{% static 'js/cookieMonster.js' %}"></script>
-                            <script>
-                                var cookie = read_cookie('login');
-                            if (cookie==null || cookie =='false' || cookie==''){
-                                document.write("<a id='login'><i class='icon-login'></i> login</a>");
-                            } else {
-                                document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
-                            }
-                            </script></li>
-						<li class="search">
-							<div class="input-group">
-						      <input type="text" placeholder="Search..">
-						      <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
-						      </span>
-						    </div>
-						</li>
-						<li class="shopping-cart"><a href="shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
-
-					</ul>
-				</div>
-			</div>
-
-		</div>
-	</nav>
-
-     <!-- end navigation bar -->
-
-        <!--  navigation bar -->
-	 <nav class="fh5co-nav" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-xs-2">
-					<div id="fh5co-logo"><a href="index.html">Shop.</a></div>
-				</div>
-				<div class="col-md-6 col-xs-6 text-center menu-1">
-					<ul>
-						<li class="has-dropdown">
-							<a href="home.html">Shop</a>
-							<ul class="dropdown">
-								<li><a href="single.html">Single Shop</a></li>
-							</ul>
-						</li>
-						<li><a href="about.html">About</a></li>
-						<li class="has-dropdown">
-							<a href="services.html">Services</a>
-							<ul class="dropdown">
-								<li><a href="#">Web Design</a></li>
-								<li><a href="#">eCommerce</a></li>
-								<li><a href="#">Branding</a></li>
-								<li><a href="#">API</a></li>
-							</ul>
-						</li>
-						<li><a href="contact.html">Contact</a></li>
-					</ul>
-				</div>
-				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
-					<ul>
-                        <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
-                        <li class="login">
-
-                            <script src="{% static 'js/cookieMonster.js' %}"></script>
-                            <script>
-                                var cookie = read_cookie('login');
-                            if (cookie==null || cookie =='false' || cookie==''){
-                                document.write("<a id='login'><i class='icon-login'></i> login</a>");
-                            } else {
-                                document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
-                            }
-                            </script></li>
-						<li class="search">
-							<div class="input-group">
-						      <input type="text" placeholder="Search..">
-						      <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
-						      </span>
-						    </div>
-						</li>
-						<li class="shopping-cart"><a href="shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
-
-					</ul>
-				</div>
-			</div>
-			
-		</div>
-	</nav>
-
-        <!-- end navigation bar -->
-
-	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url({%static 'images/img_bg_2.jpg' %});">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<div class="display-t">
-						<div class="display-tc animate-box" data-animate-effect="fadeIn">
-							<h1>Product</h1>
-							<h2>Free html5 templates Made by <a href="http://freehtml5.co" target="_blank">freehtml5.co</a></h2>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	
 	<div id="fh5co-product">
 		<div class="container">
 			<div class="row animate-box">
@@ -587,7 +426,7 @@ span.psw {
 			<div class="row copyright">
 				<div class="col-md-12 text-center">
 					<p>
-						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small> 
+						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small>
 						<small class="block">Designed by <a href="http://freehtml5.co/" target="_blank">FreeHTML5.co</a> Demo Images: <a href="http://blog.gessato.com/" target="_blank">Gessato</a> &amp; <a href="http://unsplash.co/" target="_blank">Unsplash</a></small>
 					</p>
 					<p>
@@ -608,7 +447,7 @@ span.psw {
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
-	
+
 	<!-- jQuery -->
 	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<!-- jQuery Easing -->
@@ -625,49 +464,27 @@ span.psw {
 	<script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
 	<!-- Main -->
 	<script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/client.js' %}"></script>
+
     <script>
-        checkExpire();
         // Get the modal
         var modal = document.getElementById('id01');
         // When the user clicks anywhere outside of the modal, close it
-        var onsuccess =  (res) =>{
-        alert(res);
-        window.location.href = '/';
-        document.cookie = "login = true;";
-        window.location.href = '/';
-        }
         window.onclick = function(event) {
           if (event.target == modal) {
               modal.style.display = "none";
           }
         }
-        var logout_onsuccess =  (res) =>{
-        alert(res);
-        document.cookie = "login = false;";
-        window.location.href = '/';
-        };
-        var logout_onfailure =  (res) =>{
-        alert(res);
-        };
-        if(document.getElementById('login')!=undefined){
-            document.getElementById('login').onclick = function (event) {
+        document.getElementById("login").onclick = function (event) {
+            document.getElementById('login').style.display='none';
+            document.getElementById('logout').style.display='block';
             document.getElementById('id01').style.display='block';
-            }
         }
-        else{
-            document.getElementById('logout').onclick = function (event) {
-                send_msg({action:'logout'},logout_onsuccess, logout_onfailure);
-            };
-        }
-
         var btn = document.getElementById('loginbtn');
     var onsuccess =  (res) =>{
         alert(res);
         window.location.href = '/';
-        document.cookie = "login = true;";
-        window.location.href = '/';
-    };
+
+    }
 
     var onfailure = (res) =>{
         alert(res);
@@ -685,13 +502,10 @@ span.psw {
             alert('Password field is empty ! ');
             return;
             }
-        send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
+        send_msg({action: 'login', username: username, password: psw},onsuccess, onfailure);
 
     }
         </script>
 
-    <script>
-
-        </script>
 	</body>
 </html>

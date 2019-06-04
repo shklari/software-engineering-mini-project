@@ -303,10 +303,10 @@ class System:
             return "sys_manager"
         for store in self.stores:
             for owner in store.storeOwners:
-                if username == owner["username"]:
+                if username == owner.username:
                     return "store_owner"
             for manager in store.storeManagers:
-                if username == manager["username"]:
+                if username == manager.username:
                     return "store_manager"
         if username in self.users:
             return "user"
