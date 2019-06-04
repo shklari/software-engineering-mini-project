@@ -155,7 +155,6 @@ button:hover {
             alert('product name field is empty !');
             return;
         }
-        data['item'], data['store_name'], data['quantity']
 
         send_msg({action: 'add_item_to_inventory', item: {name: productname, price: price, category: category}, quantity: 0, store_name: storename},onsuccess, onfailure);
     }
