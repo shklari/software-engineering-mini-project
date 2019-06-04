@@ -39,23 +39,24 @@ class Store(object):
 
     # 4.1.1
     # item = {'name': str, 'price': int, 'category': str}
-    def add_item_to_inventory(self, user, item, quantity):
+    def add_item_to_inventory(self, user, item_name, item_category, item_price, quantity):
         if quantity >= 1:
+            item = Item(item_name, item_price, item_category, self.name)
             if isinstance(user, User) and user.logged_in:
                 if self.check_if_store_owner(user):
                     if len(self.inventory) == 0:
-                        self.inventory = [{'name': item['name'],
-                                           'val': Item(item['name'], item['price'], item['category'], self.name),
+                        self.inventory = [{'name': item_name,
+                                           'val': item,
                                            'quantity': quantity}]
                         self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                         return ResponseObject(True, True, "")
                     else:
                         for x in self.inventory:
-                            if x['val'].name == item['name']:
+                            if x['val'].name == item_name:
                                 x['quantity'] += quantity
                             else:
-                                self.inventory.append({'name': item['name'],
-                                                       'val': Item(item['name'], item['price'], item['category'], self.name),
+                                self.inventory.append({'name': item_name,
+                                                       'val': item,
                                                        'quantity': quantity})
                             self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                             return ResponseObject(True, True, "")

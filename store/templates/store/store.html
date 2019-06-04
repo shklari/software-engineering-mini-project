@@ -1,511 +1,331 @@
 {%load static%}
-
 <!DOCTYPE HTML>
 <html>
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Shop &mdash; Free Website Template, Free HTML5 Template by gettemplates.co</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by gettemplates.co" />
-	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	<meta name="author" content="gettemplates.co" />
+    <link rel="style" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'scss/style.scss' %}">
+        <script src="{% static 'js/data.js.js' %}"></script>
+        <h1 id="store_name">Store</h1>
+<style>
+    /*
+I wanted to go with a mobile first approach, but it actually lead to more verbose CSS in this case, so I've gone web first. Can't always force things...
 
-	<!--
-	//////////////////////////////////////////////////////
-
-	FREE HTML5 TEMPLATE
-	DESIGNED & DEVELOPED by FreeHTML5.co
-
-	Website: 		http://freehtml5.co/
-	Email: 			info@freehtml5.co
-	Twitter: 		http://twitter.com/fh5co
-	Facebook: 		https://www.facebook.com/fh5co
-
-	//////////////////////////////////////////////////////
-	 -->
-
-  	<!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
-
-	<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
-	<!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
-
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-
-	<!-- Flexslider  -->
-	<link rel="stylesheet" href="{% static 'css/flexslider.css'%}">
-
-	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
-
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-	<!-- Modernizr JS -->
-	<script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
-	</head>
-	<body>
-		<style type="text/css">
-           /* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+Side note: I know that this style of nesting in SASS doesn't result in the most performance efficient CSS code... but on the OCD/organizational side, I like it. So for CodePen purposes, CSS selector performance be damned.
+*/
+/* Global settings */
+/* Global "table" column settings */
+.product-image {
+  float: left;
+  width: 20%;
 }
 
-/* Set a style for all buttons */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
+.product-details {
+  float: left;
+  width: 37%;
 }
 
-button:hover {
-  opacity: 0.8;
+.product-price {
+  float: left;
+  width: 12%;
 }
 
-.log {
-  display: none;
-}
-/* Extra styles for the cancel button */
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
+.product-quantity {
+  float: left;
+  width: 10%;
 }
 
-/* Center the image and position the close button */
-.imgcontainer {
+.product-removal {
+  float: left;
+  width: 9%;
+}
+
+.product-line-price {
+  float: left;
+  width: 12%;
+  text-align: right;
+}
+
+/* This is used as the traditional .clearfix class */
+.group:before, .shopping-cart:before, .column-labels:before, .product:before, .totals-item:before,
+.group:after,
+.shopping-cart:after,
+.column-labels:after,
+.product:after,
+.totals-item:after {
+  content: '';
+  display: table;
+}
+
+.group:after, .shopping-cart:after, .column-labels:after, .product:after, .totals-item:after {
+  clear: both;
+}
+
+.group, .shopping-cart, .column-labels, .product, .totals-item {
+  zoom: 1;
+}
+
+/* Apply clearfix in a few places */
+/* Apply dollar signs */
+.product .product-price:before, .product .product-line-price:before, .totals-value:before {
+  content: '$';
+}
+
+/* Body/Header stuff */
+body {
+  padding: 0px 30px 30px 20px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 100;
+}
+
+h1 {
+  font-weight: 100;
+}
+
+label {
+  color: #aaa;
+}
+
+.shopping-cart {
+  margin-top: -45px;
+}
+
+/* Column headers */
+.column-labels label {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+.column-labels .product-image, .column-labels .product-details, .column-labels .product-removal {
+  text-indent: -9999px;
+}
+
+/* Product entries */
+.product {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.product .product-image {
   text-align: center;
-  margin: 24px 0 12px 0;
-  position: relative;
+}
+.product .product-image img {
+  width: 100px;
+}
+.product .product-details .product-title {
+  margin-right: 20px;
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+}
+.product .product-details .product-description {
+  margin: 5px 20px 5px 0;
+  line-height: 1.4em;
+}
+.product .product-quantity input {
+  width: 40px;
+}
+.product .remove-product {
+  border: 0;
+  padding: 4px 8px;
+  background-color: #c66;
+  color: #fff;
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+  font-size: 12px;
+  border-radius: 3px;
+}
+.product .remove-product:hover {
+  background-color: #a44;
 }
 
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
-
-.container_lg {
-  padding: 16px;
-    width: 100%;
-}
-
-span.psw {
+/* Totals section */
+.totals .totals-item {
   float: right;
-  padding-top: 16px;
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.totals .totals-item label {
+  float: left;
+  clear: both;
+  width: 79%;
+  text-align: right;
+}
+.totals .totals-item .totals-value {
+  float: right;
+  width: 21%;
+  text-align: right;
+}
+.totals .totals-item-total {
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
 }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  padding-top: 60px;
+.checkout {
+  float: right;
+  border: 0;
+  margin-top: 20px;
+  padding: 6px 25px;
+  background-color: #6b6;
+  color: #fff;
+  font-size: 25px;
+  border-radius: 3px;
 }
 
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
-  width: 40%; /* Could be more or less, depending on screen size */
+.checkout:hover {
+  background-color: #494;
 }
 
-/* The Close Button (x) */
-.close {
-  position: absolute;
-  right: 25px;
-  top: 0;
-  color: #000;
-  font-size: 35px;
-  font-weight: bold;
+/* Make adjustments for tablet */
+@media screen and (max-width: 650px) {
+  .shopping-cart {
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .column-labels {
+    display: none;
+  }
+
+  .product-image {
+    float: right;
+    width: auto;
+  }
+  .product-image img {
+    margin: 0 0 10px 10px;
+  }
+
+  .product-details {
+    float: none;
+    margin-bottom: 10px;
+    width: auto;
+  }
+
+  .product-price {
+    clear: both;
+    width: 70px;
+  }
+
+  .product-quantity {
+    width: 100px;
+  }
+  .product-quantity input {
+    margin-left: 20px;
+  }
+
+  .product-quantity:before {
+    content: 'x';
+  }
+
+  .product-removal {
+    width: auto;
+  }
+
+  .product-line-price {
+    float: right;
+    width: 70px;
+  }
 }
+/* Make more adjustments for phone */
+@media screen and (max-width: 350px) {
+  .product-removal {
+    float: right;
+  }
 
-.close:hover,
-.close:focus {
-  color: red;
-  cursor: pointer;
+  .product-line-price {
+    float: right;
+    clear: left;
+    width: auto;
+    margin-top: 10px;
+  }
+
+  .product .product-line-price:before {
+    content: 'Item Total: $';
+  }
+
+  .totals .totals-item label {
+    width: 60%;
+  }
+  .totals .totals-item .totals-value {
+    width: 40%;
+  }
 }
+</style>
+    </head>
+<body>
+  <table id="products">
+  </table>
+<div class="store">
 
-/* Add Zoom Animation */
-.animate {
-  -webkit-animation: animatezoom 0.6s;
-  animation: animatezoom 0.6s
-}
+  <div class="column-labels">
+    <label class="product-image">Image</label>
+    <label class="product-details">Product</label>
+    <label class="product-price">Price</label>
+    <label class="product-quantity">Quantity</label>
+    <label class="product-removal">Add to Cart</label>
+    <label class="product-line-price">Total</label>
+  </div>
 
-@-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)}
-  to {-webkit-transform: scale(1)}
-}
+  <div class="product">
+    <div class="product-image">
+      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
+    </div>
+    <div class="product-details">
+      <div class="product-title">Dingo Dog Bones</div>
+      <p class="product-description">The best dog bones of all time. Holy crap. Your dog will be begging for these things! I got curious once and ate one myself. I'm a fan.</p>
+    </div>
+    <div class="product-price">12.99</div>
+    <div class="product-quantity">
+      <input type="number" value="2" min="1">
+    </div>
+    <div class="product-removal">
+      <button class="remove-product">
+        Add to Cart
+      </button>
+    </div>
+    <div class="product-line-price">25.98</div>
+  </div>
 
-@keyframes animatezoom {
-  from {transform: scale(0)}
-  to {transform: scale(1)}
-}
+  <div class="product">
+    <div class="product-image">
+      <img src="https://s.cdpn.io/3/large-NutroNaturalChoiceAdultLambMealandRiceDryDogFood.png">
+    </div>
+    <div class="product-details">
+      <div class="product-title">Nutro™ Adult Lamb and Rice Dog Food</div>
+      <p class="product-description">Who doesn't like lamb and rice? We've all hit the halal cart at 3am while quasi-blackout after a night of binge drinking in Manhattan. Now it's your dog's turn!</p>
+    </div>
+    <div class="product-price">45.99</div>
+    <div class="product-quantity">
+      <input type="number" value="1" min="1">
+    </div>
+    <div class="product-removal">
+      <button class="remove-product">
+        Add to Cart
+      </button>
+    </div>
+    <div class="product-line-price">45.99</div>
+  </div>
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
-    }
+  <div class="totals">
+    <div class="totals-item">
+      <label>Subtotal</label>
+      <div class="totals-value" id="cart-subtotal">71.97</div>
+    </div>
+    <div class="totals-item">
+      <label>Tax (5%)</label>
+      <div class="totals-value" id="cart-tax">3.60</div>
+    </div>
+    <div class="totals-item">
+      <label>Shipping</label>
+      <div class="totals-value" id="cart-shipping">15.00</div>
+    </div>
+    <div class="totals-item totals-item-total">
+      <label>Grand Total</label>
+      <div class="totals-value" id="cart-total">90.57</div>
+    </div>
+  </div>
 
-    .cancelbtn {
-        width: 100%;
-    }
-}
-    </style>
+      <button class="checkout">Checkout</button>
 
-
-	<div class="fh5co-loader"></div>
-
-	<div id="page">
-
-
-	<div id="fh5co-product">
-		<div class="container">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<span>Cool Stuff</span>
-					<h2>Products.</h2>
-					<p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-1.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Hauteville Concrete Rocking Chair</a></h3>
-							<span class="price">$350</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-2.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Pavilion Speaker</a></h3>
-							<span class="price">$600</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-3.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Ligomancer</a></h3>
-							<span class="price">$780</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-4.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Alato Cabinet</a></h3>
-							<span class="price">$800</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-5.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Earing Wireless</a></h3>
-							<span class="price">$100</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-6.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Sculptural Coffee Table</a></h3>
-							<span class="price">$960</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-7.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">The WW Chair</a></h3>
-							<span class="price">$540</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-8.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Himitsu Money Box</a></h3>
-							<span class="price">$55</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 text-center animate-box">
-					<div class="product">
-						<div class="product-grid" style="background-image:url({%static 'images/product-9.jpg' %});">
-							<div class="inner">
-								<p>
-									<a href="single.html" class="icon"><i class="icon-shopping-cart"></i></a>
-									<a href="single.html" class="icon"><i class="icon-eye"></i></a>
-								</p>
-							</div>
-						</div>
-						<div class="desc">
-							<h3><a href="single.html">Ariane Prin</a></h3>
-							<span class="price">$99</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="fh5co-started">
-		<div class="container">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Newsletter</h2>
-					<p>Just stay tune for our latest Product. Now you can subscribe</p>
-				</div>
-			</div>
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2">
-					<form class="form-inline">
-						<div class="col-md-6 col-sm-6">
-							<div class="form-group">
-								<label for="email" class="sr-only">Email</label>
-								<input type="email" class="form-control" id="email" placeholder="Email">
-							</div>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<button type="submit" class="btn btn-default btn-block">Subscribe</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<footer id="fh5co-footer" role="contentinfo">
-		<div class="container">
-			<div class="row row-pb-md">
-				<div class="col-md-4 fh5co-widget">
-					<h3>Shop.</h3>
-					<p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
-					<ul class="fh5co-footer-links">
-						<li><a href="#">About</a></li>
-						<li><a href="#">Help</a></li>
-						<li><a href="#">Contact</a></li>
-						<li><a href="#">Terms</a></li>
-						<li><a href="#">Meetups</a></li>
-					</ul>
-				</div>
-
-				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
-					<ul class="fh5co-footer-links">
-						<li><a href="#">Shop</a></li>
-						<li><a href="#">Privacy</a></li>
-						<li><a href="#">Testimonials</a></li>
-						<li><a href="#">Handbook</a></li>
-						<li><a href="#">Held Desk</a></li>
-					</ul>
-				</div>
-
-				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
-					<ul class="fh5co-footer-links">
-						<li><a href="#">Find Designers</a></li>
-						<li><a href="#">Find Developers</a></li>
-						<li><a href="#">Teams</a></li>
-						<li><a href="#">Advertise</a></li>
-						<li><a href="#">API</a></li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="row copyright">
-				<div class="col-md-12 text-center">
-					<p>
-						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small>
-						<small class="block">Designed by <a href="http://freehtml5.co/" target="_blank">FreeHTML5.co</a> Demo Images: <a href="http://blog.gessato.com/" target="_blank">Gessato</a> &amp; <a href="http://unsplash.co/" target="_blank">Unsplash</a></small>
-					</p>
-					<p>
-						<ul class="fh5co-social-icons">
-							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-facebook"></i></a></li>
-							<li><a href="#"><i class="icon-linkedin"></i></a></li>
-							<li><a href="#"><i class="icon-dribbble"></i></a></li>
-						</ul>
-					</p>
-				</div>
-			</div>
-
-		</div>
-	</footer>
-	</div>
-
-	<div class="gototop js-top">
-		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
-	</div>
-
-	<!-- jQuery -->
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	<!-- jQuery Easing -->
-	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
-	<!-- Bootstrap -->
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<!-- Waypoints -->
-	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-	<!-- Carousel -->
-	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-	<!-- countTo -->
-	<script src="{% static 'js/jquery.countTo.js' %}"></script>
-	<!-- Flexslider -->
-	<script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
-	<!-- Main -->
-	<script src="{% static 'js/main.js' %}"></script>
-
-    <script>
-        // Get the modal
-        var modal = document.getElementById('id01');
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-              modal.style.display = "none";
-          }
-        }
-        document.getElementById("login").onclick = function (event) {
-            document.getElementById('login').style.display='none';
-            document.getElementById('logout').style.display='block';
-            document.getElementById('id01').style.display='block';
-        }
-        var btn = document.getElementById('loginbtn');
-    var onsuccess =  (res) =>{
-        alert(res);
-        window.location.href = '/';
-
-    }
-
-    var onfailure = (res) =>{
-        alert(res);
-        //window.location.href = '/';
-    }
-    btn.onclick = function (event){
-        var username = document.getElementById('username').value;
-        var psw = document.getElementById('password').value;
-        if(username == '') {
-            alert('Username field is empty !');
-            return;
-        }
-
-        if(psw==''){
-            alert('Password field is empty ! ');
-            return;
-            }
-        send_msg({action: 'login', username: username, password: psw},onsuccess, onfailure);
-
-    }
-        </script>
-
-	</body>
+</div>
+</body>
 </html>
