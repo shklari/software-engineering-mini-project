@@ -60,13 +60,13 @@ class Store(object):
                             self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                             return ResponseObject(True, True, "")
                 else:
-                    self.log.set_info('user is no store owner for this store', 'errorLog')
+                    self.log.set_info('error: user is no store owner for this store', 'eventLog')
                     return ResponseObject(False, False, "User is not an owner of store " + self.name)
             else:
-                self.log.set_info('user is not logged in or not a store owner', 'errorLog')
+                self.log.set_info('error: user is not logged in or not a store owner', 'eventLog')
                 return ResponseObject(False, False, "User is not logged in or is not a store owner")
         else:
-            self.log.set_info('invalid quantity', 'errorLog')
+            self.log.set_info('error: invalid quantity', 'eventLog')
             return ResponseObject(False, False, "Invalid quantity")
 
     # 4.1.2
@@ -81,16 +81,16 @@ class Store(object):
                                               "eventLog")
                             return ResponseObject(True, True, "")
                         else:
-                            self.log.set_info("not enough items for this quantity", "errorLog")
+                            self.log.set_info("error: not enough items for this quantity", "eventLog")
                             return ResponseObject(False, False, "Item " + itemname + " doesn't exist in this quantity")
                     else:
-                        self.log.set_info("item is not in the inventory of this store", "errorLog")
+                        self.log.set_info("error: item is not in the inventory of this store", "eventLog")
                         return ResponseObject(False, False, "Item doesn't exist in this store's inventory")
             else:
-                self.log.set_info("user is no store owner for this store", "errorLog")
+                self.log.set_info("error: user is no store owner for this store", "eventLog")
                 return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not a store owner")
 
     def remove_item_from_inventory(self, user, itemname):
@@ -102,13 +102,13 @@ class Store(object):
                         self.log.set_info("item has been successfully removed from the store inventory!", "eventLog")
                         return ResponseObject(True, True, "")
 
-                self.log.set_info("item is not in the inventory of this store", "errorLog")
+                self.log.set_info("error: item is not in the inventory of this store", "eventLog")
                 return ResponseObject(False, False, "Item " + itemname + " doesn't exist in the inventory of " + self.name)
             else:
-                self.log.set_info("user is no store owner for this store", "errorLog")
+                self.log.set_info("error: user is no store owner for this store", "eventLog")
                 return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     # 4.1.3
@@ -121,14 +121,14 @@ class Store(object):
                         self.log.set_info("item's price has been successfully updated", "eventLog")
                         return ResponseObject(True, True, "")
 
-                self.log.set_info("item is not in the inventory of this store", "errorLog")
+                self.log.set_info("error: item is not in the inventory of this store", "eventLog")
                 return ResponseObject(False, False, "Item " + itemname + " doesn't exist in" + self.name + "'s inventory")
 
             else:
-                self.log.set_info("user is no store owner for this store", "errorLog")
+                self.log.set_info("error: user is no store owner for this store", "eventLog")
                 return ResponseObject(False, False, "User is not an owner of store " + self.name)
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def set_discount_policy(self, new_policy):
@@ -137,7 +137,7 @@ class Store(object):
             self.log.set_info("new discount policy has updated", "eventLog")
             return True
         else:
-            self.log.set_info("illegal discount policy", "errorLog")
+            self.log.set_info("error: illegal discount policy", "eventLog")
             return False
 
     # 4.3
@@ -153,13 +153,13 @@ class Store(object):
                     self.log.set_info("new store owner has been added successfully!", "eventLog")
                     return ResponseObject(True, True, "")
                 else:
-                    self.log.set_info("user is already an owner of this store", "errorLog")
+                    self.log.set_info("error: user is already an owner of this store", "eventLog")
                     return ResponseObject(False, False, "User" + new_owner.username + " is already an owner of this store")
             else:
-                self.log.set_info("user is no store owner for this store", "errorLog")
+                self.log.set_info("error: user is no store owner for this store", "eventLog")
                 return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     # 4.4
@@ -175,16 +175,16 @@ class Store(object):
                     if owner_type.is_appointee(owner_to_remove):
                         to_remove = self.remove_owner_rec(owner, owner_to_remove)
                     else:
-                        self.log.set_info("user is not the appointer", "errorLog")
+                        self.log.set_info("error: user is not the appointer", "eventLog")
                         return ResponseObject(False, False, "User " + owner.username + " is not the appointer of user " + owner_to_remove.username)
                 else:
-                    self.log.set_info("user is not an owner of this store", "errorLog")
+                    self.log.set_info("error: user is not an owner of this store", "eventLog")
                     return ResponseObject(False, False, "User " + owner_to_remove.username + " is not an owner of this store")
             else:
-                self.log.set_info("user is not an owner of this store", "errorLog")
+                self.log.set_info("error: user is not an owner of this store", "eventLog")
                 return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
         for x in to_remove:
@@ -232,13 +232,13 @@ class Store(object):
                     self.log.set_info("new store manager has been added successfully!", "eventLog")
                     return ResponseObject(True, True, "")
                 else:
-                    self.log.set_info("user is already a manager of this store", "errorLog")
+                    self.log.set_info("error: user is already a manager of this store", "eventLog")
                     return ResponseObject(False, False, "User " + new_manager.username + " is already a manager of this store")
             else:
-                self.log.set_info("user is no store owner for this store", "errorLog")
+                self.log.set_info("error: user is no store owner for this store", "eventLog")
                 return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
-            self.log.set_info("user is not logged in or not a store owner", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def set_permissions_to_manager(self, owner, manager, permissions):
@@ -250,9 +250,9 @@ class Store(object):
                             x.set_permissions(permissions)
                             self.log.set_info("permissions for manager has updated", "eventLog")
                             return True
-                self.log.set_info("owner is not the manager appointer", "errorLog")
+                self.log.set_info("error: owner is not the manager appointer", "eventLog")
                 return False
-            self.log.set_info("user is not a store owner", "errorLog")
+            self.log.set_info("error: user is not a store owner", "eventLog")
             return False
 
     # 4.6
@@ -269,16 +269,16 @@ class Store(object):
                                         k.remove_appointee(manager_to_remove)
                                         self.log.set_info("store manager has been removed successfully!", "eventLog")
                                         return ResponseObject(True, True, "")
-                            self.log.set_info("the owner is not the appointer for this manager", "errorLog")
+                            self.log.set_info("error: the owner is not the appointer for this manager", "eventLog")
                             return ResponseObject(False, False, "The user " + owner.username + " is not the appointer of manager " + manager_to_remove.username)
                 else:
-                    self.log.set_info("user is not a manager of this store", "errorLog")
+                    self.log.set_info("error: user is not a manager of this store", "eventLog")
                     return ResponseObject(False, False, "User " + manager_to_remove.username + " is not a manager of this store")
             else:
-                self.log.set_info("user is no store manager for this store", "errorLog")
+                self.log.set_info("error: user is no store manager for this store", "eventLog")
                 return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
         else:
-            self.log.set_info("user is not logged in or not a store manager", "errorLog")
+            self.log.set_info("error: user is not logged in or not a store manager", "eventLog")
             return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def search_item_by_name(self, item_name):

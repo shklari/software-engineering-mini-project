@@ -21,13 +21,13 @@ class Basket:
             if cart.get_store_name() == store_name:
                 self.log.set_info("get cart action has succeeded", "eventLog")
                 return ResponseObject(True, cart, "")
-        self.log.set_info("get cart failed: no such store name", "errorLog")
+        self.log.set_info("error: get cart failed: no such store name", "eventLog")
         return ResponseObject(False, None, "Cart " + store_name + " doesn't exist")
 
     def remove_item_from_cart(self, store_name, item_name):
         result = self.get_cart_by_store(store_name)
         if not result.success:
-            self.log.set_info("no such items to remove", "errorLog")
+            self.log.set_info("error: no such items to remove", "eventLog")
             return ResponseObject(False, False, result.message)
         cart = result.value
         removed = cart.remove_item_from_cart(item_name)
