@@ -231,3 +231,10 @@ class ServiceImpl(ServiceInterface):
 
     def get_store(self, store_name):
         store = self.sys.get_store(store_name)
+        if not store.success:
+            return store
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'price': i['val']['price'], 'category': i['val']['category'], 'quantity': i['quantity']})
+        retstore = {'store_name': store_name, 'owner_name': store.value['owner_name'], 'inventory': inv}
+        return ResponseObject(True, retstore, "store found successfully")
