@@ -3,8 +3,8 @@ from Domain.User import User
 
 class StoreOwner(User):
 
-    def __init__(self, username, password, appointer=0):
-        super(StoreOwner, self).__init__(username, password)
+    def __init__(self, username, password, age, country, appointer=0):
+        super(StoreOwner, self).__init__(username, password, age, country)
         self.appointer = appointer
         self.appointees = []
         self.managers = []
