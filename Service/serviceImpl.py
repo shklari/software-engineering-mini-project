@@ -219,15 +219,11 @@ class ServiceImpl(ServiceInterface):
             managers.append({'username': m.username})
         return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
-    def get_total_system_inventory(self):
+    def shop_all(self):
         items_list = self.sys.get_total_system_inventory()
         if len(items_list) == 0:
-            return ResponseObject(False, [], "No item matching the search")
-        output_list = []
-        for itm in items_list:
-            print(itm)
-            output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
-        return ResponseObject(True, output_list, "")
+            return ResponseObject(False, [], "No items in the system")
+        return ResponseObject(True, items_list, "")
 
     def get_store(self, store_name):
         store = self.sys.get_store(store_name)

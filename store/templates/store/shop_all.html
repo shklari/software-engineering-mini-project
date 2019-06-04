@@ -32,7 +32,7 @@
     <div class="site-section">
       <div class="container">
 
-        <div class="row mb-5">
+        <div id="items_container" class="row mb-5">
           <div class="col-md-9 order-2">
 
             <div class="row">
@@ -64,176 +64,29 @@
               </div>
             </div>
             <div class="row mb-5">
-            <script>
-            var onsuccess = var logout_onsuccess =  (res, data) =>{
-                for (var product in data){
-                    document.write('<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">\n' +
-                        '                <div class="block-4 text-center border">\n' +
-                        '                  <figure class="block-4-image">\n' +
-                        '                    <a href="single_product.html"><img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></a>\n' +
-                        '                  </figure>\n' +
-                        '                  <div class="block-4-text p-4">\n' +
-                        '                    <h3><a href="single_product.html">'+product.name+'Tank Top</a></h3>\n' +
-                        '                    <p class="mb-0">Finding perfect t-shirt</p>\n' +
-                        '                    <p class="text-primary font-weight-bold">$50</p>\n' +
-                        '                  </div>\n' +
-                        '                </div>\n' +
-                        '              </div>');
-                }
-                document.cookie = "login = false;";
-                document.cookie = "sysman = false;";
-                window.location.href = '/';
-                };
-            var products = send_msg({action:'g'})
-            </script>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Tank Top</a></h3>
-                    <p class="mb-0">Finding perfect t-shirt</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src={% static 'images/shoe_1.jpg' %} alt="Image" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src={% static 'images/cloth_2.jpg' %} alt="Image" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Polo Shirt</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
+                <script>
+                    var shop_onsuccess = (res, data) =>{
+                        for (var product in data){
+                            document.write('<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">\n' +
+                                '                <div class="block-4 text-center border">\n' +
+                                '                  <figure class="block-4-image">\n' +
+                                '                    <a href="single_product.html"><img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></a>\n' +
+                                '                  </figure>\n' +
+                                '                  <div class="block-4-text p-4">\n' +
+                                '                    <h3><a href="single_product.html">' + product['name'] + 'Tank Top</a></h3>\n' +
+                                '                    <p class="mb-0">Finding perfect' + product['category'] + '</p>\n' +
+                                '                    <p class="text-primary font-weight-bold">' + product['price'] + '$' + '</p>\n' +
+                                '                  </div>\n' +
+                                '                </div>\n' +
+                                '              </div>');
+                        }
+                        };
 
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src={% static 'images/cloth_3.jpg' %} alt="Image" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">T-Shirt Mockup</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src={% static 'images/prod_1.png' %} alt="Image" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/cloth_1.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Tank Top</a></h3>
-                    <p class="mb-0">Finding perfect t-shirt</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/shoe_1.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/cloth_2.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Polo Shirt</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/cloth_3.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">T-Shirt Mockup</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/shoe_1.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/cloth_1.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Tank Top</a></h3>
-                    <p class="mb-0">Finding perfect t-shirt</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="single_product.html"><img src="images/cloth_2.jpg" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="single_product.html">Polo Shirt</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-
+                    var shop_onfailure = (res) => {
+                        document.write('<h3>There are no items to show</h3>');
+                    };
+                    var products = send_msg({action:'shop_all'}, shop_onsuccess, shop_onfailure);
+                </script>
 
             </div>
             <div class="row" data-aos="fade-up">

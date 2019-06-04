@@ -294,8 +294,11 @@ class System:
 
     def get_total_system_inventory(self):
         retList = []
-        for stur in self.stores:
-            retList.extend(stur.inventory)
+        for store in self.stores:
+            for item in store.inventory:
+                new_item = {'name': item['name'], 'category': item['val'].category, 'price': item['val'].price,
+                            'quantity': item['quantity'], 'store_name': store.name}
+                retList.append(new_item)
         return ResponseObject(True, retList, "")
 
     def get_user_type(self, username):
