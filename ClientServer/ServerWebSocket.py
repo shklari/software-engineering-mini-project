@@ -120,6 +120,8 @@ async def datahandler(data, websocket):
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
     elif data['action'] == 'get_store':
         ans = service.get_store(data['store_name'])
+    elif data['action'] == 'shop_all':
+        ans = service.shop_all()
     else:
         logging.error(
             "unsupported event: {}", data)
