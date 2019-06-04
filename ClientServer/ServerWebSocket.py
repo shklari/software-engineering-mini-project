@@ -20,6 +20,14 @@ USERS = set()
 service = ServiceImpl()
 
 checkinit = service.init("avabash", "123456")
+
+# #######################################TEST
+service.sign_up("try1", "try1")
+service.login("try1", "try1")
+service.create_store("shaiozim baam")
+# service.logout()
+
+# #######################################TEST
 ws = 0
 alert = service.ownersAlert
 
@@ -51,30 +59,25 @@ def users_event():
 
 
 async def register(websocket):
-    print("register:")
-    print(websocket)
     USERS.add(websocket)
 
 
 async def unregister(websocket):
-    print("unregister:")
     USERS.remove(websocket)
 
 
 async def helper(answer, action, websocket):
-    print("got " + action + " request")
     if answer.success:
         ans = state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message})
     else:
         ans = state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message})
-    print(ans)
     await websocket.send(ans)
 
 
 async def datahandler(data, websocket):
     service.web = websocket
+    print(data)
     if data['action'] == 'signup':
-        print(data['username'] + ' ' + data['password'])
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
         guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})

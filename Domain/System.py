@@ -12,7 +12,9 @@ import functools
 
 class System:
 
+
     def __init__(self):
+        self.user_types = {"1" : "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
         self.cur_user = None
         self.users = {}  # {username, user}
@@ -33,7 +35,7 @@ class System:
             return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password)
-        self.users[manager.username] = manager
+        # self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
         return ResponseObject(ret, self.cur_user, "")
@@ -73,7 +75,8 @@ class System:
             user_to_check.logged_in = True
             self.cur_user = user_to_check
             self.log.set_info("login succeeded", "eventLog")
-            return ResponseObject(True, True, "Hey " + username + "! You are now logged in")
+            user_type = self.get_user_type(username)
+            return ResponseObject(True, user_type, "Hey " + username + "! You are now logged in")
 
     def logout(self):
         if not self.cur_user.logged_in:
@@ -294,3 +297,17 @@ class System:
         for stur in self.stores:
             retList.extend(stur.inventory)
         return ResponseObject(True, retList, "")
+
+    def get_user_type(self, username):
+        if username == self.system_manager.username:
+            return "sys_manager"
+        for store in self.stores:
+            for owner in store.storeOwners:
+                if username == owner.username:
+                    return "store_owner"
+            for manager in store.storeManagers:
+                if username == manager.username:
+                    return "store_manager"
+        if username in self.users:
+            return "user"
+        return "guest"
