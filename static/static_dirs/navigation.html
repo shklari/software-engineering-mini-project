@@ -1,0 +1,85 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Animate.css -->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/animate.css' %}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/icomoon.css' %}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/bootstrap.css' %}">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/flexslider.css' %}">
+
+	<!-- Owl Carousel  -->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/owl.carousel.min.css' %}">
+	<link rel="stylesheet" href="{% static 'static_dirs/css/owl.theme.default.min.css' %}">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="{% static 'static_dirs/css/style.css' %}">
+
+	<!-- Modernizr JS -->
+	<script src="{% static 'static_dirs/js/modernizr-2.6.2.min.js' %}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="{% static 'static_dirs/js/respond.min.js' %}"></script>
+	<![endif]-->
+<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 col-xs-2">
+					<div id="fh5co-logo"><a href="index.html">Shop.</a></div>
+				</div>
+				<div class="col-md-6 col-xs-6 text-center menu-1">
+					<ul>
+						<li class="has-dropdown">
+							<a href="product.html">Shop</a>
+							<ul class="dropdown">
+								<li><a href="single.html">Single Shop</a></li>
+							</ul>
+						</li>
+						<li><a href="about.html">About</a></li>
+						<li class="has-dropdown">
+							<a href="services.html">Services</a>
+							<ul class="dropdown">
+								<li><a href="#">Web Design</a></li>
+								<li><a href="#">eCommerce</a></li>
+								<li><a href="#">Branding</a></li>
+								<li><a href="#">API</a></li>
+							</ul>
+						</li>
+						<li><a href="contact.html">Contact</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
+					<ul>
+                        <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
+                        <li class="login">
+
+                            <script src="{% static 'js/cookieMonster.js' %}"></script>
+                            <script>
+                                var cookie = read_cookie('login');
+                            if (cookie==null || cookie =='false'){
+                                document.write("<a id='login'><i class='icon-login'></i> login</a>");
+                            } else {
+                                document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
+                            }
+                            </script></li>
+						<li class="search">
+							<div class="input-group">
+						      <input type="text" placeholder="Search..">
+						      <span class="input-group-btn">
+						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
+						      </span>
+						    </div>
+						</li>
+						<li class="shopping-cart"><a href="shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
+
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</nav>
+</html>

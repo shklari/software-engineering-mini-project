@@ -3,7 +3,7 @@ from abc import abstractmethod
 # Interface
 
 # store {'name', 'rank', 'inventory': [], 'storeOwners': [], 'storeManagers': [], 'discountPolicy'}
-# item {'name', 'price', 'category'}
+# item {'item_name', 'price', 'category', 'store_name'}
 # user {'username'}
 # cart {'store_name', 'items': []}
 
@@ -66,4 +66,7 @@ class ServiceInterface(object):
 
     @abstractmethod  # 4.6
     def remove_manager(self, store_name, manager_to_remove): pass
+
+    @abstractmethod
+    def get_total_system_inventory(self): pass
 
