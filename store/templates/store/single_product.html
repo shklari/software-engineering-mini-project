@@ -67,7 +67,7 @@
             </div>
 
             </div>
-            <p><a href="cart.html" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
+            <p><a id="addbtn" href="cart.html" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
 
           </div>
         </div>
@@ -75,6 +75,19 @@
     </div>
 
   </div>
+
+    <script>
+    var onsuccess =  (res) =>{
+        alert(res);
+        };
+        var onfailure =  (res) =>{
+        alert(res);
+        };
+    var btn = document.getElementById('addbtn')
+    btn.onclick= function(event) {
+          send_msg({action:'add_to_cart',quantity:''},logout_onsuccess, logout_onfailure);
+        }
+    </script>
 
   <script src={% static 'js/jquery-3.3.1.min.js' %}></script>
   <script src={% static 'js/jquery-ui.js' %}></script>

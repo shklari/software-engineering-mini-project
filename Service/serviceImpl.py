@@ -14,15 +14,15 @@ class ServiceImpl(ServiceInterface):
         self.ownersAlert = RealTimeAlert(self)
 
     # assumes the init function receives the username and password of the system manager
-    def init(self, sm_username, sm_password):
-        result = self.sys.init_system(sm_username, sm_password)
+    def init(self, sm_username, sm_password, system_manager_age, system_manager_country):
+        result = self.sys.init_system(sm_username, sm_password, system_manager_age, system_manager_country)
         if result.success:
             return ResponseObject(True, result.value, "System initialized successfully")
         else:
             return ResponseObject(False, False, "System failed to initialize\n" + result.message)
 
-    def sign_up(self, username, password):
-        result = self.sys.sign_up(username, password)
+    def sign_up(self, username, password, age, country):
+        result = self.sys.sign_up(username, password, age, country)
         if result.success:
             return ResponseObject(True, True, "Signed up successfully \n" + result.message)
         else:
@@ -248,12 +248,11 @@ class ServiceImpl(ServiceInterface):
             managers.append({'username': m.username})
         return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
-    def get_total_system_inventory(self):
+    def shop_all(self):
         items_list = self.sys.get_total_system_inventory()
-        if len(items_list) == 0:
-            return ResponseObject(False, [], "No item matching the search")
-        output_list = []
-        for itm in items_list:
-            print(itm)
-            output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
-        return ResponseObject(True, output_list, "")
+        if len(items_list.value) == 0:
+            return ResponseObject(False, [], "No items in the system")
+        return ResponseObject(True, items_list.value, "")
+
+    def get_store(self, store_name):
+        store = self.sys.get_store(store_name)

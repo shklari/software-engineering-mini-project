@@ -14,7 +14,7 @@ class System:
 
 
     def __init__(self):
-        self.user_types = {"1" : "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
+        self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
         self.cur_user = None
         self.users = {}  # {username, user}
@@ -24,23 +24,23 @@ class System:
         self.collecting_system = CollectingSystem()
         self.traceability_system = TraceabilitySystem()
 
-    def init_system(self, system_manager_user_name, system_manager_password):
+    def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
         if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
             ret = False
         else:
             ret = True
-        result = self.sign_up(system_manager_user_name, system_manager_password)
+        result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age, system_manager_country)
         if not result.success:
             self.log.set_info("error: System manager could not sign up", "eventLog")
             return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
-        manager = SystemManager(system_manager_user_name, enc_password)
+        manager = SystemManager(system_manager_user_name, enc_password, system_manager_age, system_manager_country)
         # self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
         return ResponseObject(ret, self.cur_user, "")
 
-    def sign_up(self, username, password):
+    def sign_up(self, username, password, age, country):
         if username is None or username == '':
             self.log.set_info("error: signup failed: Username can not be empty", "eventLog")
             return ResponseObject(False, False, "Username can not be empty")
@@ -52,7 +52,7 @@ class System:
             return ResponseObject(False, False, "This user name is already taken")
         else:
             enc_password = pbkdf2_sha256.hash(password)
-            new_user = User(username, enc_password)
+            new_user = User(username, enc_password, age, country)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -294,8 +294,11 @@ class System:
 
     def get_total_system_inventory(self):
         retList = []
-        for stur in self.stores:
-            retList.extend(stur.inventory)
+        for store in self.stores:
+            for item in store.inventory:
+                new_item = {'name': item['name'], 'category': item['val'].category, 'price': item['val'].price,
+                            'quantity': item['quantity'], 'store_name': store.name}
+                retList.append(new_item)
         return ResponseObject(True, retList, "")
 
     def get_user_type(self, username):
