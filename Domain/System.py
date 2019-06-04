@@ -35,7 +35,7 @@ class System:
             return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password)
-        self.users[manager.username] = manager
+        # self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
         return ResponseObject(ret, self.cur_user, "")

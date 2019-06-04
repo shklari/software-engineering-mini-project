@@ -24,6 +24,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shopping-cart/', LoginView.as_view(template_name='MarketingSystem/ShoppingCart.html'), name="shoppingCart"),
+    path('add-new-owner/', LoginView.as_view(template_name='MarketingSystem/addNewOwner.html'), name="addNewOwner"),
     #path('', views.index, name='home'),
     path('', include('store.urls'), name='list'),
     path('', include('accounts.urls'), name='list'),
