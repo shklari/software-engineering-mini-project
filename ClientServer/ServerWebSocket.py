@@ -23,8 +23,10 @@ checkinit = service.init("avabash", "123456")
 
 # #######################################TEST
 service.sign_up("try1", "try1")
+service.sign_up("try2", "try2")
 service.login("try1", "try1")
 service.create_store("shaiozim baam")
+service.add_new_manager('shaiozim baam', 'try2', {'Edit':True,'Remove': True,'Add':True})
 service.logout()
 
 # #######################################TEST

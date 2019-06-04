@@ -62,7 +62,7 @@
 	<!--[if lt IE 9]>
 	<script src="{% static 'js/respond.min.js' %}"></script>
 	<![endif]-->
-
+    <script src="{% static 'js/cookieMonster.js' %}"></script>
 	</head>
 	<body>
 		<style type="text/css">
@@ -235,14 +235,14 @@ span.psw {
                             "\t\t\t\t\t<ul>\n" +
                             "\t\t\t\t\t\t<li>\n" +
                             "\t\t\t\t\t\t\t<ul>\n" +
-                            "\t\t\t\t\t\t\t\t<li><h5 style=\"color: white\">User</h5></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><h5 style=\'color: white\'>User</h5></li>\n" +
                             "\t\t\t\t\t\t\t</ul>\n" +
                             "\t\t\t\t\t\t</li>\n" +
-                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\"Enter User Id\" required></li>\n" +
+                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Enter User Id\' required></li>\n" +
                             "\t\t\t\t\t\t<li>\n" +
-                            "\t\t\t\t\t\t\t<button id=\"removerbtn\" style=\"padding: 3px 10px;display: inline-block\" type=\"submit\">Remove</button>\n" +
+                            "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
                             "\t\t\t\t\t\t</li>\n" +
-                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">System manager permisions</h4></li>\n" +
+                            "<li style=\'padding-left: 150px\'><h4 style=\'color: white\'>System manager permisions</h4></li>\n" +
                             "\t\t\t\t\t</ul>\n" +
                             "\n" +
                             "\t\t\t\t</div>");
@@ -256,7 +256,22 @@ span.psw {
                             "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Remove manager</a></li>\n" +
                             "\t\t\t\t\t\t\t</ul>\n" +
                             "\t\t\t\t\t\t</li>\n" +
-                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store manager permisions</h4></li>\n" +
+                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
+                            "\t\t\t\t\t</ul>\n" +
+                            "\n" +
+                            "\t\t\t\t</div>");
+                        break;
+                        case  'store_manager':
+                        document.write("<div>\n" +
+                            "\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Edit Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Add Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Remove Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t</ul>\n" +
+                            "\t\t\t\t\t\t</li>\n" +
+                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
                             "\t\t\t\t\t</ul>\n" +
                             "\n" +
                             "\t\t\t\t</div>");
@@ -268,7 +283,7 @@ span.psw {
 		</div>
 	</nav>
 
-    <script src="{% static 'js/cookieMonster.js' %}"></script>
+
         <script>
             var nav = document.getElementById("manav");
             var cookie = read_cookie('permissions');
@@ -662,8 +677,8 @@ span.psw {
         }
 
         var btn = document.getElementById('loginbtn');
-    var onsuccess =  (res) =>{
-        alert(res , per);
+    var onsuccess =  (res,per) =>{
+        alert(res);
         window.location.href = '/';
         document.cookie = "login = true;";
         document.cookie = "permissions = "+per+";"; // sys_manager , guest , user , store_owner , store_manager

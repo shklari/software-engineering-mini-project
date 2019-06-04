@@ -10,6 +10,7 @@ from django.contrib.auth.views import LoginView
 from . import views
 
 urlpatterns = [
-    # path('', views.index, name='index'),
+     path('', views.index, name='index'),
+    path('services/',LoginView.as_view(template_name='store/services.html'),name='services'),
     path('store/', LoginView.as_view(template_name='store/store.html'), name="store"),
 ]+ static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)
