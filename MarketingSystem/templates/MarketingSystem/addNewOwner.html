@@ -126,12 +126,12 @@ button:hover {
     var btn = document.getElementById('addbtn');
     var onsuccess =  (res) =>{
         alert(res);
-        window.location.href = '/add-new-owner';
+        window.location.href = '/';
     }
 
     var onfailure = (res) =>{
         alert(res);
-        window.location.href = '/';
+        window.location.href = '/add-new-owner';
     }
     btn.onclick = function (event){
         var username = document.getElementById('username').value;
