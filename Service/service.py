@@ -68,5 +68,5 @@ class ServiceInterface(object):
     def remove_manager(self, store_name, manager_to_remove): pass
 
     @abstractmethod
-    def get_total_system_inventory(self): pass
+    def shop_all(self): pass
 
