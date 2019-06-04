@@ -21,7 +21,7 @@ class Cart:
             del self.items_and_quantities[item_name]
             self.log.set_info("items has been successfully removed from cart", "eventLog")
             return ResponseObject(True, True, "Item " + item_name + "has been successfully removed from cart")
-        self.log.set_info("remove item fail: no such item in cart", "errorLog")
+        self.log.set_info("error: remove item fail: no such item in cart", "eventLog")
         return ResponseObject(False, False, "The item " + item_name + " doesn't exist in this cart")
 
     def get_store_name(self):
@@ -29,7 +29,7 @@ class Cart:
 
     def get_item_if_available(self, item_name):
         if item_name not in self.items_and_quantities:
-            self.log.set_info("item is not available in store", "errorLog")
+            self.log.set_info("error: item is not available in store", "eventLog")
             return False
         self.items_and_quantities.get(item_name)
         return True

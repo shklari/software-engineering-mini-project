@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import threading
+from log.Log import Log
 from ClientServer.Thread import MyThread
 
 import websockets
@@ -22,11 +23,13 @@ checkinit = service.init("avabash", "123456")
 ws = 0
 alert = service.ownersAlert
 
+log = Log("", "")
+
 print(checkinit.message)
 
 
 async def run():
-    while (1):
+    while 1:
         if not alert.tasks.empty():
             task = alert.tasks.get()
             await task['ws'].send(task['message'])
@@ -35,7 +38,7 @@ async def run():
 def guest_to_users(username, client):
     for guest in service.guests:
         if guest['ip'] == client['ip']:
-            service.users.append({'ip': client['ip'], 'port': client['port'], 'username': username,'ws': client['ws']})
+            service.users.append({'ip': client['ip'], 'port': client['port'], 'username': username, 'ws': client['ws']})
             service.guests.remove(guest)
 
 
@@ -132,7 +135,9 @@ async def looper(websocket, path):
                 print(data)
                 await datahandler(data, websocket)
     except Exception as e:
+        log.set_info('communication failed', 'errorLog')
         print(e)
+        await ws.send('communication failed')
     finally:
         if websocket.open:
             await unregister(websocket)
