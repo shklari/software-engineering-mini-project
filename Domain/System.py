@@ -73,7 +73,9 @@ class System:
             user_to_check.logged_in = True
             self.cur_user = user_to_check
             self.log.set_info("login succeeded", "eventLog")
-            return ResponseObject(True, True, "Hey " + username + "! You are now logged in")
+            if self.cur_user == self.system_manager:
+                return ResponseObject(True, {"username": user_to_check['username'], "password": user_to_check['password'], "type": "sys_manager"}, "Hey " + username + "! You are now logged in")
+            return ResponseObject(True, {"username": user_to_check['username'], "password": user_to_check['password'], "type": "user"}, "Hey " + username + "! You are now logged in")
 
     def logout(self):
         if not self.cur_user.logged_in:
