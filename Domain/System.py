@@ -76,7 +76,7 @@ class System:
             self.cur_user = user_to_check
             self.log.set_info("login succeeded", "eventLog")
             user_type = self.get_user_type(username)
-            return ResponseObject(True, {"username": user_to_check['username'], "password": user_to_check['password'], "type": user_type}, "Hey " + username + "! You are now logged in")
+            return ResponseObject(True, user_type, "Hey " + username + "! You are now logged in")
 
     def logout(self):
         if not self.cur_user.logged_in:
