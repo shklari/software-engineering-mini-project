@@ -40,3 +40,30 @@ function send_msg(msg, onsuccess , onfailure)
 
 }
 
+function load_inventory(){
+    var storename = getElementById("store_name").value;
+
+    var onfailure = (ret) => {
+     alert(res);
+        window.location.href = '/';
+    }
+    var onsuccess = (message, val) => {
+        inventory = val['inventory'];
+        var i = 0;
+        var table = document.getElementById('products');
+        inventory.forEach((item)=>{
+              var newRow = table.insertRow(table.length);
+              var newCell = newRow.insertCell(i++);
+              newCell.innerHTML = item['name'];
+              newCell = newRow.insertCell(i++);
+              newCell.innerHTML = item['price'];
+              newCell = newRow.insertCell(i++);
+              newCell.innerHTML = item['category'];
+              newCell = newRow.insertCell(i++);
+              newCell.innerHTML = item['quantity'];
+        }
+    }
+
+    send_msg({action: "get_store", store_name: storename}, onsuccess, onfailure)
+}
+

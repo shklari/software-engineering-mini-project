@@ -19,17 +19,16 @@ USERS = set()
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456")
+checkinit = service.init("avabash", "123456", 21, "")
 
 # #######################################TEST
-service.sign_up("try2", "111")
-service.sign_up("storeowner2", "111")
-service.sign_up("storeman1", "111")
+service.sign_up("try2", "111", 21, "")
+service.sign_up("storeowner2", "111", 21, "")
+service.sign_up("storeman1", "111", 21, "")
 service.login("storeowner2", "111")
 service.create_store("shaiozim baam")
 service.add_new_manager('shaiozim baam','try2',{'Edit':True,'Remove':True,'Add':True})
-service.add_item_to_inventory({"name": "shaioz", "price": 22, "category": "shsh"}, "shaiozim baam")
-service.logout()
+service.add_item_to_inventory({"name": "shaioz", "price": 22, "category": "shsh"}, "shaiozim baam", 4)
 # service.logout()
 
 # #######################################TEST

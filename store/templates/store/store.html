@@ -243,41 +243,14 @@ label {
     width: 40%;
   }
 }
-      <script>
-        function load_inventory(){
-          var storename = getElementById("store_name").value;
 
-          var onfailure = (ret) => {
-            alert(res);
-            window.location.href = '/';
-          }
-          var onsuccess = (message, val) => {
-            inventory = val['inventory'];
-            var i = 0;
-            var table = document.getElementById('products');
-            inventory.forEach((item)=>{
-              var newRow = table.insertRow(table.length);
-              var newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['name'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['price'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['category'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['quantity'];
-            }
-          }
-
-          send_msg({action: "get_store", store_name: storename}, onsuccess, onfailure)
-        }
-       </script>
 </style>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <link rel="style" href="{% static 'css/style.css' %}">
-      <link rel="stylesheet" href="{% static 'scss/style.scss' %}">
+      
       <script src="{% static 'js/data.js.js' %}"></script>
-      <h1 id="store_name">Store</h1>
+      <h1 id="store_name">shaiozim baam</h1>
 
     </head>
 <body onload="load_inventory()">

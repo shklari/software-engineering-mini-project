@@ -38,7 +38,7 @@ class CompositeBuyingPolicy(BuyingPolicy):
     def is_composite(self):
         return True
 
-class AgeLimitationPolicy(BuyingPolicy):
-    def apply_policy(self, user, item):
+# class AgeLimitationPolicy(BuyingPolicy):
+#     def apply_policy(self, user, item):
 
 
