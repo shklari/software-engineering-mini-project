@@ -15,7 +15,7 @@ class Store(object):
         self.name = name
         self.rank = 0
         self.inventory = []
-        self.storeOwners = [StoreOwner(owner.username, owner.password)]
+        self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
         self.storeManagers = []
         self.discountPolicy = 0
         self.log = Log("", "")

@@ -14,8 +14,8 @@ class ServiceImpl(ServiceInterface):
         self.ownersAlert = RealTimeAlert(self)
 
     # assumes the init function receives the username and password of the system manager
-    def init(self, sm_username, sm_password):
-        result = self.sys.init_system(sm_username, sm_password)
+    def init(self, sm_username, sm_password, system_manager_age, system_manager_country):
+        result = self.sys.init_system(sm_username, sm_password, system_manager_age, system_manager_country)
         if result.success:
             return ResponseObject(True, result.value, "System initialized successfully")
         else:
@@ -221,9 +221,9 @@ class ServiceImpl(ServiceInterface):
 
     def shop_all(self):
         items_list = self.sys.get_total_system_inventory()
-        if len(items_list) == 0:
+        if len(items_list.value) == 0:
             return ResponseObject(False, [], "No items in the system")
-        return ResponseObject(True, items_list, "")
+        return ResponseObject(True, items_list.value, "")
 
     def get_store(self, store_name):
         store = self.sys.get_store(store_name)

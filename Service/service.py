@@ -11,7 +11,7 @@ from abc import abstractmethod
 class ServiceInterface(object):
 
     @abstractmethod  # 1.1 username, password are strings
-    def init(self, sm_username, sm_password): pass
+    def init(self, sm_username, sm_password, system_manager_age, system_manager_country): pass
 
     @abstractmethod  # 2.2 username, password are strings
     def sign_up(self, username, password, age, country): pass
