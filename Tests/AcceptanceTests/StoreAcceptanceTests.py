@@ -22,7 +22,7 @@ class TestStore(unittest.TestCase):
     def setUp(self):
         self.owner = {'name': 'Joseph', 'password': '123'}
         self.sys_manager = {'name': 'shaioz', 'password': '123456'}
-        self.service.init(self.sys_manager['name'], self.sys_manager['password'])
+        self.service.init(self.sys_manager['name'], self.sys_manager['password'], 21, "")
         self.service.login(self.sys_manager['name'], self.sys_manager['password'])
         #self.system = self.service.init(self.sys_manager['name'], self.sys_manager['password'])
         self.manager = {'name': 'Itay', 'password': '123456'}
@@ -40,8 +40,8 @@ class TestStore(unittest.TestCase):
         self.store2['storeOwners'] = self.owner
         self.store2['inventory'] = [item1, item2]
         self.service.create_store(self.store1['name'])
-        self.service.sign_up(self.owner['name'], self.owner['password']) # must be removed in tearDown
-        self.service.sign_up(self.manager['name'], self.manager['password'])  # must be removed in tearDown
+        self.service.sign_up(self.owner['name'], self.owner['password'], 21, "") # must be removed in tearDown
+        self.service.sign_up(self.manager['name'], self.manager['password'], 21, "")  # must be removed in tearDown
 
     def tearDown(self):
         self.service.remove_user(self.owner['name'])

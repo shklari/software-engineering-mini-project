@@ -241,7 +241,7 @@ class System:
             return ResponseObject(True, new_store, "")
 
     def remove_user(self, username):
-        if not isinstance(self.cur_user, SystemManager):
+        if self.cur_user.username != self.system_manager.username:
             self.log.set_info("error: removing user failed: user is not a system manager", "eventLog")
             return ResponseObject(False, False, "You can't remove a user, you are not the system manager")
         if self.system_manager.username == username:

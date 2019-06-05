@@ -4,7 +4,7 @@ function send_msg(msg, onsuccess , onfailure)
 {
 
     try {
-        websocket = new WebSocket("ws://192.168.0.72:6789");
+        websocket = new WebSocket("ws://192.168.0.3:6789");
         //websocket = new WebSocket("ws://192.168.0.53:6789");
         console.info("try to send ....");
         var json = JSON.stringify(msg);
@@ -16,6 +16,7 @@ function send_msg(msg, onsuccess , onfailure)
         websocket.onmessage = function (event) {
 
             data = JSON.parse(event.data);
+            console.log("bbbbbbbbbbbbbbbb " + data);
             switch (data.action) {
                 case 'notify' :
                     alert(data.message);
@@ -38,32 +39,5 @@ function send_msg(msg, onsuccess , onfailure)
         console.log("error : ", e.message);
     }
 
-}
-
-function load_inventory(){
-    var storename = getElementById("store_name").value;
-
-    var onfailure = (ret) => {
-     alert(res);
-        window.location.href = '/';
-    }
-    var onsuccess = (message, val) => {
-        inventory = val['inventory'];
-        var i = 0;
-        var table = document.getElementById('products');
-        inventory.forEach((item)=>{
-              var newRow = table.insertRow(table.length);
-              var newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['name'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['price'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['category'];
-              newCell = newRow.insertCell(i++);
-              newCell.innerHTML = item['quantity'];
-        }
-    }
-
-    send_msg({action: "get_store", store_name: storename}, onsuccess, onfailure)
 }
 
