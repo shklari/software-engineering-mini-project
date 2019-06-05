@@ -54,6 +54,8 @@ class UItests(unittest.TestCase):
         self.chrome_driver.find_element_by_name("username").send_keys("shaioz")
         self.chrome_driver.find_element_by_name("psw").send_keys("1234")
         self.chrome_driver.find_element_by_name("psw-repeat").send_keys("1234")
+        self.chrome_driver.find_element_by_name("age").send_keys("34")
+        self.chrome_driver.find_element_by_name("country").send_keys("israel")
         self.chrome_driver.find_element_by_id("signupbtn").click()
         time.sleep(3)
         self.assertTrue(self.check_alert())
