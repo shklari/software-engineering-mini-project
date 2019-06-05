@@ -4,8 +4,8 @@ import websockets
 import asyncio
 
 
-async def help_signup():
-    async with websockets.connect('ws://127.0.0.1:6789') as websocket:
+async def help_signup(websocket, path):
+    # async with websockets.connect('ws://127.0.0.1:6789') as websocket:
         try:
             name = {"action": "signup", "username": "ava", "password": "123456"}
             await websocket.send(json.dumps(name))
@@ -29,12 +29,12 @@ async def help_signup():
             print(e)
 
 print("test signup start")
-asyncio.get_event_loop().run_until_complete(help_signup())
+asyncio.get_event_loop().run_until_complete(websockets.serve(help_signup, '0.0.0.0', 6788))
 print("test signup end")
 
 
-async def help_login():
-    async with websockets.connect('ws://127.0.0.1:6789') as websocket:
+async def help_login(websocket, path):
+    #async with websockets.connect('ws://127.0.0.1:6789') as websocket:
         try:
             name = {"action": "signup", "username": "ava", "password": "123456"}
             await websocket.send(json.dumps(name))
@@ -54,12 +54,12 @@ async def help_login():
             print(e)
 
 print("test login start")
-asyncio.get_event_loop().run_until_complete(help_login())
+asyncio.get_event_loop().run_until_complete(websockets.serve(help_login, '0.0.0.0', 6787))
 print("test login end")
 
 
-async def help_logout():
-    async with websockets.connect('ws://127.0.0.1:6789') as websocket:
+async def help_logout(websocket, path):
+    #async with websockets.connect('ws://127.0.0.1:6789') as websocket:
         try:
             name = {"action": "signup", "username": "ava", "password": "123456"}
             await websocket.send(json.dumps(name))
@@ -84,12 +84,12 @@ async def help_logout():
 
 
 print("test logout start")
-asyncio.get_event_loop().run_until_complete(help_logout())
+asyncio.get_event_loop().run_until_complete(websockets.serve(help_logout, '0.0.0.0', 6786))
 print("test logout end")
 
 
-async def help_remove_user():
-    async with websockets.connect('ws://127.0.0.1:6789') as websocket:
+async def help_remove_user(websocket, path):
+    # async with websockets.connect('ws://127.0.0.1:6789') as websocket:
         try:
             name = {"action": "signup", "username": "ava", "password": "123456"}
             await websocket.send(json.dumps(name))
@@ -134,5 +134,5 @@ async def help_remove_user():
 
 
 print("test remove start")
-asyncio.get_event_loop().run_until_complete(help_logout())
+asyncio.get_event_loop().run_until_complete(websockets.serve(help_remove_user, '0.0.0.0', 6785))
 print("test remove end")

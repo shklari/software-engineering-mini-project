@@ -19,16 +19,26 @@ USERS = set()
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456",20,'is')
+checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
-service.sign_up("storeowner1", "111",21,'is')
-service.sign_up("storeowner2", "111",21,'is')
-service.sign_up("storeman1", "111",21,'is')
+
+service.sign_up("storeowner1", "111", 32, 'israel')
+service.sign_up("storeowner2", "111", 40, 'israel')
+service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem")
-service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
-service.logout()
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
+service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
+
+# service.sign_up("storeowner1", "111")
+# service.sign_up("storeowner2", "111")
+# service.sign_up("storeman1", "111")
+# service.login("storeowner1", "111")
+# service.create_store("osem")
+# service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
+
+# service.logout()
 
 # #######################################TEST
 ws = 0
@@ -81,7 +91,6 @@ async def datahandler(data, websocket):
     service.web = websocket
     print(data)
     if data['action'] == 'signup':
-        guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
         guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
