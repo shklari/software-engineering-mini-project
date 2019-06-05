@@ -19,17 +19,17 @@ USERS = set()
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456", 21, "")
+checkinit = service.init("avabash", "123456", 21, 'is')
 
 # #######################################TEST
-service.sign_up("try2", "111", 21, "")
-service.sign_up("storeowner2", "111", 21, "")
-service.sign_up("storeman1", "111", 21, "")
-service.login("storeowner2", "111")
-service.create_store("shaiozim baam")
-service.add_new_manager('shaiozim baam','try2',{'Edit':True,'Remove':True,'Add':True})
-service.add_item_to_inventory({"name": "shaioz", "price": 22, "category": "shsh"}, "shaiozim baam", 4)
-# service.logout()
+service.sign_up("storeowner1", "111", 32, 'israel')
+service.sign_up("storeowner2", "111", 40, 'israel')
+service.sign_up("storeman1", "111", 25, 'israel')
+service.login("storeowner1", "111")
+service.create_store("osem")
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
+
+service.logout()
 
 # #######################################TEST
 ws = 0
@@ -122,6 +122,8 @@ async def datahandler(data, websocket):
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
     elif data['action'] == 'get_store':
         ans = service.get_store(data['store_name'])
+    elif data['action'] == 'shop_all':
+        ans = service.shop_all()
     else:
         logging.error(
             "unsupported event: {}", data)
