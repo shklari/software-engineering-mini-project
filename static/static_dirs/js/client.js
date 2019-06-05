@@ -12,7 +12,7 @@ function send_msg(msg, onsuccess , onfailure)
         websocket.onopen = () => websocket.send(json);
         websocket.onerror = error => {
             console.log(`WebSocket error: ${error}`)
-        }
+        };
         websocket.onmessage = function (event) {
 
             data = JSON.parse(event.data);
@@ -21,7 +21,7 @@ function send_msg(msg, onsuccess , onfailure)
                     alert(data.message);
                 case 'success':
                     console.log('success');
-                    onsuccess(data.message,data.return_val );
+                    onsuccess(data.message);
                     break;
                 case 'fail':
                     console.log('fail');

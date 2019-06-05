@@ -24,7 +24,7 @@ class StoreUnitTests(unittest.TestCase):
         self.assertTrue(self.store.search_item_by_name(self.item.name).name == self.item.name)
         # check if the item that inserted is in the store inventory
         self.assertFalse(self.store.add_item_to_inventory(self.guest, {'name': self.item.name, 'price': 20, 'category':'smoke'}, 1).success)
-        self.assertFalse(self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category':'smoke'}, 0).success)
+        self.assertFalse(self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category':'smoke'}, -1).success)
         for k in self.store.inventory:
             if k['name'] == self.item.name:
                 temp_qn = k['quantity']
