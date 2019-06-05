@@ -267,9 +267,12 @@ span.psw {
                             "\t\t\t\t\t<ul>\n" +
                             "\t\t\t\t\t\t<li>\n" +
                             "\t\t\t\t\t\t\t<ul>\n" +
-                            "\t\t\t\t\t\t\t\t<li><a href='/' style=\"color: white\">Edit Product</a></li>\n" +
-                            "\t\t\t\t\t\t\t\t<li><a href='/' style=\"color: white\">Add Product</a></li>\n" +
-                            "\t\t\t\t\t\t\t\t<li><a href='/' style=\"color: white\">Remove Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/edit_product/' style=\"color: white\">Edit Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/add_product' style=\"color: white\">Add Product</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Remove Product</a></li>\n" +
+                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Product Name\' required></li>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
                             "\t\t\t\t\t\t\t</ul>\n" +
                             "\t\t\t\t\t\t</li>\n" +
                             "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
@@ -277,6 +280,10 @@ span.psw {
                             "\n" +
                             "\t\t\t\t</div>");
                         break;
+                    case 'default':
+                        document.write("<h2>Hello Member</h2>");
+                        break;
+
                 }
                 </script>
 			</div>
@@ -332,7 +339,7 @@ span.psw {
 
                             <script src="{% static 'js/cookieMonster.js' %}"></script>
                             <script>
-                                alert(document.cookie);
+                                //alert(document.cookie);
                                 var cookie = read_cookie('login');
                             if (cookie==null || cookie =='false' || cookie==''){
                                 document.write("<a id='login'><i class='icon-login'></i> login</a>");
@@ -650,7 +657,7 @@ span.psw {
         var onsuccess =  (res) =>{
         alert(res);
         window.location.href = '/';
-        document.cookie = "login = true;";
+        document.cookie = "login = true; path = /";
         window.location.href = '/';
         }
         window.onclick = function(event) {
@@ -660,8 +667,8 @@ span.psw {
         }
         var logout_onsuccess =  (res) =>{
         alert(res);
-        document.cookie = "login = false;";
-        document.cookie = "permissions = false;";
+        document.cookie = "login = false; path = /";
+        document.cookie = "permissions = false; path = /";
         window.location.href = '/';
         };
         var logout_onfailure =  (res) =>{
@@ -682,8 +689,8 @@ span.psw {
     var onsuccess =  (res,per) =>{
         alert(res);
         window.location.href = '/';
-        document.cookie = "login = true;";
-        document.cookie = "permissions = "+per+";"; // sys_manager , guest , user , store_owner , store_manager
+        document.cookie = "login = true; path = /";
+        document.cookie = "permissions = "+per+"; path = /"; // sys_manager , guest , user , store_owner , store_manager
         window.location.href = '/';
     };
 
