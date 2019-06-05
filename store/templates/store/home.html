@@ -1,8 +1,10 @@
+{% extends "store/navigation_bar.html" %}
 {%load static%}
 {%load staticfiles %}
-<!DOCTYPE HTML>
-<html>
-<head>
+
+
+{% block head2 %}
+    <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Shop &mdash; Free Website Template, Free HTML5 Template by gettemplates.co</title>
@@ -40,12 +42,10 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
 
 </head>
+{% endblock %}
 
-
-<body>
-
-
-<div id="page">
+{% block body %}
+    <div id="page">
 
     <header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url({%static 'images/img_bg_2.jpg' %});">
         <div class="overlay"></div>
@@ -274,74 +274,5 @@
 <!-- Main -->
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/client.js' %}"></script>
-<script>
-    checkExpire();
-    // Get the modal
-    var modal = document.getElementById('id01');
-    // When the user clicks anywhere outside of the modal, close it
-    var onsuccess =  (res) =>{
-        alert(res);
-        window.location.href = '/';
-        document.cookie = "login = true; path = /";
-        window.location.href = '/';
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    var logout_onsuccess =  (res) =>{
-        alert(res);
-        document.cookie = "login = false; path = /";
-        document.cookie = "permissions = false; path = /";
-        window.location.href = '/';
-    };
-    var logout_onfailure =  (res) =>{
-        alert(res);
-    };
-    if(document.getElementById('login')!=undefined){
-        document.getElementById('login').onclick = function (event) {
-            document.getElementById('id01').style.display='block';
-        }
-    }
-    else{
-        document.getElementById('logout').onclick = function (event) {
-            send_msg({action:'logout'},logout_onsuccess, logout_onfailure);
-        };
-    }
+{% endblock %}
 
-    var btn = document.getElementById('loginbtn');
-    var onsuccess =  (res,per) =>{
-        alert(res);
-        window.location.href = '/';
-        document.cookie = "login = true; path = /";
-        document.cookie = "permissions = "+per+"; path = /"; // sys_manager , guest , user , store_owner , store_manager
-        window.location.href = '/';
-    };
-
-    var onfailure = (res) =>{
-        alert(res);
-        //window.location.href = '/';
-    }
-    btn.onclick = function (event){
-        var username = document.getElementById('username').value;
-        var psw = document.getElementById('password').value;
-        if(username == '') {
-            alert('Username field is empty !');
-            return;
-        }
-
-        if(psw==''){
-            alert('Password field is empty ! ');
-            return;
-        }
-        send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
-
-    }
-</script>
-
-<script>
-
-</script>
-</body>
-</html>
