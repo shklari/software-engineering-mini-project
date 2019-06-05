@@ -332,6 +332,7 @@ span.psw {
 
                             <script src="{% static 'js/cookieMonster.js' %}"></script>
                             <script>
+                                alert(document.cookie);
                                 var cookie = read_cookie('login');
                             if (cookie==null || cookie =='false' || cookie==''){
                                 document.write("<a id='login'><i class='icon-login'></i> login</a>");
