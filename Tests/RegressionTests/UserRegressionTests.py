@@ -91,9 +91,9 @@ class UserTestCase(unittest.TestCase):
         self.system.real.sys.collecting_system = self.collecting
         self.system.real.sys.supplying_system = self.supplying
         self.system.real.sys.traceability_system = self.consistency
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
+        self.system.init(self.manager['name'], self.manager['password'], 21, "")
+        self.system.sign_up("try1", "try123", 21, "")
+        self.system.sign_up("try2", "try123", 21, "")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -117,9 +117,9 @@ class UserTestCase(unittest.TestCase):
         self.system.real.sys.collecting_system = self.collecting
         self.system.real.sys.supplying_system = self.supplying
         self.system.real.sys.traceability_system = self.consistency
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
+        self.system.init(self.manager['name'], self.manager['password'], 21, "")
+        self.system.sign_up("try1", "try123", 21, "")
+        self.system.sign_up("try2", "try123", 21, "")
         self.system.login("try1", "try123")
         self.store = self.system.create_store("shaiozim baam").value
         self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}

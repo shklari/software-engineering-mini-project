@@ -13,7 +13,7 @@ class StoreUnitTests(unittest.TestCase):
     guest = None
 
     def setUp(self):
-        self.user = User('avokadosh', '112233')
+        self.user = User('avokadosh', '112233', 21, "")
         self.user.logged_in = True
         self.store = Store('Puppies Better', self.user)
         self.item = Item('BaliShag', 20, 'smoke', 'Puppies Better')
@@ -57,19 +57,19 @@ class StoreUnitTests(unittest.TestCase):
         print("\n")
 
     def test_add_new_owner(self):
-        self.assertTrue(self.store.add_new_owner(self.user, User('kushkush', '123456')).success)
+        self.assertTrue(self.store.add_new_owner(self.user, User('kushkush', '123456', 21, "")).success)
         self.assertTrue(len(self.store.storeOwners) == 2)
-        self.assertFalse(self.store.add_new_owner(User('avabash', '02468'), User('baba', '123456')).success)
+        self.assertFalse(self.store.add_new_owner(User('avabash', '02468', 21, ""), User('baba', '123456', 21, "")).success)
         self.assertTrue(len(self.store.storeOwners) == 2)
-        self.assertFalse(self.store.add_new_owner(self.user, User('kushkush', '123456')).success)
+        self.assertFalse(self.store.add_new_owner(self.user, User('kushkush', '123456', 21 , "")).success)
         print("\n")
 
     def test_remove_owner(self):
-        temp = User('kushkush', '123456')
+        temp = User('kushkush', '123456', 21, "")
         temp.logged_in = True
         self.store.add_new_owner(self.user, temp)
         self.assertFalse(self.store.remove_owner(temp, self.user).success)
-        self.assertFalse(self.store.remove_owner(User('bablu', '111111'), temp).success)
+        self.assertFalse(self.store.remove_owner(User('bablu', '111111', 21, ""), temp).success)
         self.assertTrue(self.store.remove_owner(self.user, temp).success)
         flag = True
         for k in self.store.storeOwners:
@@ -85,7 +85,7 @@ class StoreUnitTests(unittest.TestCase):
         print("\n")
 
     def test_add_new_manager(self):
-        temp = User('kushkush', '123456')
+        temp = User('kushkush', '123456', 21, "")
         temp.logged_in = True
         self.assertTrue(self.store.add_new_manager(self.user, temp, None).success)
         flag = False
@@ -102,11 +102,11 @@ class StoreUnitTests(unittest.TestCase):
         print("\n")
 
     def test_remove_manager(self):
-        temp = User('kushkush', '123456')
+        temp = User('kushkush', '123456', 21, "")
         temp.logged_in = True
         self.store.add_new_manager(self.user, temp, None)
         self.assertFalse(self.store.remove_manager(temp, self.user).success)
-        self.assertFalse(self.store.remove_manager(User('bablu', '111111'), temp).success)
+        self.assertFalse(self.store.remove_manager(User('bablu', '111111', 21, ""), temp).success)
         self.assertTrue(self.store.remove_manager(self.user, temp).success)
         flag = True
         for k in self.store.inventory:

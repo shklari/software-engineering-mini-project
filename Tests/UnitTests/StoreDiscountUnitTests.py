@@ -16,9 +16,9 @@ class StoreDiscountUnitTests(unittest.TestCase):
     item2 = None
 
     def setUp(self):
-        self.admin = User('admin', '112233')
+        self.admin = User('admin', '112233', 21, "")
         self.admin.logged_in = True
-        self.user = User('user', '111111')
+        self.user = User('user', '111111', 21 , "")
         self.guest = Guest()
         self.store = Store('Puppies', self.admin)
         self.item1 = {'name': 'Balishag', 'price': 100, 'category': 'smoking'}

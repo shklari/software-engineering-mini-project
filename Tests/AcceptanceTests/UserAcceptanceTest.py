@@ -82,13 +82,12 @@ class UserTestCase(unittest.TestCase):
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
         self.consistency = ConsistencySystem()
+        self.system.init(self.manager['name'], self.manager['password'], 21, "")
+        self.system.sign_up("try1", "try123", 21, "")
+        self.system.sign_up("try2", "try123", 21, "")
 
     # 2.3
     def test_login_success(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         # test
         # should work
         self.assertEqual(True, self.system.login("try1", "try123").success)
@@ -99,10 +98,6 @@ class UserTestCase(unittest.TestCase):
 
     # 2.3
     def test_login_fail(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         # test
         # empty password
         self.assertEqual(False, self.system.login("need to fail", "").success)
@@ -121,10 +116,6 @@ class UserTestCase(unittest.TestCase):
     # 2.6
     # adding item for a cart
     def test_add_to_cart_success(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -136,10 +127,6 @@ class UserTestCase(unittest.TestCase):
     # 2.6
     # adding item for a cart
     def test_add_to_cart_fail(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -153,10 +140,6 @@ class UserTestCase(unittest.TestCase):
 
     # 2.7.1
     def test_get_cart_success(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -170,10 +153,6 @@ class UserTestCase(unittest.TestCase):
 
     # 2.7.1
     def test_get_cart_fail(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -187,10 +166,6 @@ class UserTestCase(unittest.TestCase):
 
     # 2.7.2
     def test_remove_from_cart_success(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -207,10 +182,6 @@ class UserTestCase(unittest.TestCase):
 
     # 2.7.2
     def test_remove_from_cart_fail(self):
-        # setUp
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -232,9 +203,6 @@ class UserTestCase(unittest.TestCase):
         self.system.real.sys.collecting_system = self.collecting
         self.system.real.sys.supplying_system = self.supplying
         self.system.real.sys.traceability_system = self.consistency
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}
         self.store = self.system.create_store("shaiozim baam").value
@@ -257,9 +225,6 @@ class UserTestCase(unittest.TestCase):
         self.system.real.sys.collecting_system = self.collecting
         self.system.real.sys.supplying_system = self.supplying
         self.system.real.sys.traceability_system = self.consistency
-        self.system.init(self.manager['name'], self.manager['password'])
-        self.system.sign_up("try1", "try123")
-        self.system.sign_up("try2", "try123")
         self.system.login("try1", "try123")
         self.store = self.system.create_store("shaiozim baam").value
         self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}

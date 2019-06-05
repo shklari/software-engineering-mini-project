@@ -19,15 +19,25 @@ USERS = set()
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456",20,'is')
+checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
-service.sign_up("storeowner1", "111",21,'is')
-service.sign_up("storeowner2", "111",21,'is')
-service.sign_up("storeman1", "111",21,'is')
+
+service.sign_up("storeowner1", "111", 32, 'israel')
+service.sign_up("storeowner2", "111", 40, 'israel')
+service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem")
-service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
+service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
+
+# service.sign_up("storeowner1", "111")
+# service.sign_up("storeowner2", "111")
+# service.sign_up("storeman1", "111")
+# service.login("storeowner1", "111")
+# service.create_store("osem")
+# service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
+
 service.logout()
 
 # #######################################TEST
@@ -119,6 +129,8 @@ async def datahandler(data, websocket):
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
     elif data['action'] == 'edit_product':
         ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'])
+    elif data['action'] == 'shop_all':
+        ans = service.shop_all()
     else:
         logging.error(
             "unsupported event: {}", data)
@@ -127,7 +139,7 @@ async def datahandler(data, websocket):
 
 
 async def looper(websocket, path):
-    ws = websocket
+    # ws = websocket
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     # while not websocket.open:

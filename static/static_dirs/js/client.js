@@ -16,12 +16,13 @@ function send_msg(msg, onsuccess , onfailure)
         websocket.onmessage = function (event) {
 
             data = JSON.parse(event.data);
+            console.log("bbbbbbbbbbbbbbbb " + data);
             switch (data.action) {
                 case 'notify' :
                     alert(data.message);
                 case 'success':
                     console.log('success');
-                    onsuccess(data.message, data.return_val);
+                    onsuccess(data.message);
                     break;
                 case 'fail':
                     console.log('fail');

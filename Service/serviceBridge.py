@@ -18,11 +18,11 @@ class ServiceBridge(ServiceInterface):
     def get_cart(self, store):
         return True if self.real is None else self.real.get_cart(store)
 
-    def init(self, sm_username, sm_password):
-        return True if self.real is None else self.real.init(sm_username, sm_password)
+    def init(self, sm_username, sm_password, age, country):
+        return True if self.real is None else self.real.init(sm_username, sm_password, age, country)
 
     def sign_up(self, username, password, age, country):
-        return True if self.real is None else self.real.sign_up(username, password)
+        return True if self.real is None else self.real.sign_up(username, password, age, country)
 
     def login(self, username, password):
         return True if self.real is None else self.real.login(username, password)
