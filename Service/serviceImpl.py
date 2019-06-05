@@ -14,8 +14,8 @@ class ServiceImpl(ServiceInterface):
         self.ownersAlert = RealTimeAlert(self)
 
     # assumes the init function receives the username and password of the system manager
-    def init(self, sm_username, sm_password):
-        result = self.sys.init_system(sm_username, sm_password)
+    def init(self, sm_username, sm_password, system_manager_age, system_manager_country):
+        result = self.sys.init_system(sm_username, sm_password, system_manager_age, system_manager_country)
         if result.success:
             return ResponseObject(True, result.value, "System initialized successfully")
         else:
@@ -145,6 +145,35 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "Item " + item_name + " removed from " + store_name + " inventory")
 
+    def edit_product(self, itemname, store_name, quantity, price):
+        store_result = self.sys.get_store(store_name)
+        if not store_result.success:
+            return ResponseObject(False, False,
+                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        store = store_result.value
+        user = self.sys.get_cur_user()
+        if user is None:
+            return ResponseObject(False, False, "Error: no current user")
+        item = store.search_item_by_name(itemname)
+        if not item:
+            return ResponseObject(False, False,
+                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+        add = store.add_item_to_inventory(user, {'name': itemname, 'price': price, 'category': ''}, quantity)
+        if not add.success:
+            return ResponseObject(False, False, "Error: can't add item " + itemname[
+                'name'] + " to store " + store_name + "\n" + add.message)
+        if price > 0:
+            add = store.edit_item_price(user, itemname, price)
+            if not add.success:
+                return ResponseObject(False, False, "Error: can't edit " + itemname[
+                    'name'] + "'s price in" + store_name + "store\n" + add.message)
+        inv = []
+        for i in store.inventory:
+            inv.append({'name': i['name'], 'quantity': i['quantity']})
+        return ResponseObject(True, inv, "Item " + itemname + " edited successfully in " + store_name + " inventory")
+
+
+
     def decrease_item_quantity(self, store_name, item_name, quantity):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
@@ -224,15 +253,11 @@ class ServiceImpl(ServiceInterface):
             managers.append({'username': m.username})
         return ResponseObject(True, {'name': store_name, 'storeManagers': managers}, "Manager " + manager_to_remove + " removed successfully from the store's managers")
 
-    def get_total_system_inventory(self):
+    def shop_all(self):
         items_list = self.sys.get_total_system_inventory()
-        if len(items_list) == 0:
-            return ResponseObject(False, [], "No item matching the search")
-        output_list = []
-        for itm in items_list:
-            print(itm)
-            output_list.append({'name': itm.name, 'price': itm.price, 'category': itm.category})
-        return ResponseObject(True, output_list, "")
+        if len(items_list.value) == 0:
+            return ResponseObject(False, [], "No items in the system")
+        return ResponseObject(True, items_list.value, "")
 
     def get_store(self, store_name):
         store = self.sys.get_store(store_name)

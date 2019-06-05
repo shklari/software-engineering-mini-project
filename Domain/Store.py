@@ -15,7 +15,7 @@ class Store(object):
         self.name = name
         self.rank = 0
         self.inventory = []
-        self.storeOwners = [StoreOwner(owner.username, owner.password)]
+        self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
         self.storeManagers = []
         self.discountPolicy = 0
         self.log = Log("", "")
@@ -40,7 +40,7 @@ class Store(object):
     # 4.1.1
     # item = {'name': str, 'price': int, 'category': str}
     def add_item_to_inventory(self, user, item, quantity):
-        if quantity >= 1:
+        if quantity >= 0:
             if isinstance(user, User) and user.logged_in:
                 if self.check_if_store_owner(user):
                     if len(self.inventory) == 0:

@@ -11,7 +11,7 @@ from abc import abstractmethod
 class ServiceInterface(object):
 
     @abstractmethod  # 1.1 username, password are strings
-    def init(self, sm_username, sm_password): pass
+    def init(self, sm_username, sm_password, system_manager_age, system_manager_country): pass
 
     @abstractmethod  # 2.2 username, password are strings
     def sign_up(self, username, password, age, country): pass
@@ -68,5 +68,5 @@ class ServiceInterface(object):
     def remove_manager(self, store_name, manager_to_remove): pass
 
     @abstractmethod
-    def get_total_system_inventory(self): pass
+    def shop_all(self): pass
 
