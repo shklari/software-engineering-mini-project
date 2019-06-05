@@ -22,11 +22,12 @@ service = ServiceImpl()
 checkinit = service.init("avabash", "123456",20,'is')
 
 # #######################################TEST
-service.sign_up("storeowner1", "111",21,'is')
+service.sign_up("aaa", "111",21,'is')
 service.sign_up("storeowner2", "111",21,'is')
 service.sign_up("storeman1", "111",21,'is')
-service.login("storeowner1", "111")
+service.login("storeowner2", "111")
 service.create_store("osem")
+service.add_new_manager('osem','aaa',{'Edit':True,'Remove':True,'Add':True})
 service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 service.logout()
 
@@ -81,7 +82,7 @@ async def datahandler(data, websocket):
     service.web = websocket
     print(data)
     if data['action'] == 'signup':
-        ans = service.sign_up(data['username'], data['password'])
+        ans = service.sign_up(data['username'], data['password'],data['age'],data['country'])
     elif data['action'] == 'login':
         guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
         ans = service.login(data['username'], data['password'])
