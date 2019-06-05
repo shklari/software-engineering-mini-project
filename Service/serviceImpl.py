@@ -124,6 +124,11 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "Item " + item['name'] + " added successfully to " + store_name + " inventory")
 
+    def add_item_to_inventory_with_policies(self, item, store_name, quantity, policies):
+        res = self.add_item_to_inventory(item, store_name,quantity);
+
+        return ResponseObject(True, inv, "Item " + item['name'] + " added successfully to " + store_name + " inventory")
+
     def remove_item_from_inventory(self, item_name, store_name):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
