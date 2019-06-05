@@ -12,7 +12,8 @@ class Item(object):
         self.rank = 0
         self.store_name = store_name
         self.discount = ComposedDiscount(0, 0, True, "")
-        self.buying_policy = ImmediateBuyingPolicy()
+        self.buying_policy = []
+
 
     # 4.1.3
     def set_price(self, new_price):
@@ -25,10 +26,16 @@ class Item(object):
     def add_discount(self, new_discount):
         self.discount.add_discount(new_discount)
 
+    def add_policy(self, policy_name, val):
+        self.discount.add_discount(new_discount)
+
     def apply_discount(self):
         return self.discount.apply_discount(self.price)
 
     def set_buying_policy(self, policy):
+        if policy['name']=='age_policy':
+            return True
+
         self.buying_policy = policy
 
     def add_buying_policy(self, policy):
@@ -45,6 +52,7 @@ class Item(object):
             self.buying_policy = ImmediateBuyingPolicy()
         elif self.buying_policy.is_composite():
             self.buying_policy.remove_policy(policy)
+
 
 
 
