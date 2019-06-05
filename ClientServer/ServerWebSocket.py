@@ -81,7 +81,6 @@ async def datahandler(data, websocket):
     service.web = websocket
     print(data)
     if data['action'] == 'signup':
-        guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
         ans = service.sign_up(data['username'], data['password'])
     elif data['action'] == 'login':
         guest_to_users(data['username'], {'ip': websocket.local_address[0], 'port': websocket.local_address[1], 'ws': websocket})
