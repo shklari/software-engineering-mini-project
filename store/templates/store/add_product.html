@@ -124,7 +124,29 @@ button:hover {
         <input type="submit">
     </form>
 
-    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+      <ul>
+          <label>Policies</label>
+    <li>
+    <label>
+      <input id="agepolicy" type="checkbox" style="margin-bottom:15px"> Age Policy
+       <input id='agepolicyval' type="number"  min="1" max="120" placeholder="Age">
+    </label>
+    </li>
+
+    <li>
+    <label>
+      <input id="countrypolicy" type="checkbox" style="margin-bottom:15px"> Country Policy
+        <input id='countrypolicyval' placeholder="Country">
+    </label>
+    </li>
+      <li>
+    <label>
+      <input id="dispolicy" type="checkbox" checked="checked" style="margin-bottom:15px"> Discount Policy
+      <input id='dispolicyval' type="number"  min="0" max="1" step="0.01" placeholder="Discount">
+    </label>
+    </li>
+    </ul>
+
     {% csrf_token %}
     <div class="clearfix">
       <button onclick="window.location.href='/'" type="button" class="cancelbtn">Cancel</button>
@@ -136,6 +158,7 @@ button:hover {
 </div>
 <script src="{% static 'js/client.js' %}"></script>
 <script type="text/javascript">
+
     var btn = document.getElementById('addprobtn');
     var onsuccess =  (res) =>{
         alert(res);
@@ -144,19 +167,41 @@ button:hover {
 
     var onfailure = (res) =>{
         alert(res);
-        window.location.href = '/add_item_to_inventory';
+        window.location.href = '/addpro';
     }
     btn.onclick = function (event){
-        var productname = document.getElementById('productname').value;
-        var price = +document.getElementById('price').value;
-        var category = document.getElementById('category').value;
-        var storename = document.getElementById('storename').value;
+    var productname = document.getElementById('productname').value;
+    var price = document.getElementById('price').value;
+    var category = document.getElementById('category').value;
+    var storename = document.getElementById('storename').value;
+    var agepolicy = document.getElementById('agepolicy').checked == "checked" ? document.getElementById('agepolicyval').value : null ;
+    var countrypolicy = document.getElementById('countrypolicy').checked == "checked" ? document.getElementById('countrypolicyval').value : null ;
+    var dispolicy = document.getElementById('dispolicy').checked == "checked" ? document.getElementById('dispolicyval').value : null;
+    var policies = null;
+    if(agepolicy!=null || countrypolicy!=null || dispolicy!=null) {
+        policies = {age: agepolicy, dis: dispolicy, country: countrypolicy};
+    }
         if(productname == '') {
             alert('product name field is empty !');
             return;
         }
-
-        send_msg({action: 'add_item_to_inventory', item: {name: productname, price: price, category: category}, quantity: 0, store_name: storename},onsuccess, onfailure);
+        if(policies==null) {
+            send_msg({
+                action: 'add_item_to_inventory',
+                item: {name: productname, price: price, category: category},
+                quantity: 0,
+                store_name: storename
+            }, onsuccess, onfailure);
+        }
+        else{
+        send_msg({
+                action: 'add_item_to_inventory_with_policies',
+                item: {name: productname, price: price, category: category},
+                quantity: 0,
+                store_name: storename,
+                policies:policies
+            }, onsuccess, onfailure);
+        }
     }
 
 </script>

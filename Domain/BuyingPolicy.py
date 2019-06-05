@@ -37,3 +37,13 @@ class CompositeBuyingPolicy(BuyingPolicy):
 
     def is_composite(self):
         return True
+
+class AgeLimitationPolicy(BuyingPolicy):
+    def __init__(self,item):
+        self.item=item;
+
+    def apply_policy(self, user_age):
+        return True if (self.item.age <= user_age) else False ;
+
+
+
