@@ -38,7 +38,7 @@ service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
-# service.logout()
+service.logout()
 
 # #######################################TEST
 ws = 0
@@ -129,6 +129,8 @@ async def datahandler(data, websocket):
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
     elif data['action'] == 'edit_product':
         ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'])
+    elif data['action'] == 'shop_all':
+        ans = service.shop_all()
     else:
         logging.error(
             "unsupported event: {}", data)
@@ -137,7 +139,7 @@ async def datahandler(data, websocket):
 
 
 async def looper(websocket, path):
-    ws = websocket
+    # ws = websocket
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     # while not websocket.open:
