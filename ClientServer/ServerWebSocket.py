@@ -19,15 +19,26 @@ USERS = set()
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456", 21, "")
+checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
-service.sign_up("storeowner1", "111", 20, 'israel')
-service.sign_up("storeowner2", "111", 14, 'fgh')
-service.sign_up("storeman1", "111", 16, 'erty')
+
+service.sign_up("storeowner1", "111", 32, 'israel')
+# service.sign_up("storeowner2", "111", 40, 'israel')
+# service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem")
-service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
+service.logout()
+# service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
+# service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
+
+# service.sign_up("storeowner1", "111")
+# service.sign_up("storeowner2", "111")
+# service.sign_up("storeman1", "111")
+# service.login("storeowner1", "111")
+# service.create_store("osem")
+# service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
+
 # service.logout()
 
 # #######################################TEST
