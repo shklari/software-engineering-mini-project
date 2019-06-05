@@ -65,24 +65,28 @@
               </div>
             </div>
             <div class="row mb-5">
+                <div id="pr"></div>
+                <!--<a href="/single_product/"> <span onclick="document.cookie='pname=mhvbamba; domain=;path=/single_product/';alert(document.cookie);"> <img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></span></a> -->
                 <script>
                     var shop_onsuccess = (res, data) =>{
                         for (var product in data){
-                            document.write('<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">\n' +
+                            document.cookie="asd = a;";
+                            document.getElementById('pr').innerHTML+= '<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">\n' +
                                 '                <div class="block-4 text-center border">\n' +
                                 '                  <figure class="block-4-image">\n' +
-                                '                    <a href="single_product.html"><img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></a>\n' +
+                                '                    <a href="/single_product/"> <span onclick=\"document.cookie=\'pname='+ data[product]['name'] +';path = /;\'; document.cookie=\'pprice='+ data[product]['price'] +';path = /;\'\">' +
+                                '                   <img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></span></a>\n' +
                                 '                  </figure>\n' +
                                 '                  <div class="block-4-text p-4">\n' +
-                                '                    <h3><a href="single_product.html">' + product['name'] + 'Tank Top</a></h3>\n' +
-                                '                    <p class="mb-0">Finding perfect' + product['category'] + '</p>\n' +
-                                '                    <p class="text-primary font-weight-bold">' + product['price'] + '$' + '</p>\n' +
+                                '                    <h3><a href="/single_product/">' + data[product]['name'] + '</a></h3>\n' +
+                                '                    <p id="cat" class="mb-0">Finding perfect' + data[product]['category'] + '</p>\n' +
+                                '                    <p id="" class="text-primary font-weight-bold">' + data[product]['price'] + '$' + '</p>\n' +
                                 '                  </div>\n' +
                                 '                </div>\n' +
-                                '              </div>');
+                                '              </div>';
+                                var b = document.cookie;
                         }
-                        };
-
+                    };
                     var shop_onfailure = (res) => {
                         document.write('<h3>There are no items to show</h3>');
                     };
