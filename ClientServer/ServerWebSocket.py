@@ -157,7 +157,7 @@ async def looper(websocket, path):
     except Exception as e:
         log.set_info('communication failed', 'errorLog')
         print(e)
-        await ws.send('communication failed')
+#        await websocket.send('communication failed')
     finally:
         if websocket.open:
             await unregister(websocket)
