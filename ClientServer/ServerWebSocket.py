@@ -160,9 +160,9 @@ async def looper(websocket, path):
         if websocket.open:
             await unregister(websocket)
 
-#t = MyThread()
-#t.set(alert)
-#t.start()
+t = MyThread()
+t.set(alert)
+t.start()
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
 asyncio.get_event_loop().run_forever()
