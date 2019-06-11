@@ -1,6 +1,10 @@
+{% extends "store/navigation_bar.html" %}
 {%load static%}
+{%load staticfiles %}
+
 <!DOCTYPE HTML>
 <html>
+{% block head2 %}
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -86,7 +90,11 @@ h1 {
 label {
   color: #aaa;
 }
-
+.block-4 {
+    -webkit-box-shadow: 0 0 30px -10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 30px -10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
 .shopping-cart {
   margin-top: -45px;
 }
@@ -251,6 +259,9 @@ label {
 }
 </style>
     </head>
+{% endblock %}
+
+{% block body %}
 <body>
 <div class="shopping-cart">
 
@@ -263,26 +274,45 @@ label {
     <label class="product-line-price">Total</label>
   </div>
 
-  <div class="product">
-    <div class="product-image">
-      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
-    </div>
-    <div class="product-details">
-      <div class="product-title">Dingo Dog Bones</div>
-      <p class="product-description">The best dog bones of all time. Holy crap. Your dog will be begging for these things! I got curious once and ate one myself. I'm a fan.</p>
-    </div>
-    <div class="product-price">12.99</div>
-    <div class="product-quantity">
-      <input type="number" value="2" min="1">
-    </div>
-    <div class="product-removal">
-      <button class="remove-product">
-        Remove
-      </button>
-    </div>
-    <div class="product-line-price">25.98</div>
-  </div>
+    <div id="pr"></div>
+<script>
+var shop_onsuccess = (res, data) => {
+    for (var i in data) {
+        container = '<div class="block-4"><h2>Shop : '+data[i]['store']+'</h2><br>';
+        //document.getElementById('pr').innerHTML += container;
+        data[i]['cart'].forEach(function(item) {
+            container += '\n' +
+                '<div class="product">\n' +
+                '    <div class="product-image">\n' +
+                '      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">\n' +
+                '    </div>\n' +
+                '    <div class="product-details">\n' +
+                '      <div class="product-title">' + item['name'] + '</div>\n' +
+                '      <p class="product-description">The best dog bones of all time. Holy crap. Your dog will be begging for these things! I got curious once and ate one myself. I\'m a fan.</p>\n' +
+                '    </div>\n' +
+                '    <div class="product-price">'+ item['price'] +'</div>\n' +
+                '    <div class="product-quantity">\n' +
+                '      <input type="number" value="'+ item['quantity'] + '" min="1">\n' +
+                '    </div>\n' +
+                '    <div class="product-removal">\n' +
+                '      <button class="remove-product">\n' +
+                '        Remove\n' +
+                '      </button>\n' +
+                '    </div>\n' +
+                '    <div class="product-line-price">'+ ((+item['price'])*(item['quantity'])) +'</div>\n' +
+                '  </div>';
+        });
+        container+='</div>';
+        document.getElementById('pr').innerHTML += container;
+    }
+};
+var shop_onfailure = (res) => {
+    document.write('<h3>There are no items to show</h3>');
+};
+var basket = send_msg({action:'get_basket'}, shop_onsuccess, shop_onfailure);
 
+</script>
+<!--
   <div class="product">
     <div class="product-image">
       <img src="https://s.cdpn.io/3/large-NutroNaturalChoiceAdultLambMealandRiceDryDogFood.png">
@@ -302,6 +332,7 @@ label {
     </div>
     <div class="product-line-price">45.99</div>
   </div>
+  -->
 
   <div class="totals">
     <div class="totals-item">
@@ -326,4 +357,5 @@ label {
 
 </div>
 </body>
+{% endblock %}
 </html>

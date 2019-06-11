@@ -283,21 +283,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-xs-2">
-                    <div id="fh5co-logo"><a href="index.html">Shop.</a></div>
+                    <div id="fh5co-logo"><a href="/">Shop.</a></div>
                 </div>
                 <div class="col-md-6 col-xs-6 text-center menu-1">
                     <ul>
                         <li class="has-dropdown">
-                            <a href="home.html">Shop</a>
+                            <a href="/shop_all/">Shop</a>
                             <ul class="dropdown">
-                                <li><a href="single.html">Single Shop</a></li>
+                                <li><a href="single.html">All Shops</a></li>
                             </ul>
                         </li>
-                        <li><a href="about.html">About</a></li>
+                        <li><a href="/about/">About</a></li>
                         <li class="has-dropdown">
-                            <a href="services.html">Services</a>
+                            <a>Services</a>
                             <ul class="dropdown">
-                                <li><a href="#">Web Design</a></li>
+                                <li><a href="/create_store">Add Store</a></li>
                                 <li><a href="#">eCommerce</a></li>
                                 <li><a href="#">Branding</a></li>
                                 <li><a href="#">API</a></li>
@@ -310,7 +310,6 @@
                     <ul>
                         <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
                         <li class="login">
-
                             <script>
                                 var cookie = read_cookie('login');
                                 if (cookie==null || cookie =='false' || cookie==''){
@@ -319,6 +318,7 @@
                                     document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
+                        <li class="shopping-cart"><a href="/shopping-cart/" class="cart"><span><small><script>var num = read_cookie('cart');num>0?document.write(num) : document.write(0);</script></small><i class="icon-shopping-cart"></i></span></a></li>
                         <li class="search">
                             <div class="input-group">
                                 <input type="text" placeholder="Search..">
@@ -327,7 +327,6 @@
 						      </span>
                             </div>
                         </li>
-                        <li class="shopping-cart"><a href="/shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
 
                     </ul>
                 </div>

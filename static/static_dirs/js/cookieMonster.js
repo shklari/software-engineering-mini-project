@@ -5,6 +5,12 @@ function read_cookie(key)
     return b ? b.pop() : '';
 }
 
+function write_cookie(key,val)
+{
+    document.cookie = key+' = '+val+'; path=/;';
+}
+
+
 function checkExpire() {
     var current = read_cookie("expire");
     if(current==''){
