@@ -70,11 +70,10 @@
                 <script>
                     var shop_onsuccess = (res, data) =>{
                         for (var product in data){
-                            document.cookie="asd = a;";
                             document.getElementById('pr').innerHTML+= '<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">\n' +
                                 '                <div class="block-4 text-center border">\n' +
                                 '                  <figure class="block-4-image">\n' +
-                                '                    <a href="/single_product/"> <span onclick=\"document.cookie=\'pname='+ data[product]['name'] +';path = /;\'; document.cookie=\'pprice='+ data[product]['price'] +';path = /;\'\">' +
+                                '                    <a href="/single_product/"> <span onclick=\"document.cookie=\'pname='+ data[product]['name'] +';path = /;\'; document.cookie=\'pprice='+ data[product]['price'] +';path = /;\'; document.cookie=\'sname='+ data[product]['store_name'] +';path = /;\';  \">' +
                                 '                   <img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid"></span></a>\n' +
                                 '                  </figure>\n' +
                                 '                  <div class="block-4-text p-4">\n' +

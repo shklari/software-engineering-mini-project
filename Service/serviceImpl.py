@@ -83,6 +83,9 @@ class ServiceImpl(ServiceInterface):
         cart = result.value
         return ResponseObject(True, {'store_name': cart.store_name, 'items_and_quantities': cart.items_and_quantities}, "")
 
+    def get_basket(self):
+        return self.sys.get_basket()
+
     def add_to_cart(self, store_name, item_name, quantity):
         result = self.sys.add_to_cart(store_name, item_name, quantity)
         if not result.success:
@@ -92,7 +95,8 @@ class ServiceImpl(ServiceInterface):
         if not cart_result.success:
             return ResponseObject(False, False, "Can't add item " + item_name + " to cart " + store_name + "\n" + cart_result.message)
         cart = cart_result.value
-        return ResponseObject(True, cart.items_and_quantities, "Item " + item_name + " added successfully to cart " + store_name)
+        added = cart.items_and_quantities.get(item_name)
+        return ResponseObject(True, added, "Item " + item_name + " added successfully to cart " + store_name)
 
     def remove_from_cart(self, store_name, item_name):
         curr_user = self.sys.get_cur_user()

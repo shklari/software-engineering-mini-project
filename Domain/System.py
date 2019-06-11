@@ -269,6 +269,20 @@ class System:
         self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
 
+    def get_basket(self):
+        basket_ret = []
+        basket = self.cur_user.get_basket()
+        for cart in basket.carts:
+            cart_ret = []
+            store = self.get_store(cart.store_name).value
+            for product in cart.items_and_quantities:
+                item = store.get_item_if_available(product,cart.items_and_quantities.get(product))
+                quantity = cart.items_and_quantities[product]
+                cart_ret.append({'name':item.name,'price':item.price,'quantity':quantity,'category':item.category,'rank':item.rank,'discount':''})
+
+            basket_ret.append({'cart': cart_ret, 'store': store.name})
+        return ResponseObject(True, basket_ret, "")
+
     def get_user(self, username):
         if username in self.users:
             print(self.users[username])

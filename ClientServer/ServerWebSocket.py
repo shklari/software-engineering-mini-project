@@ -28,8 +28,12 @@ service.sign_up("storeowner2", "111", 40, 'israel')
 service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem")
+service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
 service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
 service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
+service.add_to_cart('osem','soup',2)
+service.add_to_cart('osem','bamba',2)
+service.get_basket()
 
 # service.sign_up("storeowner1", "111")
 # service.sign_up("storeowner2", "111")
@@ -131,6 +135,10 @@ async def datahandler(data, websocket):
         ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
+    elif data['action'] == 'get_basket':
+        ans = service.get_basket()
+        print(ans)
+
     else:
         logging.error(
             "unsupported event: {}", data)
