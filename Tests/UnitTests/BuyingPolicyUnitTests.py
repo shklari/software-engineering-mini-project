@@ -3,12 +3,9 @@ import unittest
 from Domain.BuyingPolicy import *
 
 
-class FailImmediatePC(BuyingPolicy):
+class FailImmediatePC(ImmediateBuyingPolicy):
 
     def apply_policy(self, obj):
-        return False
-
-    def is_composite(self):
         return False
 
 

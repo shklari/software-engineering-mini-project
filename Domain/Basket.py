@@ -1,10 +1,12 @@
 from .ExternalSystems import CollectingSystem
 from .Response import ResponseObject
 from log.Log import Log
+from .Cart import Cart
 
 
 class Basket:
-    def __init__(self):
+    def __init__(self, user):
+        self.user = user
         self.carts = []
         self.collectingSystem = CollectingSystem()
         self.log = Log("", "")
@@ -21,8 +23,10 @@ class Basket:
             if cart.get_store_name() == store_name:
                 self.log.set_info("get cart action has succeeded", "eventLog")
                 return ResponseObject(True, cart, "")
+        cart = Cart(store_name, self.user)
+        self.add_cart(cart)
         self.log.set_info("error: get cart failed: no such store name", "eventLog")
-        return ResponseObject(False, None, "Cart " + store_name + " doesn't exist")
+        return ResponseObject(True, cart, "Cart " + store_name + " doesn't exist")
 
     def remove_item_from_cart(self, store_name, item_name):
         result = self.get_cart_by_store(store_name)
