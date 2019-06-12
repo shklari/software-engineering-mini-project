@@ -1,6 +1,6 @@
 import unittest
 
-from Service.serviceBridge import ServiceBridge
+from Service.serviceBridge import ServiceImpl
 from Domain.BuyingPolicy import *
 
 
@@ -12,7 +12,7 @@ class FailImmediatePC(ImmediateBuyingPolicy):
 
 class TestUserBuyingPolicy(unittest.TestCase):
 
-    service = ServiceBridge()
+    service = ServiceImpl()
     store1 = None
     store2 = None
     manager = None

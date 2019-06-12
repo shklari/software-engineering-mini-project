@@ -293,3 +293,8 @@ class ServiceImpl(ServiceInterface):
         for store in stores:
             res.append({'name':store.name})
         return ResponseObject(True, {'stores':res}, "")
+
+    # policy = {type, combo, args}
+    def add_item_policy(self, item_name, store_name, policy, user_name):
+        ans = self.sys.add_item_policy(item_name, store_name, policy, user_name)
+        return ResponseObject(ans.success, ans, ans.message)

@@ -1,5 +1,5 @@
 import pymongo
-
+import dns
 
 
 class DB:

@@ -11,6 +11,9 @@ class BuyingPolicy(object):
     def policy_type(self):
         return ""
 
+    def add_policy(self, policy):
+        pass
+
 
 class ImmediateBuyingPolicy(BuyingPolicy):
 
@@ -27,7 +30,7 @@ class CompositeBuyingPolicy(BuyingPolicy):
         self.policies = []
 
     def add_policy(self, policy):
-        self.policies.append(policy)
+        pass
 
     def remove_policy(self, policy):
         self.policies.remove(policy)
@@ -44,6 +47,9 @@ class AndCompositeBuyingPolicy(CompositeBuyingPolicy):
                 return False
         return True
 
+    def add_policy(self, policy):
+        self.policies.append(policy)
+
 
 class OrCompositeBuyingPolicy(CompositeBuyingPolicy):
 
@@ -52,15 +58,6 @@ class OrCompositeBuyingPolicy(CompositeBuyingPolicy):
             if policy.apply_policy():
                 return True
         return False
-
-    def add_policy(self, policy):
-        self.policies.append(policy)
-
-    def remove_policy(self, policy):
-        self.policies.remove(policy)
-
-    def is_composite(self):
-        return True
 
 
 class UserPolicy(ImmediateBuyingPolicy):
