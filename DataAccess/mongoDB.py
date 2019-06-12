@@ -33,3 +33,8 @@ class DB:
         item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
                        "quantity": quantity}
         collection.insert_one(item_to_add)
+
+    def add_notification(self, user_name, time, message):
+        collection = self.mydb["UserNotification"]
+        not_to_add = {"user_name": user_name, "time": time, "message": message}
+        collection.insert_one(not_to_add)
