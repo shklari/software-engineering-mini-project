@@ -55,7 +55,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
-            self.database.add_to_users(new_user)
+            #self.database.add_to_users(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")

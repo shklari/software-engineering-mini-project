@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'static_dirs/sass/bootstrap/_glyphicons.scss' %}" type="text/css">
 
     <script src="{% static 'js/client.js' %}"></script>
 
@@ -295,36 +296,157 @@
         </script>
      <!-- end navigation bar -->
 <!--notification -->
-    <div class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body…</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+  <style>
+.glyphicon-bell1 {
+
+    font-size:1.5rem;
+  }
+
+.notifications1 {
+   min-width:320px;
+  }
+
+  .notifications-wrapper1 {
+     overflow:auto;
+      max-height:250px;
+    }
+.menu-title1 {
+    color: #ffffff;
+    font-size: 13px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.glyphicon-circle-arrow-right1 {
+      margin-left:10px;
+   }
+
+
+ .notification-heading1, .notification-footer1  {
+  padding:2px 10px;
+       }
+
+
+.dropdown-menu1.divider {
+  margin:5px 0;
+  }
+
+.item-title1 {
+    font-size: 1.3rem;
+    color: #000;
+    font-weight: bold;
+    margin: 5px 0px;
+}
+
+.notifications1 a.content {
+    text-decoration: none;
+    display: block;
+    color:#000;
+}
+.notification-item1 {
+    position: relative;
+    padding: 10px;
+    padding-left: 70px;
+    padding-bottom: 0px;
+}
+.notification-item1 img {
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+.dropdown-menu1 .divider {
+    height: 1px;
+    margin: 5px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+ul.dropdown-menu1.notifications1.notifications-wrapper1 a.content {
+    padding: 0px !important;
+    background: rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid #d1d1d1;
+}
+ul.dropdown-menu1.notifications1 .notifications-wrapper1 a.content:hover {
+    color: #000;
+    background: rgba(0, 0, 0, 0.1);
+}
+.login-nav ul.nav.navbar-nav.navbar-right li a {
+    display: block;
+}
+.notification-heading1 {
+    background: #000;}
+.notifications1 a.content {
+    text-decoration: none;
+    display: block;
+    padding: 3px 10px;
+}
+ul.dropdown-menu1.notifications1 {
+    padding: 0px;
+}
+.dropdown1 .glyphicon-bell1 {
+    vertical-align: middle;
+}
+.dropdown1{
+    display: none;mix-width: 25%;
+    top:0;
+    list-style:none;
+    overflow: auto;
+    z-index: 1;
+    position: fixed;
+    background-color: white;
+}
+
+</style>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <script>
-    $
-    BootstrapDialog.show({
-            message: 'There is no fading effects on this dialog.',
-            animate: false,
-            buttons: [{
-                label: 'Close the dialog',
-                action: function(dialogRef){
-                    dialogRef.close();
-                }
-            }]
-        });
-    </script>
+function CustomAlert(){
+    this.render = function(dialog){
+        $("#box").fadeIn(1000).show()
+        var mes = '<a class="content" href="#">\n' +
+            '       <div class="notification-item1">\n' +
+            '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
+            '        <h4 class="item-title1">Evaluation Deadline  <small> 1 day ago</small></h4>\n' +
+            '        <p class="item-info1">Mr hassan has followed you!</p>\n' +
+            '      </div>\n' +
+            '    </a>';
+        document.getElementById('mes_list').innerHTML=mes;
+        $("#notify").hide();
+    }
+	this.ok = function(){
+		document.getElementById('box').style.display = "none";
+	}
+}
+/*
+    document.getElementById("clearbtn").onclick(function (event) {
+       send_msg({action:'clear_notification',username:''},(res,val)=>{
+        $("#notify").show();
+       },()=>{});
+    });*/
+
+var Alert = new CustomAlert();
+</script>
+
+    <li class="dropdown1" id="box">
+  <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+    <i class="glyphicon glyphicon-bell1"></i>
+  </a>
+
+  <br class="dropdown-menu1 notifications1" role="menu" aria-labelledby="dLabel">
+<script src="/static/static_dirs/sass/bootstrap/_glyphicons.scss"></script>
+    <div class="notification-heading1"><h4 class="menu-title1">Notifications</h4><span onclick="$('#box').hide()" class="menu-title1 pull-right">&#x274C;</span>
+    </div>
+   <div id="mes_list" class="notifications-wrapper1">
+
+
+   </div></br>
+      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="">
+		    <i class="fa icon-trash" aria-hidden="true"></i>
+		    <span class="fs-it-btn-vertical-line"></span>
+		    Clear All</button>
+  </ul>
+  </li>
 
     <nav class="fh5co-nav" role="navigation">
         <div class="container">
@@ -352,9 +474,9 @@
                             </ul>
                         </li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="contact.html" class="notification">
-                        <span>Inbox</span>
-                        <span class="badge">3</span>
+                        <li><a  class="notification">
+                        <span onclick="Alert.render()" id="inbox">Inbox</span>
+                        <span class="badge" id="notify" >!</span>
                         </a></li>
                     </ul>
                 </div>
