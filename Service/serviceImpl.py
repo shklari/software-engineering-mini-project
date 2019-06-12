@@ -88,19 +88,19 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, {'store_name': cart.store_name, 'items_and_quantities': cart.items_and_quantities}, "")
 
     def get_basket(self, username):
-        return self.sys.get_basket()
+        return self.sys.get_basket(username)
 
-    def get_basket_subtotal(self):
+    def get_basket_subtotal(self, username):
         subtotal = 0
-        basket = self.sys.get_basket()
+        basket = self.sys.get_basket(username)
         if basket.success:
             for cart in basket.value:
                 for item in cart['cart']:
                     subtotal += item['price'] * item['quantity']
-        return ResponseObject(True, {'subtotal':subtotal} , "")
+        return ResponseObject(True, {'subtotal': subtotal}, "")
 
-    def get_basket_size(self):
-        return self.sys.get_basket_size()
+    def get_basket_size(self, username):
+        return self.sys.get_basket_size(username)
 
     def add_to_cart(self, store_name, item_name, quantity, username):
         result = self.sys.add_to_cart(store_name, item_name, quantity, username)
@@ -194,7 +194,8 @@ class ServiceImpl(ServiceInterface):
     def decrease_item_quantity(self, store_name, item_name, quantity, username):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
-            return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" + store_result.message)
+            return ResponseObject(False, False, "Error: can't remove items from store " + store_name + "\n" +
+                                  store_result.message)
         store = store_result.value
         find_user = self.sys.get_user_or_guest(username)
         if not find_user.success:

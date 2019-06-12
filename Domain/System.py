@@ -7,7 +7,7 @@ from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
-from DataAccess import sqlite_database
+from DataAccess.mongoDB import DB
 import functools
 
 
@@ -16,7 +16,7 @@ class System:
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
-        self.database = sqlite_database
+        self.database = DB()
         # self.cur_user = None
         self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system
@@ -39,7 +39,8 @@ class System:
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
         if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
             return ResponseObject(False, False, "Can't init external systems")
-        result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age, system_manager_country)
+        result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,
+                              system_manager_country)
         if not result.success:
             self.log.set_info("error: System manager could not sign up", "eventLog")
             return ResponseObject(False, None, "System manager could not sign up")
@@ -47,8 +48,6 @@ class System:
         manager = SystemManager(system_manager_user_name, enc_password, system_manager_age, system_manager_country)
         # self.users[manager.username] = manager
         self.system_manager = manager
-        # init db
-        self.database.set_up()
         return ResponseObject(True, True, "")
 
     def sign_up(self, username, password, age, country):
@@ -64,7 +63,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
-            # self.database.add_to_users(new_user)
+            self.database.add_user(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -140,7 +139,7 @@ class System:
         if new_owner_obj is None:
             self.log.set_info("error: adding owner failed: user is not a user in the system", "eventLog")
             return ResponseObject(False, False, new_owner_name + " is not a user in the system")
-        find_user = self.sys.get_user_or_guest(username)
+        find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
@@ -159,7 +158,7 @@ class System:
         if new_owner_obj is None:
             self.log.set_info("error: remove owner failed: user is not in the system", "eventLog")
             return ResponseObject(False, False, owner_to_remove + " is not a user in the system")
-        find_user = self.sys.get_user_or_guest(username)
+        find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
@@ -178,7 +177,7 @@ class System:
         if new_manager_obj is None:
             self.log.set_info("error: adding manager failed: user is not in the system", "eventLog")
             return ResponseObject(False, False, new_manager_name + " is not a user in the system")
-        find_user = self.sys.get_user_or_guest(username)
+        find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
@@ -197,7 +196,7 @@ class System:
         if new_manager_obj is None:
             self.log.set_info("error: removing manager failed: user is not in the system", "eventLog")
             return ResponseObject(False, False, manager_to_remove + " is not a user in the system")
-        find_user = self.sys.get_user_or_guest(username)
+        find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
@@ -307,15 +306,14 @@ class System:
             basket_ret.append({'cart': cart_ret, 'store': store.name})
         return ResponseObject(False, False, "") if non_empty == 0 else ResponseObject(True, basket_ret, "")
 
-    def get_basket_size(self):
-        basket = self.get_basket()
-        size =0
+    def get_basket_size(self, username):
+        basket = self.get_basket(username)
+        size = 0
         if basket.success:
             for cart in basket.value:
                 for item in cart['cart']:
                     size += 1
-
-        return ResponseObject(True, size , "")
+        return ResponseObject(True, size, "")
 
     def get_user(self, username):
         if username in self.users:
@@ -333,7 +331,7 @@ class System:
         if not available:
             self.log.set_info("error: adding to cart failed: item is not available", "eventLog")
             return ResponseObject(False, False, "Item " + item_name + "is not available")
-        find_user = self.sys.get_user_or_guest(username)
+        find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
