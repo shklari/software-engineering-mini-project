@@ -45,11 +45,8 @@
           <div class="col-md-6">
               <h2 class="text-black">
                   <script>
-                      var b = document.cookie;
-                      alert(b);
                       var name = read_cookie('pname');
                       document.write(name);
-                      //alert(document.cookie);
                   </script>
               </h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, vitae, explicabo? Incidunt facere, natus soluta dolores iusto! Molestiae expedita veritatis nesciunt doloremque sint asperiores fuga voluptas, distinctio, aperiam, ratione dolore.</p>
@@ -92,11 +89,14 @@
 
     <script>
     var cart_onsuccess =  (res, val) =>{
-        alert(val);
-        num = +read_cookie('cart');
-        num = num>=0 ? (num+1) : 0;
-        write_cookie('cart',num);
-        window.location.href = '/shop_all/';
+        send_msg({action: 'get_basket_size'},(ans,size)=>{
+                                    write_cookie('cart',size);
+                                    send_msg({action:'get_basket_subtotal'},(res,val)=>{
+                                      var sub = val['subtotal'];
+                                      write_cookie('subtotal', sub);
+                                      window.location.reload();
+        },()=>{});
+                                },()=>{});
         alert(res);
         };
         var cart_onfailure =  (res) =>{

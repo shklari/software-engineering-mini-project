@@ -86,6 +86,18 @@ class ServiceImpl(ServiceInterface):
     def get_basket(self):
         return self.sys.get_basket()
 
+    def get_basket_subtotal(self):
+        subtotal = 0
+        basket = self.sys.get_basket()
+        if basket.success:
+            for cart in basket.value:
+                for item in cart['cart']:
+                    subtotal += item['price'] * item['quantity']
+        return ResponseObject(True, {'subtotal':subtotal} , "")
+
+    def get_basket_size(self):
+        return self.sys.get_basket_size()
+
     def add_to_cart(self, store_name, item_name, quantity):
         result = self.sys.add_to_cart(store_name, item_name, quantity)
         if not result.success:
@@ -265,3 +277,10 @@ class ServiceImpl(ServiceInterface):
 
     def get_store(self, store_name):
         store = self.sys.get_store(store_name)
+
+    def get_stores(self):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            res.append({'name':store.name})
+        return ResponseObject(True, {'stores':res}, "")

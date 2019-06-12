@@ -31,9 +31,11 @@ service.create_store("osem")
 service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
 service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
 service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
-service.add_to_cart('osem','soup',2)
-service.add_to_cart('osem','bamba',2)
+#service.add_to_cart('osem','soup',2)
+#service.add_to_cart('osem','bamba',2)
 service.get_basket()
+service.get_stores()
+
 
 # service.sign_up("storeowner1", "111")
 # service.sign_up("storeowner2", "111")
@@ -137,6 +139,12 @@ async def datahandler(data, websocket):
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
         ans = service.get_basket()
+    elif data['action'] == 'get_basket_size':
+        ans = service.get_basket_size()
+    elif data['action'] == 'get_basket_subtotal':
+        ans = service.get_basket_subtotal()
+    elif data['action'] == 'get_stores':
+        ans = service.get_stores()
         print(ans)
 
     else:

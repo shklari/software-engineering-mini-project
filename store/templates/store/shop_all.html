@@ -87,7 +87,7 @@
                         }
                     };
                     var shop_onfailure = (res) => {
-                        document.write('<h3>There are no items to show</h3>');
+                        document.getElementById('pr').innerHTML+='There are no items to show';
                     };
                     var products = send_msg({action:'shop_all'}, shop_onsuccess, shop_onfailure);
                 </script>
