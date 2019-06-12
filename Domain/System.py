@@ -7,12 +7,10 @@ from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
 from DataAccess import sqlite_database
-
 import functools
 
 
 class System:
-
 
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
@@ -40,6 +38,8 @@ class System:
         # self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
+        # init db
+        self.database.set_up()
         return ResponseObject(ret, self.cur_user, "")
 
     def sign_up(self, username, password, age, country):
