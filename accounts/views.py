@@ -1,11 +1,6 @@
-import json
+
 from django.shortcuts import render, redirect
-import websockets
 from django.contrib import messages
-
-import unittest
-#import json
-
 
 # Create your views here.
 def signup(request):

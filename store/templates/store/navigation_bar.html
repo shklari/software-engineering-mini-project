@@ -43,6 +43,22 @@
 
     <style type="text/css">
         /* Full-width input fields */
+        .notification {
+          color: white;
+          text-decoration: none;
+          padding: 15px 26px;
+          position: relative;
+          border-radius: 2px;
+        }
+        .notification .badge {
+          position: absolute;
+          top: 15px;
+          right: -7px;
+          padding: 5px 7px;
+          border-radius: 20%;
+          background-color: red;
+          color: white;
+        }
         input[type=text], input[type=password] {
             width: 100%;
             padding: 12px 20px;
@@ -278,6 +294,37 @@
         }
         </script>
      <!-- end navigation bar -->
+<!--notification -->
+    <div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body…</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    $
+    BootstrapDialog.show({
+            message: 'There is no fading effects on this dialog.',
+            animate: false,
+            buttons: [{
+                label: 'Close the dialog',
+                action: function(dialogRef){
+                    dialogRef.close();
+                }
+            }]
+        });
+    </script>
 
     <nav class="fh5co-nav" role="navigation">
         <div class="container">
@@ -288,9 +335,10 @@
                 <div class="col-md-6 col-xs-6 text-center menu-1">
                     <ul>
                         <li class="has-dropdown">
-                            <a href="/shop_all/">Shop</a>
+                            <a>Shop</a>
                             <ul class="dropdown">
-                                <li><a href="single.html">All Shops</a></li>
+                                <li><a href="/shop_all/">All Products</a></li>
+                                <li><a href="/all_shops/" id="allshopsbtn">All Shops</a></li>
                             </ul>
                         </li>
                         <li><a href="/about/">About</a></li>
@@ -304,6 +352,10 @@
                             </ul>
                         </li>
                         <li><a href="contact.html">Contact</a></li>
+                        <li><a href="contact.html" class="notification">
+                        <span>Inbox</span>
+                        <span class="badge">3</span>
+                        </a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
@@ -318,7 +370,15 @@
                                     document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
-                        <li class="shopping-cart"><a href="/shopping-cart/" class="cart"><span><small><script>var num = read_cookie('cart');num>0?document.write(num) : document.write(0);</script></small><i class="icon-shopping-cart"></i></span></a></li>
+                        <li id="num_in_cart" class="shopping-cart"><a href="/shopping-cart/" class="cart"><span id="wr"><small id="size">
+                            <script src="http://code.jquery.com/jquery-latest.js"></script>
+                            <script>
+                                //alert(read_cookie('cart'));
+                                var a =read_cookie('cart');
+                                var size = read_cookie('cart')==''? 0 : read_cookie('cart');
+                                document.write(size);
+                            </script></small><i class="icon-shopping-cart"></i></span></a></li>
+
                         <li class="search">
                             <div class="input-group">
                                 <input type="text" placeholder="Search..">
@@ -327,7 +387,6 @@
 						      </span>
                             </div>
                         </li>
-
                     </ul>
                 </div>
             </div>
