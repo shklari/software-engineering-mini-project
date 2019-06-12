@@ -163,7 +163,8 @@ button:hover {
             return;
         }
 
-        send_msg({action: 'add_new_manager', store_name: storename, new_manager: username, permissions: permissions},
+        var cur_username = read_cookie('username');
+        send_msg({action: 'add_new_manager', store_name: storename, new_manager: username, permissions: permissions, username: cur_username},
           onsuccess, onfailure);
 
     }

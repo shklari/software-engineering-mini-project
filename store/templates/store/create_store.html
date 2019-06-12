@@ -136,7 +136,8 @@ button:hover {
             alert('Store name field is empty !');
             return;
         }
-        send_msg({action: 'create_store', name: name},onsuccess, onfailure);
+        var username = read_cookie('username');
+        send_msg({action: 'create_store', name: name, username: username}, onsuccess, onfailure);
     }
 
 </script>

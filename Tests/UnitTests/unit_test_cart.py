@@ -7,11 +7,11 @@ from Domain.Item import Item
 class UnitTestCart(TestCase):
     def setUp(self):
         self.system = System()
-        self.zara_cart = Cart('zara')
         self.shirt = {'name': "shirt", 'price': 3, 'category': "cloths"}
+        self.system.init_system('shaioz', '1234', 21, "")
+        self.zara_cart = Cart('zara', self.system.cur_user)
 
     def test_add_item_to_cart(self):
-        self.system.init_system('shaioz', '1234', 21, "")
         self.system.login('shaioz', '1234')
         zara = self.system.create_store('zara').value
         self.assertTrue(zara.add_item_to_inventory(self.system.cur_user, self.shirt, 4).success)

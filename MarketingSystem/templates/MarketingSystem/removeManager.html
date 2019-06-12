@@ -146,7 +146,9 @@ button:hover {
             return;
         }
 
-        send_msg({action: 'remove_manager', store_name: storename, manager_to_remove: username},onsuccess, onfailure);
+        var cur_username = read_cookie('username');
+
+        send_msg({action: 'remove_manager', store_name: storename, manager_to_remove: username, username: cur_username},onsuccess, onfailure);
 
     }
 

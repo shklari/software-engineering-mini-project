@@ -154,21 +154,32 @@ button:hover {
         alert(res);
         window.location.href = '/add_item_to_inventory';
     }
-    btn.onclick = function (event){
+    btn.onclick = function (event) {
         var productname = document.getElementById('productname').value;
         var price = +document.getElementById('price').value;
         var category = document.getElementById('category').value;
         var storename = document.getElementById('storename').value;
         var quantity = +document.getElementById('quantity').value;
-        if(productname == '') {
+        if (productname == '') {
             alert('product name field is empty !');
             return;
         }
-        if(quantity < 1)
+        if (quantity < 1)
             alert('product quantity invalid');
 
-        if(!isNaN(price) && price > 0 && category != '' && storename != '')
-            send_msg({action: 'edit_product', name: productname, store_name: storename, price: price, quantity: quantity},onsuccess, onfailure);
+        if (!isNaN(price) && price > 0 && category != '' && storename != '') {
+            var username = read_cookie('username')
+
+            send_msg({
+                action: 'edit_product',
+                name: productname,
+                store_name: storename,
+                price: price,
+                quantity: quantity,
+                username: username
+            }, onsuccess, onfailure);
+
+        }
     }
 
 </script>

@@ -72,3 +72,5 @@ class ServiceBridge(ServiceInterface):
     def add_new_manager(self, store_name, new_manager, permission):
         return True if self.real is None else self.real.add_new_manager(store_name, new_manager, permission)
 
+    def get_store(self, store_name):
+        return True if self.real is None else self.real.get_store(store_name)
