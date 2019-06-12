@@ -2,10 +2,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-import unittest
-#import json
-
-
 # Create your views here.
 def signup(request):
     if request.method == "POST":
