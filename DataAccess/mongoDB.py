@@ -1,6 +1,7 @@
 import pymongo
 
 
+
 class DB:
     def __init__(self):
         self.myclient = pymongo.MongoClient("mongodb+srv://grsharon:1234@cluster0-bkvsz.mongodb.net/test?retryWrites=true&w=majority")
