@@ -89,9 +89,10 @@
 
     <script>
     var cart_onsuccess =  (res, val) =>{
-        send_msg({action: 'get_basket_size'},(ans,size)=>{
+        var username = read_cookie('username');
+        send_msg({action: 'get_basket_size', username: username},(ans,size)=>{
                                     write_cookie('cart',size);
-                                    send_msg({action:'get_basket_subtotal'},(res,val)=>{
+                                    send_msg({action:'get_basket_subtotal', username: username},(res,val)=>{
                                       var sub = val['subtotal'];
                                       write_cookie('subtotal', sub);
                                       window.location.reload();
@@ -107,7 +108,8 @@
           var qunt = + document.getElementById('qtity').value;
           var sname = read_cookie('sname');
           var pname = read_cookie('pname');
-          send_msg({action:'add_to_cart',quantity:qunt,store_name:sname,item_name:pname},cart_onsuccess,cart_onfailure);
+          var username = read_cookie('username');
+          send_msg({action:'add_to_cart',quantity:qunt,store_name:sname,item_name:pname, username: username},cart_onsuccess,cart_onfailure);
         }
     </script>
 

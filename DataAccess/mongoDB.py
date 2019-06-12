@@ -1,6 +1,7 @@
 import pymongo
 
 
+
 class DB:
     def __init__(self):
         self.myclient = pymongo.MongoClient("mongodb+srv://grsharon:1234@cluster0-bkvsz.mongodb.net/test?retryWrites=true&w=majority")
@@ -21,14 +22,30 @@ class DB:
         store_owner_to_add = {"store_name": store_name, "owner": user_name, "appointer": appointer}
         collection.insert_one(store_owner_to_add)
 
-    def add_store_manager(self, store_name, user_name, appointer):
+    def add_store_manager(self, store_name, user_name, appointer, is_add_per, is_edit_per, is_remove_per):
         collection = self.mydb["StoreManagers"]
-        store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer}
+        store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer,
+                                "permission": {"add": is_add_per, "edit": is_edit_per, "remove": is_remove_per}}
         collection.insert_one(store_manager_to_add)
 
-    def add_store_manager_permissions(self, manager_name, permis):
-        collection = self.mydb["StoreManagerPermissions"]
-        manager_permis_to_add = {"manager_name": manager_name, "permission": permis}
-        collection.insert_one(manager_permis_to_add)
+    def add_item(self, item, quantity):
+        collection = self.mydb["Items"]
+        item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
+                       "quantity": quantity}
+        collection.insert_one(item_to_add)
 
-    # def add_item(self, item_name, price, category, store_name):
+    def add_notification(self, user_name, time, message):
+        collection = self.mydb["UserNotification"]
+        not_to_add = {"user_name": user_name, "time": time, "message": message}
+        collection.insert_one(not_to_add)
+
+    def add_cart(self, user_name, store_name, item_name, quantity):
+        collection = self.mydb["Cart"]
+        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name, "quantity": quantity}
+        collection.insert_one(cart_to_add)
+
+    def get_user(self, user_name):
+        return self.mydb.Users.find({"name": user_name})
+
+    def get_store(self, store_name):
+        return self.mydb.Stores.find({"name": store_name})

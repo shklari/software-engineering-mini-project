@@ -4,7 +4,8 @@ from Domain.Response import ResponseObject
 
 class Cart:
 
-    def __init__(self, store_name):
+    def __init__(self, store_name, user):
+        self.user = user
         self.store_name = store_name
         self.items_and_quantities = {}
         self.log = Log("", "")

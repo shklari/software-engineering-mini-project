@@ -276,10 +276,11 @@ label {
 
     <div id="pr"></div>
 <script>
+    var username = read_cookie('username');
     var remove_onsuccess = (res, data) => {
-        send_msg({action: 'get_basket_size'},(ans,size)=>{
+        send_msg({action: 'get_basket_size', username: username},(ans,size)=>{
                                     write_cookie('cart',size);
-                                    send_msg({action:'get_basket_subtotal'},(res,val)=>{
+                                    send_msg({action:'get_basket_subtotal', username: username},(res,val)=>{
                                       var sub = val['subtotal'];
                                       write_cookie('subtotal', sub);
                                       window.location.reload();
@@ -288,7 +289,7 @@ label {
       alert(res);
     };
     var remove_item_from_cart = function (item,store) {
-        send_msg({action:'remove_from_cart', store_name:store, item_name:item}, remove_onsuccess, remove_onsuccess);
+        send_msg({action:'remove_from_cart', store_name:store, item_name:item, username: username}, remove_onsuccess, remove_onsuccess);
     };
 </script>
 <script>
@@ -329,7 +330,9 @@ var shop_onsuccess = (res, data) => {
 var shop_onfailure = (res) => {
     document.getElementById('pr').innerHTML += '<h3>There are no items to show</h3>';
 };
-var basket = send_msg({action:'get_basket'}, shop_onsuccess, shop_onfailure);
+
+var username = read_cookie('username');
+var basket = send_msg({action:'get_basket', username: username}, shop_onsuccess, shop_onfailure);
 
 </script>
 <!--

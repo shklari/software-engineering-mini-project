@@ -8,6 +8,7 @@ from Domain.Response import ResponseObject
 from Domain.Discounts.ComposedDiscount import *
 from Domain.BuyingPolicy import *
 
+
 # Interface
 class Store(object):
 

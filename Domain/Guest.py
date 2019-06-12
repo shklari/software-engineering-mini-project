@@ -6,7 +6,7 @@ from log.Log import Log
 class Guest:
     def __init__(self):
         self.logged_in = False
-        self.basket = Basket()
+        self.basket = Basket(self)
         self.creditDetails = {}  # {'type': 'visa' , 'id': 11111111 , 'credit_number': '1231123124123124'}
         self.log = Log("", "")
 
@@ -15,7 +15,7 @@ class Guest:
         result = self.basket.get_cart_by_store(store_name)
         cart = result.value
         if not result.success:
-            cart = Cart(store_name)
+            cart = Cart(store_name, self.basket.user)
             self.basket.add_cart(cart)
         cart.add_item_to_cart(item_name, quantity)
         self.log.set_info("item has been successfully added to cart", "eventLog")
