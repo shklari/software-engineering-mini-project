@@ -251,6 +251,13 @@
                             "\t\t\t\t\t\t\t</ul>\n" +
                             "\t\t\t\t\t\t</li>\n" +
                             "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
+                            "<li class=\"has-dropdown\">\n" +
+                            "                            <a>Policies</a>\n" +
+                            "                            <ul class=\"dropdown\">\n" +
+                            "                                <li><a href=\"/store_policy/\">Add Store Policy</a></li>\n" +
+                            "                                <li><a href=\"/all_shops/\" id=\"allshopsbtn\">Add Item Policy</a></li>\n" +
+                            "                            </ul>\n" +
+                            "                        </li>" +
                             "\t\t\t\t\t</ul>\n" +
                             "\n" +
                             "\t\t\t\t</div>");
@@ -648,6 +655,15 @@ var Alert = new CustomAlert();
         write_cookie('username',username);
         send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
 
+    }
+    var user = read_cookie('username');
+    var ipadd='';
+    if (user=='' ){
+    $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
+    console.log(JSON.stringify(data, null, 2));
+    ipadd = data['geoplugin_request'];
+    });
+    write_cookie('username',ipadd);
     }
 </script>
 

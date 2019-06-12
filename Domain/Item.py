@@ -1,5 +1,6 @@
 from Domain.Discounts.ComposedDiscount import *
 from Domain.BuyingPolicy import *
+from Domain.Response import ResponseObject
 
 
 # Interface
@@ -32,16 +33,16 @@ class Item(object):
         self.buying_policy = policy
 
     def add_buying_policy(self, policy, combination):
-        if self.buying_policy.is_composite():
-            self.buying_policy.add_policy(policy)
-        else:
-            if combination:
-                comp = AndCompositeBuyingPolicy()
-            else:
-                comp = OrCompositeBuyingPolicy()
-            comp.add_policy(self.buying_policy)
+        if not combination:
+            comp = OrCompositeBuyingPolicy()
             comp.add_policy(policy)
-            self.buying_policy = comp
+            comp.add_policy(self.buying_policy)
+        else:
+            comp = AndCompositeBuyingPolicy()
+            comp.add_policy(policy)
+            comp.add_policy(self.buying_policy)
+        self.buying_policy = comp
+        return ResponseObject(True, comp, "")
 
     def remove_buying_policy(self, policy):
         if self.buying_policy == policy:
