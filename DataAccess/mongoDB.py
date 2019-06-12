@@ -1,5 +1,4 @@
 import pymongo
-import dns
 
 
 class DB:
@@ -22,10 +21,11 @@ class DB:
         store_owner_to_add = {"store_name": store_name, "owner": user_name, "appointer": appointer}
         collection.insert_one(store_owner_to_add)
 
-    def add_store_manager(self, store_name, user_name, appointer, is_add_per, is_edit_per, is_remove_per):
+    def add_store_manager(self, store_name, user_name, appointer, is_add_per, is_edit_per, is_remove_per, is_disc_per):
         collection = self.mydb["StoreManagers"]
         store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer,
-                                "permission": {"add": is_add_per, "edit": is_edit_per, "remove": is_remove_per}}
+                                "permission": {"add": is_add_per, "edit": is_edit_per,
+                                               "remove": is_remove_per, "Discounts": is_disc_per}}
         collection.insert_one(store_manager_to_add)
 
     def add_item(self, item, quantity):
@@ -49,3 +49,7 @@ class DB:
 
     def get_store(self, store_name):
         return self.mydb.Stores.find({"name": store_name})
+
+    def get_item_from_store(self, param, store_name):
+        return self.mydb.Items.find({"store": store_name}, {"quantity": {"$gt": 0}},
+                                    {"$or": [{"name": param}, {"price": param}, {"category": param}]})

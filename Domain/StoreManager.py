@@ -9,5 +9,5 @@ class StoreManager(User):
         self.permissions = permissions
         self.appointer = appointer
         if permissions is None:
-            self.permissions = {'Edit': False, 'Remove': False, 'Add': False}
+            self.permissions = {'Edit': False, 'Remove': False, 'Add': False, 'Discounts': False}
 
