@@ -21,11 +21,10 @@ class DB:
         store_owner_to_add = {"store_name": store_name, "owner": user_name, "appointer": appointer}
         collection.insert_one(store_owner_to_add)
 
-    def add_store_manager(self, store_name, user_name, appointer, is_remove_per, is_edit_per, is_add_per):
+    def add_store_manager(self, store_name, user_name, appointer, is_add_per, is_edit_per, is_remove_per):
         collection = self.mydb["StoreManagers"]
         store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer,
-                                "add_permission": is_add_per, "edit_permission": is_edit_per,
-                                "remove_permission": is_remove_per}
+                                "permission": {"add": is_add_per, "edit": is_edit_per, "remove": is_remove_per}}
         collection.insert_one(store_manager_to_add)
 
     def add_item(self, item, quantity):
@@ -38,3 +37,14 @@ class DB:
         collection = self.mydb["UserNotification"]
         not_to_add = {"user_name": user_name, "time": time, "message": message}
         collection.insert_one(not_to_add)
+
+    def add_cart(self, user_name, store_name, item_name, quantity):
+        collection = self.mydb["Cart"]
+        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name, "quantity": quantity}
+        collection.insert_one(cart_to_add)
+
+    def get_user(self, user_name):
+        return self.mydb.Users.find({"name": user_name})
+
+    def get_store(self, store_name):
+        return self.mydb.Stores.find({"name": store_name})
