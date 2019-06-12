@@ -36,6 +36,10 @@ class System:
             return ResponseObject(False, False, "User " + username + " doesn't exist in the system")
         return ResponseObject(True, curr_user, "")
 
+    # guest_id is IP and port
+    def new_guest(self, guest_id):
+        self.guests[guest_id] = Guest()
+
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
         if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
             return ResponseObject(False, False, "Can't init external systems")
