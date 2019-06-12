@@ -33,17 +33,23 @@
     <div class="site-section">
 
       <div class="container">
+          <h3>Store :   <a class="h3" style="color: #5c98cd" href="/"><script>
+                  var name = read_cookie('sname');
+                  document.write('   ' + name  );
+          </script></a></h3>
         <div class="row">
           <div class="col-md-6">
+
             <img src={% static 'images/cloth_1.jpg' %} alt="Image" class="img-fluid">
           </div>
           <div class="col-md-6">
               <h2 class="text-black">
                   <script>
                       var b = document.cookie;
+                      alert(b);
                       var name = read_cookie('pname');
                       document.write(name);
-                      alert(document.cookie);
+                      //alert(document.cookie);
                   </script>
               </h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, vitae, explicabo? Incidunt facere, natus soluta dolores iusto! Molestiae expedita veritatis nesciunt doloremque sint asperiores fuga voluptas, distinctio, aperiam, ratione dolore.</p>
@@ -71,11 +77,11 @@
             </div>
             <div class="mb-5">
               <div class="input-group mb-3" style="max-width: 120px;">
-              <input type="number" min="1" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+              <input id="qtity" type="number" min="1" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
             </div>
 
             </div>
-            <p><a id="addbtn" href="cart.html" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
+            <p><a id="addbtn" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
 
           </div>
         </div>
@@ -85,15 +91,23 @@
   </div>
 
     <script>
-    var onsuccess =  (res) =>{
+    var cart_onsuccess =  (res, val) =>{
+        alert(val);
+        num = +read_cookie('cart');
+        num = num>=0 ? (num+1) : 0;
+        write_cookie('cart',num);
+        window.location.href = '/shop_all/';
         alert(res);
         };
-        var onfailure =  (res) =>{
+        var cart_onfailure =  (res) =>{
         alert(res);
         };
     var btn = document.getElementById('addbtn')
     btn.onclick= function(event) {
-          send_msg({action:'add_to_cart',quantity:''},logout_onsuccess, logout_onfailure);
+          var qunt = + document.getElementById('qtity').value;
+          var sname = read_cookie('sname');
+          var pname = read_cookie('pname');
+          send_msg({action:'add_to_cart',quantity:qunt,store_name:sname,item_name:pname},cart_onsuccess,cart_onfailure);
         }
     </script>
 

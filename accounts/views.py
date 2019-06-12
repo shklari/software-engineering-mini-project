@@ -1,6 +1,5 @@
-import json
+
 from django.shortcuts import render, redirect
-import websockets
 from django.contrib import messages
 
 import unittest

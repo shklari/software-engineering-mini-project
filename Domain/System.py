@@ -6,16 +6,16 @@ from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
-
+from DataAccess import sqlite_database
 import functools
 
 
 class System:
 
-
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
+        self.database = sqlite_database
         self.cur_user = None
         self.users = {}  # {username, user}
         self.stores = []
@@ -38,6 +38,8 @@ class System:
         # self.users[manager.username] = manager
         self.system_manager = manager
         self.cur_user = Guest()
+        # init db
+        self.database.set_up()
         return ResponseObject(ret, self.cur_user, "")
 
     def sign_up(self, username, password, age, country):
@@ -53,6 +55,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
+            #self.database.add_to_users(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -268,6 +271,20 @@ class System:
                 return ResponseObject(True, stor, "")
         self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
+
+    def get_basket(self):
+        basket_ret = []
+        basket = self.cur_user.get_basket()
+        for cart in basket.carts:
+            cart_ret = []
+            store = self.get_store(cart.store_name).value
+            for product in cart.items_and_quantities:
+                item = store.get_item_if_available(product,cart.items_and_quantities.get(product))
+                quantity = cart.items_and_quantities[product]
+                cart_ret.append({'name':item.name,'price':item.price,'quantity':quantity,'category':item.category,'rank':item.rank,'discount':''})
+
+            basket_ret.append({'cart': cart_ret, 'store': store.name})
+        return ResponseObject(True, basket_ret, "")
 
     def get_user(self, username):
         if username in self.users:

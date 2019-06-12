@@ -32,6 +32,8 @@
 
     <script src="{% static 'js/client.js' %}"></script>
 
+    <script src="{% static 'js/cookieMonster.js' %}"></script>
+
     <!-- Modernizr JS -->
     <script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
     <!-- FOR IE9 below -->
@@ -196,25 +198,106 @@
         </div>
     </div>
 
+        <!-- manager navigation bar -->
+	 <nav id="manav" class="fh5co-nav" role="navigation" style="background-color: #2D2D2D;visibility: hidden">
+		<div class="container">
+			<div class="row">
+                <script>
+                var cookie = read_cookie('permissions');
+                switch (cookie) {
+                    case  'sys_manager':
+                        document.write("<div>\n" +
+                            "\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t\t\t<li><h5 style=\'color: white\'>User</h5></li>\n" +
+                            "\t\t\t\t\t\t\t</ul>\n" +
+                            "\t\t\t\t\t\t</li>\n" +
+                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Enter User Id\' required></li>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
+                            "\t\t\t\t\t\t</li>\n" +
+                            "<li style=\'padding-left: 150px\'><h4 style=\'color: white\'>System manager permisions</h4></li>\n" +
+                            "\t\t\t\t\t</ul>\n" +
+                            "\n" +
+                            "\t\t\t\t</div>");
+                        break;
+                        case  'store_owner':
+                        document.write("<div>\n" +
+                            "\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/add-new-manager/' style=\"color: white\">Add new manager</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/remove-manager/' style=\"color: white\">Remove manager</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/add-new-owner/' style=\"color: white\">Add new Owner</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/remove-owner/' style=\"color: white\">Remove Owner</a></li>\n" +
+                            "\t\t\t\t\t\t\t</ul>\n" +
+                            "\t\t\t\t\t\t</li>\n" +
+                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
+                            "\t\t\t\t\t</ul>\n" +
+                            "\n" +
+                            "\t\t\t\t</div>");
+                        break;
+                        case  'store_manager':
+                            document.write("<div>\n" +
+                                "\t\t\t\t\t<ul>\n" +
+                                "\t\t\t\t\t\t<li>\n" +
+                                "\t\t\t\t\t\t\t<ul>\n" +
+                                "\t\t\t\t\t\t\t\t<li><a href='/edit_product/' style=\"color: white\">Edit Product</a></li>\n" +
+                                "\t\t\t\t\t\t\t\t<li><a href='/add_product' style=\"color: white\">Add Product</a></li>\n" +
+                                "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Remove Product</a></li>\n" +
+                                "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Product Name\' required></li>\n" +
+                                "\t\t\t\t\t\t<li>\n" +
+                                "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
+                                "\t\t\t\t\t\t\t</ul>\n" +
+                                "\t\t\t\t\t\t</li>\n" +
+                                "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
+                                "\t\t\t\t\t</ul>\n" +
+                                "\n" +
+                                "\t\t\t\t</div>");
+                        break;
+                    default:
+                        document.write("<h2 style='color:white'>Hello Member</h2>");
+                        break;
+
+                }
+                </script>
+			</div>
+
+		</div>
+	</nav>
+
+
+        <script>
+            var nav = document.getElementById("manav");
+            var cookie = read_cookie('permissions');
+        if (cookie==null || cookie =='false' || cookie==''){
+            nav.style.visibility="hidden";
+        } else {
+            nav.style.visibility="visible";
+        }
+        </script>
+     <!-- end navigation bar -->
+
     <nav class="fh5co-nav" role="navigation">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-xs-2">
-                    <div id="fh5co-logo"><a href="index.html">Shop.</a></div>
+                    <div id="fh5co-logo"><a href="/">Shop.</a></div>
                 </div>
                 <div class="col-md-6 col-xs-6 text-center menu-1">
                     <ul>
                         <li class="has-dropdown">
-                            <a href="home.html">Shop</a>
+                            <a href="/shop_all/">Shop</a>
                             <ul class="dropdown">
-                                <li><a href="single.html">Single Shop</a></li>
+                                <li><a href="single.html">All Shops</a></li>
                             </ul>
                         </li>
-                        <li><a href="about.html">About</a></li>
+                        <li><a href="/about/">About</a></li>
                         <li class="has-dropdown">
-                            <a href="services.html">Services</a>
+                            <a>Services</a>
                             <ul class="dropdown">
-                                <li><a href="#">Web Design</a></li>
+                                <li><a href="/create_store">Add Store</a></li>
                                 <li><a href="#">eCommerce</a></li>
                                 <li><a href="#">Branding</a></li>
                                 <li><a href="#">API</a></li>
@@ -227,8 +310,6 @@
                     <ul>
                         <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
                         <li class="login">
-
-                            <script src="{% static 'js/cookieMonster.js' %}"></script>
                             <script>
                                 var cookie = read_cookie('login');
                                 if (cookie==null || cookie =='false' || cookie==''){
@@ -237,6 +318,7 @@
                                     document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
+                        <li class="shopping-cart"><a href="/shopping-cart/" class="cart"><span><small><script>var num = read_cookie('cart');num>0?document.write(num) : document.write(0);</script></small><i class="icon-shopping-cart"></i></span></a></li>
                         <li class="search">
                             <div class="input-group">
                                 <input type="text" placeholder="Search..">
@@ -245,7 +327,6 @@
 						      </span>
                             </div>
                         </li>
-                        <li class="shopping-cart"><a href="/shopping-cart/" class="cart"><span><small>0</small><i class="icon-shopping-cart"></i></span></a></li>
 
                     </ul>
                 </div>
@@ -321,7 +402,7 @@
 </footer>
 
 <script>
-    //checkExpire();
+    checkExpire();
     // Get the modal
     var modal = document.getElementById('id01');
     // When the user clicks anywhere outside of the modal, close it
