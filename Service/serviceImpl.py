@@ -296,6 +296,7 @@ class ServiceImpl(ServiceInterface):
 
     def new_guest(self, guest_id):
         self.sys.new_guest(guest_id)
+        return ResponseObject(True, True, "")
 
     # policy = {type, combo, args, override}
     def add_item_policy(self, item_name, store_name, policy, user_name):
