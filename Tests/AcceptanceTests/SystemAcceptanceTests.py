@@ -1,5 +1,5 @@
 import unittest
-from Service.serviceBridge import ServiceBridge
+from Service.serviceBridge import ServiceImpl
 # from Service.service import ServiceInterface
 
 # ############################ must run all in order
@@ -71,7 +71,7 @@ class ConsistencySystem(object):
 class SystemTestCase(unittest.TestCase):
     item = {}
     store = {}
-    system = ServiceBridge()
+    system = ServiceImpl()
     manager = {"bascket": 0, "name": "man", "password": "123456"}
     collecting = CollectingSystem()
     supplying = SupplyingSystem()
@@ -80,7 +80,7 @@ class SystemTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.item = 0
         self.store = 0
-        self.system = ServiceBridge()
+        self.system = ServiceImpl()
         self.manager = {"bascket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()

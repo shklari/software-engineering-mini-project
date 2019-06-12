@@ -1,11 +1,11 @@
 import unittest
 
-from Service.serviceBridge import ServiceBridge
+from Service.serviceBridge import ServiceImpl
 
 
 class TestStore(unittest.TestCase):
 
-    service = ServiceBridge()
+    service = ServiceImpl()
     store1 = None
     store2 = None
     manager = None

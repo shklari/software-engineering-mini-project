@@ -1,5 +1,5 @@
 import unittest
-from Service.serviceBridge import ServiceBridge
+from Service.serviceBridge import ServiceImpl
 
 
 class CollectingSystem(object):
@@ -68,7 +68,7 @@ class ConsistencySystem(object):
 class UserTestCase(unittest.TestCase):
     item = {}
     store = {}
-    system = ServiceBridge()
+    system = ServiceImpl()
     manager = {"basket": 0, "name": "man", "password": "123456"}
     collecting = CollectingSystem()
     supplying = SupplyingSystem()
@@ -77,7 +77,7 @@ class UserTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.item = 0
         self.store = 0
-        self.system = ServiceBridge()
+        self.system = ServiceImpl()
         self.manager = {"basket": 0, "name": "man", "password": "123456"}
         self.collecting = CollectingSystem()
         self.supplying = SupplyingSystem()
