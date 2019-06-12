@@ -45,17 +45,17 @@ class ServiceImpl(ServiceInterface):
             output_list.append({'name': item.name, 'price': item.price, 'category': item.category})
         return ResponseObject(True, output_list, "")
 
-    def logout(self):
+    def logout(self, username):
         result = self.sys.logout()
         if result.success:
             return result
         else:
             return ResponseObject(False, False, "Logout failed.\n" + result.message)
 
-    def create_store(self, name):
-        result = self.sys.create_store(name)
+    def create_store(self, store_name, username):
+        result = self.sys.create_store(store_name)
         if not result.success:
-            return ResponseObject(False, None, "Could not create store \'" + name + "\'\n" + result.message)
+            return ResponseObject(False, None, "Could not create store \'" + store_name + "\'\n" + result.message)
         else:
             created = result.value
             message = "New store created.\nName: " + created.name + "\nOwners: "
@@ -68,14 +68,15 @@ class ServiceImpl(ServiceInterface):
                 owners.append({'username': o.username})
             return ResponseObject(True, {'name': created.name, 'storeOwners': owners}, message)
 
-    def remove_user(self, username):
-        result = self.sys.remove_user(username)
+    # changed 'username' to 'user_to_remove'
+    def remove_user(self, user_to_remove, username):
+        result = self.sys.remove_user(user_to_remove)
         if not result.success:
             return ResponseObject(False, False, "Can't remove user\n" + result.message)
         else:
             return result
 
-    def get_cart(self, store_name):
+    def get_cart(self, store_name, username):
         curr_user = self.sys.get_cur_user()
         result = curr_user.get_cart(store_name)
         if not result.success:

@@ -23,16 +23,16 @@ class ServiceInterface(object):
     def search(self, keyword): pass
 
     @abstractmethod  # 3.1
-    def logout(self): pass
+    def logout(self, username): pass
 
     @abstractmethod  # 3.2 name is string
-    def create_store(self, name): pass
+    def create_store(self, store_name, username): pass
 
     @abstractmethod  # 6.2 username is string
-    def remove_user(self, username): pass
+    def remove_user(self, user_to_remove, username): pass
 
     @abstractmethod  # 2.7 store_name is string
-    def get_cart(self, store_name): pass
+    def get_cart(self, store_name, username): pass
 
     @abstractmethod  # 2.6 store_name is string
     def add_to_cart(self, store_name, item_name, quantity): pass

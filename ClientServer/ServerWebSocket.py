@@ -104,13 +104,13 @@ async def datahandler(data, websocket):
     elif data['action'] == 'search':
         ans = service.search(data['keyword'])
     elif data['action'] == 'logout':
-        ans = service.logout()
+        ans = service.logout(data['username'])
     elif data['action'] == 'create_store':
-        ans = service.create_store(data['name'])
+        ans = service.create_store(data['name'], data['username'])
     elif data['action'] == 'remove_user':
-        ans = service.remove_user(data['username'])
+        ans = service.remove_user(data['user_to_remove'], data['username'])
     elif data['action'] == 'get_cart':
-        ans = service.get_cart(data['store_name'])
+        ans = service.get_cart(data['store_name'], data['username'])
     elif data['action'] == 'add_to_cart':
         ans = service.add_to_cart(data['store_name'], data['item_name'], data['quantity'])
     elif data['action'] == 'remove_from_cart':
