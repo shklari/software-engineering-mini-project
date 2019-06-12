@@ -23,13 +23,12 @@ class RealTimeAlert(object):
 
         for member in group:
             cur = self.find_user_ws(member)
-            if not cur:
-                continue
-            self.tasks.put({'ws': cur['ws'], 'message': message})
+            if cur:
+                self.tasks.put({'ws': cur['ws'], 'message': message})
 
     def find_user_ws(self, user):
         for x in self.service.users:
-            if x.username == user:
+            if x['username'] == user:
                 return x
         return False
 
