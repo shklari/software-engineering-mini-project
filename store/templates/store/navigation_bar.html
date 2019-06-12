@@ -664,6 +664,7 @@ var Alert = new CustomAlert();
     ipadd = data['geoplugin_request'];
     });
     write_cookie('username',ipadd);
+    send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
     }
 </script>
 
