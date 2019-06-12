@@ -276,11 +276,30 @@ label {
 
     <div id="pr"></div>
 <script>
+    var remove_onsuccess = (res, data) => {
+        send_msg({action: 'get_basket_size'},(ans,size)=>{
+                                    write_cookie('cart',size);
+                                    send_msg({action:'get_basket_subtotal'},(res,val)=>{
+                                      var sub = val['subtotal'];
+                                      write_cookie('subtotal', sub);
+                                      window.location.reload();
+                                        },()=>{});
+                                },()=>{});
+      alert(res);
+    };
+    var remove_item_from_cart = function (item,store) {
+        send_msg({action:'remove_from_cart', store_name:store, item_name:item}, remove_onsuccess, remove_onsuccess);
+    };
+</script>
+<script>
 var shop_onsuccess = (res, data) => {
+
     for (var i in data) {
         container = '<div class="block-4"><h2>Shop : '+data[i]['store']+'</h2><br>';
         //document.getElementById('pr').innerHTML += container;
+        var subtotal = 0;
         data[i]['cart'].forEach(function(item) {
+            subtotal+=(+item['price'])*(item['quantity']);
             container += '\n' +
                 '<div class="product">\n' +
                 '    <div class="product-image">\n' +
@@ -295,7 +314,7 @@ var shop_onsuccess = (res, data) => {
                 '      <input type="number" value="'+ item['quantity'] + '" min="1">\n' +
                 '    </div>\n' +
                 '    <div class="product-removal">\n' +
-                '      <button class="remove-product">\n' +
+                '      <button class="remove-product" onclick="remove_item_from_cart(\''+ item['name']+'\',\''+data[i]['store']+'\');">\n' +
                 '        Remove\n' +
                 '      </button>\n' +
                 '    </div>\n' +
@@ -303,11 +322,12 @@ var shop_onsuccess = (res, data) => {
                 '  </div>';
         });
         container+='</div>';
+        //write_cookie('cart_subtotal',subtotal);
         document.getElementById('pr').innerHTML += container;
     }
 };
 var shop_onfailure = (res) => {
-    document.write('<h3>There are no items to show</h3>');
+    document.getElementById('pr').innerHTML += '<h3>There are no items to show</h3>';
 };
 var basket = send_msg({action:'get_basket'}, shop_onsuccess, shop_onfailure);
 
@@ -334,11 +354,23 @@ var basket = send_msg({action:'get_basket'}, shop_onsuccess, shop_onfailure);
   </div>
   -->
 
-  <div class="totals">
+  <div class="totals" id="total">
     <div class="totals-item">
       <label>Subtotal</label>
-      <div class="totals-value" id="cart-subtotal">71.97</div>
+        <div class="totals-value" id="cart-subtotal"><script>document.write(read_cookie('subtotal'));</script></div>
     </div>
+      <script>
+            var sub = +read_cookie('subtotal');
+          $(document).ready(function() {
+              if (sub == 0) {
+                  $("#total").hide();
+              }
+              else {
+                  $("#total").show();
+
+              }
+          }
+      </script>
     <div class="totals-item">
       <label>Tax (5%)</label>
       <div class="totals-value" id="cart-tax">3.60</div>
