@@ -629,6 +629,7 @@ var Alert = new CustomAlert();
 
     var onfailure = (res) =>{
         alert(res);
+        write_cookie('username','');
         //window.location.href = '/';
     }
     btn.onclick = function (event){
@@ -643,6 +644,7 @@ var Alert = new CustomAlert();
             alert('Password field is empty ! ');
             return;
         }
+        write_cookie('username',username);
         send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
 
     }

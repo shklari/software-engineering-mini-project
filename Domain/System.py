@@ -6,7 +6,7 @@ from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
-from DataAccess import sqlite_database
+#from DataAccess import sqlite_database
 import functools
 
 
