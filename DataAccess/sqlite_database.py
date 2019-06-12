@@ -30,7 +30,7 @@ def create_table(conn, create_table_sql):
         print(e)
 
 
-def create_user(conn, project):
+def create_user(conn, user):
     """
     Create a new project into the projects table
     :param conn:
@@ -40,7 +40,7 @@ def create_user(conn, project):
     sql = "INSERT INTO users VALUES (:username, :password, :age, :country)",
 #                   {'username': user.username, 'password': user.password, 'age': user.age, 'country': user.country}
     cur = conn.cursor()
-    cur.execute(sql, project)
+    cur.execute(sql)
     return cur.lastrowid
 
 
