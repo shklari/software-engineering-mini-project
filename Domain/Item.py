@@ -1,5 +1,5 @@
 from Domain.Discounts.ComposedDiscount import *
-from Domain.BuyingPolicy import *
+from Domain.BuyingPolicy import ImmediateBuyingPolicy
 
 
 # Interface
@@ -14,7 +14,6 @@ class Item(object):
         self.discount = ComposedDiscount(0, 0, True, "")
         self.buying_policy = ImmediateBuyingPolicy()
 
-
     # 4.1.3
     def set_price(self, new_price):
         self.price = new_price
@@ -27,15 +26,12 @@ class Item(object):
         self.discount.add_discount(new_discount)
 
     def add_policy(self, policy_name, val):
-        self.policy.add_policy(policy_name)
+        self.buying_policy.add_policy(policy_name)
 
     def apply_discount(self):
         return self.discount.apply_discount(self.price)
 
     def set_buying_policy(self, policy):
-        if policy['name']=='age_policy':
-            return True
-
         self.buying_policy = policy
 
     def add_buying_policy(self, policy):
