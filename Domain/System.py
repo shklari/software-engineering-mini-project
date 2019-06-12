@@ -192,6 +192,9 @@ class System:
             self.log.set_info("error: buy items failed: user policy", "eventLog")
             return ResponseObject(False, False, "buy items failed: User " + self.cur_user + " policy")
         basket = self.get_basket()
+        if not basket.success:
+            self.log.set_info("error: buy items failed: something with bad basket", "eventLog")
+            return ResponseObject(False, False, "buy items failed: User " + self.cur_user.username + " basket")
         checked_store = []
         for tmp_cart in basket.value:
             tmp_store_name = tmp_cart['store']
@@ -221,7 +224,7 @@ class System:
         # TODO: apply discount
         amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
         flag = self.collecting_system.collect(amount, self.cur_user.creditDetails)
-        if not flag:
+        if flag == 0:
             self.log.set_info("error: buy items failed: payment rejected", "eventLog")
             return ResponseObject(False, False, "Payment rejected")
         for item in items:
@@ -232,7 +235,7 @@ class System:
 
         # Todo : remove items from store inventory
         self.log.set_info("buy items succeeded", "eventLog")
-        return ResponseObject(True, True, "")
+        return ResponseObject(True, amount, "")
 
     def create_store(self, store_name):
         if not isinstance(self.cur_user, User):
