@@ -17,11 +17,10 @@ class SingletonCollectingSystem(object):
             return True
 
     def collect(self, amount, credit_details):
-        def init(self):
-            if self.flagCollect == 0:
-                return 0
-            else:
-                return amount
+        if self.flagCollect == 0:
+            return 0
+        else:
+            return amount
 
     # 7
     # @staticmethod

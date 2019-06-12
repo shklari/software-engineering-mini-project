@@ -13,11 +13,11 @@ class StoreUnitTests(unittest.TestCase):
     user = None
 
     def setUp(self):
-        self.user = User('the oz', '112233')
+        self.user = User('the oz', '112233', 21, "")
         self.user.logged_in = True
-        self.store = Store("shklar's", self.user)
+        self.store = Store("shklar\'s", self.user)
         self.basket = Basket()
-        self.cart = Cart("shklar's")
+        self.cart = Cart("shklar\'s")
 
     def test_add_cart(self):
         self.basket.add_cart(self.cart)

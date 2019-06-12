@@ -20,7 +20,7 @@ class Store(object):
         self.discountPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")
-        self.policy = ImmediateBuyingPolicy()
+        self.buying_policy = ImmediateBuyingPolicy()
         # self.errorLog = ErrorLog()
 
     def check_if_store_owner(self, user):
@@ -284,6 +284,7 @@ class Store(object):
     def search_item_by_name(self, item_name):
         for item in self.inventory:
             if item['name'] == item_name:
+                print(item['val'])
                 return item['val']
         return False
 
