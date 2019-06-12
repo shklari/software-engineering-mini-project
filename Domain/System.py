@@ -188,6 +188,7 @@ class System:
         add = store.add_new_manager(curr_user, new_manager_obj, permissions)
         if not add.success:
             return add
+        self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
         self.log.set_info("adding manager succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -254,6 +255,8 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
+            self.database.add_store(new_store)
+            self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")

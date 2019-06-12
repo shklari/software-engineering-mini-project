@@ -82,5 +82,13 @@ class TestStore(UnitTestSystem):
         self.assertEqual(len(self.system.stores), 1)
         self.assertEqual(self.system.stores[0].name, 'zara')
 
+    def test_add_manager(self):
+        self.system.init_system('shaioz', '1234', 21, "israel")
+        self.system.sign_up('shklarki', '5432', 28, "israel")
+        self.system.login('shaioz', '1234')
+        self.system.create_store('hANDm', 'shaioz')
+        self.system.create_store('zara', 'shaioz')
+        self.system.add_manager_to_store('zara', 'shklarki', None, 'shaioz')
+
 
 
