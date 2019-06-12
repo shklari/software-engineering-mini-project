@@ -21,14 +21,20 @@ class DB:
         store_owner_to_add = {"store_name": store_name, "owner": user_name, "appointer": appointer}
         collection.insert_one(store_owner_to_add)
 
-    def add_store_manager(self, store_name, user_name, appointer):
+    def add_store_manager(self, store_name, user_name, appointer, is_remove_per, is_edit_per, is_add_per):
         collection = self.mydb["StoreManagers"]
-        store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer}
+        store_manager_to_add = {"store_name": store_name, "manager": user_name, "appointer": appointer,
+                                "add_permission": is_add_per, "edit_permission": is_edit_per,
+                                "remove_permission": is_remove_per}
         collection.insert_one(store_manager_to_add)
 
-    def add_store_manager_permissions(self, manager_name, permis):
-        collection = self.mydb["StoreManagerPermissions"]
-        manager_permis_to_add = {"manager_name": manager_name, "permission": permis}
-        collection.insert_one(manager_permis_to_add)
+    def add_item(self, item, quantity):
+        collection = self.mydb["Items"]
+        item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
+                       "quantity": quantity}
+        collection.insert_one(item_to_add)
 
-    # def add_item(self, item_name, price, category, store_name):
+    def add_notification(self, user_name, time, message):
+        collection = self.mydb["UserNotification"]
+        not_to_add = {"user_name": user_name, "time": time, "message": message}
+        collection.insert_one(not_to_add)
