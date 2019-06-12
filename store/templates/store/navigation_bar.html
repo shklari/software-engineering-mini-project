@@ -658,13 +658,14 @@ var Alert = new CustomAlert();
     }
     var user = read_cookie('username');
     var ipadd='';
-    if (user=='' ){
+    if (user=="" ){
     $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
     console.log(JSON.stringify(data, null, 2));
     ipadd = data['geoplugin_request'];
-    });
     write_cookie('username',ipadd);
     send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
+    });
+
     }
 </script>
 
