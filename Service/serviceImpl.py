@@ -291,10 +291,17 @@ class ServiceImpl(ServiceInterface):
         stores = self.sys.get_stores()
         res = []
         for store in stores:
-            res.append({'name':store.name})
-        return ResponseObject(True, {'stores':res}, "")
+            res.append({'name': store.name})
+        return ResponseObject(True, {'stores': res}, "")
 
-    # policy = {type, combo, args}
+    def new_guest(self, guest_id):
+        self.sys.new_guest(guest_id)
+
+    # policy = {type, combo, args, override}
     def add_item_policy(self, item_name, store_name, policy, user_name):
         ans = self.sys.add_item_policy(item_name, store_name, policy, user_name)
         return ResponseObject(ans.success, ans, ans.message)
+
+    def add_store_policy(self, store_name, policy, user_name):
+        ans = self.sys.add_store_policy(store_name, policy, user_name)
+        return ResponseObject(ans.success, ans, ans.message)    # policy = {type, combo, args, override}
