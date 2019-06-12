@@ -12,7 +12,7 @@ class Item(object):
         self.rank = 0
         self.store_name = store_name
         self.discount = ComposedDiscount(0, 0, True, "")
-        self.buying_policy = []
+        self.buying_policy = ImmediateBuyingPolicy()
 
 
     # 4.1.3
@@ -27,7 +27,7 @@ class Item(object):
         self.discount.add_discount(new_discount)
 
     def add_policy(self, policy_name, val):
-        self.discount.add_discount(new_discount)
+        self.policy.add_policy(policy_name)
 
     def apply_discount(self):
         return self.discount.apply_discount(self.price)

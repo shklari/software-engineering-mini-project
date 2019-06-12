@@ -1,6 +1,8 @@
 import unittest
 from Service.serviceBridge import ServiceBridge
 
+from Domain.BuyingPolicy import ImmediateBuyingPolicy
+
 
 class CollectingSystem(object):
 
@@ -200,21 +202,21 @@ class UserTestCase(unittest.TestCase):
     def test_buy_item_success(self):
         # setUp
         # set up stub ext systems:
-        self.system.real.sys.collecting_system = self.collecting
-        self.system.real.sys.supplying_system = self.supplying
-        self.system.real.sys.traceability_system = self.consistency
+#        self.system.real.sys.collecting_system = self.collecting
+#        self.system.real.sys.supplying_system = self.supplying
+#        self.system.real.sys.traceability_system = self.consistency
         self.system.login("try1", "try123")
         self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}
         self.store = self.system.create_store("shaiozim baam").value
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         self.system.add_to_cart("shaiozim baam", "shaioz", 1)
         # test
-        if self.collecting.flag == 0:
-            self.collecting.switch()
-        if self.consistency.flag == 0:
-            self.consistency.switch()
-        if self.supplying.flag == 0:
-            self.supplying.switch()
+#        if self.collecting.flag == 0:
+#            self.collecting.switch()
+#        if self.consistency.flag == 0:
+#            self.consistency.switch()
+#        if self.supplying.flag == 0:
+#            self.supplying.switch()
         # should work
         self.assertEqual(True, self.system.buy_items([self.item]).success)
 
@@ -227,7 +229,8 @@ class UserTestCase(unittest.TestCase):
         self.system.real.sys.traceability_system = self.consistency
         self.system.login("try1", "try123")
         self.store = self.system.create_store("shaiozim baam").value
-        self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam"}
+        self.item = {"name": "shaioz", "price": 11, "category": "omo", "store_name": "shaiozim baam",
+                     "buying_policy": ImmediateBuyingPolicy()}
         self.system.add_item_to_inventory(self.item, self.store['name'], 1)
         # test
         if self.collecting.flag == 0:
@@ -236,7 +239,8 @@ class UserTestCase(unittest.TestCase):
         ret = self.system.buy_items([self.item]).success
         self.assertEqual(False, ret)
         self.collecting.switch()
-        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "store_name": "shaiozim baam"}
+        item2 = {"name": "avabash", "price": 18, "category": "mefakedet girsa", "store_name": "shaiozim baam",
+                 "buying_policy": ImmediateBuyingPolicy()}
         # item doesnt exist
         self.assertEqual(False, self.system.buy_items([item2]).success)
         # not available

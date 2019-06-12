@@ -185,23 +185,31 @@ class System:
 
     def buy_items(self, items):
         # check if items exist in basket??
-        if not self.get_cur_user().buying_policy.apply_policy():
+        if not self.get_cur_user().buying_policy.apply_policy(self.get_cur_user()):
             self.log.set_info("error: buy items failed: user policy", "eventLog")
             return ResponseObject(False, False, "buy items failed: User " + self.cur_user + " policy")
+        basket = self.get_basket()
+        checked_store = []
+        for tmp_cart in basket.value:
+            tmp_store_name = tmp_cart['store']
+            if tmp_store_name not in checked_store:
+                tmp_store = self.get_store(tmp_store_name)
+                if not tmp_store.value or not tmp_store.value.buying_policy.apply_policy(tmp_cart):
+                    self.log.set_info("error: buy items failed: store does not exist", "eventLog")
+                    return ResponseObject(False, False, "buy items failed: Store " + tmp_store_name + "\'s policy does not apply")
+                else:
+                    checked_store.append(tmp_store_name)
         for item in items:
             store = self.get_store(item['store_name'])
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
                 return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
-            if not store.value.policy.apply_policy():
-                self.log.set_info("error: buy items failed: store policy", "eventLog")
-                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " policy")
             tmp_item = store.value.search_item_by_name(item['name'])
-            if not tmp_item:
+            if not tmp_item or tmp_item == []:
                 self.log.set_info("error: buy items failed: item is not in store's inventory", "eventLog")
                 return ResponseObject(False, False, "buy items failed: Item " + item['name'] + " is not in "
                                       + item['store_name'])
-            if not tmp_item.buying_policy.apply_policy():
+            if not tmp_item.buying_policy.apply_policy(tmp_item):
                 self.log.set_info("error: buy items failed: item policy", "eventLog")
                 return ResponseObject(False, False, "Item " + item['name'] + "'s policy isn't allowing buying it")
             if not self.supplying_system.get_supply(item['name']):
