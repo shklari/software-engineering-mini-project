@@ -215,13 +215,13 @@ class System:
     def buy_items(self, items, username):
         # check if items exist in basket??
         for item in items:
-            store = self.get_store(item['store_name'])
+            store = self.get_store(item.store_name)
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
-                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
-            if not self.supplying_system.get_supply(item['name']):
+                return ResponseObject(False, False, "buy items failed: Store " + item.store_name + " does not exist")
+            if not self.supplying_system.get_supply(item.name):
                 self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
+                return ResponseObject(False, False, "Item " + item.name + " is currently out of stock")
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
