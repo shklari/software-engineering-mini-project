@@ -86,9 +86,11 @@ class TestStore(UnitTestSystem):
         self.system.init_system('shaioz', '1234', 21, "israel")
         self.system.sign_up('shklarki', '5432', 28, "israel")
         self.system.login('shaioz', '1234')
-        self.system.create_store('hANDm', 'shaioz')
         self.system.create_store('zara', 'shaioz')
-        self.system.add_manager_to_store('zara', 'shklarki', None, 'shaioz')
+        zara = self.system.get_store('zara').value
+        shai = self.system.get_user('shaioz')
+        zara.add_item_to_inventory(shai, {'name': 'bamba', 'price': 8, 'category': 'food'}, 8)
+        self.system.add_to_cart('zara', 'bamba', 3, 'shaioz')
 
 
 

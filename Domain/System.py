@@ -354,6 +354,7 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
+        self.database.add_cart(username, store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -382,3 +383,6 @@ class System:
 
     def get_stores(self):
         return self.stores
+
+    def send_notification_to_user(self, sender_username, receiver_username, key, message):
+        self.database.add_notification(sender_username, receiver_username, key, message)
