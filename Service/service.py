@@ -35,38 +35,48 @@ class ServiceInterface(object):
     def get_cart(self, store_name, username): pass
 
     @abstractmethod  # 2.6 store_name is string
-    def add_to_cart(self, store_name, item_name, quantity): pass
+    def add_to_cart(self, store_name, item_name, quantity, username): pass
 
     @abstractmethod  # 2.7 store_name is string
-    def remove_from_cart(self, store_name, item_name): pass
+    def remove_from_cart(self, store_name, item_name, username): pass
 
     @abstractmethod  # 2.8 item is item dictionary
-    def buy_items(self, items): pass
+    def buy_items(self, items, username): pass
 
     @abstractmethod  # 4.1.1 item is item dictionary, store_name is string
-    def add_item_to_inventory(self, item, store_name, quantity): pass
+    def add_item_to_inventory(self, item, store_name, quantity, username): pass
 
     @abstractmethod  # 4.1.2 item_name is string, store_name is string
-    def remove_item_from_inventory(self, item_name, store_name): pass
+    def remove_item_from_inventory(self, item_name, store_name, username): pass
 
     @abstractmethod
-    def decrease_item_quantity(self, store_name, item_name, quantity): pass
+    def decrease_item_quantity(self, store_name, item_name, quantity, username): pass
 
     @abstractmethod  # 4.1.3
-    def edit_item_price(self, store_name, item_name, new_price): pass
+    def edit_item_price(self, store_name, item_name, new_price, username): pass
 
     @abstractmethod  # 4.3
-    def add_new_owner(self, store_name, new_owner): pass
+    def add_new_owner(self, store_name, new_owner, username): pass
 
     @abstractmethod  # 4.4
-    def remove_owner(self, store_name, owner_to_remove): pass
+    def remove_owner(self, store_name, owner_to_remove, username): pass
 
     @abstractmethod  # 4.5
-    def add_new_manager(self, store_name, new_manager, permissions): pass
+    def add_new_manager(self, store_name, new_manager, permissions, username): pass
 
     @abstractmethod  # 4.6
-    def remove_manager(self, store_name, manager_to_remove): pass
+    def remove_manager(self, store_name, manager_to_remove, username): pass
 
     @abstractmethod
     def shop_all(self): pass
+
+    @abstractmethod
+    def get_store(self, store_name): pass
+
+    @abstractmethod
+    def edit_product(self, itemname, store_name, quantity, price, username): pass
+
+    @abstractmethod
+    def get_basket(self, username): pass
+
 

@@ -27,14 +27,14 @@ service.sign_up("storeowner1", "111", 32, 'israel')
 service.sign_up("storeowner2", "111", 40, 'israel')
 service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
-service.create_store("osem")
-service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
-service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
-service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
+service.create_store("osem", "storeowner1")
+#service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
+#service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100)
+#service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100)
 #service.add_to_cart('osem','soup',2)
 #service.add_to_cart('osem','bamba',2)
-service.get_basket()
-service.get_stores()
+#service.get_basket()
+#service.get_stores()
 
 
 # service.sign_up("storeowner1", "111")
@@ -44,7 +44,7 @@ service.get_stores()
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
-service.logout()
+service.logout("storeowner1")
 
 # #######################################TEST
 ws = 0
@@ -112,33 +112,33 @@ async def datahandler(data, websocket):
     elif data['action'] == 'get_cart':
         ans = service.get_cart(data['store_name'], data['username'])
     elif data['action'] == 'add_to_cart':
-        ans = service.add_to_cart(data['store_name'], data['item_name'], data['quantity'])
+        ans = service.add_to_cart(data['store_name'], data['item_name'], data['quantity'], data['username'])
     elif data['action'] == 'remove_from_cart':
-        ans = service.remove_from_cart(data['store_name'], data['item_name'])
+        ans = service.remove_from_cart(data['store_name'], data['item_name'], data['username'])
     elif data['action'] == 'buy_items':
-        ans = service.buy_items(data['items'])
+        ans = service.buy_items(data['items'], data['username'])
     elif data['action'] == 'add_item_to_inventory':
-        ans = service.add_item_to_inventory(data['item'], data['store_name'], data['quantity'])
+        ans = service.add_item_to_inventory(data['item'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'remove_item_from_inventory':
-        ans = service.remove_item_from_inventory(data['item_name'], data['store_name'])
+        ans = service.remove_item_from_inventory(data['item_name'], data['store_name'], data['username'])
     elif data['action'] == 'decrease_item_quantity':
-        ans = service.decrease_item_quantity(data['store_name'], data['item_name'], data['quantity'])
+        ans = service.decrease_item_quantity(data['store_name'], data['item_name'], data['quantity'], data['username'])
     elif data['action'] == 'edit_item_price':
-        ans = service.edit_item_price(data['store_name'], data['item_name'], data['new_price'])
+        ans = service.edit_item_price(data['store_name'], data['item_name'], data['new_price'], data['username'])
     elif data['action'] == 'add_new_owner':
-        ans = service.add_new_owner(data['store_name'], data['new_owner'])
+        ans = service.add_new_owner(data['store_name'], data['new_owner'], data['username'])
     elif data['action'] == 'add_new_manager':
-        ans = service.add_new_manager(data['store_name'], data['new_manager'], data['permissions'])
+        ans = service.add_new_manager(data['store_name'], data['new_manager'], data['permissions'], data['username'])
     elif data['action'] == 'remove_owner':
-        ans = service.remove_owner(data['store_name'], data['owner_to_remove'])
+        ans = service.remove_owner(data['store_name'], data['owner_to_remove'], data['username'])
     elif data['action'] == 'remove_manager':
-        ans = service.remove_manager(data['store_name'], data['manager_to_remove'])
+        ans = service.remove_manager(data['store_name'], data['manager_to_remove'], data['username'])
     elif data['action'] == 'edit_product':
-        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'])
+        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'], data['username'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
-        ans = service.get_basket()
+        ans = service.get_basket(data['username'])
     elif data['action'] == 'get_basket_size':
         ans = service.get_basket_size()
     elif data['action'] == 'get_basket_subtotal':
