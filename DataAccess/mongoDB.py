@@ -49,3 +49,7 @@ class DB:
 
     def get_store(self, store_name):
         return self.mydb.Stores.find({"name": store_name})
+
+    def get_item_from_store(self, param, store_name):
+        return self.mydb.Items.find({"store": store_name}, {"quantity": {"$gt": 0}},
+                                    {"$or": [{"name": param}, {"price": param}, {"category": param}]})
