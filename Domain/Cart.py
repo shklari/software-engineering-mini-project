@@ -35,5 +35,8 @@ class Cart:
         self.items_and_quantities.get(item_name)
         return True
 
-
+    def copy_cart(self):
+        new_cart = Cart(self.store_name, self.user)
+        new_cart.items_and_quantities = self.items_and_quantities.copy()
+        return new_cart
 
