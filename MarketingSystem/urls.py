@@ -31,6 +31,7 @@ urlpatterns = [
     path('remove-manager/', LoginView.as_view(template_name='MarketingSystem/removeManager.html'), name="removeManager"),
     path('add_product/', LoginView.as_view(template_name='store/add_product.html'), name="add_product"),
     path('edit_product/', LoginView.as_view(template_name='store/edit_product.html'), name="edit_product"),
+    path('inventory/', LoginView.as_view(template_name='MarketingSystem/inventory.html'), name="inventory"),
     # path('', views.index, name='home'),
     path('', include('store.urls'), name='list'),
     path('', include('accounts.urls'), name='list'),
