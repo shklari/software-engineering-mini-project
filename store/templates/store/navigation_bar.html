@@ -487,7 +487,7 @@ var Alert = new CustomAlert();
                 <div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
                     <ul>
                         <li><a  class="notification">
-                        <span onclick="Alert.render()" id="inbox">Inbox</span>
+                        <span onclick="Alert.render()" id="inbox" style="cursor: pointer;">Inbox</span>
                         <span class="badge" id="notify" >!</span>
                         </a></li>
                         <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
@@ -495,9 +495,9 @@ var Alert = new CustomAlert();
                             <script>
                                 var cookie = read_cookie('login');
                                 if (cookie==null || cookie =='false' || cookie==''){
-                                    document.write("<a id='login'><i class='icon-login'></i> login</a>");
+                                    document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
-                                    document.write("<a id='logout'><i class='icon-log-out'></i> logout</a>");
+                                    document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
                         <li id="num_in_cart" class="shopping-cart"><a href="/shopping-cart/" class="cart"><span id="wr"><small id="size">

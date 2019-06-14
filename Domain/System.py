@@ -12,12 +12,13 @@ import functools
 from Domain.BuyingPolicy import *
 
 
+
 class System:
 
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
-        self.database = DB()
+        #self.database = DB()
         # self.cur_user = None
         self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system
@@ -68,7 +69,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
-            self.database.add_user(new_user)
+            #self.database.add_user(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -155,6 +156,7 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_owner_from_store(self, store_name, owner_to_remove, username):
+        # TODO: remove owner from db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -178,6 +180,9 @@ class System:
         if not store_result.success:
             return store_result
         store = store_result.value
+        # add supporting in vote requirement in version 3
+        #TODO: get store managers list from db !
+        managers_list = store.storeManagers
         new_manager_obj = self.get_user(new_manager_name)
         if new_manager_obj is None:
             self.log.set_info("error: adding manager failed: user is not in the system", "eventLog")
@@ -189,11 +194,12 @@ class System:
         add = store.add_new_manager(curr_user, new_manager_obj, permissions)
         if not add.success:
             return add
-        self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
+        #self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
         self.log.set_info("adding manager succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def remove_manager_from_store(self, store_name, manager_to_remove, username):
+        # TODO: update db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -237,7 +243,7 @@ class System:
             if not removed.success:
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
-
+        # TODO: update db !
         # Todo : remove items from store inventory
         self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, amount, "")
@@ -256,13 +262,14 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
-            self.database.add_store(new_store)
-            self.database.add_store_owner(store_name, username, 0)
+            #self.database.add_store(new_store)
+            #self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
 
     def remove_user(self, user_to_remove, username):
+        # TODO: update db !
         if username not in self.loggedInUsers:
             self.log.set_info("error: remove user failed: user is not a subscriber in the system", "eventLog")
             return ResponseObject(False, None, "User " + username +
@@ -286,6 +293,7 @@ class System:
         return ResponseObject(True, True, "User " + user_to_remove + " removed")
 
     def get_store(self, store_name):
+        # TODO: get store from db !
         for stor in self.stores:
             if store_name == stor.name:
                 self.log.set_info("get store succeeded", "eventLog")
@@ -294,6 +302,7 @@ class System:
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
 
     def get_basket(self, username):
+        # TODO: basket from db !
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -324,6 +333,7 @@ class System:
         return ResponseObject(True, size, "")
 
     def get_user(self, username):
+        # TODO: get from db !
         if username in self.users:
             print(self.users[username])
             return self.users[username]
@@ -354,11 +364,12 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
-        self.database.add_cart(username, store_name, item_name, quantity)
+        #self.database.add_cart(username, store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def get_total_system_inventory(self):
+        # TODO: get inventory from db !
         retList = []
         for store in self.stores:
             for item in store.inventory:
@@ -382,12 +393,14 @@ class System:
         return "guest"
 
     def get_stores(self):
+        # TODO: get info from db !
         return self.stores
 
     def send_notification_to_user(self, sender_username, receiver_username, key, message):
         self.database.add_notification(sender_username, receiver_username, key, message)
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
+        # TODO: update db !
         parsed_policy = self.parse_item_policy(policy, item_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:
@@ -405,6 +418,7 @@ class System:
         return ResponseObject(True, True, "")
 
     def add_store_policy(self, store_name, policy, user_name):
+        # TODO: update db !
         parsed_policy = self.parse_store_policy(policy, store_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:

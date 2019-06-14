@@ -3,7 +3,6 @@ from Domain.System import System
 from Domain.Response import ResponseObject
 from .RealTimeAlert import RealTimeAlert
 
-
 class ServiceImpl(ServiceInterface):
 
     def __init__(self):
