@@ -25,9 +25,12 @@ checkinit = service.init("avabash", "123456",21,'')
 
 service.sign_up("storeowner1", "111", 32, 'israel')
 service.sign_up("storeowner2", "111", 40, 'israel')
+service.sign_up("storeowner3", "111", 40, 'israel')
 service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem", "storeowner1")
+service.add_new_owner("osem", "storeowner2","storeowner1")
+service.add_new_owner("osem", "storeowner3","storeowner1")
 #service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
 service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
 service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
@@ -151,6 +154,8 @@ async def datahandler(data, websocket):
     elif data['action'] == 'add_store_policy':
         # policy = {type, combo, quantity, override}
         ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
+    elif data['action'] == 'approveNewOwner':
+        ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
     else:
         logging.error(
             "unsupported event: {}", data)

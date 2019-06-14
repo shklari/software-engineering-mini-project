@@ -18,6 +18,7 @@ class Store(object):
         self.inventory = []
         self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
         self.storeManagers = []
+        self.waitingForBecomeOwner =[] # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
         self.discountPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")

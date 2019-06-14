@@ -19,7 +19,9 @@ function send_msg(msg, onsuccess , onfailure)
             //console.log("bbbbbbbbbbbbbbbb " + data);
             switch (data.action) {
                 case 'notify' :
-                    alert(data.message);
+                    $(document).ready(function() {
+                     $("#notify").show();
+                    });
                 case 'success':
                     console.log('success');
                     onsuccess(data.message,data.return_val);
