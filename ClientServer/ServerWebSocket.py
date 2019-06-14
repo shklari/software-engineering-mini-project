@@ -146,7 +146,7 @@ async def datahandler(data, websocket):
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
     elif data['action'] == 'get_store':
-        ans = service.get_store(data['storename'])
+        ans = service.get_store(data['store_name'])
         print(ans)
 
     else:
