@@ -239,11 +239,18 @@
                             "\n" +
                             "\t\t\t\t</div>");
                         break;
-                        case  'store_owner':
+                         case  'store_owner':
                         document.write("<div>\n" +
                             "\t\t\t\t\t<ul>\n" +
                             "\t\t\t\t\t\t<li>\n" +
                             "\t\t\t\t\t\t\t<ul>\n" +
+                                "<li class=\"has-dropdown\" style=\"color: white\">\n" +
+                            "                            <a>Policies</a>\n" +
+                            "                            <ul class=\"dropdown\">\n" +
+                            "                                <li><a href=\"/store_policy/\">Add Store Policy</a></li>\n" +
+                            "                                <li><a href=\"/item_policy/\" id=\"allshopsbtn\">Add Item Policy</a></li>\n" +
+                            "                            </ul>\n" +
+                            "                        </li>" +
                             "\t\t\t\t\t\t\t\t<li><a href='/add-new-manager/' style=\"color: white\">Add new manager</a></li>\n" +
                             "\t\t\t\t\t\t\t\t<li><a href='/remove-manager/' style=\"color: white\">Remove manager</a></li>\n" +
                             "\t\t\t\t\t\t\t\t<li><a href='/add-new-owner/' style=\"color: white\">Add new Owner</a></li>\n" +
@@ -286,8 +293,9 @@
 
 
         <script>
-            var nav = document.getElementById("manav");
-            var cookie = read_cookie('permissions');
+            //document.getElementById("manav").style.visibility="visible";
+        var nav = document.getElementById("manav");
+        var cookie = read_cookie('permissions');
         if (cookie==null || cookie =='false' || cookie==''){
             nav.style.visibility="hidden";
         } else {
@@ -435,7 +443,7 @@ var Alert = new CustomAlert();
 
   <br class="dropdown-menu1 notifications1" role="menu" aria-labelledby="dLabel">
 <script src="/static/static_dirs/sass/bootstrap/_glyphicons.scss"></script>
-    <div class="notification-heading1"><h4 class="menu-title1">Notifications</h4><span onclick="$('#box').hide()" class="menu-title1 pull-right">&#x274C;</span>
+    <div class="notification-heading1"><h4 class="menu-title1">Notifications</h4><span style="cursor: pointer;" onclick="$('#box').hide()" class="menu-title1 pull-right">&#x274C;</span>
     </div>
    <div id="mes_list" class="notifications-wrapper1">
 
@@ -463,7 +471,6 @@ var Alert = new CustomAlert();
                                 <li><a href="/all_shops/" id="allshopsbtn">All Shops</a></li>
                             </ul>
                         </li>
-                        <li><a href="/about/">About</a></li>
                         <li class="has-dropdown">
                             <a>Services</a>
                             <ul class="dropdown">
@@ -473,15 +480,16 @@ var Alert = new CustomAlert();
                                 <li><a href="#">API</a></li>
                             </ul>
                         </li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a  class="notification">
-                        <span onclick="Alert.render()" id="inbox">Inbox</span>
-                        <span class="badge" id="notify" >!</span>
-                        </a></li>
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="/contact/">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
                     <ul>
+                        <li><a  class="notification">
+                        <span onclick="Alert.render()" id="inbox">Inbox</span>
+                        <span class="badge" id="notify" >!</span>
+                        </a></li>
                         <li > <a id="signup" href="/signup/" class="button"><i class="glyphicon-info-sign"></i>signup</a></li>
                         <li class="login">
                             <script>
@@ -647,6 +655,17 @@ var Alert = new CustomAlert();
         }
         write_cookie('username',username);
         send_msg({action:'login', username: username, password: psw},onsuccess, onfailure);
+
+    }
+    var user = read_cookie('username');
+    var ipadd='';
+    if (user=="" ){
+    $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
+    console.log(JSON.stringify(data, null, 2));
+    ipadd = data['geoplugin_request'];
+    write_cookie('username',ipadd);
+    send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
+    });
 
     }
 </script>

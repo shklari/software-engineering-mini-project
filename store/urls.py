@@ -17,9 +17,9 @@ urlpatterns = [
     path('store/', LoginView.as_view(template_name='store/store.html'), name="store"),
     path('shop_all/', LoginView.as_view(template_name='store/shop_all.html'), name="shop_all"),
     path('single_product/', LoginView.as_view(template_name='store/single_product.html'), name="single_product"),
-    path('about/', LoginView.as_view(template_name='store/about.html'), name="about"),
-    path('contact/', LoginView.as_view(template_name='store/contact.html'), name="contact"),
     path('single_shop/', LoginView.as_view(template_name='store/single_shop.html'), name="single_shop"),
     path('all_shops/', LoginView.as_view(template_name='store/all_shops.html'), name="all_shops"),
     path('single_shop/', LoginView.as_view(template_name='store/single_shop.html'), name="single_shop"),
-] + static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)
+    path('store_policy/', LoginView.as_view(template_name='store/store_policy.html'), name="store_policy"),
+    path('item_policy/', LoginView.as_view(template_name='store/item_policy.html'), name="item_policy"),
+]+ static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)

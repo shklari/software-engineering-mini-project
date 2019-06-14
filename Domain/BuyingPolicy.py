@@ -11,6 +11,9 @@ class BuyingPolicy(object):
     def policy_type(self):
         return ""
 
+    def add_policy(self, policy):
+        pass
+
 
 class ImmediateBuyingPolicy(BuyingPolicy):
 
@@ -27,7 +30,7 @@ class CompositeBuyingPolicy(BuyingPolicy):
         self.policies = []
 
     def add_policy(self, policy):
-        self.policies.append(policy)
+        pass
 
     def remove_policy(self, policy):
         self.policies.remove(policy)
@@ -44,6 +47,9 @@ class AndCompositeBuyingPolicy(CompositeBuyingPolicy):
                 return False
         return True
 
+    def add_policy(self, policy):
+        self.policies.append(policy)
+
 
 class OrCompositeBuyingPolicy(CompositeBuyingPolicy):
 
@@ -52,15 +58,6 @@ class OrCompositeBuyingPolicy(CompositeBuyingPolicy):
             if policy.apply_policy():
                 return True
         return False
-
-    def add_policy(self, policy):
-        self.policies.append(policy)
-
-    def remove_policy(self, policy):
-        self.policies.remove(policy)
-
-    def is_composite(self):
-        return True
 
 
 class UserPolicy(ImmediateBuyingPolicy):
@@ -83,8 +80,8 @@ class CountryLimitationUserPolicy(UserPolicy):
     def __init__(self, country):
         self.country = country
 
-    def apply_policy(self, user):
-        return self.country != user.country
+    def apply_policy(self, cart):
+        return self.country != cart.user.country
 
 
 class ItemPolicy(ImmediateBuyingPolicy):
@@ -100,9 +97,9 @@ class MinQuantityItemPolicy(ItemPolicy):
         self.quantity = min
 
     def apply_policy(self, cart):
-        for item in cart['cart']:
-            if self.item == item['name']:
-                return self.quantity <= item['quantity']
+        for item in cart.items_and_quantities:
+            if self.item == item:
+                return self.quantity <= cart.items_and_quantities[item]
         return True
 
 
@@ -113,9 +110,9 @@ class MaxQuantityItemPolicy(ItemPolicy):
         self.quantity = max
 
     def apply_policy(self, cart):
-        for item in cart['cart']:
-            if self.item == item.name:
-                return self.quantity >= item.quantity
+        for item in cart.items_and_quantities:
+            if self.item == item:
+                return self.quantity >= cart.items_and_quantities[item]
         return True
 
 
@@ -126,10 +123,10 @@ class MaxQuantityStorePolicy(ImmediateBuyingPolicy):
         self.quantity = max
 
     def apply_policy(self, cart):
-        if self.store_name == cart['store']:
+        if self.store_name == cart.store_name:
             acc = 0
-            for item in cart['cart']:
-                acc += item.quantity
+            for item in cart.items_and_quantities:
+                acc += cart.items_and_quantities[item]
                 if self.quantity < acc:
                     return False
         return True
@@ -142,14 +139,13 @@ class MinQuantityStorePolicy(ImmediateBuyingPolicy):
         self.quantity = min
 
     def apply_policy(self, cart):
-        if self.store_name == cart['store']:
+        if self.store_name == cart.store_name:
             acc = 0
-            for item in cart['cart']:
-                if self.quantity < acc:
-                    acc += item.quantity
-                else:
+            for item in cart.items_and_quantities:
+                acc += cart.items_and_quantities[item]
+                if self.quantity <= acc:
                     return True
-            return False
-        return True
+            return self.quantity <= acc
+        return False
 
 

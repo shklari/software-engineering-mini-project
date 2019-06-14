@@ -309,6 +309,7 @@ class Store(object):
             if k['name'] == item_name:
                 if k['quantity'] >= quantity:
                     boo = True
+                    break
         return self.search_item_by_name(item_name) if boo else False
 
     # discount is a Discount object
@@ -358,21 +359,25 @@ class Store(object):
                 new_price = self.apply_store_discount(new_price)
             return ResponseObject(True, new_price, "")
 
-    def set_buying_policy(self, policy, user):
-        check = self.check_access(user, 'Policy')
-        if not check.success:
-            return check.success
+    def set_buying_policy(self, policy):
+        # check = self.check_access(user, 'Policy')
+        # if not check.success:
+        #     return check.success
         self.buying_policy = policy
         return ResponseObject(True, self.buying_policy, "")
 
-    def add_buying_policy(self, policy):
-        if self.buying_policy.is_composite():
-            self.buying_policy.add_policy(policy)
-        else:
-            comp = CompositeBuyingPolicy()
-            comp.add_policy(self.buying_policy)
+    def add_buying_policy(self, policy, combination):
+        comp = None
+        if not combination:
+            comp = OrCompositeBuyingPolicy()
             comp.add_policy(policy)
-            self.buying_policy = comp
+            comp.add_policy(self.buying_policy)
+        else:
+            comp = AndCompositeBuyingPolicy()
+            comp.add_policy(policy)
+            comp.add_policy(self.buying_policy)
+        self.buying_policy = comp
+        return ResponseObject(True, comp, "")
 
     def remove_buying_policy(self, policy):
         if self.buying_policy == policy:

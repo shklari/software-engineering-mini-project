@@ -123,7 +123,7 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, curr_user.get_cart(store_name).value.items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
     def buy_items(self, items, username):
-        result = self.sys.buy_items(items)
+        result = self.sys.buy_items(items, username)
         if not result.success:
             return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
         return ResponseObject(True, True, "Transaction succeeded. Items removed from basket\n" + result.message)
@@ -291,5 +291,17 @@ class ServiceImpl(ServiceInterface):
         stores = self.sys.get_stores()
         res = []
         for store in stores:
-            res.append({'name':store.name})
-        return ResponseObject(True, {'stores':res}, "")
+            res.append({'name': store.name})
+        return ResponseObject(True, {'stores': res}, "")
+
+    def new_guest(self, guest_id):
+        self.sys.new_guest(guest_id)
+
+    # policy = {type, combo, args, override}
+    def add_item_policy(self, item_name, store_name, policy, user_name):
+        ans = self.sys.add_item_policy(item_name, store_name, policy, user_name)
+        return ResponseObject(ans.success, ans, ans.message)
+
+    def add_store_policy(self, store_name, policy, user_name):
+        ans = self.sys.add_store_policy(store_name, policy, user_name)
+        return ResponseObject(ans.success, ans, ans.message)    # policy = {type, combo, args, override}

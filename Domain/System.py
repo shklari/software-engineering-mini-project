@@ -9,6 +9,7 @@ from passlib.hash import pbkdf2_sha256
 from log.Log import Log
 from DataAccess.mongoDB import DB
 import functools
+from Domain.BuyingPolicy import *
 
 
 class System:
@@ -35,6 +36,10 @@ class System:
         else:
             return ResponseObject(False, False, "User " + username + " doesn't exist in the system")
         return ResponseObject(True, curr_user, "")
+
+    # guest_id is IP and port
+    def new_guest(self, guest_id):
+        self.guests[guest_id] = Guest()
 
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
         if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
@@ -184,6 +189,7 @@ class System:
         add = store.add_new_manager(curr_user, new_manager_obj, permissions)
         if not add.success:
             return add
+        self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
         self.log.set_info("adding manager succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -250,6 +256,8 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
+            self.database.add_store(new_store)
+            self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
@@ -336,9 +344,8 @@ class System:
             return find_user
         curr_user = find_user.value
         item = store.search_item_by_name(item_name)
-        tmp_cart = Cart(store_name, curr_user)
         old_cart = curr_user.get_cart(store_name)
-        tmp_cart.items_and_quantities = old_cart.value.items_and_quantities
+        tmp_cart = old_cart.value.copy_cart()
         tmp_cart.add_item_to_cart(item_name, quantity)
         if not store.buying_policy.apply_policy(tmp_cart):
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
@@ -347,6 +354,7 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
+        self.database.add_cart(username, store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -375,3 +383,62 @@ class System:
 
     def get_stores(self):
         return self.stores
+
+    def send_notification_to_user(self, sender_username, receiver_username, key, message):
+        self.database.add_notification(sender_username, receiver_username, key, message)
+
+    def add_item_policy(self, item_name, store_name, policy, user_name):
+        parsed_policy = self.parse_item_policy(policy, item_name)
+        store_ans = self.get_store(store_name)
+        if not store_ans.success:
+            self.log.set_info("error: adding policy failed: store doesnt exist", "eventLog")
+            return ResponseObject(False, False, "Store doesnt exist")
+        store = store_ans.value
+        if not store.check_if_store_owner(self.get_user(user_name)):
+            self.log.set_info("error: adding policy failed: not an store owner", "eventLog")
+            return ResponseObject(False, False, "Store permission denied")
+        item = store.search_item_by_name(item_name)
+        if policy['override'] == 'True':
+            item.set_buying_policy(parsed_policy)
+        else:
+            item.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
+        return ResponseObject(True, True, "")
+
+    def add_store_policy(self, store_name, policy, user_name):
+        parsed_policy = self.parse_store_policy(policy, store_name)
+        store_ans = self.get_store(store_name)
+        if not store_ans.success:
+            self.log.set_info("error: adding policy failed: store doesnt exist", "eventLog")
+            return ResponseObject(False, False, "Store doesnt exist")
+        store = store_ans.value
+        if not store.check_if_store_owner(self.get_user(user_name)):
+            self.log.set_info("error: adding policy failed: not an store owner", "eventLog")
+            return ResponseObject(False, False, "Store permission denied")
+        if policy['override'] == 'True':
+            store_name.set_buying_policy(parsed_policy)
+        else:
+            store_name.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
+        return ResponseObject(True, True, "")
+
+
+    @staticmethod
+    def parse_item_policy(policy, item_name):
+        new_policy = None
+        if policy['type'] == 'age':
+            new_policy = AgeLimitationUserPolicy(policy['args'])
+        elif policy['type'] == 'country':
+            new_policy = CountryLimitationUserPolicy(policy['args'])
+        elif policy['type'] == 'min':
+            new_policy = MinQuantityItemPolicy(item_name, policy['args'])
+        elif policy['type'] == 'max':
+            new_policy = MaxQuantityItemPolicy(item_name, policy['args'])
+        return new_policy
+
+    @staticmethod
+    def parse_store_policy(policy, store_name):
+        new_policy = None
+        if policy['type'] == 'min':
+            new_policy = MinQuantityStorePolicy(store_name, policy['args'])
+        elif policy['type'] == 'max':
+            new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
+        return new_policy
