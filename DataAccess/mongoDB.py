@@ -34,9 +34,10 @@ class DB:
                        "quantity": quantity}
         collection.insert_one(item_to_add)
 
-    def add_notification(self, user_name, time, message):
+    def add_notification(self, sender_username, receiver_username, key, message):
         collection = self.mydb["UserNotification"]
-        not_to_add = {"user_name": user_name, "time": time, "message": message}
+        not_to_add = {"sender_username": sender_username, "receiver_username": receiver_username,
+                      "key": key, "message": message}
         collection.insert_one(not_to_add)
 
     def add_cart(self, user_name, store_name, item_name, quantity):
