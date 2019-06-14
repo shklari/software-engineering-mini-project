@@ -4,8 +4,8 @@ function send_msg(msg, onsuccess , onfailure)
 {
 
     try {
-        websocket = new WebSocket("ws://localhost:6789");
-        //websocket = new WebSocket("ws://10.100.102.5:6789");
+        //websocket = new WebSocket("ws://localhost:6789");
+        websocket = new WebSocket("ws://192.168.0.125:6789");
         console.info("try to send ....");
         var json = JSON.stringify(msg);
         console.log(json);
@@ -19,7 +19,9 @@ function send_msg(msg, onsuccess , onfailure)
             //console.log("bbbbbbbbbbbbbbbb " + data);
             switch (data.action) {
                 case 'notify' :
-                    alert(data.message);
+                    $(document).ready(function() {
+                     $("#notify").show();
+                    });
                 case 'success':
                     console.log('success');
                     onsuccess(data.message,data.return_val);

@@ -1,3 +1,5 @@
+from django.utils.datetime_safe import datetime
+
 from Domain.Cart import Cart
 from Domain.ExternalSystems import *
 from Domain.User import User
@@ -12,12 +14,13 @@ import functools
 from Domain.BuyingPolicy import *
 
 
+
 class System:
 
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
-        self.database = DB()
+        #self.database = DB()
         # self.cur_user = None
         self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system
@@ -68,7 +71,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
-            self.database.add_user(new_user)
+            #self.database.add_user(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -136,14 +139,65 @@ class System:
         return result_list
 
     def add_owner_to_store(self, store_name, new_owner_name, username):
+        new_owner_obj = self.get_user(new_owner_name)
+        # check if this user is sign in #
+        if new_owner_obj is None:
+            self.log.set_info("error: adding owner failed: user is not a user in the system", "eventLog")
+            return ResponseObject(False, False, new_owner_name + " is not a user in the system")
+        #
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
+        # add supporting in vote requirement in version 3
+        # TODO: get store managers list from db !
+        owner_list = store.storeOwners
+        # check if username is owner #
+        found = False
+        for owner in owner_list:
+            if owner.username == username:
+                found = True
+                break;
+        if not found:
+            return ResponseObject(False, False, username + " is not a owner of this store!")
+        #
+        if len(owner_list) == 1:
+            return self.add_owner_to_store_helper(new_owner_name,username,store_name)
+        else:
+            timeStamp = self.dateToStamp()
+            message = "Hello, "+username+" want to add a new owner to the store, he is waiting for your approval..."
+            waitingList = [] #{waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
+            for owner in owner_list:
+                approved = True if owner.username == username else False
+                waitingList.append({'owner': owner.username, 'approved':approved})
+                self.send_notification_to_user(username,owner.username, timeStamp, message)
+            store.waitingForBecomeOwner.append({'waitingName':new_owner_name , 'waitingList':waitingList})
+            return ResponseObject(True, False, "Waiting for the approval of the other owners")
+
+    def approveNewOwner(self,new_owner_name, username, store_name):
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
+        allGivedApproved = True
+        for user in store.waitingForBecomeOwner:
+            if user['waitingName'] == new_owner_name:
+                for owner in user['waitingList']:
+                    if owner['owner'] ==username:
+                        owner['approved'] = True
+                    allGivedApproved = allGivedApproved and owner['approved']
+        if allGivedApproved :
+            return self.add_owner_to_store_helper
+        else:
+            return ResponseObject(False, True, "")
+
+
+    def add_owner_to_store_helper(self,new_owner_name,username,store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
         store = store_result.value
         new_owner_obj = self.get_user(new_owner_name)
-        if new_owner_obj is None:
-            self.log.set_info("error: adding owner failed: user is not a user in the system", "eventLog")
-            return ResponseObject(False, False, new_owner_name + " is not a user in the system")
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -155,6 +209,7 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_owner_from_store(self, store_name, owner_to_remove, username):
+        # TODO: remove owner from db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -189,11 +244,12 @@ class System:
         add = store.add_new_manager(curr_user, new_manager_obj, permissions)
         if not add.success:
             return add
-        self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
+        #self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
         self.log.set_info("adding manager succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def remove_manager_from_store(self, store_name, manager_to_remove, username):
+        # TODO: update db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -215,13 +271,13 @@ class System:
     def buy_items(self, items, username):
         # check if items exist in basket??
         for item in items:
-            store = self.get_store(item.store_name)
+            store = self.get_store(item['store_name'])
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
-                return ResponseObject(False, False, "buy items failed: Store " + item.store_name + " does not exist")
-            if not self.supplying_system.get_supply(item.name):
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
+            if not self.supplying_system.get_supply(item['name']):
                 self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-                return ResponseObject(False, False, "Item " + item.name + " is currently out of stock")
+                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -237,7 +293,7 @@ class System:
             if not removed.success:
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
-
+        # TODO: update db !
         # Todo : remove items from store inventory
         self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, amount, "")
@@ -256,13 +312,14 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
-            self.database.add_store(new_store)
-            self.database.add_store_owner(store_name, username, 0)
+            #self.database.add_store(new_store)
+            #self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
 
     def remove_user(self, user_to_remove, username):
+        # TODO: update db !
         if username not in self.loggedInUsers:
             self.log.set_info("error: remove user failed: user is not a subscriber in the system", "eventLog")
             return ResponseObject(False, None, "User " + username +
@@ -286,6 +343,7 @@ class System:
         return ResponseObject(True, True, "User " + user_to_remove + " removed")
 
     def get_store(self, store_name):
+        # TODO: get store from db !
         for stor in self.stores:
             if store_name == stor.name:
                 self.log.set_info("get store succeeded", "eventLog")
@@ -294,6 +352,7 @@ class System:
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
 
     def get_basket(self, username):
+        # TODO: basket from db !
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -324,6 +383,7 @@ class System:
         return ResponseObject(True, size, "")
 
     def get_user(self, username):
+        # TODO: get from db !
         if username in self.users:
             print(self.users[username])
             return self.users[username]
@@ -344,9 +404,8 @@ class System:
             return find_user
         curr_user = find_user.value
         item = store.search_item_by_name(item_name)
-        tmp_cart = Cart(store_name, curr_user)
         old_cart = curr_user.get_cart(store_name)
-        tmp_cart.items_and_quantities = old_cart.value.items_and_quantities
+        tmp_cart = old_cart.value.copy_cart()
         tmp_cart.add_item_to_cart(item_name, quantity)
         if not store.buying_policy.apply_policy(tmp_cart):
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
@@ -355,11 +414,12 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
-        self.database.add_cart(username, store_name, item_name, quantity)
+        #self.database.add_cart(username, store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def get_total_system_inventory(self):
+        # TODO: get inventory from db !
         retList = []
         for store in self.stores:
             for item in store.inventory:
@@ -383,12 +443,15 @@ class System:
         return "guest"
 
     def get_stores(self):
+        # TODO: get info from db !
         return self.stores
 
     def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        self.database.add_notification(sender_username, receiver_username, key, message)
+        print('sent notify')
+        #self.database.add_notification(sender_username, receiver_username, key, message)
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
+        # TODO: update db !
         parsed_policy = self.parse_item_policy(policy, item_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:
@@ -406,6 +469,7 @@ class System:
         return ResponseObject(True, True, "")
 
     def add_store_policy(self, store_name, policy, user_name):
+        # TODO: update db !
         parsed_policy = self.parse_store_policy(policy, store_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:
@@ -443,3 +507,10 @@ class System:
         elif policy['type'] == 'max':
             new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
         return new_policy
+
+    def dateToStamp(self):
+        now = datetime.now()
+        return datetime.timestamp(now)
+
+    def stampToDate(self,stamp):
+        return datetime.fromtimestamp(stamp)

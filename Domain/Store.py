@@ -18,6 +18,7 @@ class Store(object):
         self.inventory = []
         self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
         self.storeManagers = []
+        self.waitingForBecomeOwner =[] # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
         self.discountPolicy = 0
         self.log = Log("", "")
         self.discount = ComposedDiscount(0, 0, True, "")
@@ -309,6 +310,7 @@ class Store(object):
             if k['name'] == item_name:
                 if k['quantity'] >= quantity:
                     boo = True
+                    break
         return self.search_item_by_name(item_name) if boo else False
 
     # discount is a Discount object

@@ -24,6 +24,9 @@ from django.contrib.auth import views as auth_views
 from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('about/', LoginView.as_view(template_name='MarketingSystem/about.html'), name="about"),
+    path('contact/', LoginView.as_view(template_name='MarketingSystem/contact.html'), name="contact"),
+    path('shopping-cart/', LoginView.as_view(template_name='MarketingSystem/ShoppingCart.html'), name="shoppingCart"),
     path('shopping-cart/', LoginView.as_view(template_name='MarketingSystem/ShoppingCart.html'), name="shoppingCart"),
     path('add-new-owner/', LoginView.as_view(template_name='MarketingSystem/addNewOwner.html'), name="addNewOwner"),
     path('add-new-manager/', LoginView.as_view(template_name='MarketingSystem/addNewManager.html'), name="addNewManager"),
@@ -31,6 +34,7 @@ urlpatterns = [
     path('remove-manager/', LoginView.as_view(template_name='MarketingSystem/removeManager.html'), name="removeManager"),
     path('add_product/', LoginView.as_view(template_name='store/add_product.html'), name="add_product"),
     path('edit_product/', LoginView.as_view(template_name='store/edit_product.html'), name="edit_product"),
+    path('inventory/', LoginView.as_view(template_name='MarketingSystem/inventory.html'), name="inventory"),
     # path('', views.index, name='home'),
     path('', include('store.urls'), name='list'),
     path('', include('accounts.urls'), name='list'),

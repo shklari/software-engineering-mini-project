@@ -30,43 +30,46 @@
 				<fieldset>
 
 					<!-- Form Name -->
-					<legend>Store Policy</legend>
+					<legend>Item Policy</legend>
 
 
 					<div class="form-group">
 						<label class="col-md-4 control-label" for="birthplace">Policy Type</label>
 						<div class="col-md-4">
 							<select id="policy1" class="form-control">
-                                <option value="0">None</option>
-								<option value="1">Min Item Policy</option>
-								<option value="2">Max Item Policy</option>
+                                <option value="0" onclick="setValue();">None</option>
+								<option value="1" onclick="setValue();">Min Item Quantity</option>
+								<option value="2" onclick="setValue();">Max Item Quantity</option>
+                                <option value="3" onclick="setValue();">Age Limitation</option>
+                                <option value="4" onclick="setValue();">Country</option>
 							</select>
 						</div>
                     </div>
                     <div class="form-group ">
 						<label class="col-md-4 control-label" for="fullname">Value</label>
 						<div class="col-md-4">
-							<input id="value1" min="1" name="fullname" type="number" placeholder="Value" class="form-control input-md" required="">
+                            <script>
+                                document.getElementById("policy1").onchange = function () {
+                                var input ='';
+                                switch (this.selectedIndex) {
+                                    case 1:
+                                        input = '<input id="value1" min="1" name="fullname" type="number" placeholder="Min" class="form-control input-md" required="">';
+                                        break;
+                                    case 2:
+                                        input = '<input id="value1" min="1" name="fullname" type="number" placeholder="Max" class="form-control input-md" required="">';
+                                        break;
+                                    case 3:
+                                        input = '<input id="value1" min="1" max="120" name="fullname" type="number" placeholder="Age" class="form-control input-md" required="">';
+                                        break;
+                                    case 4:
+                                        input = '<input id="value1" name="fullname" type="text" placeholder="Country" class="form-control input-md" required="">';
+                                        break;
+                                    }
+                                     document.getElementById("in").innerHTML=input;
+                                };
 
-						</div>
-
-					</div>
-
-                    <div class="form-group">
-						<label class="col-md-4 control-label">Policy Type</label>
-						<div class="col-md-4">
-							<select id="policy2" class="form-control">
-                                <option value="0">None</option>
-								<option value="1">Min Item Policy</option>
-								<option value="2">Max Item Policy</option>
-							</select>
-						</div>
-                    </div>
-                    <div class="form-group ">
-						<label class="col-md-4 control-label" for="fullname">Value</label>
-						<div class="col-md-4">
-							<input id="value2" min="1" name="fullname" type="number" placeholder="Value" class="form-control input-md" required="">
-
+                            </script>
+                            <div id="in"></div>
 						</div>
 
 					</div>
@@ -87,16 +90,25 @@
     </form>
 
     <button class="btn btn-success" id="submit">Submit</button>
-    <button class="btn btn-secondary" onclick="window.location.href='/'">Cancel</button>
 
+    <button class="btn btn-danger" onclick="myFunction()">Remove All Policies</button>
+    <button class="btn btn-secondary" onclick="window.location.href='/'">Cancel</button>
+  <script>
+  function myFunction() {
+  var r = confirm("Are you sure you want to remove all previous policies for this store ?");
+  if (r == true) {
+    send_msg({action:"clean-policies",name:''},()=>{},()=>{});
+  } else {
+
+  }
+
+}
+  </script>
 </div>
 <script>
     $("#submit").click(function () {
         var policy1 = document.getElementById("policy1").value;
-        var policy2 = document.getElementById("policy2").value;
         var val1 = document.getElementById("value1").value;
-        var val2 = document.getElementById("value2").value;
-        var override = document.getElementById("override").value;
         send_msg({action:''})
     });
 </script>
