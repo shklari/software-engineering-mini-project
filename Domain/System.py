@@ -215,13 +215,13 @@ class System:
     def buy_items(self, items, username):
         # check if items exist in basket??
         for item in items:
-            store = self.get_store(item.store_name)
+            store = self.get_store(item['store_name'])
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
-                return ResponseObject(False, False, "buy items failed: Store " + item.store_name + " does not exist")
-            if not self.supplying_system.get_supply(item.name):
+                return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
+            if not self.supplying_system.get_supply(item['name']):
                 self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-                return ResponseObject(False, False, "Item " + item.name + " is currently out of stock")
+                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -344,9 +344,8 @@ class System:
             return find_user
         curr_user = find_user.value
         item = store.search_item_by_name(item_name)
-        tmp_cart = Cart(store_name, curr_user)
         old_cart = curr_user.get_cart(store_name)
-        tmp_cart.items_and_quantities = old_cart.value.items_and_quantities
+        tmp_cart = old_cart.value.copy_cart()
         tmp_cart.add_item_to_cart(item_name, quantity)
         if not store.buying_policy.apply_policy(tmp_cart):
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")

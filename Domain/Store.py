@@ -309,6 +309,7 @@ class Store(object):
             if k['name'] == item_name:
                 if k['quantity'] >= quantity:
                     boo = True
+                    break
         return self.search_item_by_name(item_name) if boo else False
 
     # discount is a Discount object
