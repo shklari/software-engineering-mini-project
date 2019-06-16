@@ -23,6 +23,7 @@ function send_msg(msg, onsuccess , onfailure)
                     $(document).ready(function() {
                      $("#notify").fadeIn(1000).show();
                     });
+                    break;
                 case 'success':
                     console.log('success');
                     onsuccess(data.message,data.return_val);
