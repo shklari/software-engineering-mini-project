@@ -177,11 +177,14 @@ class ServiceImpl(ServiceInterface):
         if not item:
             return ResponseObject(False, False,
                                   "Error: no such product in " + store_name + "store\n" + store_result.message)
+        print("inbar")
         add = store.add_item_to_inventory(curr_user, {'name': itemname, 'price': price, 'category': ''}, quantity)
+        print("inbar")
         if not add.success:
             return ResponseObject(False, False, "Error: can't add item " + itemname[
                 'name'] + " to store " + store_name + "\n" + add.message)
         if price > 0:
+            print("inbar")
             add = store.edit_item_price(curr_user, itemname, price)
             if not add.success:
                 return ResponseObject(False, False, "Error: can't edit " + itemname[
@@ -314,6 +317,37 @@ class ServiceImpl(ServiceInterface):
         for store in stores:
             res.append({'name': store.name})
         return ResponseObject(True, {'stores': res}, "")
+
+    def get_store_inv(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for item in store.inventory:
+                    res.append({'name': item['name'],
+                                'category': item['val'].category,
+                                'price': item['val'].price,
+                                'quantity': item['quantity']})
+        return ResponseObject(True, {'inventory': res}, "")
+
+    def get_store_owners(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for owner in store.storeOwners:
+                    res.append({'name': owner.username})
+        return ResponseObject(True, {'storeOwners': res}, "")
+
+    def get_store_managers(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for manager in store.storeManagers:
+                    res.append({'name': manager.username,
+                                'permissions': manager.permissions})
+        return ResponseObject(True, {'storeManagers': res}, "")
 
     def new_guest(self, guest_id):
         self.sys.new_guest(guest_id)

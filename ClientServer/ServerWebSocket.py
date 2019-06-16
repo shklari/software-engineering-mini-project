@@ -25,12 +25,9 @@ checkinit = service.init("avabash", "123456",21,'')
 
 service.sign_up("storeowner1", "111", 32, 'israel')
 service.sign_up("storeowner2", "111", 40, 'israel')
-service.sign_up("storeowner3", "111", 40, 'israel')
 service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem", "storeowner1")
-service.add_new_owner("osem", "storeowner2","storeowner1")
-service.add_new_owner("osem", "storeowner3","storeowner1")
 #service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
 service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
 service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
@@ -148,8 +145,12 @@ async def datahandler(data, websocket):
         ans = service.get_basket_subtotal(data['username'])
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
-    elif data['action'] == 'new_guest':
-        ans = service.new_guest(data['username'])
+    elif data['action'] == 'get_store_inv':
+        ans = service.get_store_inv(data['store_name'])
+    elif data['action'] == 'get_store_owners':
+        ans = service.get_store_owners(data['store_name'])
+    elif data['action'] == 'get_store_managers':
+        ans = service.get_store_managers(data['store_name'])
     elif data['action'] == 'add_item_policy':
         # policy = {type, combo, quantity, override}
         ans = service.add_item_policy(data['item_name'], data['store_name'], data['policy'], data['username'])

@@ -53,8 +53,8 @@ def edit_item(request):
             else:
                 messages.info(request, 'Item unsuccessfully edited')
 
-    render(request, 'store/edit_product.html', args)
+    render(request, 'store/../MarketingSystem/templates/MarketingSystem/edit_product.html', args)
     return redirect('/')
 
     args = {'form': 1}
-    return render(request, 'store/edit_product.html', args)
+    return render(request, 'store/../MarketingSystem/templates/MarketingSystem/edit_product.html', args)
