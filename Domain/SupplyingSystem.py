@@ -3,6 +3,8 @@ import requests
 
 class SupplyingSystem(object):
 
+    # TODO: add logs!
+
     def __init__(self):
         self.addr = 'https://cs-bgu-wsep.herokuapp.com/'
 
