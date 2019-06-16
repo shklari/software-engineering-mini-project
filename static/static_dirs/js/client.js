@@ -18,7 +18,10 @@ function send_msg(msg, onsuccess , onfailure)
             console.log(data);
             switch (data.action) {
                 case 'notify' :
-                    alert(data.message);
+                    alert('notify')
+                    $(document).ready(function() {
+                     $("#notify").fadeIn(1000).show();
+                    });
                 case 'success':
                     console.log('success');
                     onsuccess(data.message,data.return_val);

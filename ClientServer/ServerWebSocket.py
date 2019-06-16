@@ -151,8 +151,14 @@ async def datahandler(data, websocket):
         ans = service.get_store_owners(data['store_name'])
     elif data['action'] == 'get_store_managers':
         ans = service.get_store_managers(data['store_name'])
-        print(ans)
-
+    elif data['action'] == 'add_item_policy':
+        # policy = {type, combo, quantity, override}
+        ans = service.add_item_policy(data['item_name'], data['store_name'], data['policy'], data['username'])
+    elif data['action'] == 'add_store_policy':
+        # policy = {type, combo, quantity, override}
+        ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
+    elif data['action'] == 'approveNewOwner':
+        ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
     else:
         logging.error(
             "unsupported event: {}", data)

@@ -19,7 +19,11 @@ class MyThread(Thread):
         while True:
             if not self.alert.tasks.empty():
                 task = self.alert.tasks.get()
-                await task['ws'].send(json.dumps({'action': 'notify', 'message': task['message']}))
+                if task['type'] == 'notify':
+                    await task['ws'].send(json.dumps({'action': 'notify', 'message': task['message']}))
+                elif task['type'] == 'toast':
+                    await task['ws'].send(json.dumps({'action': 'toast', 'message': task['message']}))
+
 
 
 # t = MyThread()

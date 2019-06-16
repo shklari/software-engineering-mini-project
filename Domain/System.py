@@ -1,3 +1,5 @@
+from django.utils.datetime_safe import datetime
+
 from Domain.Cart import Cart
 from Domain.ExternalSystems import *
 from Domain.User import User
@@ -137,14 +139,65 @@ class System:
         return result_list
 
     def add_owner_to_store(self, store_name, new_owner_name, username):
+        new_owner_obj = self.get_user(new_owner_name)
+        # check if this user is sign in #
+        if new_owner_obj is None:
+            self.log.set_info("error: adding owner failed: user is not a user in the system", "eventLog")
+            return ResponseObject(False, False, new_owner_name + " is not a user in the system")
+        #
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
+        # add supporting in vote requirement in version 3
+        # TODO: get store managers list from db !
+        owner_list = store.storeOwners
+        # check if username is owner #
+        found = False
+        for owner in owner_list:
+            if owner.username == username:
+                found = True
+                break;
+        if not found:
+            return ResponseObject(False, False, username + " is not a owner of this store!")
+        #
+        if len(owner_list) == 1:
+            return self.add_owner_to_store_helper(new_owner_name,username,store_name)
+        else:
+            timeStamp = self.dateToStamp()
+            message = "Hello, "+username+" want to add a new owner to the store, he is waiting for your approval..."
+            waitingList = [] #{waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
+            for owner in owner_list:
+                approved = True if owner.username == username else False
+                waitingList.append({'owner': owner.username, 'approved':approved})
+                self.send_notification_to_user(username,owner.username, timeStamp, message)
+            store.waitingForBecomeOwner.append({'waitingName':new_owner_name , 'waitingList':waitingList})
+            return ResponseObject(True, False, "Waiting for the approval of the other owners")
+
+    def approveNewOwner(self,new_owner_name, username, store_name):
+        store_result = self.get_store(store_name)
+        if not store_result.success:
+            return store_result
+        store = store_result.value
+        allGivedApproved = True
+        for user in store.waitingForBecomeOwner:
+            if user['waitingName'] == new_owner_name:
+                for owner in user['waitingList']:
+                    if owner['owner'] ==username:
+                        owner['approved'] = True
+                    allGivedApproved = allGivedApproved and owner['approved']
+        if allGivedApproved :
+            return self.add_owner_to_store_helper
+        else:
+            return ResponseObject(False, True, "")
+
+
+    def add_owner_to_store_helper(self,new_owner_name,username,store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
         store = store_result.value
         new_owner_obj = self.get_user(new_owner_name)
-        if new_owner_obj is None:
-            self.log.set_info("error: adding owner failed: user is not a user in the system", "eventLog")
-            return ResponseObject(False, False, new_owner_name + " is not a user in the system")
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
@@ -180,9 +233,6 @@ class System:
         if not store_result.success:
             return store_result
         store = store_result.value
-        # add supporting in vote requirement in version 3
-        #TODO: get store managers list from db !
-        managers_list = store.storeManagers
         new_manager_obj = self.get_user(new_manager_name)
         if new_manager_obj is None:
             self.log.set_info("error: adding manager failed: user is not in the system", "eventLog")
@@ -397,7 +447,8 @@ class System:
         return self.stores
 
     def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        self.database.add_notification(sender_username, receiver_username, key, message)
+        print('sent notify')
+        #self.database.add_notification(sender_username, receiver_username, key, message)
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !
@@ -456,3 +507,10 @@ class System:
         elif policy['type'] == 'max':
             new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
         return new_policy
+
+    def dateToStamp(self):
+        now = datetime.now()
+        return datetime.timestamp(now)
+
+    def stampToDate(self,stamp):
+        return datetime.fromtimestamp(stamp)
