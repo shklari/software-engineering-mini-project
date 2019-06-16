@@ -394,5 +394,14 @@ class Store(object):
             return ResponseObject(True, True, "User " + user.username + " is not logged in")
         return ResponseObject(False, False, "User " + user.username + " has no permission")
 
+    def get_inventory(self):
+        ans = []
+        for item in self.inventory:
+            ans.append({'name': item['name'],
+                        'category': item['val'].category,
+                        'price': item['val'].price,
+                        'quantity': item['quantity']})
+        return ResponseObject(True, ans, '')
+
 
 

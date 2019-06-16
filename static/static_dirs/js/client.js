@@ -14,9 +14,8 @@ function send_msg(msg, onsuccess , onfailure)
             console.log(`WebSocket error: ${error}`)
         };
         websocket.onmessage = function (event) {
-
             data = JSON.parse(event.data);
-            //console.log("bbbbbbbbbbbbbbbb " + data);
+            console.log(data);
             switch (data.action) {
                 case 'notify' :
                     alert(data.message);

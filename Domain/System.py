@@ -18,7 +18,7 @@ class System:
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
-        #self.database = DB()
+        # self.database = DB()
         # self.cur_user = None
         self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system

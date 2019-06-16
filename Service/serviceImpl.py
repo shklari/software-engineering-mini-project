@@ -293,6 +293,37 @@ class ServiceImpl(ServiceInterface):
             res.append({'name': store.name})
         return ResponseObject(True, {'stores': res}, "")
 
+    def get_store_inv(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for item in store.inventory:
+                    res.append({'name': item['name'],
+                                'category': item['val'].category,
+                                'price': item['val'].price,
+                                'quantity': item['quantity']})
+        return ResponseObject(True, {'inventory': res}, "")
+
+    def get_store_owners(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for owner in store.storeOwners:
+                    res.append({'name': owner.username})
+        return ResponseObject(True, {'storeOwners': res}, "")
+
+    def get_store_managers(self, store_name):
+        stores = self.sys.get_stores()
+        res = []
+        for store in stores:
+            if store_name == store.name:
+                for manager in store.storeManagers:
+                    res.append({'name': manager.username,
+                                'permissions': manager.permissions})
+        return ResponseObject(True, {'storeManagers': res}, "")
+
     def new_guest(self, guest_id):
         self.sys.new_guest(guest_id)
 
