@@ -163,36 +163,25 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "Item " + item_name + " removed from " + store_name + " inventory")
 
-    def edit_product(self, itemname, store_name, quantity, price, username):
+    def edit_item_quantity(self, item_name, store_name, new_price, username):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
             return ResponseObject(False, False,
-                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+                                  "Error: can't edit items in store " + store_name + "\n" + store_result.message)
         store = store_result.value
         find_user = self.sys.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        item = store.search_item_by_name(itemname)
-        if not item:
+        edit = self.sys.edit_item_quantity(curr_user, item_name, new_price)
+        if not edit.success:
             return ResponseObject(False, False,
-                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
-        print("inbar")
-        add = store.add_item_to_inventory(curr_user, {'name': itemname, 'price': price, 'category': ''}, quantity)
-        print("inbar")
-        if not add.success:
-            return ResponseObject(False, False, "Error: can't add item " + itemname[
-                'name'] + " to store " + store_name + "\n" + add.message)
-        if price > 0:
-            print("inbar")
-            add = store.edit_item_price(curr_user, itemname, price)
-            if not add.success:
-                return ResponseObject(False, False, "Error: can't edit " + itemname[
-                    'name'] + "'s price in" + store_name + "store\n" + add.message)
-        inv = []
-        for i in store.inventory:
-            inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return ResponseObject(True, inv, "Item " + itemname + " edited successfully in " + store_name + " inventory")
+                                  "Error: can't edit item " + item_name + " in store " + store_name + "\n" + edit.message)
+        ret = store.search_item_by_name(item_name)
+        if not ret:
+            return ResponseObject(False, False, "Error: item " + item_name + "doesn't exist in this store's inventory")
+        return ResponseObject(True, {'name': ret['name']},
+                              "The price of item " + item_name + " was successfully changed")
 
     def decrease_item_quantity(self, store_name, item_name, quantity, username):
         store_result = self.sys.get_store(store_name)
@@ -228,13 +217,14 @@ class ServiceImpl(ServiceInterface):
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        edit = store.edit_item_price(curr_user, item_name, new_price)
+        edit = self.sys.edit_item_price(curr_user, store_name, item_name, new_price)
         if not edit.success:
             return ResponseObject(False, False, "Error: can't edit item " + item_name + " in store " + store_name + "\n" + edit.message)
         ret = store.search_item_by_name(item_name)
         if not ret:
             return ResponseObject(False, False, "Error: item " + item_name + "doesn't exist in this store's inventory")
-        return ResponseObject(True, {'name': ret.name, 'price': ret.price, 'category': ret.category}, "The price of item " + item_name + " was successfully changed")
+        return ResponseObject(True, {'name': ret['name'], 'price': ret['price']},
+                              "The price of item " + item_name + " was successfully changed")
 
     def add_new_owner(self, store_name, new_owner, username):
         result = self.sys.add_owner_to_store(store_name, new_owner, username)
@@ -246,9 +236,9 @@ class ServiceImpl(ServiceInterface):
             for own in store.storeOwners:
                 if own.username !=username:
                     owner_notify.append(own.username)
-            self.ownersAlert.notify('notify',owner_notify,'')
+            self.ownersAlert.notify('notify', owner_notify, '')
 
-        self.ownersAlert.notify('notify',[new_owner], "you are now an owner of " + store_name + "store")
+        self.ownersAlert.notify('notify', [new_owner], "you are now an owner of " + store_name + "store")
         owners = []
         for o in store.storeOwners:
             owners.append({'username': o.username})

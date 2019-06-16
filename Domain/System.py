@@ -174,6 +174,47 @@ class System:
             store.waitingForBecomeOwner.append({'waitingName':new_owner_name , 'waitingList':waitingList})
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
 
+    def edit_item_price(self, username, store_name, itemname, new_price):
+        store_result = self.get_store(store_name)
+        if store_result is None:
+            return ResponseObject(False, False,
+                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        store = store_result.value
+        find_user = self.get_user_or_guest(username)
+        if find_user is None:
+            return find_user
+        curr_user = find_user.value
+        item = store.search_item_by_name(itemname)
+        if not item:
+            return ResponseObject(False, False,
+                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+        if new_price > 0:
+            add = store.edit_item_price(curr_user, itemname, new_price)
+            if not add.success:
+                return ResponseObject(False, False, "Error: can't edit " + itemname[
+                    'name'] + "'s price in" + store_name + "store\n" + add.message)
+            return ResponseObject(True, True, "")
+
+    def edit_item_quantity(self, username, store_name, itemname, quantity):
+        store_result = self.get_store(store_name)
+        if store_result is None:
+            return ResponseObject(False, False,
+                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        store = store_result.value
+        find_user = self.get_user_or_guest(username)
+        if find_user is None:
+            return find_user
+        curr_user = find_user.value
+        item = store.search_item_by_name(itemname)
+        if not item:
+            return ResponseObject(False, False,
+                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+        add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item['quantity']}, quantity)
+        if add is None:
+            return ResponseObject(False, False, "Error: can't add item " + itemname[
+                'name'] + " to store " + store_name + "\n" + add.message)
+        return ResponseObject(True, True, "")
+
     def approveNewOwner(self,new_owner_name, username, store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:

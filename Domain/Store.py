@@ -39,7 +39,7 @@ class Store(object):
                     return True
         return False
 
-    # 4.1.1
+    # 4.1.1 - added new product to inventory
     # item = {'name': str, 'price': int, 'category': str}
     def add_item_to_inventory(self, user, item, quantity):
         if quantity >= 0:
@@ -52,15 +52,50 @@ class Store(object):
                         self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                         return ResponseObject(True, True, "")
                     else:
+                        self.inventory.append({'name': item['name'],
+                                           'val': Item(item['name'], item['price'], item['category'], self.name),
+                                           'quantity': quantity})
+                        self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
+                        return ResponseObject(True, True, "")
+                        # flag = False
+                        # for x in self.inventory:
+                        #     if x['val'].name == item['name']:
+                        #         flag = True
+                        # if not flag:
+                        #     self.inventory = [{'name': item['name'],
+                        #                        'val': Item(item['name'], item['price'], item['category'], self.name),
+                        #                        'quantity': quantity}]
+                        #     self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
+                        #     return ResponseObject(True, True, "")
+                        # return ResponseObject(False, False, "item already exist")
+                else:
+                    self.log.set_info('error: user is no store owner for this store', 'eventLog')
+                    return ResponseObject(False, False, "User is not an owner of store " + self.name)
+            else:
+                self.log.set_info('error: user is not logged in or not a store owner', 'eventLog')
+                return ResponseObject(False, False, "User is not logged in or is not a store owner")
+        else:
+            self.log.set_info('error: invalid quantity', 'eventLog')
+            return ResponseObject(False, False, "Invalid quantity")
+
+    # add quantity to specific item
+    def edit_item_quantity(self, user, item, quantity):
+        if quantity >= 0:
+            if isinstance(user, User) and user.logged_in:
+                if self.check_if_store_owner(user):
+                    if len(self.inventory) == 0:
+                        return ResponseObject(False, False, "no such item in inventory")
+                    else:
+                        flag = False
                         for x in self.inventory:
                             if x['val'].name == item['name']:
                                 x['quantity'] += quantity
-                            else:
-                                self.inventory.append({'name': item['name'],
-                                                       'val': Item(item['name'], item['price'], item['category'], self.name),
-                                                       'quantity': quantity})
-                            self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
-                            return ResponseObject(True, True, "")
+                                flag = True
+                                break
+                        if not flag:
+                            return ResponseObject(False, False, "no such item in inventory")
+                        self.log.set_info('item/''s quantity has been successfully edited!', 'eventLog')
+                        return ResponseObject(True, True, "")
                 else:
                     self.log.set_info('error: user is no store owner for this store', 'eventLog')
                     return ResponseObject(False, False, "User is not an owner of store " + self.name)

@@ -127,7 +127,7 @@ button:hover {
 }
 </style>
 <body>
-
+<script src="{% static 'js/cookieMonster.js' %}"></script>
 <div style="border:1px solid #ccc">
   <div class="container">
       <br>
@@ -139,19 +139,16 @@ button:hover {
     <input id='productname' type="text" placeholder="Enter Product Name" name="productname" required>
 
     <label for="price">Price     </label>
-    <input id='price' type="price" placeholder="Enter Price" name="price" required>
+    <input id='price' type="price" placeholder="Enter Price" name="price">
 
     <label for="quantity">Quantity  </label>
     <input id='quantity' type="price" placeholder="Enter Quantity" name="quantity" required>
 
-    <label for="category">Category  </label>
-    <input id='category' type="price" placeholder="Enter Category" name="category" required>
-
-    <label for="image">Choose Image</label>
-    <form action="/action_page.php">
-        <input type="file" name="pic" accept="image/*">
-        <input type="submit">
-    </form>
+{#    <label for="image">Choose Image</label>#}
+{#    <form action="/action_page.php">#}
+{#        <input type="file" name="pic" accept="image/*">#}
+{#        <input type="submit">#}
+{#    </form>#}
 
     <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
     {% csrf_token %}
@@ -168,33 +165,45 @@ button:hover {
     function editPro(){
         var productname = document.getElementById('productname').value;
         var price = +document.getElementById('price').value;
-        var category = document.getElementById('category').value;
         var storename = read_cookie("store_name");
         var quantity = +document.getElementById('quantity').value;
-        console.log(storename);
         if (productname == '') {
             alert('product name field is empty !');
             return;
         }
-        if (quantity < 1)
-            alert('product quantity invalid');
 
-        if (!isNaN(price) && price > 0 && category != '' && storename != '') {
-            var username = read_cookie('username')
-
+        var username = read_cookie('username');
+        if (price != '' && !isNaN(price)) {
+            console.log("inbar1");
             send_msg({
-                action: 'edit_product',
-                name: productname,
-                store_name: storename,
-                price: price,
-                quantity: quantity,
-                username: username
-            }, (message, val)=>{
-                alert("The product has been successfully edited!");
-            }, onfailure);
-
+                    action: 'edit_item_price',
+                    store_name: storename,
+                    new_price: price,
+                    username: username,
+                    item_name: productname
+                },
+                (message, val) => {
+                    if (quantity != '' && !isNaN(quantity))
+                        send_msg({
+                                action: 'edit_item_quantity',
+                                name: productname,
+                                store_name: storename,
+                                quantity: quantity,
+                                username: username
+                            },
+                            (message, val) => {
+                                alert("item has been successfully edited");
+                            }, onfailure);
+                    else
+                        alert("item has been successfully edited");
+                }, onfailure);
         }
-        window.location.href = "/inventory/";
+        if(quantity != '' && !isNaN(quantity))
+            send_msg({action: 'edit_item_quantity', name: productname, store_name: storename, quantity: quantity, username: username},
+                (message, val)=>{
+                                alert("item has been successfully edited");
+                            }, onfailure);
+        //window.location.href = "/inventory/";
     }
 </script>
 </body>

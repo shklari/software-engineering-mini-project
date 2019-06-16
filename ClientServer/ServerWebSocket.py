@@ -133,8 +133,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'], data['username'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'], data['username'])
-    elif data['action'] == 'edit_product':
-        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'], data['username'])
+    elif data['action'] == 'edit_item_quantity':
+        ans = service.edit_item_quantity(data['name'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
