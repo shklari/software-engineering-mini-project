@@ -11,7 +11,7 @@ class ServiceImpl(ServiceInterface):
         self.guests = []
         self.users = []
         self.admins = []
-        self.ownersAlert = RealTimeAlert(self)
+        self.ownersAlert = RealTimeAlert(self, self.guests,self.users)
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password, system_manager_age, system_manager_country):

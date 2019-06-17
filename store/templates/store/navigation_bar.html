@@ -676,6 +676,7 @@ var Alert = new CustomAlert();
     console.log(JSON.stringify(data, null, 2));
     ipadd = data['geoplugin_request'];
     write_cookie('username',ipadd);
+    initclient();
     send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
     });
 

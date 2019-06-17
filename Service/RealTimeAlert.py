@@ -4,11 +4,13 @@ from asyncio import Queue
 
 class RealTimeAlert(object):
 
-    def __init__(self, service):
+    def __init__(self, service,guests,users):
         self.group = []
         self.data = {}
         self.service = service
         self.tasks = queue.Queue(20)
+        self.guests_list = guests
+        self.users_list = users
 
     def add_to_group(self, websocket):
         self.group({})
@@ -24,7 +26,7 @@ class RealTimeAlert(object):
         for member in group:
             cur = self.find_user_ws(member)
             if cur:
-                self.tasks.put({'ws': cur['ws'], 'message': message, 'type': type})
+                self.tasks.put({'user': cur['username'], 'ws': cur['ws'], 'message': message, 'type': type})
 
     def find_user_ws(self, user):
         for x in self.service.users:
