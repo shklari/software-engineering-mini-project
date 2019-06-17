@@ -43,7 +43,7 @@ service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'
 # service.login("storeowner1", "111")
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
-
+#
 service.logout("storeowner1")
 
 # #######################################TEST

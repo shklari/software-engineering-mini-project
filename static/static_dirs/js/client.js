@@ -4,8 +4,8 @@ function send_msg(msg, onsuccess , onfailure)
 {
 
     try {
-        //websocket = new WebSocket("ws://localhost:6789");
-        websocket = new WebSocket("ws://192.168.0.125:6789");
+        websocket = new WebSocket("ws://localhost:6789");
+        //websocket = new WebSocket("ws://192.168.0.125:6789");
         console.info("try to send ....");
         var json = JSON.stringify(msg);
         console.log(json);
