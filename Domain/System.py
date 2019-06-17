@@ -9,7 +9,7 @@ from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
-from DataAccess.mongoDB import DB
+# from DataAccess.mongoDB import DB
 import functools
 from Domain.BuyingPolicy import *
 
@@ -178,7 +178,7 @@ class System:
         store_result = self.get_store(store_name)
         if store_result is None:
             return ResponseObject(False, False,
-                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+                                  "Error: can't add items to store ")
         store = store_result.value
         find_user = self.get_user_or_guest(username)
         if find_user is None:
@@ -187,7 +187,7 @@ class System:
         item = store.search_item_by_name(itemname)
         if not item:
             return ResponseObject(False, False,
-                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+                                  "Error: no such product in " + store_name)
         if new_price > 0:
             add = store.edit_item_price(curr_user, itemname, new_price)
             if not add.success:
@@ -199,7 +199,7 @@ class System:
         store_result = self.get_store(store_name)
         if store_result is None:
             return ResponseObject(False, False,
-                                  "Error: can't add items to store " + store_name + "\n" + store_result.message)
+                                  "Error: can't add items to store " + store_name)
         store = store_result.value
         find_user = self.get_user_or_guest(username)
         if find_user is None:
@@ -208,7 +208,7 @@ class System:
         item = store.search_item_by_name(itemname)
         if not item:
             return ResponseObject(False, False,
-                                  "Error: no such product in " + store_name + "store\n" + store_result.message)
+                                  "Error: no such product in " + store_name)
         add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item['quantity']}, quantity)
         if add is None:
             return ResponseObject(False, False, "Error: can't add item " + itemname[

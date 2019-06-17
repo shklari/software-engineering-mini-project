@@ -53,8 +53,8 @@ class Store(object):
                         return ResponseObject(True, True, "")
                     else:
                         self.inventory.append({'name': item['name'],
-                                           'val': Item(item['name'], item['price'], item['category'], self.name),
-                                           'quantity': quantity})
+                                               'val': Item(item['name'], item['price'], item['category'], self.name),
+                                               'quantity': quantity})
                         self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                         return ResponseObject(True, True, "")
                         # flag = False
