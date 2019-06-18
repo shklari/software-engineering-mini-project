@@ -57,17 +57,6 @@ class Store(object):
                                                'quantity': quantity})
                         self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
                         return ResponseObject(True, True, "")
-                        # flag = False
-                        # for x in self.inventory:
-                        #     if x['val'].name == item['name']:
-                        #         flag = True
-                        # if not flag:
-                        #     self.inventory = [{'name': item['name'],
-                        #                        'val': Item(item['name'], item['price'], item['category'], self.name),
-                        #                        'quantity': quantity}]
-                        #     self.log.set_info('item has been successfully added to the store inventory!', 'eventLog')
-                        #     return ResponseObject(True, True, "")
-                        # return ResponseObject(False, False, "item already exist")
                 else:
                     self.log.set_info('error: user is no store owner for this store', 'eventLog')
                     return ResponseObject(False, False, "User is not an owner of store " + self.name)
