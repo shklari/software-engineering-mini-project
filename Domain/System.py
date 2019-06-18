@@ -173,7 +173,7 @@ class System:
             for owner in owner_list:
                 approved = True if owner.username == username else False
                 waitingList.append({'owner': owner.username, 'approved': approved})
-                self.send_notification_to_user(username, owner.username, timeStamp, message)
+                self.send_notification_to_user(username, owner.username, timeStamp, message,1)
             store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
             self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
