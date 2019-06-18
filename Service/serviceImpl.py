@@ -373,3 +373,6 @@ class ServiceImpl(ServiceInterface):
                 self.ownersAlert.notify_list.remove(username)
                 return ResponseObject(True, True, '')
         return ResponseObject(False, False, '')
+
+    def get_notifications(self,username):
+        return self.sys.get_user_notifications_from_db(username)

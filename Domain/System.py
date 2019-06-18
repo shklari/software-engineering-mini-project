@@ -452,7 +452,7 @@ class System:
         for stor in self.stores:
             if store_name == stor.name:
                 self.log.set_info("get store succeeded", "eventLog")
-                store_from_db = self.database.get_store(store_name)
+                # store_from_db = self.database.get_store(store_name)
                 return ResponseObject(True, stor, "")
         self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
@@ -529,7 +529,7 @@ class System:
 
     def get_total_system_inventory(self):
         # TODO: get inventory from db !
-        inventory_from_db = self.database.get_inventory_from_db()
+        # inventory_from_db = self.database.get_inventory_from_db()
         retList = []
         for store in self.stores:
             for item in store.inventory:
@@ -558,11 +558,12 @@ class System:
         # stores_from_db = self.database.get_all_stores_from_db()
         return self.stores
 
-    def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        self.database.add_notification(sender_username, receiver_username, key, message)
+    def send_notification_to_user(self, sender_username, receiver_username, key, message, typ):
+        self.database.add_notification(sender_username, receiver_username, key, message, typ)
 
     def get_user_notifications_from_db(self, user_name):
-        return ResponseObject(True, self.database.get_user_notification(user_name), '')
+        res = self.database.get_user_notification(user_name)
+        return ResponseObject(True, res, '')
         # response = {True, ret_list, ''}
         # return response
 
