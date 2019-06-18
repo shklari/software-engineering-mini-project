@@ -130,7 +130,7 @@ async def datahandler(data, websocket):
     elif data['action'] == 'remove_from_cart':
         ans = service.remove_from_cart(data['store_name'], data['item_name'], data['username'])
     elif data['action'] == 'buy_items':
-        ans = service.buy_items(data['items'], data['username'])
+        ans = service.buy_items(data['items'], data['username'], data['supply_details'], data['collect_details'])
     elif data['action'] == 'add_item_to_inventory':
         ans = service.add_item_to_inventory(data['item'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'remove_item_from_inventory':
