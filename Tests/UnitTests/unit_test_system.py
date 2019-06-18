@@ -93,4 +93,3 @@ class TestStore(UnitTestSystem):
         self.system.add_to_cart('mdfqa3', 'tuna3', 63, 'shaioza3')
 
 
-

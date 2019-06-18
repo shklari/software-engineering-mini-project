@@ -1,5 +1,4 @@
 from django.utils.datetime_safe import datetime
-
 from Domain.Cart import Cart
 from Domain.ExternalSystems import *
 from Domain.User import User
@@ -9,10 +8,9 @@ from Domain.Response import ResponseObject
 from Domain.SystemManager import SystemManager
 from passlib.hash import pbkdf2_sha256
 from log.Log import Log
-# from DataAccess.mongoDB import DB
+from DataAccess.mongoDB import DB
 import functools
 from Domain.BuyingPolicy import *
-
 
 
 class System:
@@ -20,7 +18,7 @@ class System:
     def __init__(self):
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
-        # self.database = DB()
+        self.database = DB()
         # self.cur_user = None
         self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system
@@ -71,7 +69,7 @@ class System:
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
-            #self.database.add_user(new_user)
+            self.database.add_user(new_user)
             self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
@@ -166,12 +164,13 @@ class System:
         else:
             timeStamp = self.dateToStamp()
             message = "Hello, "+username+" want to add a new owner to the store, he is waiting for your approval..."
-            waitingList = [] #{waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
+            waitingList = []  # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
             for owner in owner_list:
                 approved = True if owner.username == username else False
-                waitingList.append({'owner': owner.username, 'approved':approved})
-                self.send_notification_to_user(username,owner.username, timeStamp, message)
-            store.waitingForBecomeOwner.append({'waitingName':new_owner_name , 'waitingList':waitingList})
+                waitingList.append({'owner': owner.username, 'approved': approved})
+                self.send_notification_to_user(username, owner.username, timeStamp, message)
+            store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
+            self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
 
     def edit_item_price(self, username, store_name, itemname, new_price):
@@ -193,6 +192,7 @@ class System:
             if not add.success:
                 return ResponseObject(False, False, "Error: can't edit " + itemname[
                     'name'] + "'s price in" + store_name + "store\n" + add.message)
+            self.database.edit_item_price_in_db(store_name, itemname, new_price)
             return ResponseObject(True, True, "")
 
     def edit_item_quantity(self, username, store_name, itemname, quantity):
@@ -213,6 +213,7 @@ class System:
         if add is None:
             return ResponseObject(False, False, "Error: can't add item " + itemname[
                 'name'] + " to store " + store_name + "\n" + add.message)
+        self.database.edit_item_quantity_in_db(store_name, itemname, quantity)
         return ResponseObject(True, True, "")
 
     def approveNewOwner(self,new_owner_name, username, store_name):
@@ -232,8 +233,7 @@ class System:
         else:
             return ResponseObject(False, True, "")
 
-
-    def add_owner_to_store_helper(self,new_owner_name,username,store_name):
+    def add_owner_to_store_helper(self, new_owner_name, username, store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -285,7 +285,7 @@ class System:
         add = store.add_new_manager(curr_user, new_manager_obj, permissions)
         if not add.success:
             return add
-        #self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
+        self.database.add_store_manager(store_name, new_manager_name, username, 0, 0, 0, 0)
         self.log.set_info("adding manager succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -353,8 +353,8 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
-            #self.database.add_store(new_store)
-            #self.database.add_store_owner(store_name, username, 0)
+            self.database.add_store(new_store)
+            self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
@@ -388,6 +388,7 @@ class System:
         for stor in self.stores:
             if store_name == stor.name:
                 self.log.set_info("get store succeeded", "eventLog")
+                store_from_db = self.database.get_store(store_name)
                 return ResponseObject(True, stor, "")
         self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
@@ -427,6 +428,7 @@ class System:
         # TODO: get from db !
         if username in self.users:
             print(self.users[username])
+            user_from_db = self.database.get_user(username)
             return self.users[username]
         return None
 
@@ -455,12 +457,13 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
-        #self.database.add_cart(username, store_name, item_name, quantity)
+        self.database.add_cart(username, store_name, item_name, quantity)
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def get_total_system_inventory(self):
         # TODO: get inventory from db !
+        inventory_from_db = self.database.get_inventory_from_db()
         retList = []
         for store in self.stores:
             for item in store.inventory:
@@ -485,11 +488,11 @@ class System:
 
     def get_stores(self):
         # TODO: get info from db !
+        stores_from_db = self.database.get_all_stores_from_db()
         return self.stores
 
     def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        print('sent notify')
-        #self.database.add_notification(sender_username, receiver_username, key, message)
+        self.database.add_notification(sender_username, receiver_username, key, message)
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !
@@ -525,7 +528,6 @@ class System:
         else:
             store_name.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
         return ResponseObject(True, True, "")
-
 
     @staticmethod
     def parse_item_policy(policy, item_name):
