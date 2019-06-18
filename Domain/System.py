@@ -370,10 +370,7 @@ class System:
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
                 return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
-           # if not self.supplying_system.get_supply(item['name']):
-           #     self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-           #     return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
-
+        # get current user
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
