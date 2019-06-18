@@ -4,7 +4,6 @@ import json
 import threading
 from log.Log import Log
 from ClientServer.Thread import MyThread
-from ClientServer.PingThread import PingThread
 import logging
 
 
@@ -160,6 +159,8 @@ async def datahandler(data, websocket):
         ans = service.get_basket_subtotal(data['username'])
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
+    elif data['action'] == 'new_guest':
+        ans = service.new_guest(data['username'])
     elif data['action'] == 'add_item_policy':
         # policy = {type, combo, quantity, override}
         ans = service.add_item_policy(data['item_name'], data['store_name'], data['policy'], data['username'])
@@ -168,6 +169,8 @@ async def datahandler(data, websocket):
         ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
     elif data['action'] == 'approveNewOwner':
         ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
+    elif data['action'] == 'has_alert':
+        ans = service.has_alert(data['username'])
     elif data['action'] == 'ping':
         ans = 'pong'
     else:
@@ -183,6 +186,7 @@ async def looper(websocket, path):
 
     # while not websocket.open:
     #   await websockets.connect('ws://100.10.102.7:6789')
+
     try:
         if websocket.open:
             client = websocket.local_address
@@ -210,7 +214,7 @@ t.start()
 #pt.set(alert)
 #pt.start()
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789, close_timeout=-1, ping_interval=50 ,ping_timeout=10))
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789, close_timeout=-1, ping_interval=20, ping_timeout=10))
 asyncio.get_event_loop().run_forever()
 
 

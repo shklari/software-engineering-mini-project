@@ -1,5 +1,17 @@
 //const WebSocket = require('ws');
-const websocket = new WebSocket('ws://localhost:6789');
+var websocket =undefined;
+
+function read_cookie(key)
+{
+    var b = document.cookie.match('(^|[^;]+)\\s*' + key + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : '';
+}
+
+function getwebsocket() {
+    if(this.websocket == undefined)
+        this.websocket = new WebSocket('ws://localhost:6789');
+    return this.websocket;
+}
 
 function noop() {}
 var keepAlive = true
@@ -14,25 +26,28 @@ function heartbeat() {
   }, 30000 + 1000);
 }
 function ping() {
-        var mes = JSON.stringify({action:'ping'});
-        websocket.send(mes);
-        keepAlive = setTimeout(function () {
+        var ws = getwebsocket();
+        var mes = JSON.stringify({action:'ping',username:read_cookie('username')});
+        if (ws.readyState == WebSocket.OPEN){
+            WebSocket.CLOSING;
+            WebSocket.CONNECTING;
+            ws.send(mes);
+            keepAlive = setTimeout(function () {
 
            /// ---connection closed ///
 
 
-    }, 3000);
+    }, 6000);
+            }
+
 }
 
-websocket.onopen = () => {
-    setInterval(ping, 30000);
-    console.log('connecting to server...');
-};
-websocket.onerror = error => {
+
+getwebsocket().onerror = error => {
     console.log(`WebSocket error: ${error}`)
 };
 
-websocket.onclose = () => {
+getwebsocket().onclose = () => {
     clearTimeout(this.pingTimeout);
     //console.log("exiting");
     //alert('closing');
@@ -42,15 +57,15 @@ function send_msg(msg, onsuccess , onfailure)
 {
 
     try {
-        websocket.onmessage = function (event) {
+        var ws = getwebsocket();
+        ws.onmessage = function (event) {
 
             data = JSON.parse(event.data);
             //console.log("bbbbbbbbbbbbbbbb " + data);
             switch (data.action) {
                 case 'pong':
-                     var mes = JSON.stringify({action:'ping'});
-                     clearTimeout(keepAlive);
-                     setTimeout(() => websocket.send(mes), 3 * 1000);
+                     var mes = JSON.stringify({action:'ping',username:read_cookie('username')});
+                     //setInterval(ping, 6000);
                      break;
                 case 'notify' :
                     print('got it')
@@ -74,10 +89,20 @@ function send_msg(msg, onsuccess , onfailure)
 
         };
 
-        console.info("try to send ....");
-        var json = JSON.stringify(msg);
-        console.log(json);
-        websocket.send(json);
+        getwebsocket().onopen = () => {
+        //setInterval(ping, 6000);
+        console.log('connecting to server...');
+            var json = JSON.stringify(msg);
+            console.log(json);
+            ws.send(json);
+        };
+        if(ws.readyState == WebSocket.OPEN) {
+            console.info("try to send ....");
+            var json = JSON.stringify(msg);
+            console.log(json);
+            ws.send(json);
+            //setInterval(ping, 6000);
+        }
         //websocket = new WebSocket("ws://10.100.102.5:6789");
     }catch (e) {
         console.log(e);

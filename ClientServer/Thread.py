@@ -25,11 +25,11 @@ class MyThread(Thread):
                 try:
                     ws = task['ws']
                     for us in self.UsersList:
-                        if ws.remote_address[0] == us.remote_address[0] and us.open:
+                        if ws.remote_address[0] == us['ws'].remote_address[0] and us['ws'].open and task['user'] == us['username']:
                             task['ws'] = us;
                             ws = us
 
-                    if ws.open:
+                    if us['ws'].open:
                         await ws.send(json.dumps({'action': 'notify', 'message': task['message']}))
                     else:
                         print('Websocket NOT connected. Trying to reconnect.')
