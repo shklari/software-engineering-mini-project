@@ -91,6 +91,14 @@ class DB:
         collection = self.mydb["Users"]
         user_to_remove = {"name": user_name}
         collection.delete_one(user_to_remove)
+        collection2 = self.mydb["StoreOwners"]
+        owners_to_remove = {"appointer": user_name}
+        collection2.delete_many(owners_to_remove)
+        collection2.delete_many({"owner": user_name})
+        collection3 = self.mydb["StoreManagers"]
+        managers_to_remove = {"appointer": user_name}
+        collection3.delete_many(managers_to_remove)
+        collection3.delete_many({"manager": user_name})
 
     def remove_store(self, store_name):
         collection = self.mydb["Stores"]
@@ -102,6 +110,8 @@ class DB:
         collection2.delete_one({"store_name": store_name})
         collection3 = self.mydb["Items"]
         collection3.delete_many({"store": store_name})
+        collection4 = self.mydb["Cart"]
+        collection4.delete_many({"store_name": store_name})
 
     def remove_store_manager(self, manager_name, store_name):
         collection = self.mydb["StoreManagers"]
@@ -118,7 +128,7 @@ class DB:
         cart_to_remove = {"user_name": user_name, "store_name": store_name}
         collection.delete_one(cart_to_remove)
 
-    def remove_item_from_cart(self, user_name, store_name, item_name):
+    def remove_item_from_cart(self, user_name, store_name, item_name, quantity_to_remove):
         collection = self.mydb["Cart"]
         item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
-        collection.delete_one(item_to_remove_from_cart)
+        collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": "-" + quantity_to_remove}})
