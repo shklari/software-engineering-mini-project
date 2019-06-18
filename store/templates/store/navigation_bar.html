@@ -534,9 +534,9 @@ var Alert = new CustomAlert();
 
                         <li class="search">
                             <div class="input-group">
-                                <input type="text" placeholder="Search..">
+                                <input type="text" placeholder="Search.." id="search">
                                 <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
+						        <button class="btn btn-primary" type="button" id="btnsearch" href="/search_items"><i class="icon-search"></i></button>
 						      </span>
                             </div>
                         </li>
@@ -623,6 +623,13 @@ var Alert = new CustomAlert();
         window.location.href = '/';
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
+    }
+    var btnsearch = document.getElementById('btnsearch');
+    btnsearch.onclick = function(event) {
+        var keyword = document.getElementById('search').value;
+        window.location.href = '/search_items/';
+        write_cookie('keyword', keyword);
+
     }
     window.onclick = function(event) {
         if (event.target == modal) {
