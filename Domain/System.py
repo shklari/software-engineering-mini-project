@@ -517,12 +517,12 @@ class System:
         # stores_from_db = self.database.get_all_stores_from_db()
         return self.stores
 
-    def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        self.database.add_notification(sender_username, receiver_username, key, message)
+    def send_notification_to_user(self, sender_username, receiver_username, key, message, typ):
+        self.database.add_notification(sender_username, receiver_username, key, message, typ)
 
     def get_user_notifications_from_db(self, user_name):
         res = self.database.get_user_notification(user_name)
-        return ResponseObject(True,res , '')
+        return ResponseObject(True, res, '')
         # response = {True, ret_list, ''}
         # return response
 

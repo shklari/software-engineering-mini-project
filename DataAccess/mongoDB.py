@@ -44,10 +44,10 @@ class DB:
                                                         "args": policy['args'], "override": policy['override']}}
         collection.insert_one(item_to_add)
 
-    def add_notification(self, sender_username, receiver_username, key, message):
+    def add_notification(self, sender_username, receiver_username, key, message, type):
         collection = self.mydb["UserNotification"]
         not_to_add = {"sender_username": sender_username, "receiver_username": receiver_username,
-                      "key": key, "message": message}
+                      "key": key, "message": message, "type": type}
         collection.insert_one(not_to_add)
 
     def add_cart(self, user_name, store_name, item_name, quantity):
@@ -112,7 +112,7 @@ class DB:
         for notification in curs:
             time = self.stamp_to_date(notification['key'])
             msg = {"message": notification['message'], "sender": notification['sender_username'],
-                   "time": ''} #TODO: fix time to json serilize
+                   "time": '', "type": notification['type']}  # TODO: fix time to json serilize
             ret_list.append(msg)
         return ret_list
 
