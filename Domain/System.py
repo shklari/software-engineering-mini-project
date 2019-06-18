@@ -46,11 +46,12 @@ class System:
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
         if not self.supplying_system.supply_handshake() or not self.collecting_system.collect_handshake():
             return ResponseObject(False, False, "Can't init external systems")
-        result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,
-                              system_manager_country)
-        if not result.success:
-            self.log.set_info("error: System manager could not sign up", "eventLog")
-            return ResponseObject(False, None, "System manager could not sign up")
+        result=''
+        if not self.get_user(system_manager_user_name):
+            result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,system_manager_country)
+            if not result.success:
+                self.log.set_info("error: System manager could not sign up", "eventLog")
+                return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password, system_manager_age, system_manager_country)
         self.database.add_user(manager)
@@ -173,7 +174,7 @@ class System:
             for owner in owner_list:
                 approved = True if owner.username == username else False
                 waitingList.append({'owner': owner.username, 'approved': approved})
-                self.send_notification_to_user(username, owner.username, timeStamp, message,1)
+                self.send_notification_to_user(username, owner.username, timeStamp, message,'1')
             store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
             self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
@@ -540,17 +541,18 @@ class System:
     def get_user_type(self, username):
         if username == self.system_manager.username:
             return "sys_manager"
-        for store in self.stores:
-            for owner in store.storeOwners:
-                if username == owner.username:
-                    return "store_owner"
-            for manager in store.storeManagers:
-                if username == manager.username:
-                    return "store_manager"
-        # if username in self.users:
-        if self.does_user_exist_in_db(username):
-            return "user"
-        return "guest"
+        return self.database.get_user_type(username)
+        # for store in self.stores:
+        #     for owner in store.storeOwners:
+        #         if username == owner.username:
+        #             return "store_owner"
+        #     for manager in store.storeManagers:
+        #         if username == manager.username:
+        #             return "store_manager"
+        # # if username in self.users:
+        # if self.does_user_exist_in_db(username):
+        #     return "user"
+        # return "guest"
 
     def get_stores(self):
         # TODO: get info from db !
