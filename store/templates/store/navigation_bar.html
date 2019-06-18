@@ -462,7 +462,7 @@ function CustomAlert(){
             var mes = '';
             val.forEach((message)=>{
                 var action ='';
-                if(message['type']==1) {action = 'onclick="confirmBox(' + message['message'] +')"'}
+                if(message['type']=='1') {action = 'onclick="confirmBox(' + message['message'] +')"'}
                     mes += '<span '+action+' class="content" >\n' +
                         '       <div class="notification-item1">\n' +
                         '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
