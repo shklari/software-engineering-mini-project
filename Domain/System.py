@@ -390,7 +390,7 @@ class System:
             return ResponseObject(False, False, "You can't remove yourself silly")
         if user_to_remove not in self.users:
             self.log.set_info("error: removing user failed: " + user_to_remove + " is not a user", "eventLog")
-            return ResponseObject(False, False, username + "is not a user")
+            return ResponseObject(False, False, user_to_remove + " is not a user")
         stores_to_remove = []
         for store in self.stores:
             if len(store.storeOwners) == 1 and user_to_remove == store.storeOwners[0].username:

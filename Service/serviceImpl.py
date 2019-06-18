@@ -70,7 +70,7 @@ class ServiceImpl(ServiceInterface):
 
     # changed 'username' to 'user_to_remove'
     def remove_user(self, user_to_remove, username):
-        result = self.sys.remove_user(user_to_remove)
+        result = self.sys.remove_user(user_to_remove, username)
         if not result.success:
             return ResponseObject(False, False, "Can't remove user\n" + result.message)
         else:
