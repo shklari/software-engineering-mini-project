@@ -14,7 +14,6 @@ import functools
 from Domain.BuyingPolicy import *
 
 
-
 class System:
 
     def __init__(self):
@@ -449,9 +448,9 @@ class System:
         return ResponseObject(True, size, "")
 
     def get_user(self, username):
-        # if username in self.users:
-            # print(self.users[username])
         return self.database.get_user(username)
+        # if username in self.users:
+        # print(self.users[username])
         # return self.users[username]
         # return None
 

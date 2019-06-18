@@ -68,7 +68,7 @@ class DB:
         return None
 
     def does_user_exist(self, user_name):
-        return True if self.mydb.Users.count_documents({"name": user_name}) > 1 else False
+        return True if self.mydb.Users.count_documents({"name": user_name}) > 0 else False
 
     def get_store(self, store_name):
         return self.mydb.Stores.find({"name": store_name})
