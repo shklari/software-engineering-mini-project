@@ -157,7 +157,7 @@ class System:
         for owner in owner_list:
             if owner.username == username:
                 found = True
-                break;
+                break
         if not found:
             return ResponseObject(False, False, username + " is not a owner of this store!")
         #
@@ -388,14 +388,15 @@ class System:
         if self.system_manager.username == user_to_remove:
             self.log.set_info("error: removing user failed: user can't remove himself", "eventLog")
             return ResponseObject(False, False, "You can't remove yourself silly")
-        remove_user = self.loggedInUsers[user_to_remove]
+        if user_to_remove not in self.users:
+            self.log.set_info("error: removing user failed: " + user_to_remove + " is not a user", "eventLog")
+            return ResponseObject(False, False, username + "is not a user")
         stores_to_remove = []
         for store in self.stores:
-            if len(store.storeOwners) == 1 and remove_user.username == store.storeOwners[0].username:
+            if len(store.storeOwners) == 1 and user_to_remove == store.storeOwners[0].username:
                 stores_to_remove.append(store)
         for st in stores_to_remove:
             self.stores.remove(st)
-        self.loggedInUsers.pop(user_to_remove)
         self.users.pop(user_to_remove)
         self.log.set_info("removing user succeeded", "eventLog")
         return ResponseObject(True, True, "User " + user_to_remove + " removed")

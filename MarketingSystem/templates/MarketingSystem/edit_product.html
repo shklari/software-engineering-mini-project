@@ -138,11 +138,11 @@ button:hover {
     <label for="productname">Product Name</label>
     <input id='productname' type="text" placeholder="Enter Product Name" name="productname" required>
 
-    <label for="price">Price     </label>
-    <input id='price' type="price" placeholder="Enter Price" name="price">
+    <label for="price">Price</label>
+    <input id='price' type="price" placeholder="Enter New Price" name="price">
 
-    <label for="quantity">Quantity  </label>
-    <input id='quantity' type="price" placeholder="Enter Quantity" name="quantity" required>
+    <label for="quantity">Quantity to add </label>
+    <input id='quantity' type="price" placeholder="Enter Quantity to add" name="quantity" required>
 
 {#    <label for="image">Choose Image</label>#}
 {#    <form action="/action_page.php">#}
@@ -167,6 +167,13 @@ button:hover {
         var price = +document.getElementById('price').value;
         var storename = read_cookie("store_name");
         var quantity = +document.getElementById('quantity').value;
+        var user_type = read_cookie("user_type");
+
+        if(user_type == "manager"){
+            send_msg({action: 'get_store_managers', store_name: storename}, (message, val) => {
+
+            }, onfailure);
+        }
         if (productname == '') {
             alert('product name field is empty !');
             return;
@@ -215,7 +222,7 @@ button:hover {
                             }, onfailure);
         else
             alert("input error");
-        await sleep(2000);
+        await sleep(1500);
         window.location.href = "/inventory/";
     }
     function sleep(ms) {

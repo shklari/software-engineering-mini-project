@@ -32,6 +32,36 @@ class Store(object):
                     return True
         return False
 
+    def check_if_can_add(self, user):
+        if isinstance(user, User):  # fixxxxx (check instance of store owner)
+            for k in self.storeOwners:
+                if k.username == user.username:
+                    return True
+            for k in self.storeManagers:
+                if k.username == user.username and k.permissions['Add']:
+                    return True
+        return False
+
+    def check_if_can_edit(self, user):
+        if isinstance(user, User):  # fixxxxx (check instance of store owner)
+            for k in self.storeOwners:
+                if k.username == user.username:
+                    return True
+            for k in self.storeManagers:
+                if k.username == user.username and k.permissions['Edit']:
+                    return True
+        return False
+
+    def check_if_can_remove(self, user):
+        if isinstance(user, User):  # fixxxxx (check instance of store owner)
+            for k in self.storeOwners:
+                if k.username == user.username:
+                    return True
+            for k in self.storeManagers:
+                if k.username == user.username and k.permissions['Remove']:
+                    return True
+        return False
+
     def check_if_store_manager(self, user):
         if isinstance(user, User):  # fixxxx (check instance of store manager)
             for k in self.storeManagers:
@@ -44,7 +74,7 @@ class Store(object):
     def add_item_to_inventory(self, user, item, quantity):
         if quantity >= 0:
             if isinstance(user, User) and user.logged_in:
-                if self.check_if_store_owner(user):
+                if self.check_if_can_add(user):
                     if len(self.inventory) == 0:
                         self.inventory = [{'name': item['name'],
                                            'val': Item(item['name'], item['price'], item['category'], self.name),
@@ -61,7 +91,7 @@ class Store(object):
                     self.log.set_info('error: user is no store owner for this store', 'eventLog')
                     return ResponseObject(False, False, "User is not an owner of store " + self.name)
             else:
-                self.log.set_info('error: user is not logged in or not a store owner', 'eventLog')
+                self.log.set_info('error: user does not have the permission to add item', 'eventLog')
                 return ResponseObject(False, False, "User is not logged in or is not a store owner")
         else:
             self.log.set_info('error: invalid quantity', 'eventLog')
@@ -71,7 +101,7 @@ class Store(object):
     def edit_item_quantity(self, user, item, quantity):
         if quantity >= 0:
             if isinstance(user, User) and user.logged_in:
-                if self.check_if_store_owner(user):
+                if self.check_if_can_edit(user):
                     if len(self.inventory) == 0:
                         return ResponseObject(False, False, "no such item in inventory")
                     else:
@@ -121,13 +151,12 @@ class Store(object):
 
     def remove_item_from_inventory(self, user, itemname):
         if isinstance(user, User) and user.logged_in:
-            if self.check_if_store_owner(user):
+            if self.check_if_can_remove(user):
                 for x in self.inventory:
                     if x['name'] == itemname:
                         self.inventory.remove(x)
                         self.log.set_info("item has been successfully removed from the store inventory!", "eventLog")
                         return ResponseObject(True, True, "")
-
                 self.log.set_info("error: item is not in the inventory of this store", "eventLog")
                 return ResponseObject(False, False, "Item " + itemname + " doesn't exist in the inventory of " + self.name)
             else:
