@@ -94,7 +94,7 @@ class DB:
             curs = self.mydb.Items.find({"store": store_name})
             ret_dict = []
             for item in curs:
-                tmpobj = {"name": item['name'], "item": Item(item['name'], item['store_name'], item['price'],
+                tmpobj = {"name": item['name'], "item": Item(item['name'], item['store'], item['price'],
                                             item['category']), "quantity": item["quantity"]}
                 # "policy": {"type": policy['type'], "combo": policy['combo'],
                 #                                         "args": policy['args'], "override": policy['override']}
