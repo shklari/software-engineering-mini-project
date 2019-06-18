@@ -184,7 +184,17 @@
         }
     </style>
 
-
+    <script>
+        var checkalertfunction=()=>{
+        send_msg({action:"has_alert", username:read_cookie('username')},()=> {
+                    alert('notify')
+                    $(document).ready(function() {
+                     $("#notify").fadeIn(1000).show();
+                    });
+        },()=>{});
+        setTimeout(checkalertfunction, 6000);
+    };
+    </script>
     <meta charset="UTF-8">
     <title>Navigation bar</title>
 
@@ -509,6 +519,7 @@ var Alert = new CustomAlert();
                                 if (cookie==null || cookie =='false' || cookie==''){
                                     document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
+                                    setTimeout(checkalertfunction, 6000);
                                     document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
@@ -639,6 +650,7 @@ var Alert = new CustomAlert();
         };
     }
 
+
     var btn = document.getElementById('loginbtn');
     var onsuccess =  (res,per) =>{
         alert(res);
@@ -676,9 +688,9 @@ var Alert = new CustomAlert();
     console.log(JSON.stringify(data, null, 2));
     ipadd = data['geoplugin_request'];
     write_cookie('username',ipadd);
+    //initclient();
     send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
     });
-
     }
 </script>
 

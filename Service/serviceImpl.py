@@ -11,7 +11,7 @@ class ServiceImpl(ServiceInterface):
         self.guests = []
         self.users = []
         self.admins = []
-        self.ownersAlert = RealTimeAlert(self)
+        self.ownersAlert = RealTimeAlert(self, self.guests,self.users)
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password, system_manager_age, system_manager_country):
@@ -366,3 +366,10 @@ class ServiceImpl(ServiceInterface):
     def add_store_policy(self, store_name, policy, user_name):
         ans = self.sys.add_store_policy(store_name, policy, user_name)
         return ResponseObject(ans.success, ans, ans.message)    # policy = {type, combo, args, override}
+
+    def has_alert(self,username):
+        for user in self.ownersAlert.notify_list:
+            if user == user:
+                self.ownersAlert.notify_list.remove(username)
+                return ResponseObject(True, True, '')
+        return ResponseObject(False, False, '')

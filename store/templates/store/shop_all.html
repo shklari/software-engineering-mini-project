@@ -88,7 +88,8 @@
                     var shop_onfailure = (res) => {
                         document.getElementById('pr').innerHTML+='There are no items to show';
                     };
-                    var products = send_msg({action:'shop_all'}, shop_onsuccess, shop_onfailure);
+                    var username = read_cookie('username');
+                    var products = send_msg({action:'shop_all',username:username}, shop_onsuccess, shop_onfailure);
                 </script>
 
             </div>
