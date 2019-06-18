@@ -1,5 +1,7 @@
 import pymongo
 from django.utils.datetime_safe import datetime
+
+from Domain.Item import Item
 from Domain.Store import Store
 from Domain.User import User
 
@@ -90,10 +92,15 @@ class DB:
     def get_store_inventory_from_db(self, store_name):
         if self.store_inventory_has_items(store_name):
             curs = self.mydb.Items.find({"store": store_name})
-            ret_list = []
-            return ret_list
-        return None
-        # TODO: return {inventory} loop over items and get all items of this store
+            ret_dict = []
+            for item in curs:
+                tmpobj = {"name": item['name'], "item": Item(item['name'], item['store_name'], item['price'],
+                                            item['category']), "quantity": item["quantity"]}
+                # "policy": {"type": policy['type'], "combo": policy['combo'],
+                #                                         "args": policy['args'], "override": policy['override']}
+                ret_dict.append(tmpobj)
+        return curs
+        # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):
         return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
