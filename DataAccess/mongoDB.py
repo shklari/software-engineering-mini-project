@@ -98,7 +98,7 @@ class DB:
                 # "policy": {"type": policy['type'], "combo": policy['combo'],
                 #                                         "args": policy['args'], "override": policy['override']}
                 ret_dict.append(tmpobj)
-        return curs
+        return ret_dict
         # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):
