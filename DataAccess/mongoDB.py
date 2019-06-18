@@ -260,3 +260,7 @@ class DB:
         collection = self.mydb["UserNotification"]
         notification_to_remove = {"receiver_username": user_name}
         collection.delete_many(notification_to_remove)
+
+    def remove_basket(self, user_name):
+        collection = self.mydb["Cart"]
+        collection.delete_many({"user_name": user_name})

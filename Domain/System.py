@@ -394,8 +394,12 @@ class System:
                 self.collecting_system.cancel_pay(pay_id)
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
-        # TODO: update db !
-        # Todo : remove items from store inventory
+            store = self.get_store(item['store_name'])
+            quantity_to_remove = self.database.get_quantity_from_cart((item.name, store))
+            quantity_to_remove *= -1
+            self.database.edit_item_quantity_in_db(store, item.name, quantity_to_remove)
+        if isinstance(curr_user, User):
+            self.database.remove_basket(username)
         self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, amount, "")
 
