@@ -145,6 +145,15 @@ class DB:
     def store_inventory_has_items(self, store_name):
         return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
 
+    def get_user_type(self, user_name):
+        if self.mydb.StoreOwners.count_documents({"owner": user_name}) > 0:
+            return "store_owner"
+        elif self.mydb.StoreManagers.count_documents({"manager": user_name}) > 0:
+            return "store_manager"
+        elif self.does_user_exist(user_name):
+            return "user"
+        return "guest"
+
     # return [{"message": , "sender": , "time": }]
     def get_user_notification(self, user_name):
         curs = self.mydb.UserNotification.find({"receiver_username": user_name})
