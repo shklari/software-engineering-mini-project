@@ -192,8 +192,7 @@ class System:
         if not add.success:
             return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n"
                                   + add.message)
-        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity,
-                               {"type": 0, "combo": 0, "args": 0, "override": 0})
+        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity, 0)
         self.log.set_info("adding item" + item['name'] + "to" + store_name + "succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
