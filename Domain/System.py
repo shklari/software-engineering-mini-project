@@ -187,7 +187,10 @@ class System:
         curr_user = find_user.value
         add = store.add_item_to_inventory(curr_user, item, quantity)
         if not add.success:
-            return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n" + add.message)
+            return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n"
+                                  + add.message)
+        # self.database.add_item()
+        self.log.set_info("adding item" + item['name'] + "to" + store_name + "succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
     def edit_item_price(self, username, store_name, itemname, new_price):
@@ -249,7 +252,6 @@ class System:
         else:
             return ResponseObject(False, True, "")
 
-
     def add_owner_to_store_helper(self,new_owner_name,username,store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
@@ -267,7 +269,6 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_owner_from_store(self, store_name, owner_to_remove, username):
-        # TODO: remove owner from db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -283,6 +284,7 @@ class System:
         remove = store.remove_owner(curr_user, new_owner_obj)
         if not remove.success:
             return remove
+        self.database.remove_store_owner(store_name, owner_to_remove)
         self.log.set_info("remove owner succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -307,7 +309,6 @@ class System:
         return ResponseObject(True, True, "")
 
     def remove_manager_from_store(self, store_name, manager_to_remove, username):
-        # TODO: update db !
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -324,6 +325,7 @@ class System:
         if not remove.success:
             return remove
         self.log.set_info("removing manager succeeded", "eventLog")
+        self.database.remove_store_manager(manager_to_remove, store_name)
         return ResponseObject(True, True, "")
 
     def buy_items(self, items, username):
@@ -370,14 +372,12 @@ class System:
             return ResponseObject(False, None, "Store already exists")
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
-            self.database.add_store(new_store)
-            self.database.add_store_owner(store_name, username, 0)
+            self.database.add_store(new_store, username)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
 
     def remove_user(self, user_to_remove, username):
-        # TODO: update db !
         if username not in self.loggedInUsers:
             self.log.set_info("error: remove user failed: user is not a subscriber in the system", "eventLog")
             return ResponseObject(False, None, "User " + username +
@@ -398,6 +398,7 @@ class System:
         for st in stores_to_remove:
             self.stores.remove(st)
         self.users.pop(user_to_remove)
+        self.database.remove_user(user_to_remove)
         self.log.set_info("removing user succeeded", "eventLog")
         return ResponseObject(True, True, "User " + user_to_remove + " removed")
 
