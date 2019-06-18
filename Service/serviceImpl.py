@@ -11,7 +11,7 @@ class ServiceImpl(ServiceInterface):
         self.guests = []
         self.users = []
         self.admins = []
-        self.ownersAlert = RealTimeAlert(self)
+        self.ownersAlert = RealTimeAlert(self, self.guests,self.users)
 
     # assumes the init function receives the username and password of the system manager
     def init(self, sm_username, sm_password, system_manager_age, system_manager_country):
@@ -70,7 +70,7 @@ class ServiceImpl(ServiceInterface):
 
     # changed 'username' to 'user_to_remove'
     def remove_user(self, user_to_remove, username):
-        result = self.sys.remove_user(user_to_remove)
+        result = self.sys.remove_user(user_to_remove, username)
         if not result.success:
             return ResponseObject(False, False, "Can't remove user\n" + result.message)
         else:
@@ -247,9 +247,9 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't add new owner " + new_owner + " to store " + store_name + "\n" + result.message)
         store = self.sys.get_store(store_name).value  # already checked if store exists in add_owner_to_store in system
         if result.success and (not result.value):
-            owner_notify =[]
+            owner_notify = []
             for own in store.storeOwners:
-                if own.username !=username:
+                if own.username != username:
                     owner_notify.append(own.username)
             self.ownersAlert.notify('notify', owner_notify, '')
 
@@ -366,3 +366,10 @@ class ServiceImpl(ServiceInterface):
     def add_store_policy(self, store_name, policy, user_name):
         ans = self.sys.add_store_policy(store_name, policy, user_name)
         return ResponseObject(ans.success, ans, ans.message)    # policy = {type, combo, args, override}
+
+    def has_alert(self,username):
+        for user in self.ownersAlert.notify_list:
+            if user == user:
+                self.ownersAlert.notify_list.remove(username)
+                return ResponseObject(True, True, '')
+        return ResponseObject(False, False, '')

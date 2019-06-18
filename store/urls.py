@@ -21,4 +21,5 @@ urlpatterns = [
     path('single_shop/', LoginView.as_view(template_name='store/single_shop.html'), name="single_shop"),
     path('store_policy/', LoginView.as_view(template_name='store/store_policy.html'), name="store_policy"),
     path('item_policy/', LoginView.as_view(template_name='store/item_policy.html'), name="item_policy"),
+    path('search_items/', LoginView.as_view(template_name='store/search_items.html'), name="search_items"),
 ]+ static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)

@@ -1,21 +1,25 @@
 
 import asyncio
 import json
-import logging
 import threading
 from log.Log import Log
 from ClientServer.Thread import MyThread
+import logging
+
 
 import websockets
 from Service.RealTimeAlert import RealTimeAlert
 
 from Service.serviceImpl import ServiceImpl
-
+logger = logging.getLogger('websocket.server')
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
 logging.basicConfig()
 
 STATE = {'value': 0}
 
 USERS = set()
+users_list = []
 
 service = ServiceImpl()
 
@@ -25,9 +29,12 @@ checkinit = service.init("avabash", "123456",21,'')
 
 service.sign_up("storeowner1", "111", 32, 'israel')
 service.sign_up("storeowner2", "111", 40, 'israel')
+service.sign_up("storeowner3", "111", 40, 'israel')
 service.sign_up("storeman1", "111", 25, 'israel')
 service.login("storeowner1", "111")
 service.create_store("osem", "storeowner1")
+service.add_new_owner("osem", "storeowner2","storeowner1")
+#service.add_new_owner("osem", "storeowner3","storeowner1")
 #service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
 service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
 service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
@@ -43,7 +50,7 @@ service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'
 # service.login("storeowner1", "111")
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
-#
+
 service.logout("storeowner1")
 
 # #######################################TEST
@@ -77,8 +84,13 @@ def users_event():
     return json.dumps({'type': 'users', 'count': len(USERS)})
 
 
-async def register(websocket):
+async def register(websocket,data):
+    # for x in USERS:
+    #     if not x.open:
+    #         USERS.remove(x)
+
     USERS.add(websocket)
+    users_list.append({'ws': websocket, 'username': data['username']})
 
 
 async def unregister(websocket):
@@ -86,7 +98,9 @@ async def unregister(websocket):
 
 
 async def helper(answer, action, websocket):
-    if answer.success:
+    if action == 'ping':
+        ans = state_event({'action': 'pong', 'return_val': 'pong', 'message': 'pong'})
+    elif answer.success:
         ans = state_event({'action': 'success', 'return_val': answer.value, 'message': answer.message})
     else:
         ans = state_event({'action': 'fail', 'return_val': answer.value, 'message': answer.message})
@@ -133,8 +147,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'], data['username'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'], data['username'])
-    elif data['action'] == 'edit_item_quantity':
-        ans = service.edit_item_quantity(data['name'], data['store_name'], data['quantity'], data['username'])
+    elif data['action'] == 'edit_product':
+        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'], data['username'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
@@ -147,12 +161,8 @@ async def datahandler(data, websocket):
         ans = service.new_guest(data['username'])
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
-    elif data['action'] == 'get_store_inv':
-        ans = service.get_store_inv(data['store_name'])
-    elif data['action'] == 'get_store_owners':
-        ans = service.get_store_owners(data['store_name'])
-    elif data['action'] == 'get_store_managers':
-        ans = service.get_store_managers(data['store_name'])
+    elif data['action'] == 'new_guest':
+        ans = service.new_guest(data['username'])
     elif data['action'] == 'add_item_policy':
         # policy = {type, combo, quantity, override}
         ans = service.add_item_policy(data['item_name'], data['store_name'], data['policy'], data['username'])
@@ -161,6 +171,10 @@ async def datahandler(data, websocket):
         ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
     elif data['action'] == 'approveNewOwner':
         ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
+    elif data['action'] == 'has_alert':
+        ans = service.has_alert(data['username'])
+    elif data['action'] == 'ping':
+        ans = 'pong'
     else:
         logging.error(
             "unsupported event: {}", data)
@@ -171,9 +185,10 @@ async def datahandler(data, websocket):
 async def looper(websocket, path):
     # ws = websocket
     # register(websocket) sends user_event() to websocket
-    await register(websocket)
+
     # while not websocket.open:
     #   await websockets.connect('ws://100.10.102.7:6789')
+
     try:
         if websocket.open:
             client = websocket.local_address
@@ -183,20 +198,25 @@ async def looper(websocket, path):
                 print(message)
                 data = json.loads(message)
                 print(data)
+                await register(websocket,data)
                 await datahandler(data, websocket)
     except Exception as e:
         log.set_info('communication failed', 'errorLog')
         print(e)
 #        await websocket.send('communication failed')
-    finally:
-        if websocket.open:
-            await unregister(websocket)
+    #finally:
+        #if websocket.open:
+        #    await unregister(websocket)
 
 t = MyThread()
-t.set(alert)
+t.set(alert,users_list)
 t.start()
 
-asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789))
+#pt = PingThread()
+#pt.set(alert)
+#pt.start()
+
+asyncio.get_event_loop().run_until_complete(websockets.serve(looper, '0.0.0.0', 6789, close_timeout=-1, ping_interval=20, ping_timeout=10))
 asyncio.get_event_loop().run_forever()
 
 

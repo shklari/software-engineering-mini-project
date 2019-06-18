@@ -1,4 +1,7 @@
 import pymongo
+from django.utils.datetime_safe import datetime
+from Domain.Store import Store
+from Domain.User import User
 
 
 class DB:
@@ -32,11 +35,11 @@ class DB:
         collection.insert_one(store_manager_to_add)
 
     # policy = {type, combo, args, override}
-    def add_item(self, item, quantity, policy):
+    def add_item(self, item_name, store_name, price, category, quantity, policy):
         collection = self.mydb["Items"]
-        item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
-                       "quantity": quantity, "policy": {"type": policy.type, "combo": policy.combo, "args": policy.args,
-                                                        "override": policy.override}}
+        item_to_add = {"name": item_name, "store": store_name, "price": price, "category": category,
+                       "quantity": quantity, "policy": {"type": policy['type'], "combo": policy['combo'],
+                                                        "args": policy['args'], "override": policy['override']}}
         collection.insert_one(item_to_add)
 
     def add_notification(self, sender_username, receiver_username, key, message):
@@ -59,21 +62,57 @@ class DB:
     # getters
 
     def get_user(self, user_name):
-        return self.mydb.Users.find({"name": user_name})
+        if self.does_user_exist(user_name):
+            curs = self.mydb.Users.find_one({"name": user_name})
+            the_user = User(user_name, curs['password'], curs['age'], curs['country'])
+            return the_user
+        return None
+
+    def does_user_exist(self, user_name):
+        return True if self.mydb.Users.count_documents({"name": user_name}) > 0 else False
 
     def get_store(self, store_name):
-        return self.mydb.Stores.find({"name": store_name})
+        if self.does_store_exist(store_name):
+            owner_name = self.mydb.StoreOwners.find_one({"store_name": store_name}, {"owner": 1})
+            owner = self.get_user(owner_name)
+            inventory = self.get_store_inventory_from_db(store_name)
+            the_store = Store(store_name, owner, inventory)
+            return the_store
+        return None
+
+    def does_store_exist(self, store_name):
+        return True if self.mydb.Stores.count_documents({"name": store_name}) > 0 else False
 
     def get_item_from_store(self, param, store_name):
         return self.mydb.Items.find({"store": store_name}, {"quantity": {"$gt": 0}},
                                     {"$or": [{"name": param}, {"price": param}, {"category": param}]})
 
-    def get_inventory_from_db(self):
-        return self.mydb.Items.find({})
+    # def get_store_inventory_from_db(self, store_name):
+    #     if self.store_inventory_has_items(store_name):
+    #         curs = self.mydb.Items.find({"store": store_name})
+    #         ret_list = []
+    #         the_user = User(user_name, curs['password'], curs['age'], curs['country'])
+    #         return the_user
+    #     return None
+        # TODO: return {inventory} loop over items and get all items of this store
 
-    def get_all_stores_from_db(self):
-        return self.mydb.Stores.find({})
+    def store_inventory_has_items(self, store_name):
+        return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
 
+    # return [{"message": , "sender": , "time": }]
+    def get_user_notification(self, user_name):
+        curs = self.mydb.UserNotification.find({"receiver_username": user_name})
+        ret_list = []
+        for notification in curs:
+            time = self.stamp_to_date(notification['key'])
+            msg = {"message": notification['message'], "sender": notification['sender_username'],
+                   "time": time}
+            ret_list.append(msg)
+        return ret_list
+
+    @staticmethod
+    def stamp_to_date(stamp):
+        return datetime.fromtimestamp(stamp)
     # editors
 
     def edit_item_price_in_db(self, store_name, item_name, new_price):

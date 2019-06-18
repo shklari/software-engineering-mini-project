@@ -15,6 +15,7 @@ class CollectingSystem(object):
             print(response.status_code)
             return response.text == 'OK'
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return False
 
@@ -34,6 +35,7 @@ class CollectingSystem(object):
                 return int(response.text)
             return -1
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return -1
 
@@ -45,6 +47,7 @@ class CollectingSystem(object):
             print(response.text)
             return response.text == '1'
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return False
 

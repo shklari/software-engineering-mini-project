@@ -20,11 +20,12 @@ class StoreUnitTests(unittest.TestCase):
         self.guest = Guest()
 
     def test_add_to_inventory(self):
-        self.assertTrue(self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category':'smoke'}, 1).success)
-        self.assertTrue(self.store.search_item_by_name(self.item.name).name == self.item.name)
+        self.assertTrue(self.store.add_item_to_inventory(self.user, {'name': "banana", 'price': 2, 'category':'fruits'}, 1).success)
+        self.assertTrue(self.store.edit_item_quantity(self.user, {'name': "BaliShag", 'price': 22, 'category':'smoke'}, 3))
         # check if the item that inserted is in the store inventory
-        self.assertFalse(self.store.add_item_to_inventory(self.guest, {'name': self.item.name, 'price': 20, 'category':'smoke'}, 1).success)
+        self.assertFalse(self.store.add_item_to_inventory(self.guest, {'name': 'chair', 'price': 20, 'category': 'furniture'}, 1).success)
         self.assertFalse(self.store.add_item_to_inventory(self.user, {'name': self.item.name, 'price': 20, 'category':'smoke'}, -1).success)
+        temp_qn = 0
         for k in self.store.inventory:
             if k['name'] == self.item.name:
                 temp_qn = k['quantity']

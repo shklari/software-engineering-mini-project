@@ -184,7 +184,17 @@
         }
     </style>
 
-
+    <script>
+        var checkalertfunction=()=>{
+        send_msg({action:"has_alert", username:read_cookie('username')},()=> {
+                    alert('notify')
+                    $(document).ready(function() {
+                     $("#notify").fadeIn(1000).show();
+                    });
+        },()=>{});
+        setTimeout(checkalertfunction, 6000);
+    };
+    </script>
     <meta charset="UTF-8">
     <title>Navigation bar</title>
 
@@ -230,9 +240,9 @@
                             "\t\t\t\t\t\t\t\t<li><h5 style=\'color: white\'>User</h5></li>\n" +
                             "\t\t\t\t\t\t\t</ul>\n" +
                             "\t\t\t\t\t\t</li>\n" +
-                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Enter User Id\' required></li>\n" +
+                            "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Enter User name\' required></li>\n" +
                             "\t\t\t\t\t\t<li>\n" +
-                            "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
+                            "\t\t\t\t\t\t\t<button id=\'removerbtn\' onclick=\"removeUser()\" style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
                             "\t\t\t\t\t\t</li>\n" +
                             "<li style=\'padding-left: 150px\'><h4 style=\'color: white\'>System manager permisions</h4></li>\n" +
                             "\t\t\t\t\t</ul>\n" +
@@ -265,26 +275,37 @@
                         break;
                         case  'store_manager':
                             document.write("<div>\n" +
-                                "\t\t\t\t\t<ul>\n" +
-                                "\t\t\t\t\t\t<li>\n" +
-                                "\t\t\t\t\t\t\t<ul>\n" +
-                                "\t\t\t\t\t\t\t\t<li><a href='/edit_product/' style=\"color: white\">Edit Product</a></li>\n" +
-                                "\t\t\t\t\t\t\t\t<li><a href='/add_product' style=\"color: white\">Add Product</a></li>\n" +
-                                "\t\t\t\t\t\t\t\t<li><a style=\"color: white\">Remove Product</a></li>\n" +
-                                "\t\t\t\t\t\t<li><input id='id_remove' placeholder=\'Product Name\' required></li>\n" +
-                                "\t\t\t\t\t\t<li>\n" +
-                                "\t\t\t\t\t\t\t<button id=\'removerbtn\' style=\'padding: 3px 10px;display: inline-block\' type=\'submit\'>Remove</button>\n" +
-                                "\t\t\t\t\t\t\t</ul>\n" +
-                                "\t\t\t\t\t\t</li>\n" +
-                                "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Owner permisions</h4></li>\n" +
-                                "\t\t\t\t\t</ul>\n" +
-                                "\n" +
-                                "\t\t\t\t</div>");
+                            "\t\t\t\t\t<ul>\n" +
+                            "\t\t\t\t\t\t<li>\n" +
+                            "\t\t\t\t\t\t\t<ul>\n" +
+                                "<li class=\"has-dropdown\" style=\"color: white\">\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/add-new-manager/' style=\"color: white\">Add new manager</a></li>\n" +
+                            "\t\t\t\t\t\t\t\t<li><a href='/remove-manager/' style=\"color: white\">Remove manager</a></li>\n" +
+                                "\t\t\t\t\t\t\t\t<li><a href='/inventory/' style=\"color: white\">Inventory</a></li>\n" +
+                            "\t\t\t\t\t\t\t</ul>\n" +
+                            "\t\t\t\t\t\t</li>\n" +
+                            "<li style=\"padding-left: 150px\"><h4 style=\"color: white\">Store Manager permisions</h4></li>\n" +
+                            "\t\t\t\t\t</ul>\n" +
+                            "\n" +
+                            "\t\t\t\t</div>");
                         break;
                     default:
                         document.write("<h2 style='color:white'>Hello Member</h2>");
                         break;
 
+                }
+
+                function removeUser(){
+                    var user = document.getElementById('id_remove').value;
+                    if(user != ''){
+                        send_msg({action: 'remove_user', user_to_remove: user , username: read_cookie("username")},
+                            (message, val)=>{
+                                alert(user + " removed");
+                            }, onfailure);
+                    }
+                    else
+                        alert("enter user to remove");
+                    document.getElementById('id_remove').value = "";
                 }
                 </script>
 			</div>
@@ -498,6 +519,7 @@ var Alert = new CustomAlert();
                                 if (cookie==null || cookie =='false' || cookie==''){
                                     document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
+                                    setTimeout(checkalertfunction, 6000);
                                     document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
@@ -512,9 +534,9 @@ var Alert = new CustomAlert();
 
                         <li class="search">
                             <div class="input-group">
-                                <input type="text" placeholder="Search..">
+                                <input type="text" placeholder="Search.." id="search">
                                 <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
+						        <button class="btn btn-primary" type="button" id="btnsearch" href="/search_items"><i class="icon-search"></i></button>
 						      </span>
                             </div>
                         </li>
@@ -602,6 +624,13 @@ var Alert = new CustomAlert();
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
     }
+    var btnsearch = document.getElementById('btnsearch');
+    btnsearch.onclick = function(event) {
+        var keyword = document.getElementById('search').value;
+        window.location.href = '/search_items/';
+        write_cookie('keyword', keyword);
+
+    }
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
@@ -627,6 +656,7 @@ var Alert = new CustomAlert();
             send_msg({action:'logout', username: username},logout_onsuccess, logout_onfailure);
         };
     }
+
 
     var btn = document.getElementById('loginbtn');
     var onsuccess =  (res,per) =>{
@@ -665,9 +695,9 @@ var Alert = new CustomAlert();
     console.log(JSON.stringify(data, null, 2));
     ipadd = data['geoplugin_request'];
     write_cookie('username',ipadd);
+    //initclient();
     send_msg({action:'new_guest',username:ipadd},(res)=>{alert(res),()=>{}})
     });
-
     }
 </script>
 

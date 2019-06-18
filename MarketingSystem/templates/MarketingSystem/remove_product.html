@@ -1,0 +1,182 @@
+{% extends "store/navigation_bar.html" %}
+{%load static%}
+{%load staticfiles %}
+{% block head2 %}
+    <head>
+    <title>Shoppers &mdash; Colorlib e-Commerce Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+    <link rel="stylesheet" href={% static 'fonts/icomoon/style.css' %}>
+
+    <link rel="stylesheet" href={% static 'css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/magnific-popup.css' %}>
+    <link rel="stylesheet" href={% static 'css/jquery-ui.css' %}>
+    <link rel="stylesheet" href={% static 'css/owl1.carousel.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/owl.theme.default.min.css' %}>
+
+
+    <link rel="stylesheet" href={% static 'css/aos.css' %}>
+
+    <link rel="stylesheet" href={% static 'css/style1.css' %}>
+    <script src="{% static 'js/client.js' %}"></script>
+    <script src="{% static 'js/cookieMonster.js' %}"></script>
+
+  </head>
+{% endblock %}
+
+
+{% block body %}
+    <html>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box}
+
+/* Full-width input fields */
+input[type=text], input[type=price] {
+  width: 20%;
+  padding: 4px;
+  margin: 3px 0 8px 0;
+  display: block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=price]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.popuptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 70%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 10px 12px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .editprobtn {
+  float: left;
+  width: 40%;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 10px;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 200px) {
+  .cancelbtn, .editprobtn {
+     width: 100%;
+  }
+}
+</style>
+<body>
+<script src="{% static 'js/cookieMonster.js' %}"></script>
+<div style="border:1px solid #ccc">
+  <div class="container">
+      <br>
+    <h2>Edit Product</h2>
+    <h3>Please fill in this form to edit the product.</h3>
+    <hr>
+
+    <label for="productname">Product Name</label>
+    <input id='productname' type="text" placeholder="Enter Product Name" name="productname" required>
+
+    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+    {% csrf_token %}
+    <div class="clearfix">
+      <button onclick="window.location.href='/'" type="button" class="cancelbtn">Cancel</button>
+      <button id='editprobtn' class="editprobtn" onclick="removePro()">Submit
+      <span class="popuptext" id="myPopup">A Simple Popup!</span>
+      </button>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/client.js' %}"></script>
+<script type="text/javascript">
+    function removePro(){
+        var productname = document.getElementById('productname').value;
+        var storename = read_cookie("store_name");
+        var username = read_cookie('username');
+        if (productname != '') {
+            send_msg({
+                action: 'remove_item_from_inventory',
+                item_name: productname,
+                store_name: storename,
+                username: username,
+            },
+            (message, val) => {
+                alert("item has been successfully removed from inventory");
+                window.location.href = "/inventory/";
+            }, onfailure);
+        }
+    }
+</script>
+</body>
+</html>
+    <script src={% static 'js/jquery-3.3.1.min.js' %}></script>
+  <script src={% static 'js/jquery-ui.js' %}></script>
+  <script src={% static 'js/popper.min.js' %}></script>
+  <script src={% static 'js/bootstrap1.min.js' %}></script>
+  <script src={% static 'js/owl1.carousel.min.js' %}></script>
+  <script src={% static 'js/jquery.magnific-popup.min.js' %}></script>
+  <script src={% static 'js/aos.js' %}></script>
+
+  <script src={% static 'js/main1.js' %}></script>
+{% endblock %}

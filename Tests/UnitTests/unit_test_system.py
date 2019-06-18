@@ -1,3 +1,4 @@
+from time import sleep
 from unittest import TestCase
 from Domain.System import System
 
@@ -82,13 +83,31 @@ class TestStore(UnitTestSystem):
         self.assertEqual(len(self.system.stores), 1)
         self.assertEqual(self.system.stores[0].name, 'zara')
 
-    def test_add_manager(self):
+    def test_db(self):
+        self.system.init_system('theNewName', '1234', 21, "israel")
+        self.system.sign_up('shklark', '234', 2334, 'teman')
+        self.system.sign_up('TheWorker', '6', 22, 'luv')
+        key = self.system.dateToStamp()
+        self.system.send_notification_to_user('theNewName', 'TheWorker', key, 'fuck you')
+        sleep(8)
+        key = self.system.dateToStamp()
+        self.system.send_notification_to_user('shklark', 'TheWorker', key, 'second message')
+        print(self.system.get_user_notifications_from_db('TheWorker'))
+        # self.system.login('theNewName4', '1234')
+
+        # self.system.create_store('aStore', 'theNewName')
+        # self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'anItem', 'price': 43323, 'category': 'fish3'}, 173)
+        # self.system.add_to_cart('aStore', 'anItem', 63, 'theNewName')
+        # self.system.add_manager_to_store('aStore', 'TheWorker', {'Edit': 1, 'Remove': 1,
+        #                                                          'Add': 0, 'Discounts': 0}, 'theNewName')
+
+    def test_db_specific(self):
         self.system.init_system('ssss', '1234', 21, "israel")
-        self.system.login('ssss', '1234')
-        self.system.create_store('aStore', 'ssss')
-        mdfqa = self.system.get_store('aStore').value
-        shai = self.system.get_user('ssss')
-        mdfqa.add_item_to_inventory(shai, {'name': 'anItem', 'price': 43323, 'category': 'fish3'}, 173)
-        self.system.add_to_cart('aStore', 'anItem', 63, 'ssss')
+        self.system.sign_up('shesh', '6', 22, 'luv')
+        real_user = self.system.get_user('shesh')
+        for usr in real_user:
+            print(usr['name'])
+        print(self.system.does_user_exist_in_db('shesh'))
+        print(self.system.does_user_exist_in_db('avishi'))
 
 
