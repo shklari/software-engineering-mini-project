@@ -112,7 +112,7 @@ class DB:
         for notification in curs:
             time = self.stamp_to_date(notification['key'])
             msg = {"message": notification['message'], "sender": notification['sender_username'],
-                   "time": time}
+                   "time": ''} #TODO: fix time to json serilize
             ret_list.append(msg)
         return ret_list
 
