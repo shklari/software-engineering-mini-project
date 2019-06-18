@@ -191,7 +191,7 @@
                      $("#notify").fadeIn(1000).show();
                     });
         },()=>{});
-        setTimeout(checkalertfunction, 6000);
+        setTimeout(checkalertfunction, 4000);
     };
     var confirmBox = function (message) {
         var person = prompt("Please enter owner name:", "");
@@ -205,6 +205,12 @@
         }
         send_msg({action:'approveNewOwner',new_owner:person,store:store},()=>{},()=>{})
       }
+    };
+
+    var clearNotifications = function () {
+        send_msg({action:'remove_user_notifications',username:read_cookie('username')})
+        $('#box').hide();
+
     }
 
     </script>
@@ -503,7 +509,7 @@ var Alert = new CustomAlert();
 
 
    </div>
-      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="">
+      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="clearNotifications()">
 		    <i class="fa icon-trash" aria-hidden="true"></i>
 		    <span class="fs-it-btn-vertical-line"></span>
 		    Clear All</button>
@@ -551,7 +557,7 @@ var Alert = new CustomAlert();
                                 if (cookie==null || cookie =='false' || cookie==''){
                                     document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
-                                    setTimeout(checkalertfunction, 6000);
+                                    setTimeout(checkalertfunction, 4000);
                                     document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>

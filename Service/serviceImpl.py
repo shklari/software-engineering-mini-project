@@ -380,3 +380,7 @@ class ServiceImpl(ServiceInterface):
 
     def get_notifications(self,username):
         return self.sys.get_user_notifications_from_db(username)
+
+    def remove_user_notifications(self, username):
+        return self.sys.remove_user_notifications_from_db(username)
+
