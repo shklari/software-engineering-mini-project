@@ -27,17 +27,17 @@ checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
 
-service.sign_up("storeowner1", "111", 32, 'israel')
-service.sign_up("storeowner2", "111", 40, 'israel')
-service.sign_up("storeowner3", "111", 40, 'israel')
-service.sign_up("storeman1", "111", 25, 'israel')
-service.login("storeowner1", "111")
-service.create_store("osem", "storeowner1")
-service.add_new_owner("osem", "storeowner2","storeowner1")
+#service.sign_up("storeowner1", "111", 32, 'israel')
+#service.sign_up("storeowner2", "111", 40, 'israel')
+#service.sign_up("storeowner3", "111", 40, 'israel')
+#service.sign_up("storeman1", "111", 25, 'israel')
+#service.login("storeowner1", "111")
+#service.create_store("osem", "storeowner1")
+#service.add_new_owner("osem", "storeowner2","storeowner1")
 #service.add_new_owner("osem", "storeowner3","storeowner1")
 #service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
-service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
-service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
+#service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
+#service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
 #service.add_to_cart('osem','soup',2)
 #service.add_to_cart('osem','bamba',2)
 #service.get_basket()
@@ -51,7 +51,7 @@ service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
-service.logout("storeowner1")
+#service.logout("storeowner1")
 
 # #######################################TEST
 ws = 0
