@@ -1,3 +1,4 @@
+from time import sleep
 from unittest import TestCase
 from Domain.System import System
 
@@ -84,7 +85,14 @@ class TestStore(UnitTestSystem):
 
     def test_db(self):
         self.system.init_system('theNewName', '1234', 21, "israel")
+        self.system.sign_up('shklark', '234', 2334, 'teman')
         self.system.sign_up('TheWorker', '6', 22, 'luv')
+        key = self.system.dateToStamp()
+        self.system.send_notification_to_user('theNewName', 'TheWorker', key, 'fuck you')
+        sleep(8)
+        key = self.system.dateToStamp()
+        self.system.send_notification_to_user('shklark', 'TheWorker', key, 'second message')
+        print(self.system.get_user_notifications_from_db('TheWorker'))
         # self.system.login('theNewName4', '1234')
 
         # self.system.create_store('aStore', 'theNewName')

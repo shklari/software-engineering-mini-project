@@ -514,11 +514,16 @@ class System:
 
     def get_stores(self):
         # TODO: get info from db !
-        stores_from_db = self.database.get_all_stores_from_db()
+        # stores_from_db = self.database.get_all_stores_from_db()
         return self.stores
 
     def send_notification_to_user(self, sender_username, receiver_username, key, message):
         self.database.add_notification(sender_username, receiver_username, key, message)
+
+    def get_user_notifications_from_db(self, user_name):
+        return self.database.get_user_notification(user_name)
+        # response = {True, ret_list, ''}
+        # return response
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !
@@ -581,6 +586,3 @@ class System:
     def dateToStamp(self):
         now = datetime.now()
         return datetime.timestamp(now)
-
-    def stampToDate(self,stamp):
-        return datetime.fromtimestamp(stamp)
