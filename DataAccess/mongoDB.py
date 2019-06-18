@@ -40,8 +40,7 @@ class DB:
     def add_item(self, item_name, store_name, price, category, quantity, policy):
         collection = self.mydb["Items"]
         item_to_add = {"name": item_name, "store": store_name, "price": price, "category": category,
-                       "quantity": quantity, "policy": {"type": policy['type'], "combo": policy['combo'],
-                                                        "args": policy['args'], "override": policy['override']}}
+                       "quantity": quantity, "policy": policy}
         collection.insert_one(item_to_add)
 
     def add_notification(self, sender_username, receiver_username, key, message, type):
@@ -95,11 +94,11 @@ class DB:
             ret_dict = []
             for item in curs:
                 tmpobj = {"name": item['name'], "item": Item(item['name'], item['store'], item['price'],
-                                            item['category']), "quantity": item["quantity"]}
+                                                             item['category']), "quantity": item["quantity"]}
                 # "policy": {"type": policy['type'], "combo": policy['combo'],
                 #                                         "args": policy['args'], "override": policy['override']}
                 ret_dict.append(tmpobj)
-        return curs
+        return ret_dict
         # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):

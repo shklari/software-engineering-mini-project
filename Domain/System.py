@@ -173,7 +173,7 @@ class System:
             for owner in owner_list:
                 approved = True if owner.username == username else False
                 waitingList.append({'owner': owner.username, 'approved': approved})
-                self.send_notification_to_user(username, owner.username, timeStamp, message)
+                self.send_notification_to_user(username, owner.username, timeStamp, message,1)
             store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
             self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
@@ -192,8 +192,7 @@ class System:
         if not add.success:
             return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n"
                                   + add.message)
-        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity,
-                               {"type": 0, "combo": 0, "args": 0, "override": 0})
+        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity, 0)
         self.log.set_info("adding item" + item['name'] + "to" + store_name + "succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -535,6 +534,9 @@ class System:
                 retList.append(new_item)
         return ResponseObject(True, retList, "")
 
+    def get_store_inventory_from_db(self, store_name):
+        return self.database.get_store_inventory_from_db(store_name)
+
     def get_user_type(self, username):
         if username == self.system_manager.username:
             return "sys_manager"
@@ -563,6 +565,10 @@ class System:
         return ResponseObject(True, res, '')
         # response = {True, ret_list, ''}
         # return response
+
+    def remove_user_notifications_from_db(self, user_name):
+        self.database.remove_user_notifications(user_name)
+        return ResponseObject(True, True, '')
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !

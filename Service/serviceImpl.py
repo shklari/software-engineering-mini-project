@@ -219,8 +219,8 @@ class ServiceImpl(ServiceInterface):
                     message = "item " + item_name + " is out of stock!";
                     timeStamp = self.sys.dateToStamp();
                     for owner in store.storeOwners:
-                        self.sys.send_notification_to_user('System Alert',owner,timeStamp,message)
-                    self.ownersAlert.notify('notify', store.storeOwners, message)
+                        self.sys.send_notification_to_user('System Alert',owner,timeStamp,message,0)
+                    #self.ownersAlert.notify('notify', store.storeOwners, message)
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "The quantity of item " + item_name + " was successfully decreased")
 
@@ -275,7 +275,8 @@ class ServiceImpl(ServiceInterface):
         result = self.sys.add_manager_to_store(store_name, new_manager, permissions, username)
         if not result.success:
             return ResponseObject(False, False, "Can't add new manager " + new_manager + " to store " + store_name + "\n" + result.message)
-        self.ownersAlert.notify('notify', [new_manager], "you are now a manager of " + store_name + "store")
+        #self.ownersAlert.notify('notify', [new_manager], "you are now a manager of " + store_name + "store")
+        self.sys.send_notification_to_user('System',new_manager,self.sys.dateToStamp(),"you are now a manager of " + store_name + "store",0)
         store = self.sys.get_store(store_name).value
         managers = []
         for m in store.storeManagers:
@@ -286,7 +287,8 @@ class ServiceImpl(ServiceInterface):
         result = self.sys.remove_owner_from_store(store_name, owner_to_remove, username)
         if not result.success:
             return ResponseObject(False, False, "Can't remove owner " + owner_to_remove + " from store " + store_name + "\n" + result.message)
-        self.ownersAlert.notify('notify',[owner_to_remove], "you are no longer store owner of " + store_name + "store")
+        #self.ownersAlert.notify('notify',[owner_to_remove], "you are no longer store owner of " + store_name + "store")
+        self.sys.send_notification_to_user('System', owner_to_remove, self.sys.dateToStamp(),"you are no longer store owner of " + store_name + "store", 0)
         store = self.sys.get_store(store_name).value
         owners = []
         for o in store.storeOwners:
@@ -299,7 +301,8 @@ class ServiceImpl(ServiceInterface):
         if not result.success:
             return ResponseObject(False, False, "Can't remove manager " + manager_to_remove +
                                   " from store " + store_name + "\n" + result.message)
-        self.ownersAlert.notify('notify',[manager_to_remove], "you are no longer manager owner of " + store_name + "store")
+        #self.ownersAlert.notify('notify',[manager_to_remove], "you are no longer manager owner of " + store_name + "store")
+        self.sys.send_notification_to_user('System', manager_to_remove, self.sys.dateToStamp(),"you are no longer manager owner of " + store_name + "store", 0)
         store = self.sys.get_store(store_name).value
         managers = []
         for m in store.storeManagers:
@@ -377,3 +380,7 @@ class ServiceImpl(ServiceInterface):
 
     def get_notifications(self,username):
         return self.sys.get_user_notifications_from_db(username)
+
+    def remove_user_notifications(self, username):
+        return self.sys.remove_user_notifications_from_db(username)
+
