@@ -8,8 +8,8 @@ function read_cookie(key)
 }
 
 function getwebsocket() {
-    if(this.websocket == undefined)
-        this.websocket = new WebSocket('ws://192.168.0.23:6789');
+    if(this.websocket == undefined || websocket.readyState == 3)
+        this.websocket = new WebSocket('ws://localhost:6789');
     return this.websocket;
 }
 
@@ -100,6 +100,7 @@ function send_msg(msg, onsuccess , onfailure,onerror)
             ws.send(json);
             //setInterval(ping, 6000);
         }
+
     }catch (e) {
         console.log(e);
     }

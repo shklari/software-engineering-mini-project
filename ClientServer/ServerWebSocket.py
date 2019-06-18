@@ -173,8 +173,10 @@ async def datahandler(data, websocket):
         ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
     elif data['action'] == 'has_alert':
         ans = service.has_alert(data['username'])
-    elif data['action'] == 'ping':
-        ans = 'pong'
+    elif data['action'] == 'get_notification':
+        ans = service.get_notifications(data['username'])
+    elif data['action'] == 'remove_user_notifications':
+        ans = service.remove_user_notifications(data['username'])
     else:
         logging.error(
             "unsupported event: {}", data)

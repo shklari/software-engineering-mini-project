@@ -51,6 +51,7 @@
           border-radius: 2px;
         }
         .notification .badge {
+            display: none;
           position: absolute;
           top: 15px;
           right: -7px;
@@ -190,15 +191,35 @@
                      $("#notify").fadeIn(1000).show();
                     });
         },()=>{});
-        setTimeout(checkalertfunction, 6000);
+        setTimeout(checkalertfunction, 4000);
     };
+    var confirmBox = function (message) {
+        var person = prompt("Please enter owner name:", "");
+        var store='';
+      if (person == null || person == "" ) {
+        return;
+      } else {
+        store = prompt("Please enter store name:", "");
+        if (person == null || person == "" ) {
+            return;
+        }
+        send_msg({action:'approveNewOwner',new_owner:person,store:store},()=>{},()=>{})
+      }
+    };
+
+    var clearNotifications = function () {
+        send_msg({action:'remove_user_notifications',username:read_cookie('username')})
+        $('#box').hide();
+
+    }
+
     </script>
     <meta charset="UTF-8">
     <title>Navigation bar</title>
 
     <div id="id01" class="modal2">
         <div class="modal-content2 animate">
-            <div class="imgcontainer2">      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="imgcontainer2"> <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="{% static 'images/img_avatar2.png' %}" alt="Avatar" class="avatar">
             </div>
 
@@ -419,8 +440,8 @@ ul.dropdown-menu1.notifications1 {
     display: none;mix-width: 25%;
     top:50px;
     min-width: 255px;
-    list-style:square;
-    overflow: scroll;
+    max-width: 255px;
+    overflow: paged-y;
     z-index: 1;
     position: fixed;
 }
@@ -437,17 +458,21 @@ function CustomAlert(){
             '      </div>\n' +
             '    </a>';
         send_msg({action:'get_notification',username:read_cookie('username')},(res,val)=>{
-            var messages = val['messages'];
+            //var messages = val['messages'];
             var mes = '';
-            messages.forEach((message)=>{
-                mes += '<a class="content" href="#">\n' +
-            '       <div class="notification-item1">\n' +
-            '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
-            '        <h4 class="item-title1">New message from : '+message['sender']+'<small> '+message['time']+'</small></h4>\n' +
-            '        <p class="item-info1">'+message['message']+'</p>\n' +
-            '      </div>\n' +
-            '    </a>';
+            val.forEach((message)=>{
+                var action ='';
+                if(message['type']=='1') {action = 'onclick="confirmBox(' + message['message'] +')"'}
+                    mes += '<span '+action+' class="content" >\n' +
+                        '       <div class="notification-item1">\n' +
+                        '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
+                        '        <h4 class="item-title1">New message from : ' + message['sender'] + '<small> ' + message['time'] + '</small></h4>\n' +
+                        '        <p class="item-info1">' + message['message'] + '</p>\n' +
+                        '      </div>\n' +
+                        '    </span>';
+
             });
+
             document.getElementById('mes_list').innerHTML=mes;
         },()=>{
             document.getElementById('mes_list').innerHTML='<a class="content" href="#">\n' +
@@ -484,7 +509,7 @@ var Alert = new CustomAlert();
 
 
    </div>
-      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="">
+      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="clearNotifications()">
 		    <i class="fa icon-trash" aria-hidden="true"></i>
 		    <span class="fs-it-btn-vertical-line"></span>
 		    Clear All</button>
@@ -532,7 +557,7 @@ var Alert = new CustomAlert();
                                 if (cookie==null || cookie =='false' || cookie==''){
                                     document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
-                                    setTimeout(checkalertfunction, 6000);
+                                    setTimeout(checkalertfunction, 4000);
                                     document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>

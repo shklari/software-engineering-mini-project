@@ -83,7 +83,7 @@ class DB:
     def add_notification(self, sender_username, receiver_username, key, message):
         collection = self.mydb["UserNotification"]
         not_to_add = {"sender_username": sender_username, "receiver_username": receiver_username,
-                      "key": key, "message": message}
+                      "key": key, "message": message, "type": type}
         collection.insert_one(not_to_add)
 
     def add_cart(self, user_name, store_name, item_name, quantity):
@@ -130,24 +130,25 @@ class DB:
             curs = self.mydb.Items.find({"store": store_name})
             ret_dict = []
             for item in curs:
-                tmpobj = {"name": item['name'], "item": Item(item['name'], item['store_name'], item['price'],
-                                            item['category']), "quantity": item["quantity"]}
+                tmpobj = {"name": item['name'], "item": Item(item['name'], item['store'], item['price'],
+                                                             item['category']), "quantity": item["quantity"]}
                 # "policy": {"type": policy['type'], "combo": policy['combo'],
                 #                                         "args": policy['args'], "override": policy['override']}
                 ret_dict.append(tmpobj)
-        return curs
+        return ret_dict
         # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):
         return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
 
+    # return [{"message": , "sender": , "time": }]
     def get_user_notification(self, user_name):
         curs = self.mydb.UserNotification.find({"receiver_username": user_name})
         ret_list = []
         for notification in curs:
             time = self.stamp_to_date(notification['key'])
             msg = {"message": notification['message'], "sender": notification['sender_username'],
-                   "time": time}
+                   "time": '', "type": notification['type']}  # TODO: fix time to json serilize
             ret_list.append(msg)
         return ret_list
 
@@ -250,3 +251,8 @@ class DB:
         collection = self.mydb["Cart"]
         item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
         collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": quantity_to_remove}})
+
+    def remove_user_notifications(self, user_name):
+        collection = self.mydb["UserNotification"]
+        notification_to_remove = {"receiver_username": user_name}
+        collection.delete_many(notification_to_remove)
