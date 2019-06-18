@@ -174,6 +174,21 @@ class System:
             store.waitingForBecomeOwner.append({'waitingName':new_owner_name , 'waitingList':waitingList})
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
 
+    def add_item_to_inventory(self, username, store_name, item, quantity):
+        store_result = self.get_store(store_name)
+        if store_result is None:
+            return ResponseObject(False, False,
+                                  "Error: can't add items to store ")
+        store = store_result.value
+        find_user = self.get_user_or_guest(username)
+        if find_user is None:
+            return find_user
+        curr_user = find_user.value
+        add = store.add_item_to_inventory(curr_user, item, quantity)
+        if not add.success:
+            return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n" + add.message)
+        return ResponseObject(True, True, "")
+
     def edit_item_price(self, username, store_name, itemname, new_price):
         store_result = self.get_store(store_name)
         if store_result is None:

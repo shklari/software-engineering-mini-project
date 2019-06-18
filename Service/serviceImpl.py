@@ -128,23 +128,38 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
         return ResponseObject(True, True, "Transaction succeeded. Items removed from basket\n" + result.message)
 
-    # item ::= {'name': string, 'price': int, 'category': string, 'store_name': string}
+    # item ::= {'name': string, 'price': int, 'category': string}
     def add_item_to_inventory(self, item, store_name, quantity, username):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
-            return ResponseObject(False, False, "Error: can't add items to store " + store_name + "\n" + store_result.message)
+            return ResponseObject(False, False,
+                                  "Error: can't edit items in store " + store_name + "\n" + store_result.message)
         store = store_result.value
         find_user = self.sys.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        add = store.add_item_to_inventory(curr_user, item, quantity)
+        add = self.sys.add_item_to_inventory(curr_user.username, store_name, item, quantity)
         if not add.success:
-            return ResponseObject(False, False, "Error: can't add item " + item['name'] + " to store " + store_name + "\n" + add.message)
-        inv = []
-        for i in store.inventory:
-            inv.append({'name': i['name'], 'quantity': i['quantity']})
-        return ResponseObject(True, inv, "Item " + item['name'] + " added successfully to " + store_name + " inventory")
+            return ResponseObject(False, False,
+                                  "Error: can't add item " + item['name'] + " to store " + store_name + "\n" + add.message)
+        return ResponseObject(True, {'name': item['name']},
+                              "The item " + item['name'] + " was successfully added")
+        # store_result = self.sys.get_store(store_name)
+        # if not store_result.success:
+        #     return ResponseObject(False, False, "Error: can't add items to store " + store_name + "\n" + store_result.message)
+        # store = store_result.value
+        # find_user = self.sys.get_user_or_guest(username)
+        # if not find_user.success:
+        #     return find_user
+        # curr_user = find_user.value
+        # add = store.add_item_to_inventory(curr_user, item, quantity)
+        # if not add.success:
+        #     return ResponseObject(False, False, "Error: can't add item " + item['name'] + " to store " + store_name + "\n" + add.message)
+        # inv = []
+        # for i in store.inventory:
+        #     inv.append({'name': i['name'], 'quantity': i['quantity']})
+        # return ResponseObject(True, inv, "Item " + item['name'] + " added successfully to " + store_name + " inventory")
 
     def remove_item_from_inventory(self, item_name, store_name, username):
         store_result = self.sys.get_store(store_name)
@@ -217,13 +232,13 @@ class ServiceImpl(ServiceInterface):
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        edit = self.sys.edit_item_price(curr_user, store_name, item_name, new_price)
+        edit = self.sys.edit_item_price(curr_user.username, store_name, item_name, new_price)
         if not edit.success:
             return ResponseObject(False, False, "Error: can't edit item " + item_name + " in store " + store_name + "\n" + edit.message)
         ret = store.search_item_by_name(item_name)
         if not ret:
             return ResponseObject(False, False, "Error: item " + item_name + "doesn't exist in this store's inventory")
-        return ResponseObject(True, {'name': ret['name'], 'price': ret['price']},
+        return ResponseObject(True, {'name': item_name, 'price': ret.price},
                               "The price of item " + item_name + " was successfully changed")
 
     def add_new_owner(self, store_name, new_owner, username):

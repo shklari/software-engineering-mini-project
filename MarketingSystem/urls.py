@@ -34,6 +34,8 @@ urlpatterns = [
     path('remove-manager/', LoginView.as_view(template_name='MarketingSystem/removeManager.html'), name="removeManager"),
     path('add_product/', LoginView.as_view(template_name='store/add_product.html'), name="add_product"),
     path('edit_product/', LoginView.as_view(template_name='MarketingSystem/edit_product.html'), name="edit_product"),
+    path('remove_product/', LoginView.as_view(template_name='MarketingSystem/remove_product.html'), name="remove_product"),
+    path('add_item/', LoginView.as_view(template_name='MarketingSystem/add_item.html'), name="add_item"),
     path('inventory/', LoginView.as_view(template_name='MarketingSystem/inventory.html'), name="inventory"),
     # path('', views.index, name='home'),
     path('', include('store.urls'), name='list'),
