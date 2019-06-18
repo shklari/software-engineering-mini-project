@@ -118,6 +118,9 @@ class DB:
             return the_store
         return None
 
+    def get_quantity_from_cart(self, item_name, store_name):
+        return self.mydb.Cart.find_one({"item_name": item_name, "store_name": store_name})['quantity']
+
     def does_store_exist(self, store_name):
         return True if self.mydb.Stores.count_documents({"name": store_name}) > 0 else False
 
@@ -135,7 +138,8 @@ class DB:
                 # "policy": {"type": policy['type'], "combo": policy['combo'],
                 #                                         "args": policy['args'], "override": policy['override']}
                 ret_dict.append(tmpobj)
-        return ret_dict
+            return ret_dict
+        return None
         # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):
