@@ -1,5 +1,7 @@
 import pymongo
 
+from Domain.User import User
+
 
 class DB:
     def __init__(self):
@@ -32,11 +34,11 @@ class DB:
         collection.insert_one(store_manager_to_add)
 
     # policy = {type, combo, args, override}
-    def add_item(self, item, quantity, policy):
+    def add_item(self, item_name, store_name, price, category, quantity, policy):
         collection = self.mydb["Items"]
-        item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
-                       "quantity": quantity, "policy": {"type": policy.type, "combo": policy.combo, "args": policy.args,
-                                                        "override": policy.override}}
+        item_to_add = {"name": item_name, "store": store_name, "price": price, "category": category,
+                       "quantity": quantity, "policy": {"type": policy['type'], "combo": policy['combo'],
+                                                        "args": policy['args'], "override": policy['override']}}
         collection.insert_one(item_to_add)
 
     def add_notification(self, sender_username, receiver_username, key, message):
@@ -59,7 +61,14 @@ class DB:
     # getters
 
     def get_user(self, user_name):
-        return self.mydb.Users.find({"name": user_name})
+        if self.does_user_exist(user_name):
+            curs = self.mydb.Users.find_one({"name": user_name})
+            the_user = User(user_name, curs['password'], curs['age'], curs['country'])
+            return the_user
+        return None
+
+    def does_user_exist(self, user_name):
+        return True if self.mydb.Users.count_documents({"name": user_name}) > 1 else False
 
     def get_store(self, store_name):
         return self.mydb.Stores.find({"name": store_name})

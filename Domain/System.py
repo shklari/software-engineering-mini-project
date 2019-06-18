@@ -21,8 +21,7 @@ class System:
         self.user_types = {"1": "guest", "2": "user", "3": "store_owner", "4": "store_manager", "5": "sys_manager"}
         self.system_manager = None
         self.database = DB()
-        # self.cur_user = None
-        self.users = {}  # {username, user}
+        # self.users = {}  # {username, user}
         self.loggedInUsers = {}     # logged in users that are currently in the system
         self.guests = {}    # guests that are currently in the system
         self.stores = []
@@ -54,6 +53,7 @@ class System:
             return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password, system_manager_age, system_manager_country)
+        self.database.add_user(manager)
         # self.users[manager.username] = manager
         self.system_manager = manager
         return ResponseObject(True, True, "")
@@ -65,22 +65,25 @@ class System:
         if password is None or password == '':
             self.log.set_info("error: signup failed: Password can not be empty", "eventLog")
             return ResponseObject(False, False, "Password can not be empty")
-        if username in self.users:
+        # if username in self.users:
+        if self.does_user_exist_in_db(username):
             self.log.set_info("error: signup failed: This user name is already taken", "eventLog")
             return ResponseObject(False, False, "This user name is already taken")
         else:
             enc_password = pbkdf2_sha256.hash(password)
             new_user = User(username, enc_password, age, country)
             self.database.add_user(new_user)
-            self.users[username] = new_user
+            # self.users[username] = new_user
             self.log.set_info("signup succeeded", "eventLog")
             return ResponseObject(True, True, "Welcome new user " + username + "! You may now log in")
 
     def login(self, username, password):
-        if username not in self.users:
+        # if username not in self.users:
+        if not self.does_user_exist_in_db(username):
             self.log.set_info("error: login failed: Username doesn't exist", "eventLog")
             return ResponseObject(False, False, "Username doesn't exist")
-        user_to_check = self.users[username]
+        # user_to_check = self.users[username]
+        user_to_check = self.get_user(username)
         if user_to_check.logged_in:
             self.log.set_info("error: login failed: You are already logged in", "eventLog")
             return ResponseObject(False, False, "You are already logged in")
@@ -157,12 +160,12 @@ class System:
         for owner in owner_list:
             if owner.username == username:
                 found = True
-                break;
+                break
         if not found:
             return ResponseObject(False, False, username + " is not a owner of this store!")
         #
         if len(owner_list) == 1:
-            return self.add_owner_to_store_helper(new_owner_name,username,store_name)
+            return self.add_owner_to_store_helper(new_owner_name, username, store_name)
         else:
             timeStamp = self.dateToStamp()
             message = "Hello, "+username+" want to add a new owner to the store, he is waiting for your approval..."
@@ -189,7 +192,8 @@ class System:
         if not add.success:
             return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n"
                                   + add.message)
-        # self.database.add_item()
+        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity,
+                               {"type": 0, "combo": 0, "args": 0, "override": 0})
         self.log.set_info("adding item" + item['name'] + "to" + store_name + "succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -244,7 +248,7 @@ class System:
         for user in store.waitingForBecomeOwner:
             if user['waitingName'] == new_owner_name:
                 for owner in user['waitingList']:
-                    if owner['owner'] ==username:
+                    if owner['owner'] == username:
                         owner['approved'] = True
                     allGivedApproved = allGivedApproved and owner['approved']
         if allGivedApproved :
@@ -396,7 +400,7 @@ class System:
         for st in stores_to_remove:
             self.stores.remove(st)
         self.loggedInUsers.pop(user_to_remove)
-        self.users.pop(user_to_remove)
+        # self.users.pop(user_to_remove)
         self.database.remove_user(user_to_remove)
         self.log.set_info("removing user succeeded", "eventLog")
         return ResponseObject(True, True, "User " + user_to_remove + " removed")
@@ -443,12 +447,14 @@ class System:
         return ResponseObject(True, size, "")
 
     def get_user(self, username):
-        # TODO: get from db !
-        if username in self.users:
-            print(self.users[username])
-            user_from_db = self.database.get_user(username)
-            return self.users[username]
-        return None
+        # if username in self.users:
+            # print(self.users[username])
+        return self.database.get_user(username)
+        # return self.users[username]
+        # return None
+
+    def does_user_exist_in_db(self, username):
+        return self.database.does_user_exist(username)
 
     def add_to_cart(self, store_name, item_name, quantity, username):
         result = self.get_store(store_name)
@@ -500,7 +506,8 @@ class System:
             for manager in store.storeManagers:
                 if username == manager.username:
                     return "store_manager"
-        if username in self.users:
+        # if username in self.users:
+        if self.does_user_exist_in_db(username):
             return "user"
         return "guest"
 
