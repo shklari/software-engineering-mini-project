@@ -534,6 +534,9 @@ class System:
                 retList.append(new_item)
         return ResponseObject(True, retList, "")
 
+    def get_store_inventory_from_db(self, store_name):
+        return self.database.get_store_inventory_from_db(store_name)
+
     def get_user_type(self, username):
         if username == self.system_manager.username:
             return "sys_manager"
@@ -562,6 +565,10 @@ class System:
         return ResponseObject(True, res, '')
         # response = {True, ret_list, ''}
         # return response
+
+    def remove_user_notifications_from_db(self, user_name):
+        self.database.remove_user_notifications(user_name)
+        return ResponseObject(True, True, '')
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !

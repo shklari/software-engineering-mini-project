@@ -99,7 +99,7 @@ class TestStore(UnitTestSystem):
         self.system.create_store('bStore', 'theNewName')
         self.system.add_item_to_inventory('theNewName', 'bStore', {'name': 'four',
                                                                    'price': 4, 'category': 'nums'}, 4)
-        a_inventory = self.system.inv
+        a_inventory = self.system.get_store_inventory_from_db('aStore')
 
     def test_db_specific(self):
         self.system.init_system('ssss', '1234', 21, "israel")
