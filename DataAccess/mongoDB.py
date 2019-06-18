@@ -1,5 +1,7 @@
 import pymongo
 
+from Domain.User import User
+
 
 class DB:
     def __init__(self):
@@ -32,11 +34,11 @@ class DB:
         collection.insert_one(store_manager_to_add)
 
     # policy = {type, combo, args, override}
-    def add_item(self, item, quantity, policy):
+    def add_item(self, item_name, store_name, price, category, quantity, policy):
         collection = self.mydb["Items"]
-        item_to_add = {"name": item.name, "store": item.store_name, "price": item.price, "category": item.category,
-                       "quantity": quantity, "policy": {"type": policy.type, "combo": policy.combo, "args": policy.args,
-                                                        "override": policy.override}}
+        item_to_add = {"name": item_name, "store": store_name, "price": price, "category": category,
+                       "quantity": quantity, "policy": {"type": policy['type'], "combo": policy['combo'],
+                                                        "args": policy['args'], "override": policy['override']}}
         collection.insert_one(item_to_add)
 
     def add_notification(self, sender_username, receiver_username, key, message):
@@ -59,7 +61,14 @@ class DB:
     # getters
 
     def get_user(self, user_name):
-        return self.mydb.Users.find({"name": user_name})
+        if self.does_user_exist(user_name):
+            curs = self.mydb.Users.find_one({"name": user_name})
+            the_user = User(user_name, curs['password'], curs['age'], curs['country'])
+            return the_user
+        return None
+
+    def does_user_exist(self, user_name):
+        return True if self.mydb.Users.count_documents({"name": user_name}) > 0 else False
 
     def get_store(self, store_name):
         return self.mydb.Stores.find({"name": store_name})
@@ -84,7 +93,7 @@ class DB:
     def edit_item_quantity_in_db(self, store_name, item_name, quantity):
             collection = self.mydb["Items"]
             item_to_change = {"name": item_name, "store": store_name}
-            collection.update_one(item_to_change, {"$set": {"quantity": quantity}})
+            collection.update_one(item_to_change, {"$inc": {"quantity": quantity}})
 
     # removers
 
@@ -92,6 +101,14 @@ class DB:
         collection = self.mydb["Users"]
         user_to_remove = {"name": user_name}
         collection.delete_one(user_to_remove)
+        collection2 = self.mydb["StoreOwners"]
+        owners_to_remove = {"appointer": user_name}
+        collection2.delete_many(owners_to_remove)
+        collection2.delete_many({"owner": user_name})
+        collection3 = self.mydb["StoreManagers"]
+        managers_to_remove = {"appointer": user_name}
+        collection3.delete_many(managers_to_remove)
+        collection3.delete_many({"manager": user_name})
 
     def remove_store(self, store_name):
         collection = self.mydb["Stores"]
@@ -103,6 +120,8 @@ class DB:
         collection2.delete_one({"store_name": store_name})
         collection3 = self.mydb["Items"]
         collection3.delete_many({"store": store_name})
+        collection4 = self.mydb["Cart"]
+        collection4.delete_many({"store_name": store_name})
 
     def remove_store_manager(self, manager_name, store_name):
         collection = self.mydb["StoreManagers"]
@@ -119,7 +138,7 @@ class DB:
         cart_to_remove = {"user_name": user_name, "store_name": store_name}
         collection.delete_one(cart_to_remove)
 
-    def remove_item_from_cart(self, user_name, store_name, item_name):
+    def remove_item_from_cart(self, user_name, store_name, item_name, quantity_to_remove):
         collection = self.mydb["Cart"]
         item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
-        collection.delete_one(item_to_remove_from_cart)
+        collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": quantity_to_remove}})

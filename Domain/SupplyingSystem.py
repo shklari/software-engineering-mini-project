@@ -1,5 +1,5 @@
 import requests
-
+from log.Log import Log
 
 class SupplyingSystem(object):
 
@@ -7,12 +7,14 @@ class SupplyingSystem(object):
 
     def __init__(self):
         self.addr = 'https://cs-bgu-wsep.herokuapp.com/'
+        self.log = Log("", "")
 
     def supply_handshake(self):
         try:
             response = requests.post(self.addr, data={'action_type': 'handshake'})
             return response.text == 'OK'
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return False
 
@@ -31,6 +33,7 @@ class SupplyingSystem(object):
                 return int(response.text)
             return -1
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return -1
 
@@ -42,6 +45,7 @@ class SupplyingSystem(object):
             # print(response.text)
             return response.text == '1'
         except Exception as e:
+            self.log.set_info('http connection failed', 'errorLog')
             print(e)
             return False
 
