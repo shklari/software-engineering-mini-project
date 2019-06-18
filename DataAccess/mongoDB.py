@@ -4,10 +4,26 @@ from django.utils.datetime_safe import datetime
 from Domain.Item import Item
 from Domain.Store import Store
 from Domain.User import User
+from Domain.BuyingPolicy import *
+
+
+@staticmethod
+def parse_item_policy(policy, item_name):
+    new_policy = None
+    if policy['type'] == 'age':
+        new_policy = AgeLimitationUserPolicy(policy['args'])
+    elif policy['type'] == 'country':
+        new_policy = CountryLimitationUserPolicy(policy['args'])
+    elif policy['type'] == 'min':
+        new_policy = MinQuantityItemPolicy(item_name, policy['args'])
+    elif policy['type'] == 'max':
+        new_policy = MaxQuantityItemPolicy(item_name, policy['args'])
+    return new_policy
 
 
 class DB:
     def __init__(self):
+        self.id = 1
         self.myclient = pymongo.MongoClient("mongodb+srv://grsharon:1234@cluster0-bkvsz.mongodb.net/test?retryWrites=true&w=majority")
         self.mydb = self.myclient["Store"]
 
@@ -40,9 +56,29 @@ class DB:
     def add_item(self, item_name, store_name, price, category, quantity, policy):
         collection = self.mydb["Items"]
         item_to_add = {"name": item_name, "store": store_name, "price": price, "category": category,
-                       "quantity": quantity, "policy": {"type": policy['type'], "combo": policy['combo'],
-                                                        "args": policy['args'], "override": policy['override']}}
+                       "quantity": quantity, "policy": policy}
+        # {"type": policy['type'], "combo": policy['combo'],
+        #                                                 "args": policy['args'], "override": policy['override']}
         collection.insert_one(item_to_add)
+
+    def add_item_policy(self, item_name, store_name, policy_type, policy_combo, policy_args, policy_ovveride):
+        collection = self.mydb["Policies"]
+        fatherson = self.mydb["PolicyComposed"]
+        items = self.mydb['Items']
+        if policy_ovveride == "true":
+            self.remove_item_policy_by_name(item_name, store_name)
+            items.update_one({"name": item_name, "store": store_name}, {"$set": {"policy": self.id}})
+            collection.insert_one({"id": self.id, "type": policy_type, "combo": policy_combo, "args": policy_args})
+            self.id += 1
+        else:
+            old_policyId = items.find_one({"name": item_name, "store": store_name})['policy']
+            new_policy = {"id": self.id, "type": policy_type, "combo": policy_combo, "args": policy_args}
+            comp_policy = {"id": self.id + 1, "type": "", "combo": policy_combo, "args": ""}
+            collection.insert_many([new_policy, comp_policy])
+            items.update_one({"name": item_name, "store": store_name}, {"$set": {"policy": self.id + 1}})
+            fatherson.insert_many([{"father": self.id + 1, "son": old_policyId},
+                                   {"father": self.id + 1, "son": self.id}])
+            self.id += 2
 
     def add_notification(self, sender_username, receiver_username, key, message):
         collection = self.mydb["UserNotification"]
@@ -105,7 +141,6 @@ class DB:
     def store_inventory_has_items(self, store_name):
         return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
 
-    # return [{"message": , "sender": , "time": }]
     def get_user_notification(self, user_name):
         curs = self.mydb.UserNotification.find({"receiver_username": user_name})
         ret_list = []
@@ -115,6 +150,26 @@ class DB:
                    "time": time}
             ret_list.append(msg)
         return ret_list
+
+    def get_item_policy_by_id(self, policyId, item_name):
+        sons = self.mydb.PolicyComposed.find({"father": policyId})
+        policy = self.mydb.Policies.find_one({"id": policyId})
+        if len(sons) == 0:
+            return parse_item_policy(policy, item_name)
+        comp_policy = AndCompositeBuyingPolicy() if policy['combo'] == "true" else OrCompositeBuyingPolicy()
+        for iter in sons:
+            sonId = iter['son']
+            sonpolicy = self.get_item_policy_by_id(sonId, item_name)
+            comp_policy.add_policy(sonpolicy)
+        return comp_policy
+
+    def get_item_policy_by_name(self, item_name, store_name):
+        policyId = self.mydb.Items.find_one({"name": item_name, "store": store_name})['policy']
+        if policyId == 0:
+            return ItemPolicy()
+        return self.get_item_policy_by_id(policyId, item_name)
+
+    # return [{"message": , "sender": , "time": }]
 
     @staticmethod
     def stamp_to_date(stamp):
@@ -145,6 +200,23 @@ class DB:
         managers_to_remove = {"appointer": user_name}
         collection3.delete_many(managers_to_remove)
         collection3.delete_many({"manager": user_name})
+
+    def remove_item_policy_by_id(self, id, item_name, store_name):
+        fatherson = self.mydb.PolicyComposed
+        if id > 0:
+            sons = fatherson.find({"father": id})
+            if sons.count() > 0:
+                for son in sons:
+                    sonId = son['son']
+                    self.remove_item_policy_by_id(sonId)
+                fatherson.delete_many({"father": id})
+            self.mydb.Policies.delete_one({"id": id})
+            self.mydb.Items.update_one({"name": item_name, "store": store_name}, {"$set": {"policy": 0}})
+
+    def remove_item_policy_by_name(self, item_name, store_name):
+        policyId = self.mydb.Items.get_one({"name": item_name, "store": store_name})['policy']
+        self.remove_item_policy_by_id(policyId)
+
 
     def remove_store(self, store_name):
         collection = self.mydb["Stores"]
