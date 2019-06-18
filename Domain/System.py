@@ -541,17 +541,18 @@ class System:
     def get_user_type(self, username):
         if username == self.system_manager.username:
             return "sys_manager"
-        for store in self.stores:
-            for owner in store.storeOwners:
-                if username == owner.username:
-                    return "store_owner"
-            for manager in store.storeManagers:
-                if username == manager.username:
-                    return "store_manager"
-        # if username in self.users:
-        if self.does_user_exist_in_db(username):
-            return "user"
-        return "guest"
+        return self.database.get_user_type(username)
+        # for store in self.stores:
+        #     for owner in store.storeOwners:
+        #         if username == owner.username:
+        #             return "store_owner"
+        #     for manager in store.storeManagers:
+        #         if username == manager.username:
+        #             return "store_manager"
+        # # if username in self.users:
+        # if self.does_user_exist_in_db(username):
+        #     return "user"
+        # return "guest"
 
     def get_stores(self):
         # TODO: get info from db !
