@@ -13,10 +13,11 @@ class DB:
         user_to_add = {"name": user.username, "password": user.password, "age": user.age, "country": user.country}
         collection.insert_one(user_to_add)
 
-    def add_store(self, store):
+    def add_store(self, store, username):
         collection = self.mydb["Stores"]
         store_to_add = {"name": store.name, "rank": store.rank}
         collection.insert_one(store_to_add)
+        self.add_store_owner(store.name, username, 0)
 
     def add_store_owner(self, store_name, user_name, appointer):
         collection = self.mydb["StoreOwners"]
@@ -75,12 +76,12 @@ class DB:
 
     # editors
 
-    def edit_price_of_item(self, store_name, item_name, new_price):
+    def edit_item_price_in_db(self, store_name, item_name, new_price):
         collection = self.mydb["Items"]
         item_to_change = {"name": item_name, "store": store_name}
         collection.update_one(item_to_change, {"$set": {"price": new_price}})
 
-    def edit_quantity_of_item(self, store_name, item_name, quantity):
+    def edit_item_quantity_in_db(self, store_name, item_name, quantity):
             collection = self.mydb["Items"]
             item_to_change = {"name": item_name, "store": store_name}
             collection.update_one(item_to_change, {"$set": {"quantity": quantity}})

@@ -83,13 +83,12 @@ class TestStore(UnitTestSystem):
         self.assertEqual(self.system.stores[0].name, 'zara')
 
     def test_add_manager(self):
-        self.system.init_system('shaioza3', '1234', 21, "israel")
-        self.system.sign_up('shklarkia3', '5432', 28, "israel")
-        self.system.login('shaioza3', '1234')
-        self.system.create_store('mdfqa3', 'shaioza3')
-        mdfqa = self.system.get_store('mdfqa3').value
-        shai = self.system.get_user('shaioza3')
-        mdfqa.add_item_to_inventory(shai, {'name': 'tuna3', 'price': 43323, 'category': 'fish3'}, 173)
-        self.system.add_to_cart('mdfqa3', 'tuna3', 63, 'shaioza3')
+        self.system.init_system('ssss', '1234', 21, "israel")
+        self.system.login('ssss', '1234')
+        self.system.create_store('aStore', 'ssss')
+        mdfqa = self.system.get_store('aStore').value
+        shai = self.system.get_user('ssss')
+        mdfqa.add_item_to_inventory(shai, {'name': 'anItem', 'price': 43323, 'category': 'fish3'}, 173)
+        self.system.add_to_cart('aStore', 'anItem', 63, 'ssss')
 
 
