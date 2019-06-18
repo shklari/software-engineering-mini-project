@@ -154,7 +154,7 @@ button:hover {
     {% csrf_token %}
     <div class="clearfix">
       <button onclick="window.location.href='/'" type="button" class="cancelbtn">Cancel</button>
-      <button id='editprobtn' class="editprobtn" onclick="editPro()">Add Product
+      <button id='editprobtn' class="editprobtn" onclick="editPro()">Submit
       <span class="popuptext" id="myPopup">A Simple Popup!</span>
       </button>
     </div>
@@ -174,7 +174,6 @@ button:hover {
 
         var username = read_cookie('username');
         if (price != '' && !isNaN(price)) {
-            console.log("inbar1");
             send_msg({
                     action: 'edit_item_price',
                     store_name: storename,
@@ -193,17 +192,19 @@ button:hover {
                             },
                             (message, val) => {
                                 alert("item has been successfully edited");
+                                window.location.href = "/inventory/";
                             }, onfailure);
                     else
                         alert("item has been successfully edited");
+                        window.location.href = "/inventory/";
                 }, onfailure);
         }
         if(quantity != '' && !isNaN(quantity))
             send_msg({action: 'edit_item_quantity', name: productname, store_name: storename, quantity: quantity, username: username},
                 (message, val)=>{
                                 alert("item has been successfully edited");
+                                window.location.href = "/inventory/";
                             }, onfailure);
-        //window.location.href = "/inventory/";
     }
 </script>
 </body>
