@@ -143,6 +143,8 @@ async def datahandler(data, websocket):
         ans = service.get_basket_size(data['username'])
     elif data['action'] == 'get_basket_subtotal':
         ans = service.get_basket_subtotal(data['username'])
+    elif data['action'] == 'new_guest':
+        ans = service.new_guest(data['username'])
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
     elif data['action'] == 'get_store_inv':

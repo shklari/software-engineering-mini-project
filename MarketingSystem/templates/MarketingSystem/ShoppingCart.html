@@ -10,7 +10,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="style" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'scss/style.scss' %}">
-        <script src="{% static 'js/data.js.js' %}"></script>
+        <script src="{% static 'js/data.js' %}"></script>
         <h1>Shopping Cart</h1>
 <style>
     /*
@@ -381,9 +381,8 @@ var basket = send_msg({action:'get_basket', username: username}, shop_onsuccess,
 
   </div>
 
-      <button class="checkout">Checkout</button>
+      <a class="checkout" href="/checkout">Checkout</a>
 
 </div>
 </body>
 {% endblock %}
-</html>

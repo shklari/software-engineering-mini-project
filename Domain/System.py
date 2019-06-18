@@ -574,5 +574,5 @@ class System:
         now = datetime.now()
         return datetime.timestamp(now)
 
-    def stampToDate(self,stamp):
+    def stampToDate(self, stamp):
         return datetime.fromtimestamp(stamp)
