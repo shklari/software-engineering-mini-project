@@ -162,7 +162,7 @@ button:hover {
 </div>
 <script src="{% static 'js/client.js' %}"></script>
 <script type="text/javascript">
-    function editPro(){
+    async function editPro(){
         var productname = document.getElementById('productname').value;
         var price = +document.getElementById('price').value;
         var storename = read_cookie("store_name");
@@ -173,7 +173,7 @@ button:hover {
         }
 
         var username = read_cookie('username');
-        if (price != '' && !isNaN(price)) {
+        if ((price != '' && !isNaN(price)) && (quantity != '' && !isNaN(quantity))) {
             send_msg({
                     action: 'edit_item_price',
                     store_name: storename,
@@ -181,31 +181,47 @@ button:hover {
                     username: username,
                     item_name: productname
                 },
-                (message, val) => {
-                    if (quantity != '' && !isNaN(quantity))
-                        send_msg({
-                                action: 'edit_item_quantity',
-                                name: productname,
-                                store_name: storename,
-                                quantity: quantity,
-                                username: username
-                            },
-                            (message, val) => {
-                                alert("item has been successfully edited");
-                                window.location.href = "/inventory/";
-                            }, onfailure);
-                    else
-                        alert("item has been successfully edited");
-                        window.location.href = "/inventory/";
+                (message, val)=>{
+                    send_msg({
+                    action: 'edit_item_quantity',
+                    name: productname,
+                    store_name: storename,
+                    quantity: quantity,
+                    username: username
+                }, (message, val) => {
+                    alert("item has been successfully edited");
+                    //window.location.href = "/inventory/";
+                    }, onfailure);
                 }, onfailure);
+
         }
-        if(quantity != '' && !isNaN(quantity))
+        else if(quantity != '' && !isNaN(quantity))
             send_msg({action: 'edit_item_quantity', name: productname, store_name: storename, quantity: quantity, username: username},
                 (message, val)=>{
                                 alert("item has been successfully edited");
-                                window.location.href = "/inventory/";
+                                //window.location.href = "/inventory/";
                             }, onfailure);
+        else if (price != '' && !isNaN(price))
+            send_msg({
+                    action: 'edit_item_price',
+                    store_name: storename,
+                    new_price: price,
+                    username: username,
+                    item_name: productname
+                },
+                (message, val)=>{
+                                alert("item has been successfully edited");
+                                //window.location.href = "/inventory/";
+                            }, onfailure);
+        else
+            alert("input error");
+        await sleep(2000);
+        window.location.href = "/inventory/";
     }
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 </script>
 </body>
 </html>

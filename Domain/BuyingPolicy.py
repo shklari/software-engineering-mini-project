@@ -14,6 +14,9 @@ class BuyingPolicy(object):
     def add_policy(self, policy):
         pass
 
+    def check_contr(self, policy):
+        return True
+
 
 class ImmediateBuyingPolicy(BuyingPolicy):
 
@@ -30,7 +33,11 @@ class CompositeBuyingPolicy(BuyingPolicy):
         self.policies = []
 
     def add_policy(self, policy):
-        pass
+        for pol in self.policies:
+            if not pol.check_contr(policy):
+                return False
+        self.policies.append(policy)
+        return True
 
     def remove_policy(self, policy):
         self.policies.remove(policy)
@@ -46,9 +53,6 @@ class AndCompositeBuyingPolicy(CompositeBuyingPolicy):
             if not policy.apply_policy(obj):
                 return False
         return True
-
-    def add_policy(self, policy):
-        self.policies.append(policy)
 
 
 class OrCompositeBuyingPolicy(CompositeBuyingPolicy):
@@ -102,6 +106,9 @@ class MinQuantityItemPolicy(ItemPolicy):
                 return self.quantity <= cart.items_and_quantities[item]
         return True
 
+    def check_contr(self, policy):
+        return policy.check_contr(self)
+
 
 class MaxQuantityItemPolicy(ItemPolicy):
 
@@ -115,20 +122,9 @@ class MaxQuantityItemPolicy(ItemPolicy):
                 return self.quantity >= cart.items_and_quantities[item]
         return True
 
-
-class MaxQuantityStorePolicy(ImmediateBuyingPolicy):
-
-    def __init__(self, store_name, max):
-        self.store_name = store_name
-        self.quantity = max
-
-    def apply_policy(self, cart):
-        if self.store_name == cart.store_name:
-            acc = 0
-            for item in cart.items_and_quantities:
-                acc += cart.items_and_quantities[item]
-                if self.quantity < acc:
-                    return False
+    def check_contr(self, policy):
+        if isinstance(policy, MinQuantityItemPolicy):
+            return self.quantity < policy.quantity
         return True
 
 
@@ -148,4 +144,26 @@ class MinQuantityStorePolicy(ImmediateBuyingPolicy):
             return self.quantity <= acc
         return False
 
+    def check_contr(self, policy):
+        return policy.check_contr(self)
 
+
+class MaxQuantityStorePolicy(ImmediateBuyingPolicy):
+
+    def __init__(self, store_name, max):
+        self.store_name = store_name
+        self.quantity = max
+
+    def apply_policy(self, cart):
+        if self.store_name == cart.store_name:
+            acc = 0
+            for item in cart.items_and_quantities:
+                acc += cart.items_and_quantities[item]
+                if self.quantity < acc:
+                    return False
+        return True
+
+    def check_contr(self, policy):
+        if isinstance(policy, MinQuantityItemPolicy):
+            return self.quantity > policy.quantity
+        return True
