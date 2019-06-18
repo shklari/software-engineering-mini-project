@@ -177,3 +177,8 @@ class DB:
         collection = self.mydb["Cart"]
         item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
         collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": quantity_to_remove}})
+
+    def remove_user_notifications(self, user_name):
+        collection = self.mydb["UserNotification"]
+        notification_to_remove = {"receiver_username": user_name}
+        collection.delete_many(notification_to_remove)

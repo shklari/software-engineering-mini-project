@@ -41,7 +41,7 @@ class ServiceInterface(object):
     def remove_from_cart(self, store_name, item_name, username): pass
 
     @abstractmethod  # 2.8 item is item dictionary
-    def buy_items(self, items, username): pass
+    def buy_items(self, items, username, supply_details, collect_details): pass
 
     @abstractmethod  # 4.1.1 item is item dictionary, store_name is string
     def add_item_to_inventory(self, item, store_name, quantity, username): pass

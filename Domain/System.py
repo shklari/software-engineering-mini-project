@@ -1,7 +1,6 @@
 from django.utils.datetime_safe import datetime
 
 from Domain.Cart import Cart
-from Domain.ExternalSystems import *
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -12,6 +11,8 @@ from log.Log import Log
 from DataAccess.mongoDB import DB
 import functools
 from Domain.BuyingPolicy import *
+from Domain.SupplyingSystem import SupplyingSystem
+from Domain.CollectingSystem import CollectingSystem
 
 
 class System:
@@ -27,7 +28,7 @@ class System:
         self.log = Log("", "")
         self.supplying_system = SupplyingSystem()
         self.collecting_system = CollectingSystem()
-        self.traceability_system = TraceabilitySystem()
+        # self.traceability_system = TraceabilitySystem()
 
     def get_user_or_guest(self, username):
         if username in self.loggedInUsers:
@@ -43,7 +44,7 @@ class System:
         self.guests[guest_id] = Guest()
 
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
-        if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
+        if not self.supplying_system.supply_handshake() or not self.collecting_system.collect_handshake():
             return ResponseObject(False, False, "Can't init external systems")
         result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,
                               system_manager_country)
@@ -330,29 +331,66 @@ class System:
         self.database.remove_store_manager(manager_to_remove, store_name)
         return ResponseObject(True, True, "")
 
-    def buy_items(self, items, username):
+    # helper function for buy_items
+    def get_total_amount(self, items):
+        total_price = 0
+        for item in items:
+            store = self.get_store(item['store_name'])
+            item_obj = store.search_item_by_name(item['name'])
+            if not item_obj:
+                return False
+            total_price += item_obj.apply_discount()
+        return total_price
+
+    def get_supply(self, supply_details):
+        if not self.supplying_system.supply_handshake():
+            return False
+        transaction = self.supplying_system.supply(supply_details['name'], supply_details['address'],
+                                                   supply_details['city'], supply_details['country'],
+                                                   supply_details['zip'])
+        if transaction < 0:
+            return False
+        return transaction
+
+    def pay(self, collect_details):
+        if not self.collecting_system.collect_handshake():
+            return False
+        transaction = self.collecting_system.pay(collect_details['card_number'], collect_details['month'],
+                                                 collect_details['year'], collect_details['holder'],
+                                                 collect_details['ccv'], collect_details['id'])
+        if transaction < 0:
+            return False
+        return transaction
+
+    def buy_items(self, items, username, supply_details, collect_details):
         # check if items exist in basket??
         for item in items:
             store = self.get_store(item['store_name'])
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
                 return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
-            if not self.supplying_system.get_supply(item['name']):
-                self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
+        # get current user
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        # TODO: apply discount
-        amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
-        flag = self.collecting_system.collect(amount, curr_user.creditDetails)
-        if flag == 0:
-            self.log.set_info("error: buy items failed: payment rejected", "eventLog")
-            return ResponseObject(False, False, "Payment rejected")
+        amount = self.get_total_amount(items)
+        if not amount:
+            return ResponseObject(False, False, "Buy items failed: one of the items doesn't exist in the system")
+        # get supply
+        supply_id = self.get_supply(supply_details)
+        if not supply_id:
+            return ResponseObject(False, False, "Buy items failed: can't get supply for user " + username)
+        # payment
+        pay_id = self.pay(collect_details)
+        if not pay_id:
+            return ResponseObject(False, False, "Buy items failed: Payment Rejected")
+        # remove items from user's basket
         for item in items:
             removed = curr_user.remove_from_cart(item['store_name'], item['name'])
             if not removed.success:
+                self.supplying_system.cancel_supply(supply_id)
+                self.collecting_system.cancel_pay(pay_id)
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
         # TODO: update db !

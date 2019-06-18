@@ -1,6 +1,7 @@
 import requests
 from log.Log import Log
 
+
 class SupplyingSystem(object):
 
     # TODO: add logs!
@@ -50,10 +51,4 @@ class SupplyingSystem(object):
             return False
 
 
-s = SupplyingSystem()
-print(s.supply_handshake())
-t = s.supply("asi asi", "Metzada 11", "Beer Sheva", "Israel", "889889")
-print(t)
-if t > 0:
-    print(s.cancel_supply(t))
 
