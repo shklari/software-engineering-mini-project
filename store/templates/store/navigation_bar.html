@@ -420,8 +420,8 @@ ul.dropdown-menu1.notifications1 {
     display: none;mix-width: 25%;
     top:50px;
     min-width: 255px;
-    list-style:square;
-    overflow: scroll;
+    max-width: 255px;
+    overflow: paged-y;
     z-index: 1;
     position: fixed;
 }
@@ -438,9 +438,9 @@ function CustomAlert(){
             '      </div>\n' +
             '    </a>';
         send_msg({action:'get_notification',username:read_cookie('username')},(res,val)=>{
-            var messages = val['messages'];
+            //var messages = val['messages'];
             var mes = '';
-            messages.forEach((message)=>{
+            val.forEach((message)=>{
                 mes += '<a class="content" href="#">\n' +
             '       <div class="notification-item1">\n' +
             '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
