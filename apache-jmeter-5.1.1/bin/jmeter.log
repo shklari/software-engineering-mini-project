@@ -1,0 +1,365 @@
+2019-06-19 00:37:27,779 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2019-06-19 00:37:27,951 INFO o.a.j.JMeter: Loading user properties from: user.properties
+2019-06-19 00:37:27,979 INFO o.a.j.JMeter: Loading system properties from: system.properties
+2019-06-19 00:37:28,067 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: Version 5.1.1 r1855137
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: java.version=1.8.0_211
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) Client VM
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: os.name=Windows 10
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: os.arch=x86
+2019-06-19 00:37:28,071 INFO o.a.j.JMeter: os.version=10.0
+2019-06-19 00:37:28,075 INFO o.a.j.JMeter: file.encoding=Cp1255
+2019-06-19 00:37:28,075 INFO o.a.j.JMeter: java.awt.headless=null
+2019-06-19 00:37:28,075 INFO o.a.j.JMeter: Max memory     =1073741824
+2019-06-19 00:37:28,075 INFO o.a.j.JMeter: Available Processors =4
+2019-06-19 00:37:28,123 INFO o.a.j.JMeter: Default Locale=English (EN)
+2019-06-19 00:37:28,127 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2019-06-19 00:37:28,127 INFO o.a.j.JMeter: JMeterHome=C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1
+2019-06-19 00:37:28,127 INFO o.a.j.JMeter: user.dir  =C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin
+2019-06-19 00:37:28,131 INFO o.a.j.JMeter: PWD       =C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin
+2019-06-19 00:37:37,213 INFO o.a.j.JMeter: IP: 169.254.167.37 Name: DESKTOP-NUG4SRV FullName: DESKTOP-NUG4SRV
+2019-06-19 00:37:38,360 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
+2019-06-19 00:37:38,472 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
+2019-06-19 00:37:38,476 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
+2019-06-19 00:37:38,896 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2019-06-19 00:37:49,315 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-06-19 00:37:49,319 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-06-19 00:37:49,319 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-06-19 00:37:49,319 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-06-19 00:37:49,319 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2019-06-19 00:37:49,323 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2019-06-19 00:37:50,203 INFO o.a.j.e.KeyToolUtils: Exception checking for keytool existence, will return false, try another way.
+2019-06-19 00:37:51,776 INFO o.a.j.e.KeyToolUtils: keytool found at 'C:\Program Files (x86)\Java\jre1.8.0_211\bin\keytool'
+2019-06-19 00:37:51,780 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 00:37:52,600 INFO o.a.j.s.FileServer: Default base='C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin'
+2019-06-19 00:37:57,188 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2019-06-19 00:37:57,188 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2019-06-19 00:37:57,188 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2019-06-19 00:37:57,188 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2019-06-19 01:09:54,767 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2019-06-19 01:09:54,767 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2019-06-19 01:09:55,444 INFO o.a.j.p.h.p.ProxyControl: Creating HTTP(S) Test Script Recorder Root CA in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks, ensure you install certificate in your Browser for recording
+2019-06-19 01:10:09,868 INFO o.a.j.p.h.p.ProxyControl: Created keystore in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:10:09,900 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8000
+2019-06-19 01:10:09,974 ERROR o.a.j.p.h.p.ProxyControl: Could not create HTTP(S) Test Script Recorder Proxy daemon
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method) ~[?:1.8.0_211]
+	at java.net.DualStackPlainSocketImpl.socketBind(Unknown Source) ~[?:1.8.0_211]
+	at java.net.AbstractPlainSocketImpl.bind(Unknown Source) ~[?:1.8.0_211]
+	at java.net.PlainSocketImpl.bind(Unknown Source) ~[?:1.8.0_211]
+	at java.net.ServerSocket.bind(Unknown Source) ~[?:1.8.0_211]
+	at java.net.ServerSocket.<init>(Unknown Source) ~[?:1.8.0_211]
+	at java.net.ServerSocket.<init>(Unknown Source) ~[?:1.8.0_211]
+	at org.apache.jmeter.protocol.http.proxy.Daemon.<init>(Daemon.java:106) ~[ApacheJMeter_http.jar:5.1.1 r1855137]
+	at org.apache.jmeter.protocol.http.proxy.Daemon.<init>(Daemon.java:81) ~[ApacheJMeter_http.jar:5.1.1 r1855137]
+	at org.apache.jmeter.protocol.http.proxy.ProxyControl.startProxy(ProxyControl.java:550) [ApacheJMeter_http.jar:5.1.1 r1855137]
+	at org.apache.jmeter.protocol.http.proxy.gui.ProxyControlGui.startProxy(ProxyControlGui.java:592) [ApacheJMeter_http.jar:5.1.1 r1855137]
+	at org.apache.jmeter.protocol.http.proxy.gui.ProxyControlGui.actionPerformed(ProxyControlGui.java:432) [ApacheJMeter_http.jar:5.1.1 r1855137]
+	at javax.swing.AbstractButton.fireActionPerformed(Unknown Source) [?:1.8.0_211]
+	at javax.swing.AbstractButton$Handler.actionPerformed(Unknown Source) [?:1.8.0_211]
+	at javax.swing.DefaultButtonModel.fireActionPerformed(Unknown Source) [?:1.8.0_211]
+	at javax.swing.DefaultButtonModel.setPressed(Unknown Source) [?:1.8.0_211]
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Unknown Source) [?:1.8.0_211]
+	at java.awt.Component.processMouseEvent(Unknown Source) [?:1.8.0_211]
+	at javax.swing.JComponent.processMouseEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.Component.processEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.Container.processEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.Component.dispatchEventImpl(Unknown Source) [?:1.8.0_211]
+	at java.awt.Container.dispatchEventImpl(Unknown Source) [?:1.8.0_211]
+	at java.awt.Component.dispatchEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.LightweightDispatcher.processMouseEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.LightweightDispatcher.dispatchEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.Container.dispatchEventImpl(Unknown Source) [?:1.8.0_211]
+	at java.awt.Window.dispatchEventImpl(Unknown Source) [?:1.8.0_211]
+	at java.awt.Component.dispatchEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue.access$500(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue$3.run(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue$3.run(Unknown Source) [?:1.8.0_211]
+	at java.security.AccessController.doPrivileged(Native Method) [?:1.8.0_211]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source) [?:1.8.0_211]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue$4.run(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue$4.run(Unknown Source) [?:1.8.0_211]
+	at java.security.AccessController.doPrivileged(Native Method) [?:1.8.0_211]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventQueue.dispatchEvent(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source) [?:1.8.0_211]
+	at java.awt.EventDispatchThread.run(Unknown Source) [?:1.8.0_211]
+2019-06-19 01:10:46,910 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:10:46,910 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:10:46,911 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8000
+2019-06-19 01:10:46,912 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:10:47,170 INFO o.a.j.p.h.p.Proxy: Proxy will remove the headers: If-Modified-Since,If-None-Match,Host
+2019-06-19 01:10:47,259 INFO o.a.j.p.h.p.ProxyControl: [54609]  Creating entry www.youtube.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:10:53,360 INFO o.a.j.p.h.p.Proxy: [54609]  KeyStore for SSL loaded OK and put host 'www.youtube.com' in map with key (www.youtube.com)
+2019-06-19 01:10:53,601 WARN o.a.j.p.h.p.Proxy: [54609]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:10:53,601 WARN o.a.j.p.h.p.Proxy: [54614]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:10:53,603 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2019-06-19 01:11:12,461 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
+2019-06-19 01:14:18,087 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:14:18,087 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:14:18,087 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8000
+2019-06-19 01:14:18,088 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:14:37,099 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
+2019-06-19 01:14:52,390 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:14:52,391 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:14:52,391 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8888
+2019-06-19 01:14:52,391 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:17:15,464 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
+2019-06-19 01:24:24,284 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:24:24,284 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:24:24,284 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8888
+2019-06-19 01:24:24,287 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:24:25,119 WARN o.a.j.p.h.p.Proxy: [56611]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:32,795 INFO o.a.j.p.h.p.ProxyControl: [56618]  Creating entry beacons2.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:24:37,524 INFO o.a.j.p.h.p.ProxyControl: [56619]  Creating entry r3---sn-4g5edney.googlevideo.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:24:37,527 INFO o.a.j.p.h.p.Proxy: [56618]  KeyStore for SSL loaded OK and put host 'beacons2.gvt2.com' in map with key (beacons2.gvt2.com)
+2019-06-19 01:24:37,601 WARN o.a.j.p.h.p.Proxy: [56618]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:43,099 INFO o.a.j.p.h.p.Proxy: [56619]  KeyStore for SSL loaded OK and put host 'r3---sn-4g5edney.googlevideo.com' in map with key (r3---sn-4g5edney.googlevideo.com)
+2019-06-19 01:24:43,169 WARN o.a.j.p.h.p.Proxy: [56619]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:44,108 INFO o.a.j.p.h.p.ProxyControl: [56629]  Creating entry r3---sn-4g5e6nzs.googlevideo.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:24:45,089 WARN o.a.j.p.h.p.Proxy: [56631]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:47,189 WARN o.a.j.p.h.p.Proxy: [56633]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:50,241 INFO o.a.j.p.h.p.Proxy: [56629]  KeyStore for SSL loaded OK and put host 'r3---sn-4g5e6nzs.googlevideo.com' in map with key (r3---sn-4g5e6nzs.googlevideo.com)
+2019-06-19 01:24:50,299 WARN o.a.j.p.h.p.Proxy: [56629]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:52,095 WARN o.a.j.p.h.p.Proxy: [56638]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:52,218 WARN o.a.j.p.h.p.Proxy: [56639]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:55,104 WARN o.a.j.p.h.p.Proxy: [56643]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:24:59,170 INFO o.a.j.p.h.p.ProxyControl: [56647]  Creating entry clientservices.googleapis.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:25:01,194 WARN o.a.j.p.h.p.Proxy: [56649]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:01,195 WARN o.a.j.p.h.p.Proxy: [56650]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:01,272 WARN o.a.j.p.h.p.Proxy: [56651]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:03,077 WARN o.a.j.p.h.p.Proxy: [56654]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:05,117 WARN o.a.j.p.h.p.Proxy: [56657]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:05,217 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = DESKTOP-NUG4SRV
+2019-06-19 01:25:05,253 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2019-06-19 01:25:05,448 INFO o.a.j.p.h.p.Proxy: [56647]  KeyStore for SSL loaded OK and put host 'clientservices.googleapis.com' in map with key (clientservices.googleapis.com)
+2019-06-19 01:25:05,534 WARN o.a.j.p.h.p.Proxy: [56647]  Problem with SSL certificate for url  for 'clientservices.googleapis.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:05,678 WARN o.a.j.p.h.p.Proxy: [56660]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:10,411 WARN o.a.j.p.h.p.Proxy: [56669]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:10,495 WARN o.a.j.p.h.p.Proxy: [56670]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:10,556 WARN o.a.j.p.h.p.Proxy: [56671]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:12,931 WARN o.a.j.p.h.p.Proxy: [56674]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:12,981 WARN o.a.j.p.h.p.Proxy: [56675]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:13,233 INFO o.a.j.p.h.p.ProxyControl: [56676]  Creating entry clients4.google.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:25:16,434 WARN o.a.j.p.h.p.Proxy: [56680]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:17,192 WARN o.a.j.p.h.p.Proxy: [56683]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:17,668 WARN o.a.j.p.h.p.Proxy: [56684]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:20,504 INFO o.a.j.p.h.p.Proxy: [56676]  KeyStore for SSL loaded OK and put host 'clients4.google.com' in map with key (clients4.google.com)
+2019-06-19 01:25:20,555 WARN o.a.j.p.h.p.Proxy: [56676]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:21,181 WARN o.a.j.p.h.p.Proxy: [56688]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:21,246 WARN o.a.j.p.h.p.Proxy: [56689]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:21,333 WARN o.a.j.p.h.p.Proxy: [56690]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:21,407 WARN o.a.j.p.h.p.Proxy: [56691]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:22,189 WARN o.a.j.p.h.p.Proxy: [56693]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:23,109 WARN o.a.j.p.h.p.Proxy: [56695]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:23,924 WARN o.a.j.p.h.p.Proxy: [56699]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:25,076 WARN o.a.j.p.h.p.Proxy: [56701]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:27,618 WARN o.a.j.p.h.p.Proxy: [56703]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:31,670 WARN o.a.j.p.h.p.Proxy: [56707]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:32,076 WARN o.a.j.p.h.p.Proxy: [56709]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:33,113 WARN o.a.j.p.h.p.Proxy: [56712]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:33,116 WARN o.a.j.p.h.p.Proxy: [56711]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:35,087 WARN o.a.j.p.h.p.Proxy: [56715]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:36,146 WARN o.a.j.p.h.p.Proxy: [56716]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:41,049 WARN o.a.j.p.h.p.Proxy: [56721]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:42,984 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
+2019-06-19 01:25:51,792 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:25:51,792 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:25:51,793 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8888
+2019-06-19 01:25:51,793 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:25:51,865 INFO o.a.j.p.h.p.ProxyControl: [56818]  Creating entry beacons3.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:25:51,930 WARN o.a.j.p.h.p.Proxy: [56814]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:52,222 WARN o.a.j.p.h.p.Proxy: [56820]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:53,128 WARN o.a.j.p.h.p.Proxy: [56822]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:53,129 WARN o.a.j.p.h.p.Proxy: [56823]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:53,255 WARN o.a.j.p.h.p.Proxy: [56824]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:54,307 WARN o.a.j.p.h.p.Proxy: [56827]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:56,450 INFO o.a.j.p.h.p.Proxy: [56818]  KeyStore for SSL loaded OK and put host 'beacons3.gvt2.com' in map with key (beacons3.gvt2.com)
+2019-06-19 01:25:56,504 WARN o.a.j.p.h.p.Proxy: [56819]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:25:56,506 WARN o.a.j.p.h.p.Proxy: [56818]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:00,812 WARN o.a.j.p.h.p.Proxy: [56833]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:03,112 WARN o.a.j.p.h.p.Proxy: [56836]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:05,089 WARN o.a.j.p.h.p.Proxy: [56841]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:07,952 WARN o.a.j.p.h.p.Proxy: [56846]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:12,114 WARN o.a.j.p.h.p.Proxy: [56850]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:15,797 WARN o.a.j.p.h.p.Proxy: [56854]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:17,187 WARN o.a.j.p.h.p.Proxy: [56856]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:22,209 WARN o.a.j.p.h.p.Proxy: [56861]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:23,128 WARN o.a.j.p.h.p.Proxy: [56864]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:23,144 WARN o.a.j.p.h.p.Proxy: [56863]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:24,601 WARN o.a.j.p.h.p.Proxy: [56866]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:25,119 WARN o.a.j.p.h.p.Proxy: [56868]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:34,105 WARN o.a.j.p.h.p.Proxy: [56875]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:36,165 INFO o.a.j.p.h.p.ProxyControl: [56878]  Creating entry settings-win.data.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:26:42,036 INFO o.a.j.p.h.p.Proxy: [56878]  KeyStore for SSL loaded OK and put host 'settings-win.data.microsoft.com' in map with key (settings-win.data.microsoft.com)
+2019-06-19 01:26:42,381 WARN o.a.j.p.h.p.Proxy: [56878]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for settings-win.data.microsoft.com:443
+2019-06-19 01:26:42,524 WARN o.a.j.p.h.p.Proxy: [56884]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for settings-win.data.microsoft.com:443
+2019-06-19 01:26:42,599 WARN o.a.j.p.h.p.Proxy: [56885]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for settings-win.data.microsoft.com:443
+2019-06-19 01:26:44,535 WARN o.a.j.p.h.p.Proxy: [56888]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:47,216 WARN o.a.j.p.h.p.Proxy: [56895]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:52,231 WARN o.a.j.p.h.p.Proxy: [56903]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:53,108 WARN o.a.j.p.h.p.Proxy: [56905]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:54,555 INFO o.a.j.p.h.p.ProxyControl: [56913]  Creating entry clients1.google.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:26:55,115 WARN o.a.j.p.h.p.Proxy: [56915]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:26:55,976 WARN o.a.j.p.h.p.Proxy: [56917]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:02,918 INFO o.a.j.p.h.p.Proxy: [56913]  KeyStore for SSL loaded OK and put host 'clients1.google.com' in map with key (clients1.google.com)
+2019-06-19 01:27:03,004 WARN o.a.j.p.h.p.Proxy: [56913]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:03,927 WARN o.a.j.p.h.p.Proxy: [56924]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:05,092 WARN o.a.j.p.h.p.Proxy: [56926]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:05,780 WARN o.a.j.p.h.p.Proxy: [56928]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:08,556 WARN o.a.j.p.h.p.Proxy: [56931]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:08,930 WARN o.a.j.p.h.p.Proxy: [56932]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:15,970 WARN o.a.j.p.h.p.Proxy: [56939]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:17,206 WARN o.a.j.p.h.p.Proxy: [56940]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:22,199 WARN o.a.j.p.h.p.Proxy: [56945]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:22,389 WARN o.a.j.p.h.p.Proxy: [56947]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:27,434 INFO o.a.j.p.h.p.ProxyControl: [56952]  Creating entry ssl.gstatic.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:27:32,118 INFO o.a.j.p.h.p.Proxy: [56952]  KeyStore for SSL loaded OK and put host 'ssl.gstatic.com' in map with key (ssl.gstatic.com)
+2019-06-19 01:27:32,193 WARN o.a.j.p.h.p.Proxy: [56952]  Problem with SSL certificate for url  for 'ssl.gstatic.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:35,082 WARN o.a.j.p.h.p.Proxy: [56959]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:37,604 WARN o.a.j.p.h.p.Proxy: [56962]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:40,108 WARN o.a.j.p.h.p.Proxy: [56965]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:42,267 WARN o.a.j.p.h.p.Proxy: [56967]  Problem with SSL certificate for url  for 'ssl.gstatic.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:43,132 WARN o.a.j.p.h.p.Proxy: [56969]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:27:45,031 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
+2019-06-19 01:29:29,187 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :root_ca:
+2019-06-19 01:29:29,187 INFO o.a.j.p.h.p.ProxyControl: Valid alias found for :intermediate_ca:
+2019-06-19 01:29:29,187 INFO o.a.j.p.h.p.Daemon: Creating Daemon Socket on port: 8888
+2019-06-19 01:29:29,188 INFO o.a.j.p.h.p.Daemon: Test Script Recorder up and running!
+2019-06-19 01:29:29,294 WARN o.a.j.p.h.p.Proxy: [57459]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:29,332 WARN o.a.j.p.h.p.Proxy: [57460]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:30,155 WARN o.a.j.p.h.p.Proxy: [57463]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:30,852 WARN o.a.j.p.h.p.Proxy: [57465]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:32,084 WARN o.a.j.p.h.p.Proxy: [57466]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:47,567 WARN o.a.j.p.h.p.Proxy: [57514]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:47,908 WARN o.a.j.p.h.p.Proxy: [57517]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:48,509 WARN o.a.j.p.h.p.Proxy: [57518]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:50,344 WARN o.a.j.p.h.p.Proxy: [57521]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:50,947 INFO o.a.j.p.h.p.ProxyControl: [57523]  Creating entry beacons4.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:29:52,913 WARN o.a.j.p.h.p.Proxy: [57525]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:53,249 WARN o.a.j.p.h.p.Proxy: [57526]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:55,136 WARN o.a.j.p.h.p.Proxy: [57529]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:56,240 WARN o.a.j.p.h.p.Proxy: [57531]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:58,227 INFO o.a.j.p.h.p.Proxy: [57523]  KeyStore for SSL loaded OK and put host 'beacons4.gvt2.com' in map with key (beacons4.gvt2.com)
+2019-06-19 01:29:58,280 WARN o.a.j.p.h.p.Proxy: [57523]  Problem with SSL certificate for url  for 'beacons4.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:29:58,285 INFO o.a.j.p.h.p.ProxyControl: [57533]  Creating entry clients2.google.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:01,191 WARN o.a.j.p.h.p.Proxy: [57537]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:05,096 WARN o.a.j.p.h.p.Proxy: [57542]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:05,286 INFO o.a.j.p.h.p.Proxy: [57533]  KeyStore for SSL loaded OK and put host 'clients2.google.com' in map with key (clients2.google.com)
+2019-06-19 01:30:05,391 WARN o.a.j.p.h.p.Proxy: [57540]  Problem with SSL certificate for url  for 'clients2.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:05,392 WARN o.a.j.p.h.p.Proxy: [57533]  Problem with SSL certificate for url  for 'clients2.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:08,627 INFO o.a.j.p.h.p.ProxyControl: [57545]  Creating entry beacons5.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:12,098 WARN o.a.j.p.h.p.Proxy: [57549]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:13,205 INFO o.a.j.p.h.p.Proxy: [57545]  KeyStore for SSL loaded OK and put host 'beacons5.gvt2.com' in map with key (beacons5.gvt2.com)
+2019-06-19 01:30:13,268 WARN o.a.j.p.h.p.Proxy: [57545]  Problem with SSL certificate for url  for 'beacons5.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:15,490 INFO o.a.j.p.h.p.ProxyControl: [57553]  Creating entry beacons5.gvt3.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:17,192 WARN o.a.j.p.h.p.Proxy: [57555]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:21,363 INFO o.a.j.p.h.p.Proxy: [57553]  KeyStore for SSL loaded OK and put host 'beacons5.gvt3.com' in map with key (beacons5.gvt3.com)
+2019-06-19 01:30:21,415 WARN o.a.j.p.h.p.Proxy: [57553]  Problem with SSL certificate for url  for 'beacons5.gvt3.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:22,203 WARN o.a.j.p.h.p.Proxy: [57560]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:25,842 WARN o.a.j.p.h.p.Proxy: [57565]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:35,085 WARN o.a.j.p.h.p.Proxy: [57573]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:46,154 INFO o.a.j.p.h.p.ProxyControl: [57583]  Creating entry v10.events.data.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:47,228 WARN o.a.j.p.h.p.Proxy: [57585]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:51,054 INFO o.a.j.p.h.p.ProxyControl: [57584]  Creating entry web.whatsapp.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:51,062 INFO o.a.j.p.h.p.Proxy: [57583]  KeyStore for SSL loaded OK and put host 'v10.events.data.microsoft.com' in map with key (v10.events.data.microsoft.com)
+2019-06-19 01:30:51,130 WARN o.a.j.p.h.p.Proxy: [57583]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for v10.events.data.microsoft.com:443
+2019-06-19 01:30:52,116 WARN o.a.j.p.h.p.Proxy: [57590]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:52,220 WARN o.a.j.p.h.p.Proxy: [57591]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:30:55,548 INFO o.a.j.p.h.p.ProxyControl: [57593]  Creating entry armmf.adobe.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:30:55,554 INFO o.a.j.p.h.p.Proxy: [57584]  KeyStore for SSL loaded OK and put host 'web.whatsapp.com' in map with key (web.whatsapp.com)
+2019-06-19 01:30:55,671 WARN o.a.j.p.h.p.Proxy: [57584]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for web.whatsapp.com:443
+2019-06-19 01:30:55,782 WARN o.a.j.p.h.p.Proxy: [57596]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for web.whatsapp.com:443
+2019-06-19 01:30:57,072 WARN o.a.j.p.h.p.Proxy: [57599]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for web.whatsapp.com:443
+2019-06-19 01:30:58,411 WARN o.a.j.p.h.p.Proxy: [57601]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:01,001 INFO o.a.j.p.h.p.ProxyControl: [57598]  Creating entry beacons.gcp.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:01,013 INFO o.a.j.p.h.p.Proxy: [57593]  KeyStore for SSL loaded OK and put host 'armmf.adobe.com' in map with key (armmf.adobe.com)
+2019-06-19 01:31:01,144 WARN o.a.j.p.h.p.Proxy: [57593]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for armmf.adobe.com:443
+2019-06-19 01:31:01,618 WARN o.a.j.p.h.p.Proxy: [57605]  Problem with SSL certificate for url  for 'armmf.adobe.com'? Ensure browser is set to accept the JMeter proxy cert: Remote host closed connection during handshake
+2019-06-19 01:31:02,584 WARN o.a.j.p.h.p.Proxy: [57608]  Problem with SSL certificate for url  for 'r3---sn-4g5edney.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:02,843 WARN o.a.j.p.h.p.Proxy: [57609]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for armmf.adobe.com:443
+2019-06-19 01:31:03,032 WARN o.a.j.p.h.p.Proxy: [57611]  Problem with SSL certificate for url  for 'armmf.adobe.com'? Ensure browser is set to accept the JMeter proxy cert: Remote host closed connection during handshake
+2019-06-19 01:31:05,078 WARN o.a.j.p.h.p.Proxy: [57616]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:05,797 INFO o.a.j.p.h.p.Proxy: [57598]  KeyStore for SSL loaded OK and put host 'beacons.gcp.gvt2.com' in map with key (beacons.gcp.gvt2.com)
+2019-06-19 01:31:05,872 WARN o.a.j.p.h.p.Proxy: [57598]  Problem with SSL certificate for url  for 'beacons.gcp.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:05,874 INFO o.a.j.p.h.p.ProxyControl: [57618]  Creating entry beacons.gvt2.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:09,948 INFO o.a.j.p.h.p.ProxyControl: [57619]  Creating entry array612-prod.do.dsp.mp.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:09,954 INFO o.a.j.p.h.p.Proxy: [57618]  KeyStore for SSL loaded OK and put host 'beacons.gvt2.com' in map with key (beacons.gvt2.com)
+2019-06-19 01:31:10,023 WARN o.a.j.p.h.p.Proxy: [57618]  Problem with SSL certificate for url  for 'beacons.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:10,097 WARN o.a.j.p.h.p.Proxy: [57623]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:10,151 WARN o.a.j.p.h.p.Proxy: [57624]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:10,242 WARN o.a.j.p.h.p.Proxy: [57625]  Problem with SSL certificate for url  for 'beacons4.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:10,330 WARN o.a.j.p.h.p.Proxy: [57626]  Problem with SSL certificate for url  for 'beacons5.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:14,701 INFO o.a.j.p.h.p.ProxyControl: [57629]  Creating entry disc601-prod.do.dsp.mp.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:14,713 INFO o.a.j.p.h.p.Proxy: [57619]  KeyStore for SSL loaded OK and put host 'array612-prod.do.dsp.mp.microsoft.com' in map with key (array612-prod.do.dsp.mp.microsoft.com)
+2019-06-19 01:31:14,761 WARN o.a.j.p.h.p.Proxy: [57619]  Problem with SSL certificate for url  for 'array612-prod.do.dsp.mp.microsoft.com'? Ensure browser is set to accept the JMeter proxy cert: Connection reset
+2019-06-19 01:31:16,849 WARN o.a.j.p.h.p.Proxy: [57633]  Problem with SSL certificate for url  for 'clients2.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:17,197 WARN o.a.j.p.h.p.Proxy: [57634]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:19,961 WARN o.a.j.p.h.p.Proxy: [57637]  Problem with SSL certificate for url  for 'beacons5.gvt3.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:22,029 INFO o.a.j.p.h.p.Proxy: [57629]  KeyStore for SSL loaded OK and put host 'disc601-prod.do.dsp.mp.microsoft.com' in map with key (disc601-prod.do.dsp.mp.microsoft.com)
+2019-06-19 01:31:22,031 WARN o.a.j.p.h.p.Proxy: [57629]  Problem with SSL certificate for url  for 'disc601-prod.do.dsp.mp.microsoft.com'? Ensure browser is set to accept the JMeter proxy cert: Connection reset
+2019-06-19 01:31:22,191 WARN o.a.j.p.h.p.Proxy: [57640]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:25,082 WARN o.a.j.p.h.p.Proxy: [57645]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:25,145 WARN o.a.j.p.h.p.Proxy: [57644]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for disc601-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:31:25,163 INFO o.a.j.p.h.p.ProxyControl: [57646]  Creating entry geo-prod.do.dsp.mp.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:28,238 WARN o.a.j.p.h.p.Proxy: [57651]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for disc601-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:31:28,948 WARN o.a.j.p.h.p.Proxy: [57652]  Problem with SSL certificate for url  for 'clientservices.googleapis.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:32,136 WARN o.a.j.p.h.p.Proxy: [57657]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:32,936 INFO o.a.j.p.h.p.ProxyControl: [57654]  Creating entry kv601-prod.do.dsp.mp.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:32,942 INFO o.a.j.p.h.p.Proxy: [57646]  KeyStore for SSL loaded OK and put host 'geo-prod.do.dsp.mp.microsoft.com' in map with key (geo-prod.do.dsp.mp.microsoft.com)
+2019-06-19 01:31:32,944 WARN o.a.j.p.h.p.Proxy: [57646]  Problem with SSL certificate for url  for 'geo-prod.do.dsp.mp.microsoft.com'? Ensure browser is set to accept the JMeter proxy cert: Connection reset
+2019-06-19 01:31:34,222 WARN o.a.j.p.h.p.Proxy: [57660]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:34,577 WARN o.a.j.p.h.p.Proxy: [57661]  Problem with SSL certificate for url  for 'beacons.gcp.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:37,312 INFO o.a.j.p.h.p.Proxy: [57654]  KeyStore for SSL loaded OK and put host 'kv601-prod.do.dsp.mp.microsoft.com' in map with key (kv601-prod.do.dsp.mp.microsoft.com)
+2019-06-19 01:31:37,397 WARN o.a.j.p.h.p.Proxy: [57654]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for kv601-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:31:37,415 INFO o.a.j.p.h.p.ProxyControl: [57664]  Creating entry geover-prod.do.dsp.mp.microsoft.com in C:\Users\Inbar Naus\PycharmProjects\Software_Engineering_Project_2019-\apache-jmeter-5.1.1\bin\proxyserver.jks
+2019-06-19 01:31:43,070 INFO o.a.j.p.h.p.Proxy: [57664]  KeyStore for SSL loaded OK and put host 'geover-prod.do.dsp.mp.microsoft.com' in map with key (geover-prod.do.dsp.mp.microsoft.com)
+2019-06-19 01:31:43,126 WARN o.a.j.p.h.p.Proxy: [57664]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for geover-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:31:43,355 WARN o.a.j.p.h.p.Proxy: [57670]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for disc601-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:31:45,096 WARN o.a.j.p.h.p.Proxy: [57673]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:47,229 WARN o.a.j.p.h.p.Proxy: [57675]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:48,538 WARN o.a.j.p.h.p.Proxy: [57677]  Problem with SSL certificate for url  for 'beacons.gcp.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:31:52,193 WARN o.a.j.p.h.p.Proxy: [57681]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:12,105 WARN o.a.j.p.h.p.Proxy: [57698]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:13,626 WARN o.a.j.p.h.p.Proxy: [57700]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:17,244 WARN o.a.j.p.h.p.Proxy: [57704]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:17,417 WARN o.a.j.p.h.p.Proxy: [57706]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:22,228 WARN o.a.j.p.h.p.Proxy: [57712]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:27,889 WARN o.a.j.p.h.p.Proxy: [57717]  Problem with SSL certificate for url  for 'ssl.gstatic.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,274 WARN o.a.j.p.h.p.Proxy: [57722]  Problem with SSL certificate for url  for 'beacons.gcp.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,322 WARN o.a.j.p.h.p.Proxy: [57723]  Problem with SSL certificate for url  for 'beacons.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,369 WARN o.a.j.p.h.p.Proxy: [57724]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,415 WARN o.a.j.p.h.p.Proxy: [57725]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,463 WARN o.a.j.p.h.p.Proxy: [57726]  Problem with SSL certificate for url  for 'beacons4.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,504 WARN o.a.j.p.h.p.Proxy: [57727]  Problem with SSL certificate for url  for 'beacons5.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,546 WARN o.a.j.p.h.p.Proxy: [57728]  Problem with SSL certificate for url  for 'beacons5.gvt3.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:32,587 WARN o.a.j.p.h.p.Proxy: [57729]  Problem with SSL certificate for url  for 'clients2.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:37,965 WARN o.a.j.p.h.p.Proxy: [57734]  Problem with SSL certificate for url  for 'ssl.gstatic.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:41,468 WARN o.a.j.p.h.p.Proxy: [57739]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for disc601-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:32:41,592 WARN o.a.j.p.h.p.Proxy: [57740]  Empty response to http over SSL. Probably waiting for user to authorize the certificate for geover-prod.do.dsp.mp.microsoft.com:443
+2019-06-19 01:32:43,982 WARN o.a.j.p.h.p.Proxy: [57742]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:47,178 WARN o.a.j.p.h.p.Proxy: [57746]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:52,072 WARN o.a.j.p.h.p.Proxy: [57751]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:52,216 WARN o.a.j.p.h.p.Proxy: [57752]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:53,154 WARN o.a.j.p.h.p.Proxy: [57754]  Problem with SSL certificate for url  for 'r3---sn-4g5e6nzs.googlevideo.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:55,090 WARN o.a.j.p.h.p.Proxy: [57756]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:32:56,970 WARN o.a.j.p.h.p.Proxy: [57759]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:08,854 WARN o.a.j.p.h.p.Proxy: [57769]  Problem with SSL certificate for url  for 'beacons.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:14,046 WARN o.a.j.p.h.p.Proxy: [57774]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:17,225 WARN o.a.j.p.h.p.Proxy: [57778]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:22,239 WARN o.a.j.p.h.p.Proxy: [57783]  Problem with SSL certificate for url  for 'www.youtube.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:31,132 WARN o.a.j.p.h.p.Proxy: [57791]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:37,434 WARN o.a.j.p.h.p.Proxy: [57797]  Problem with SSL certificate for url  for 'beacons.gcp.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:41,100 WARN o.a.j.p.h.p.Proxy: [57801]  Problem with SSL certificate for url  for 'beacons.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:41,899 WARN o.a.j.p.h.p.Proxy: [57803]  Problem with SSL certificate for url  for 'beacons3.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:42,356 WARN o.a.j.p.h.p.Proxy: [57804]  Problem with SSL certificate for url  for 'beacons2.gvt2.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:44,125 WARN o.a.j.p.h.p.Proxy: [57806]  Problem with SSL certificate for url  for 'clients1.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:44,619 WARN o.a.j.p.h.p.Proxy: [57808]  Problem with SSL certificate for url  for 'clients4.google.com'? Ensure browser is set to accept the JMeter proxy cert: Received fatal alert: certificate_unknown
+2019-06-19 01:33:45,562 INFO o.a.j.p.h.p.Daemon: HTTP(S) Test Script Recorder stopped
