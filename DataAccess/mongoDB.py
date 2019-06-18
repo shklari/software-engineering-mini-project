@@ -6,6 +6,8 @@ class DB:
         self.myclient = pymongo.MongoClient("mongodb+srv://grsharon:1234@cluster0-bkvsz.mongodb.net/test?retryWrites=true&w=majority")
         self.mydb = self.myclient["Store"]
 
+    # adder functions
+
     def add_user(self, user):
         collection = self.mydb["Users"]
         user_to_add = {"name": user.username, "password": user.password, "age": user.age, "country": user.country}
@@ -53,6 +55,8 @@ class DB:
     def add_policy_to_store(self, store_name, new_policy): pass
     # TODO: set new policy to a store
 
+    # getters
+
     def get_user(self, user_name):
         return self.mydb.Users.find({"name": user_name})
 
@@ -64,14 +68,57 @@ class DB:
                                     {"$or": [{"name": param}, {"price": param}, {"category": param}]})
 
     def get_inventory_from_db(self):
-        return self.mydb.Items.find()
+        return self.mydb.Items.find({})
 
     def get_all_stores_from_db(self):
-        return self.mydb.Stores.find()
+        return self.mydb.Stores.find({})
 
-    def edit_item_price_in_db(self, store_name, item_name, new_price): pass
-    # TODO
+    # editors
 
-    def edit_item_quantity_in_db(self, store_name, item_name, new_quantity): pass
-    # TODO
+    def edit_price_of_item(self, store_name, item_name, new_price):
+        collection = self.mydb["Items"]
+        item_to_change = {"name": item_name, "store": store_name}
+        collection.update_one(item_to_change, {"$set": {"price": new_price}})
 
+    def edit_quantity_of_item(self, store_name, item_name, quantity):
+            collection = self.mydb["Items"]
+            item_to_change = {"name": item_name, "store": store_name}
+            collection.update_one(item_to_change, {"$set": {"quantity": quantity}})
+
+    # removers
+
+    def remove_user(self, user_name):
+        collection = self.mydb["Users"]
+        user_to_remove = {"name": user_name}
+        collection.delete_one(user_to_remove)
+
+    def remove_store(self, store_name):
+        collection = self.mydb["Stores"]
+        store_to_remove = {"name": store_name}
+        collection.delete_one(store_to_remove)
+        collection1 = self.mydb["StoreManagers"]
+        collection1.delete_many({"store_name": store_name})
+        collection2 = self.mydb["StoreOwners"]
+        collection2.delete_one({"store_name": store_name})
+        collection3 = self.mydb["Items"]
+        collection3.delete_many({"store": store_name})
+
+    def remove_store_manager(self, manager_name, store_name):
+        collection = self.mydb["StoreManagers"]
+        manager_to_remove = {"store_name": store_name, "manager": manager_name}
+        collection.delete_one(manager_to_remove)
+
+    def remove_store_owner(self, store_name, owner_name):
+        collection = self.mydb["StoreOwners"]
+        owner_to_remove = {"store_name": store_name, "owner": owner_name}
+        collection.delete_one(owner_to_remove)
+
+    def remove_cart(self, user_name, store_name):
+        collection = self.mydb["Cart"]
+        cart_to_remove = {"user_name": user_name, "store_name": store_name}
+        collection.delete_one(cart_to_remove)
+
+    def remove_item_from_cart(self, user_name, store_name, item_name):
+        collection = self.mydb["Cart"]
+        item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
+        collection.delete_one(item_to_remove_from_cart)
