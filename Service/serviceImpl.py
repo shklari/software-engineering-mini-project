@@ -178,7 +178,7 @@ class ServiceImpl(ServiceInterface):
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "Item " + item_name + " removed from " + store_name + " inventory")
 
-    def edit_item_quantity(self, item_name, store_name, new_price, username):
+    def edit_item_quantity(self, item_name, store_name, quantity, username):
         store_result = self.sys.get_store(store_name)
         if not store_result.success:
             return ResponseObject(False, False,
@@ -188,14 +188,14 @@ class ServiceImpl(ServiceInterface):
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        edit = self.sys.edit_item_quantity(curr_user, item_name, new_price)
+        edit = self.sys.edit_item_quantity(curr_user.username, store_name, item_name, quantity)
         if not edit.success:
             return ResponseObject(False, False,
                                   "Error: can't edit item " + item_name + " in store " + store_name + "\n" + edit.message)
         ret = store.search_item_by_name(item_name)
         if not ret:
             return ResponseObject(False, False, "Error: item " + item_name + "doesn't exist in this store's inventory")
-        return ResponseObject(True, {'name': ret['name']},
+        return ResponseObject(True, {'name': ret.name},
                               "The price of item " + item_name + " was successfully changed")
 
     def decrease_item_quantity(self, store_name, item_name, quantity, username):

@@ -220,14 +220,13 @@ class System:
         if find_user is None:
             return find_user
         curr_user = find_user.value
-        item = store.search_item_by_name(itemname)
+        item = store.get_item_quantity(itemname)
         if not item:
             return ResponseObject(False, False,
                                   "Error: no such product in " + store_name)
-        add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item['quantity']}, quantity)
+        add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item}, quantity)
         if add is None:
-            return ResponseObject(False, False, "Error: can't add item " + itemname[
-                'name'] + " to store " + store_name + "\n" + add.message)
+            return ResponseObject(False, False, "Error: can't add item " + itemname + " to store " + store_name + "\n" + add.message)
         return ResponseObject(True, True, "")
 
     def approveNewOwner(self,new_owner_name, username, store_name):
@@ -369,7 +368,6 @@ class System:
         else:
             new_store = Store(store_name, self.loggedInUsers[username])
             #self.database.add_store(new_store)
-            #self.database.add_store_owner(store_name, username, 0)
             self.stores.append(new_store)
             self.log.set_info("create store succeeded", "eventLog")
             return ResponseObject(True, new_store, "")
