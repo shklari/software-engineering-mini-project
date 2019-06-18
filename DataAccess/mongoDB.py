@@ -87,13 +87,12 @@ class DB:
         return self.mydb.Items.find({"store": store_name}, {"quantity": {"$gt": 0}},
                                     {"$or": [{"name": param}, {"price": param}, {"category": param}]})
 
-    # def get_store_inventory_from_db(self, store_name):
-    #     if self.store_inventory_has_items(store_name):
-    #         curs = self.mydb.Items.find({"store": store_name})
-    #         ret_list = []
-    #         the_user = User(user_name, curs['password'], curs['age'], curs['country'])
-    #         return the_user
-    #     return None
+    def get_store_inventory_from_db(self, store_name):
+        if self.store_inventory_has_items(store_name):
+            curs = self.mydb.Items.find({"store": store_name})
+            ret_list = []
+            return ret_list
+        return None
         # TODO: return {inventory} loop over items and get all items of this store
 
     def store_inventory_has_items(self, store_name):
