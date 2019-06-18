@@ -219,8 +219,8 @@ class ServiceImpl(ServiceInterface):
                     message = "item " + item_name + " is out of stock!";
                     timeStamp = self.sys.dateToStamp();
                     for owner in store.storeOwners:
-                        self.sys.send_notification_to_user('System Alert',owner,timeStamp,message)
-                    self.ownersAlert.notify('notify', store.storeOwners, message)
+                        self.sys.send_notification_to_user('System Alert',owner,timeStamp,message,0)
+                    #self.ownersAlert.notify('notify', store.storeOwners, message)
             inv.append({'name': i['name'], 'quantity': i['quantity']})
         return ResponseObject(True, inv, "The quantity of item " + item_name + " was successfully decreased")
 
