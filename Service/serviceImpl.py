@@ -247,9 +247,9 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't add new owner " + new_owner + " to store " + store_name + "\n" + result.message)
         store = self.sys.get_store(store_name).value  # already checked if store exists in add_owner_to_store in system
         if result.success and (not result.value):
-            owner_notify =[]
+            owner_notify = []
             for own in store.storeOwners:
-                if own.username !=username:
+                if own.username != username:
                     owner_notify.append(own.username)
             self.ownersAlert.notify('notify', owner_notify, '')
 

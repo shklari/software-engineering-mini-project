@@ -93,7 +93,7 @@ class DB:
     def edit_item_quantity_in_db(self, store_name, item_name, quantity):
             collection = self.mydb["Items"]
             item_to_change = {"name": item_name, "store": store_name}
-            collection.update_one(item_to_change, {"$set": {"quantity": quantity}})
+            collection.update_one(item_to_change, {"$inc": {"quantity": quantity}})
 
     # removers
 
@@ -141,4 +141,4 @@ class DB:
     def remove_item_from_cart(self, user_name, store_name, item_name, quantity_to_remove):
         collection = self.mydb["Cart"]
         item_to_remove_from_cart = {"user_name": user_name, "store_name": store_name, "item_name": item_name}
-        collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": "-" + quantity_to_remove}})
+        collection.update_one(item_to_remove_from_cart, {"$inc": {"quantity": quantity_to_remove}})
