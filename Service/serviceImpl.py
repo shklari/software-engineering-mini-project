@@ -4,6 +4,7 @@ from Domain.System import System
 from Domain.Response import ResponseObject
 from .RealTimeAlert import RealTimeAlert
 
+
 class ServiceImpl(ServiceInterface):
 
     def __init__(self):
@@ -122,7 +123,7 @@ class ServiceImpl(ServiceInterface):
             return ResponseObject(False, False, "Can't remove item " + item_name + " from cart " + store_name + "\n" + result.message)
         return ResponseObject(True, curr_user.get_cart(store_name).value.items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
-    def buy_items(self, items, username):
+    def buy_items(self, items, username, supply_details, collect_details):
         result = self.sys.buy_items(items, username)
         if not result.success:
             return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
