@@ -1,4 +1,5 @@
 from django.utils.datetime_safe import datetime
+
 from Domain.Cart import Cart
 from Domain.ExternalSystems import *
 from Domain.User import User
@@ -11,6 +12,7 @@ from log.Log import Log
 from DataAccess.mongoDB import DB
 import functools
 from Domain.BuyingPolicy import *
+
 
 
 class System:
@@ -220,14 +222,13 @@ class System:
         if find_user is None:
             return find_user
         curr_user = find_user.value
-        item = store.search_item_by_name(itemname)
+        item = store.get_item_quantity(itemname)
         if not item:
             return ResponseObject(False, False,
                                   "Error: no such product in " + store_name)
-        add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item['quantity']}, quantity)
+        add = store.edit_item_quantity(curr_user, {'name': itemname, 'quantity': item}, quantity)
         if add is None:
-            return ResponseObject(False, False, "Error: can't add item " + itemname[
-                'name'] + " to store " + store_name + "\n" + add.message)
+            return ResponseObject(False, False, "Error: can't add item " + itemname + " to store " + store_name + "\n" + add.message)
         self.database.edit_item_quantity_in_db(store_name, itemname, quantity)
         return ResponseObject(True, True, "")
 
@@ -248,7 +249,8 @@ class System:
         else:
             return ResponseObject(False, True, "")
 
-    def add_owner_to_store_helper(self, new_owner_name, username, store_name):
+
+    def add_owner_to_store_helper(self,new_owner_name,username,store_name):
         store_result = self.get_store(store_name)
         if not store_result.success:
             return store_result
@@ -543,6 +545,7 @@ class System:
         else:
             store_name.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
         return ResponseObject(True, True, "")
+
 
     @staticmethod
     def parse_item_policy(policy, item_name):

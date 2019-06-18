@@ -314,6 +314,12 @@ class Store(object):
                 return item['val']
         return False
 
+    def get_item_quantity(self, item_name):
+        for item in self.inventory:
+            if item['name'] == item_name:
+                return item['quantity']
+        return False
+
     def search_item_by_price(self, price):
         result_list = []
         for item in self.inventory:
