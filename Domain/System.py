@@ -521,7 +521,7 @@ class System:
         self.database.add_notification(sender_username, receiver_username, key, message)
 
     def get_user_notifications_from_db(self, user_name):
-        return self.database.get_user_notification(user_name)
+        return ResponseObject(True, self.database.get_user_notification(user_name), '')
         # response = {True, ret_list, ''}
         # return response
 
