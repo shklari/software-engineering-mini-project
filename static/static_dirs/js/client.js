@@ -9,7 +9,7 @@ function read_cookie(key)
 
 function getwebsocket() {
     if(this.websocket == undefined)
-        this.websocket = new WebSocket('ws://localhost:6789');
+        this.websocket = new WebSocket('ws://192.168.0.23:6789');
     return this.websocket;
 }
 
@@ -42,22 +42,19 @@ function ping() {
 
 }
 
-
-getwebsocket().onerror = error => {
-    console.log(`WebSocket error: ${error}`)
-};
-
 getwebsocket().onclose = () => {
     clearTimeout(this.pingTimeout);
     //console.log("exiting");
     //alert('closing');
 };
 
-function send_msg(msg, onsuccess , onfailure)
+function send_msg(msg, onsuccess , onfailure,onerror)
 {
 
     try {
         var ws = getwebsocket();
+        if(onerror!=undefined)
+            ws.onerror = onerror;
         ws.onmessage = function (event) {
 
             data = JSON.parse(event.data);
@@ -103,7 +100,6 @@ function send_msg(msg, onsuccess , onfailure)
             ws.send(json);
             //setInterval(ping, 6000);
         }
-        //websocket = new WebSocket("ws://10.100.102.5:6789");
     }catch (e) {
         console.log(e);
     }
