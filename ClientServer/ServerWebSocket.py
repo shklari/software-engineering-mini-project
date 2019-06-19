@@ -170,7 +170,7 @@ async def datahandler(data, websocket):
         # policy = {type, combo, quantity, override}
         ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
     elif data['action'] == 'approveNewOwner':
-        ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
+        ans = service.approveNewOwner(data['new_owner_name'], data['username'], data['store_name'])
     elif data['action'] == 'has_alert':
         ans = service.has_alert(data['username'])
     elif data['action'] == 'get_notification':

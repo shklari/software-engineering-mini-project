@@ -89,15 +89,15 @@ class TestStore(UnitTestSystem):
         self.system.sign_up('TheWorker', '6', 22, 'luv')
         self.system.login('theNewName', '1234')
         self.system.create_store('aStore', 'theNewName')
-        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'one',
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'avaone',
                                                                    'price': 43323, 'category': 'nums'}, 173)
         # self.system.add_to_cart('aStore', 'anItem', 63, 'theNewName')
-        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'two',
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'avatwo',
                                                                    'price': 12, 'category': 'nums'}, 18)
-        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'three',
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'avathree',
                                                                    'price': 555, 'category': 'nums'}, 62)
         self.system.create_store('bStore', 'theNewName')
-        self.system.add_item_to_inventory('theNewName', 'bStore', {'name': 'four',
+        self.system.add_item_to_inventory('theNewName', 'bStore', {'name': 'avafour',
                                                                    'price': 4, 'category': 'nums'}, 4)
         a_inventory = self.system.get_store_inventory_from_db('aStore')
         print(a_inventory)
