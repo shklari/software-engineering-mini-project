@@ -228,7 +228,7 @@ class DB:
             obj = {'name': item['name'], 'val': Item(item['name'], item['store'], item['price'],
                                                      item['category']), 'quantity': item["quantity"]}
             policy = self.get_item_policy_by_name(obj['name'], item['store'])
-            obj['item'].set_buying_policy(policy)
+            obj['val'].set_buying_policy(policy)
             ret.append(obj)
         return ret
 
