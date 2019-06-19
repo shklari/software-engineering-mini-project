@@ -527,12 +527,13 @@ class System:
     def get_total_system_inventory(self):
         # TODO: get inventory from db !
         # inventory_from_db = self.database.get_inventory_from_db()
+        inventory = self.database.get_all_products()
         retList = []
-        for store in self.stores:
-            for item in store.inventory:
-                new_item = {'name': item['name'], 'category': item['val'].category, 'price': item['val'].price,
-                            'quantity': item['quantity'], 'store_name': store.name}
-                retList.append(new_item)
+        prods = self.database.get_all_products()
+        for item in prods:
+            new_item = {'name': item['name'], 'category': item['val'].category, 'price': item['val'].price,
+                        'quantity': item['quantity'], 'store': item['val'].store_name}
+            retList.append(new_item)
         return ResponseObject(True, retList, "")
 
     def get_store_inventory_from_db(self, store_name):
@@ -572,7 +573,7 @@ class System:
         return ResponseObject(True, True, '')
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
-        # TODO: update db !
+
         parsed_policy = self.parse_item_policy(policy, item_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:
@@ -587,10 +588,12 @@ class System:
             item.set_buying_policy(parsed_policy)
         else:
             item.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
+        self.database.add_item_policy(item_name, store_name, policy['type'], policy['combo'],
+                                      policy['args'], policy['override'])
         return ResponseObject(True, True, "")
 
     def add_store_policy(self, store_name, policy, user_name):
-        # TODO: update db !
+
         parsed_policy = self.parse_store_policy(policy, store_name)
         store_ans = self.get_store(store_name)
         if not store_ans.success:
@@ -604,8 +607,9 @@ class System:
             store_name.set_buying_policy(parsed_policy)
         else:
             store_name.add_buying_policy(parsed_policy, (policy['combo'] == 'True'))
+        self.database.add_policy_to_store(store_name, policy['type'], policy['combo'],
+                                          policy['args'], policy['override'])
         return ResponseObject(True, True, "")
-
 
     @staticmethod
     def parse_item_policy(policy, item_name):
