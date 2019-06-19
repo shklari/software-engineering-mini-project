@@ -3,6 +3,7 @@ from django.utils.datetime_safe import datetime
 
 from Domain.Item import Item
 from Domain.Store import Store
+from Domain.StoreOwner import StoreOwner
 from Domain.User import User
 from Domain.BuyingPolicy import *
 
@@ -152,12 +153,15 @@ class DB:
 
     def get_store(self, store_name):
         if self.does_store_exist(store_name):
-            owner_name = self.mydb.StoreOwners.find_one({"store_name": store_name}, {"owner": 1})
-            owner = self.get_user(owner_name)
+            #owner_name = self.mydb.StoreOwners.find_one({"store_name": store_name}, {"owner": 1})
+            #owner = self.get_user(owner_name)
             inventory = self.get_store_inventory_from_db(store_name)
-            the_store = Store(store_name, owner, inventory)
+            the_store = Store(store_name,'', inventory)
             return the_store
         return None
+
+    def get_quantity_from_cart(self, item_name, store_name):
+        return self.mydb.Cart.find_one({"item_name": item_name, "store_name": store_name})['quantity']
 
     def does_store_exist(self, store_name):
         return True if self.mydb.Stores.count_documents({"name": store_name}) > 0 else False
@@ -170,6 +174,7 @@ class DB:
         ret_dict = []
         if self.store_inventory_has_items(store_name):
             curs = self.mydb.Items.find({"store": store_name})
+            ret_dict = []
             for item in curs:
                 tmpobj = {"name": item['name'], "item": Item(item['name'], item['store'], item['price'],
                                                              item['category']), "quantity": item["quantity"]}
@@ -179,9 +184,19 @@ class DB:
                 tmpobj['item'].set_buying_policy(policy)
                 ret_dict.append(tmpobj)
         return ret_dict
+        # TODO: take policies from db and parse
 
     def store_inventory_has_items(self, store_name):
         return True if self.mydb.Items.count_documents({"store": store_name}) > 0 else False
+
+    def get_user_type(self, user_name):
+        if self.mydb.StoreOwners.count_documents({"owner": user_name}) > 0:
+            return "store_owner"
+        elif self.mydb.StoreManagers.count_documents({"manager": user_name}) > 0:
+            return "store_manager"
+        elif self.does_user_exist(user_name):
+            return "user"
+        return "guest"
 
     # return [{"message": , "sender": , "time": }]
     def get_user_notification(self, user_name):
@@ -216,6 +231,15 @@ class DB:
             obj['item'].set_buying_policy(policy)
             ret.append(obj)
         return ret
+
+    def get_store_owners_from_db(self, store_name):
+        curs = self.mydb.StoreOwners.find({"store_name": store_name})
+        ret_list = []
+        for owner in curs:
+            usr = self.get_user(owner['name'])
+            owner_to_add = StoreOwner(usr.username, usr.password, usr.age, usr.country, owner['appointer'])
+            ret_list.append(owner_to_add)
+        return ret_list
 
     def get_item_policy_by_name(self, item_name, store_name):
         policyId = self.mydb.Items.find_one({"name": item_name, "store": store_name})['policy']
@@ -342,3 +366,7 @@ class DB:
         collection = self.mydb["UserNotification"]
         notification_to_remove = {"receiver_username": user_name}
         collection.delete_many(notification_to_remove)
+
+    def remove_basket(self, user_name):
+        collection = self.mydb["Cart"]
+        collection.delete_many({"user_name": user_name})

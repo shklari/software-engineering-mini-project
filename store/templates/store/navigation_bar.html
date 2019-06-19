@@ -451,7 +451,6 @@ ul.dropdown-menu1.notifications1 {
 <script>
 function CustomAlert(){
     this.render = function(dialog){
-        $("#box").fadeIn(1000).show()
         document.getElementById('mes_list').innerHTML='<a class="content" href="#">\n' +
             '       <div class="notification-item1">\n' +
             '        <h4 class="item-title1">There is no any notification</h4>\n' +
@@ -462,7 +461,7 @@ function CustomAlert(){
             var mes = '';
             val.forEach((message)=>{
                 var action ='';
-                if(message['type']=='1') {action = 'onclick="confirmBox(' + message['message'] +')"'}
+                if(message['type']=='1') {action = 'onclick="confirmBox("' + message['message'] +'")"'}
                     mes += '<span '+action+' class="content" >\n' +
                         '       <div class="notification-item1">\n' +
                         '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
@@ -481,7 +480,7 @@ function CustomAlert(){
             '      </div>\n' +
             '    </a>';
         });
-
+        $("#box").fadeIn(1000).show();
         $("#notify").hide();
     }
 	this.ok = function(){
@@ -661,19 +660,19 @@ var Alert = new CustomAlert();
         window.location.href = '/';
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
-    }
+    };
     var btnsearch = document.getElementById('btnsearch');
     btnsearch.onclick = function(event) {
         var keyword = document.getElementById('search').value;
         window.location.href = '/search_items/';
         write_cookie('keyword', keyword);
 
-    }
+    };
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
     var logout_onsuccess =  (res) =>{
         alert(res);
         document.cookie = "login = false;domain=;path=/";
@@ -683,7 +682,7 @@ var Alert = new CustomAlert();
     var logout_onfailure =  (res) =>{
         alert(res);
     };
-    if(document.getElementById('login')!=undefined){
+    if(document.getElementById('login')!== undefined){
         document.getElementById('login').onclick = function (event) {
             document.getElementById('id01').style.display='block';
         }
