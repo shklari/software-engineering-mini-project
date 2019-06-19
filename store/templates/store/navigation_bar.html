@@ -194,7 +194,7 @@
         setTimeout(checkalertfunction, 4000);
     };
     var confirmBox = function (message) {
-        var person = prompt("Please enter owner name:", "");
+        var person = prompt("Please enter the owner name that is pending for approval:", "");
         var store='';
       if (person == null || person == "" ) {
         return;
@@ -203,7 +203,7 @@
         if (person == null || person == "" ) {
             return;
         }
-        send_msg({action:'approveNewOwner',new_owner:person,store:store},()=>{},()=>{})
+        send_msg({action:'approveNewOwner',new_owner_name:person,username:read_cookie('username'),store_name:store},()=>{},()=>{})
       }
     };
 
@@ -461,7 +461,7 @@ function CustomAlert(){
             var mes = '';
             val.forEach((message)=>{
                 var action ='';
-                if(message['type']=='1') {action = 'onclick="confirmBox("' + message['message'] +'")"'}
+                if(message['type']=='1') {action = 'onclick="confirmBox(\'' + message['message'] +'\')"'}
                     mes += '<span '+action+' class="content" >\n' +
                         '       <div class="notification-item1">\n' +
                         '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
