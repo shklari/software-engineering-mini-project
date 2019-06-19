@@ -45,8 +45,8 @@ class System:
         self.guests[guest_id] = Guest()
 
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
-        if not self.supplying_system.supply_handshake() or not self.collecting_system.collect_handshake():
-            return ResponseObject(False, False, "Can't init external systems")
+        # if not self.supplying_system.supply_handshake() or not self.collecting_system.collect_handshake():
+        #     return ResponseObject(False, False, "Can't init external systems")
         result=''
         if not self.get_user(system_manager_user_name):
             result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,system_manager_country)
