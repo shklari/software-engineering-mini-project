@@ -379,3 +379,11 @@ class DB:
     def remove_basket(self, user_name):
         collection = self.mydb["Cart"]
         collection.delete_many({"user_name": user_name})
+
+    def get_bascket_db(self, username):
+        items = self.mydb.Cart.find({"user_name": username})
+        ret_list = []
+        for itm in items:
+            itm_to_add = self.get_item_from_store(itm['item_name'], itm['store_name'])
+            ret_list.append(itm_to_add)
+        return ret_list
