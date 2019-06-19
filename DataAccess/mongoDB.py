@@ -90,7 +90,7 @@ class DB:
                                    {"father": self.policyid + 1, "son": self.policyid}])
             self.policyid += 2
 
-    def add_notification(self, sender_username, receiver_username, key, message):
+    def add_notification(self, sender_username, receiver_username, key, message, type):
         collection = self.mydb["UserNotification"]
         not_to_add = {"sender_username": sender_username, "receiver_username": receiver_username,
                       "key": key, "message": message, "type": type}
@@ -155,10 +155,19 @@ class DB:
         if self.does_store_exist(store_name):
             #owner_name = self.mydb.StoreOwners.find_one({"store_name": store_name}, {"owner": 1})
             #owner = self.get_user(owner_name)
+            owners = self.get_store_owners_from_db(store_name)
             inventory = self.get_store_inventory_from_db(store_name)
-            the_store = Store(store_name,'', inventory)
+            the_store = Store(store_name,owners, inventory)
             return the_store
         return None
+
+    def get_all_stores(self):
+        stores = self.mydb.Stores.find({})
+        ret_list = []
+        for stor in stores:
+            store_to_add = self.get_store(stor['name'])
+            ret_list.append(store_to_add)
+        return ret_list
 
     def get_quantity_from_cart(self, item_name, store_name):
         return self.mydb.Cart.find_one({"item_name": item_name, "store_name": store_name})['quantity']
@@ -236,7 +245,7 @@ class DB:
         curs = self.mydb.StoreOwners.find({"store_name": store_name})
         ret_list = []
         for owner in curs:
-            usr = self.get_user(owner['name'])
+            usr = self.get_user(owner['owner'])
             owner_to_add = StoreOwner(usr.username, usr.password, usr.age, usr.country, owner['appointer'])
             ret_list.append(owner_to_add)
         return ret_list

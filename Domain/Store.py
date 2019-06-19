@@ -16,7 +16,7 @@ class Store(object):
         self.name = name
         self.rank = 0
         self.inventory = [] if inventory is None else inventory
-        self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
+        self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)] if not isinstance(owner,list) else owner
         self.storeManagers = []
         self.waitingForBecomeOwner =[] # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
         self.discountPolicy = 0
@@ -194,28 +194,6 @@ class Store(object):
         else:
             self.log.set_info("error: illegal discount policy", "eventLog")
             return False
-
-    # 4.3
-    # owner, new_owner = User(...)
-    def add_new_owner(self, owner, new_owner):
-        if isinstance(owner, User) and owner.logged_in:
-            if self.check_if_store_owner(owner):
-                if not self.check_if_store_owner(new_owner):
-                    self.storeOwners.append(StoreOwner(new_owner.username, new_owner.password, new_owner.age, new_owner.country, owner))
-                    for k in self.storeOwners:
-                        if k.username == owner.username:
-                            k.add_appointee(new_owner)
-                    self.log.set_info("new store owner has been added successfully!", "eventLog")
-                    return ResponseObject(True, True, "")
-                else:
-                    self.log.set_info("error: user is already an owner of this store", "eventLog")
-                    return ResponseObject(False, False, "User" + new_owner.username + " is already an owner of this store")
-            else:
-                self.log.set_info("error: user is no store owner for this store", "eventLog")
-                return ResponseObject(False, False, "User " + owner.username + " is not an owner of this store")
-        else:
-            self.log.set_info("error: user is not logged in or not a store owner", "eventLog")
-            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     # 4.4
     # owner, owner_to_remove = User(...)

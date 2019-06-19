@@ -1,6 +1,7 @@
 from django.utils.datetime_safe import datetime
 
 from Domain.Cart import Cart
+from Domain.StoreOwner import StoreOwner
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -57,6 +58,7 @@ class System:
         self.database.add_user(manager)
         # self.users[manager.username] = manager
         self.system_manager = manager
+        self.stores = self.database.get_all_stores()
         return ResponseObject(True, True, "")
 
     def sign_up(self, username, password, age, country):
@@ -155,7 +157,7 @@ class System:
         store = store_result.value
         # add supporting in vote requirement in version 3
         # TODO: get store managers list from db !
-        owner_list = get_store_owners_from_db(store_name)
+        owner_list = store.storeOwners
         # check if username is owner #
         found = False
         for owner in owner_list:
@@ -166,17 +168,18 @@ class System:
             return ResponseObject(False, False, username + " is not a owner of this store!")
         #
         if len(owner_list) == 1:
-            return self.add_owner_to_store_helper(new_owner_name, username, store_name)
+            return self.add_owner_to_store_helper(new_owner_name, username, store_name,store)
         else:
             timeStamp = self.dateToStamp()
             message = "Hello, "+username+" want to add a new owner to the store, he is waiting for your approval..."
             waitingList = []  # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}
+            store_from_domain = self.get_store_from_domain(store_name)
             for owner in owner_list:
                 approved = True if owner.username == username else False
                 waitingList.append({'owner': owner.username, 'approved': approved})
                 self.send_notification_to_user(username, owner.username, timeStamp, message,'1')
-            store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
-            self.database.add_store_owner(store_name, new_owner_name, username)
+            store_from_domain.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
+            #self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
 
     def add_item_to_inventory(self, username, store_name, item, quantity):
@@ -239,11 +242,8 @@ class System:
         self.database.edit_item_quantity_in_db(store_name, itemname, quantity)
         return ResponseObject(True, True, "")
 
-    def approveNewOwner(self,new_owner_name, username, store_name):
-        store_result = self.get_store(store_name)
-        if not store_result.success:
-            return store_result
-        store = store_result.value
+    def approveNewOwner(self, new_owner_name, username, store_name):
+        store = self.get_store_from_domain(store_name)
         allGivedApproved = True
         for user in store.waitingForBecomeOwner:
             if user['waitingName'] == new_owner_name:
@@ -256,21 +256,46 @@ class System:
         else:
             return ResponseObject(False, True, "")
 
-    def add_owner_to_store_helper(self,new_owner_name,username,store_name):
-        store_result = self.get_store(store_name)
-        if not store_result.success:
-            return store_result
-        store = store_result.value
+    def add_owner_to_store_helper(self,new_owner_name,username,store_name,store):
+        #store_result = self.get_store(store_name)
+        #if not store_result.success:
+        #    return store_result
+        #store = store_result.value
         new_owner_obj = self.get_user(new_owner_name)
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        add = store.add_new_owner(curr_user, new_owner_obj)
+        add = self.add_new_owner(curr_user, new_owner_obj,store)
         if not add.success:
             return add
         self.log.set_info("adding owner succeeded", "eventLog")
         return ResponseObject(True, True, "")
+
+    # 4.3
+    # owner, new_owner = User(...)
+    def add_new_owner(self, owner_obj, new_owner_obj, store_obj):
+        if isinstance(owner_obj, User) and owner_obj.logged_in:
+            if store_obj.check_if_store_owner(owner_obj):
+                if not store_obj.check_if_store_owner(new_owner_obj):
+                    self.database.add_store_owner(store_obj.name, new_owner_obj.username, owner_obj.username)
+                    #store_obj.storeOwners.append(
+                    #    StoreOwner(new_owner_obj.username, new_owner_obj.password, new_owner_obj.age, new_owner_obj.country, owner_obj))
+                    #for k in store_obj.storeOwners:
+                    #    if k.username == owner_obj.username:
+                    #        k.add_appointee(new_owner_obj)
+                    store_obj.log.set_info("new store owner has been added successfully!", "eventLog")
+                    return ResponseObject(True, True, "")
+                else:
+                    store_obj.log.set_info("error: user is already an owner of this store", "eventLog")
+                    return ResponseObject(False, False,
+                                          "User" + new_owner_obj.username + " is already an owner of this store")
+            else:
+                store_obj.log.set_info("error: user is no store owner for this store", "eventLog")
+                return ResponseObject(False, False, "User " + owner_obj.username + " is not an owner of this store")
+        else:
+            store_obj.log.set_info("error: user is not logged in or not a store owner", "eventLog")
+            return ResponseObject(False, False, "User is not logged in or is not an owner of the store")
 
     def remove_owner_from_store(self, store_name, owner_to_remove, username):
         store_result = self.get_store(store_name)
@@ -628,6 +653,11 @@ class System:
         elif policy['type'] == 'max':
             new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
         return new_policy
+
+    def get_store_from_domain(self, store_name):
+        for store in self.stores:
+            if store.name == store_name:
+                return store;
 
     def dateToStamp(self):
         now = datetime.now()
