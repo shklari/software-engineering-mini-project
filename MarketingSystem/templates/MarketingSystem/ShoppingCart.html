@@ -381,8 +381,13 @@
 
         </div>
 
-        <span id="checkout_btn" class="checkout">Checkout</span>
 
+        <button id="checkout" class="checkout" onclick="window.location.href='/checkout/'" href="/checkout/">Checkout</button>
+        <script>
+            document.getElementById('checkout_btn').onclick=function () {
+                window.location.href='/checkout/';
+            }
+        </script>
         <script>
             var btn = document.getElementById("checkout_btn");
             btn.onclick = function (event) {

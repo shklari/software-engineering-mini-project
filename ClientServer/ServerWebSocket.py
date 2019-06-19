@@ -43,6 +43,11 @@ checkinit = service.init("avabash", "123456",21,'')
 #service.get_basket()
 #service.get_stores()
 
+#service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, 'aStore', 100, 'aaa')
+#service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, 'aStore', 100, 'aaa')
+#service.add_to_cart('aStore', 'bamba', 2, 'aaa')
+#service.add_to_cart('aStore', 'soup', 2, 'aaa')
+
 
 # service.sign_up("storeowner1", "111")
 # service.sign_up("storeowner2", "111")
