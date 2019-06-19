@@ -234,8 +234,8 @@ class DB:
         items = self.mydb["Items"].find({})
         ret = []
         for item in items:
-            obj = {"name": item['name'], "val": Item(item['name'], item['store'], item['price'],
-                                                     item['category']), "quantity": item["quantity"]}
+            obj = {"name": item['name'], "val": Item(item['name'], item['price'],
+                                                     item['category'], item['store']), "quantity": item["quantity"]}
             policy = self.get_item_policy_by_name(obj['name'], item['store'])
             obj['val'].set_buying_policy(policy)
             ret.append(obj)
