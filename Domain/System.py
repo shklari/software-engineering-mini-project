@@ -252,7 +252,7 @@ class System:
                         owner['approved'] = True
                     allGivedApproved = allGivedApproved and owner['approved']
         if allGivedApproved :
-            return self.add_owner_to_store_helper
+            return self.add_owner_to_store_helper(new_owner_name,username,store_name,store)
         else:
             return ResponseObject(False, True, "")
 
@@ -278,7 +278,7 @@ class System:
         if isinstance(owner_obj, User) and owner_obj.logged_in:
             if store_obj.check_if_store_owner(owner_obj):
                 if not store_obj.check_if_store_owner(new_owner_obj):
-                    self.database.add_store_owner(store_obj.name, new_owner_obj.username, owner_obj.username)
+                    self.database.add_storde_owner(store_obj.name, new_owner_obj.username, owner_obj.username)
                     #store_obj.storeOwners.append(
                     #    StoreOwner(new_owner_obj.username, new_owner_obj.password, new_owner_obj.age, new_owner_obj.country, owner_obj))
                     #for k in store_obj.storeOwners:
@@ -494,7 +494,7 @@ class System:
         curr_user = find_user.value
         non_empty = 0
         basket_ret = []
-        basket = curr_user.get_basket()
+        basket = get_bascket_db(username)#curr_user.get_basket()
         for cart in basket.carts:
             if len(cart.items_and_quantities) > 0:
                 non_empty = 1
@@ -656,7 +656,7 @@ class System:
     def get_store_from_domain(self, store_name):
         for store in self.stores:
             if store.name == store_name:
-                return store;
+                return store
 
     def dateToStamp(self):
         now = datetime.now()
