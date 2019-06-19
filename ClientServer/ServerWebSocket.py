@@ -23,7 +23,7 @@ users_list = []
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456",21,'')
+# checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
 
@@ -43,6 +43,11 @@ checkinit = service.init("avabash", "123456",21,'')
 #service.get_basket()
 #service.get_stores()
 
+#service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, 'aStore', 100, 'aaa')
+#service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, 'aStore', 100, 'aaa')
+#service.add_to_cart('aStore', 'bamba', 2, 'aaa')
+#service.add_to_cart('aStore', 'soup', 2, 'aaa')
+
 
 # service.sign_up("storeowner1", "111")
 # service.sign_up("storeowner2", "111")
@@ -52,6 +57,23 @@ checkinit = service.init("avabash", "123456",21,'')
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
 #service.logout("storeowner1")
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "S2", 100, "U11")
+service.add_item_to_inventory({'name': 'bisli', 'price': 2, 'category': 'snacks'}, "S2", 100, "U11")
+# service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "S2"}, "S2", 3)
+# service.add_item_to_inventory({'name': "bisli", 'price': 20, 'category': "snakes", 'store_name': "S2"}, "S2", 3)
+
+# service.init("A1", "123456",21,'')
+#
+# service.sign_up("U1", "111", 32, 'israel')
+# service.sign_up("U2", "111", 32, 'israel')
+# service.sign_up("U11", "111", 32, 'israel')
+# service.sign_up("U12", "111", 32, 'israel')
+# service.sign_up("U13", "111", 32, 'israel')
+#
+# service.login("U11", "111")
+#service.create_store("S2", "U11")
+
+
 
 # #######################################TEST
 ws = 0
@@ -130,7 +152,7 @@ async def datahandler(data, websocket):
     elif data['action'] == 'remove_from_cart':
         ans = service.remove_from_cart(data['store_name'], data['item_name'], data['username'])
     elif data['action'] == 'buy_items':
-        ans = service.buy_items(data['items'], data['username'])
+        ans = service.buy_items(data['items'], data['username'], data['supply_details'], data['collect_details'])
     elif data['action'] == 'add_item_to_inventory':
         ans = service.add_item_to_inventory(data['item'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'remove_item_from_inventory':
@@ -170,7 +192,7 @@ async def datahandler(data, websocket):
         # policy = {type, combo, quantity, override}
         ans = service.add_store_policy(data['store_name'], data['policy'], data['username'])
     elif data['action'] == 'approveNewOwner':
-        ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
+        ans = service.approveNewOwner(data['new_owner_name'], data['username'], data['store_name'])
     elif data['action'] == 'has_alert':
         ans = service.has_alert(data['username'])
     elif data['action'] == 'get_notification':

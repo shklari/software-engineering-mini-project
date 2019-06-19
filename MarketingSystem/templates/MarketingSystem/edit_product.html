@@ -189,23 +189,16 @@ button:hover {
                     item_name: productname
                 },
                 (message, val)=>{
-                    if(quantity < 0)
-                        send_msg({action: 'decrease_item_quantity', store_name: storename, item_name: productname, quantity: quantity, username: username},
-                            (message, val) => {
+                    send_msg({
+                    action: 'edit_item_quantity',
+                    name: productname,
+                    store_name: storename,
+                    quantity: quantity,
+                    username: username
+                }, (message, val) => {
                     alert("item has been successfully edited");
                     //window.location.href = "/inventory/";
-                    } , onfailure);
-                    else
-                        send_msg({
-                        action: 'edit_item_quantity',
-                        name: productname,
-                        store_name: storename,
-                        quantity: quantity,
-                        username: username
-                    }, (message, val) => {
-                        alert("item has been successfully edited");
-                        //window.location.href = "/inventory/";
-                        }, onfailure);
+                    }, onfailure);
                 }, onfailure);
 
         }

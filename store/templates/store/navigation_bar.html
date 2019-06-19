@@ -194,7 +194,7 @@
         setTimeout(checkalertfunction, 4000);
     };
     var confirmBox = function (message) {
-        var person = prompt("Please enter owner name:", "");
+        var person = prompt("Please enter the owner name that is pending for approval:", "");
         var store='';
       if (person == null || person == "" ) {
         return;
@@ -203,7 +203,7 @@
         if (person == null || person == "" ) {
             return;
         }
-        send_msg({action:'approveNewOwner',new_owner:person,store:store},()=>{},()=>{})
+        send_msg({action:'approveNewOwner',new_owner_name:person,username:read_cookie('username'),store_name:store},()=>{},()=>{})
       }
     };
 
@@ -461,7 +461,7 @@ function CustomAlert(){
             var mes = '';
             val.forEach((message)=>{
                 var action ='';
-                if(message['type']=='1') {action = 'onclick="confirmBox("' + message['message'] +'")"'}
+                if(message['type']=='1') {action = 'onclick="confirmBox(\'' + message['message'] +'\')"'}
                     mes += '<span '+action+' class="content" >\n' +
                         '       <div class="notification-item1">\n' +
                         '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
@@ -533,7 +533,7 @@ var Alert = new CustomAlert();
                         <li class="has-dropdown">
                             <a>Services</a>
                             <ul class="dropdown">
-                                <li><a href="/create_store">Add Store</a></li>
+                                <li><a href="/create_store">Create Store</a></li>
                                 <li><a href="#">eCommerce</a></li>
                                 <li><a href="#">Branding</a></li>
                                 <li><a href="#">API</a></li>
@@ -660,19 +660,19 @@ var Alert = new CustomAlert();
         window.location.href = '/';
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
-    }
+    };
     var btnsearch = document.getElementById('btnsearch');
     btnsearch.onclick = function(event) {
         var keyword = document.getElementById('search').value;
         window.location.href = '/search_items/';
         write_cookie('keyword', keyword);
 
-    }
+    };
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
     var logout_onsuccess =  (res) =>{
         alert(res);
         document.cookie = "login = false;domain=;path=/";
@@ -682,7 +682,7 @@ var Alert = new CustomAlert();
     var logout_onfailure =  (res) =>{
         alert(res);
     };
-    if(document.getElementById('login')!=undefined){
+    if(document.getElementById('login')!== undefined){
         document.getElementById('login').onclick = function (event) {
             document.getElementById('id01').style.display='block';
         }

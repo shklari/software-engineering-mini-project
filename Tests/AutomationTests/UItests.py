@@ -89,3 +89,15 @@ class UItests(unittest.TestCase):
         time.sleep(3)
         self.chrome_driver.quit()
 
+    def test_fifty_login_and_logout(self):
+        # for i in (0, 50):
+        self.check_alert()
+        self.chrome_driver.find_element_by_xpath("//div[@class='col-md-3 col-xs-4 text-right "
+                                                 "hidden-xs menu-2']//a[@id='login']").click()
+        self.chrome_driver.find_element_by_name("uname").send_keys("owner1")
+        self.chrome_driver.find_element_by_name("psw").send_keys("1")
+        self.chrome_driver.find_element_by_id("loginbtn").click()
+        time.sleep(5)
+        self.check_alert()
+        time.sleep(5)
+        self.chrome_driver.quit()

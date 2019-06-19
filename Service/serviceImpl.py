@@ -124,7 +124,7 @@ class ServiceImpl(ServiceInterface):
         return ResponseObject(True, curr_user.get_cart(store_name).value.items_and_quantities, "Item " + item_name + " removed from cart " + store_name)
 
     def buy_items(self, items, username, supply_details, collect_details):
-        result = self.sys.buy_items(items, username)
+        result = self.sys.buy_items(items, username, supply_details, collect_details)
         if not result.success:
             return ResponseObject(False, False, "Can't buy requested items. Transaction cancelled\n" + result.message)
         return ResponseObject(True, True, "Transaction succeeded. Items removed from basket\n" + result.message)
@@ -266,7 +266,7 @@ class ServiceImpl(ServiceInterface):
         if result.success :
             timestamp = self.sys.dateToStamp()
             self.ownersAlert.notify('notify', [new_owner_name], "you are now a owner of " + store_name + "store")
-            self.sys.send_notification_to_user(store_name,new_owner_name, timestamp, 'Congratulations, you have become a new owner of the store')
+            self.sys.send_notification_to_user(store_name,new_owner_name, timestamp, 'Congratulations, you have become a new owner of the store','0')
             return ResponseObject(True, True, '')
         else:
             return ResponseObject(False, True, '')
