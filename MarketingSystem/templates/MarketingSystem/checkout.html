@@ -108,44 +108,6 @@
                                         </thead>
                                         <tbody id="items_list">
 
-                                        <script>
-                                            var onsuccess = (res, data) => {
-                                                for(var cart in data){
-                                                    var item_list = data[cart]['cart'];
-                                                    var price = 0;
-                                                    for(var item in item_list){
-                                                        price += +item_list[item]['price'];
-                                                        var node = document.createElement("TR");
-                                                        node.innerHTML = '    <td>' + item_list[item]['name'] + ' <strong class="mx-2">x</strong>' + item_list[item]['quantity'] + '</td>\n' +
-                                                            '    <td>$' + item_list[item]['price'] + '</td>\n';
-                                                        document.getElementById("items_list").prepend(node);
-                                                    }
-                                                    var node2 = document.createElement("TR");
-                                                    node2.innerHTML = '<td class="text-black font-weight-bold"><strong>' + data[cart]['store'] + ' Cart Subtotal</strong></td>\n' +
-                                                        '<td class="text-black">$\n' +
-                                                        price +
-                                                        '</td>';
-                                                    document.getElementById("items_list").appendChild(node2);
-                                                }
-
-                                                var node3 = document.createElement("TR");
-                                                var sub = read_cookie('subtotal');
-                                                node3.innerHTML = '<td class="text-black font-weight-bold"><strong>Order Total</strong></td>\n' +
-                                                    '<td class="text-black font-weight-bold"><strong>$\n' +
-                                                    sub +
-                                                    '</strong></td>';
-                                                document.getElementById("items_list").appendChild(node3);
-                                            };
-
-                                            var onfailure = (res) => {
-
-                                            };
-
-                                            var username = read_cookie('username');
-                                            send_msg({action: 'get_basket', username: username}, onsuccess, onfailure);
-
-                                        </script>
-
                                         </tbody>
                                     </table>
 
@@ -189,7 +151,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-lg btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+                                        <button id="place_order" class="btn btn-primary btn-lg btn-block" href="#">Place Order</button>
                                     </div>
 
                                 </div>
@@ -205,22 +167,99 @@
     </div>
 
     <script>
-        var name = document.getElementById("c_fname").value + document.getElementById("c_lname").value;
-        var address = document.getElementById("c_address").value;
-        var city = document.getElementById("c_city").value;
-        var country = document.getElementById("c_country").value;
-        var zip = document.getElementById("c_zip").value;
-        var supply_details = {'name': name, 'address': address, 'city': city,
-            'country': country, 'zip': zip};
+        var basket_data = [];
+        var onsuccess = (res, data) => {
+            basket_data = data;
+            for(var cart in data){
+                var item_list = data[cart]['cart'];
+                var price = 0;
+                for(var item in item_list){
 
-        var card = document.getElementById("c_card").value;
-        var month = document.getElementById("c_month").value;
-        var year = document.getElementById("c_year").value;
-        var holder = document.getElementById("c_holder").value;
-        var ccv = document.getElementById("c_ccv").value;
-        var id = document.getElementById("c_id").value;
-        var collect_details = {'card_number': card, 'month': month, 'year': year, 'holder': holder,
-            'ccv': ccv, 'id': id};
+                    price += +item_list[item]['price'];
+                    var node = document.createElement("TR");
+                    node.innerHTML = '    <td>' + item_list[item]['name'] + ' <strong class="mx-2">x</strong>' + item_list[item]['quantity'] + '</td>\n' +
+                        '    <td>$' + item_list[item]['price'] + '</td>\n';
+                    document.getElementById("items_list").prepend(node);
+                }
+                var node2 = document.createElement("TR");
+                node2.innerHTML = '<td class="text-black font-weight-bold"><strong>' + data[cart]['store'] + ' Cart Subtotal</strong></td>\n' +
+                    '<td class="text-black">$\n' +
+                    price +
+                    '</td>';
+                document.getElementById("items_list").appendChild(node2);
+            }
+
+            var node3 = document.createElement("TR");
+            var sub = read_cookie('subtotal');
+            node3.innerHTML = '<td class="text-black font-weight-bold"><strong>Order Total</strong></td>\n' +
+                '<td class="text-black font-weight-bold"><strong>$\n' +
+                sub +
+                '</strong></td>';
+            document.getElementById("items_list").appendChild(node3);
+        };
+
+        var onfailure = (res) => {
+
+        };
+
+        var username = read_cookie('username');
+        send_msg({action: 'get_basket', username: username}, onsuccess, onfailure);
+
+        //Place Order click
+        var order = document.getElementById("place_order");
+        order.onclick = function (event) {
+            var fname = document.getElementById("c_fname").value;
+            if(fname === undefined)
+                alert("Please fill out your first name");
+            var lname = document.getElementById("c_lname").value;
+            if(lname === undefined)
+                alert("Please fill out your last name");
+            var name = fname + lname;
+            var address = document.getElementById("c_address").value;
+            if(address === undefined)
+                alert("Please fill out your address");
+            var city = document.getElementById("c_city").value;
+            if(city === undefined)
+                alert("Please fill out the city");
+            var country = document.getElementById("c_country").value;
+            if(country === undefined)
+                alert("Please fill out the country");
+            var zip = document.getElementById("c_zip").value;
+            if(zip === undefined)
+                alert("Please fill out the ZIP code");
+            var supply_details = {'name': name, 'address': address, 'city': city,
+                'country': country, 'zip': zip};
+
+            var card = document.getElementById("c_card").value;
+            if(card === undefined)
+                alert("Please fill out the card number");
+            var month = document.getElementById("c_month").value;
+            if(month === undefined)
+                alert("Please fill out the card's expiration date");
+            var year = document.getElementById("c_year").value;
+            if(year === undefined)
+                alert("Please fill out the card's expiration date");
+            var holder = document.getElementById("c_holder").value;
+            if(holder === undefined)
+                alert("Please fill out the card's holder name");
+            var ccv = document.getElementById("c_ccv").value;
+            if(ccv === undefined)
+                alert("Please fill out the card's CCV");
+            var id = document.getElementById("c_id").value;
+            if(id === undefined)
+                alert("Please fill out the card's holder id");
+            var collect_details = {'card_number': card, 'month': month, 'year': year, 'holder': holder,
+                'ccv': ccv, 'id': id};
+
+
+        };
+
+    </script>
+
+    <script>
+
+
+
 
         var username = read_cookie('username');
         send_msg({action: 'buy_items', username: username}, onsuccess, onfailure);
