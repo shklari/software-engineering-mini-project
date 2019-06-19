@@ -12,10 +12,10 @@ from Domain.BuyingPolicy import *
 # Interface
 class Store(object):
 
-    def __init__(self, name, owner):
+    def __init__(self, name, owner, inventory=None):
         self.name = name
         self.rank = 0
-        self.inventory = []
+        self.inventory = [] if inventory is None else inventory
         self.storeOwners = [StoreOwner(owner.username, owner.password, owner.age, owner.country)]
         self.storeManagers = []
         self.waitingForBecomeOwner =[] # {waitingName:'shaioz' ,[{owner:'yosi', approved: yes} ...]}

@@ -1,3 +1,4 @@
+from time import sleep
 from unittest import TestCase
 from Domain.System import System
 
@@ -84,14 +85,22 @@ class TestStore(UnitTestSystem):
 
     def test_db(self):
         self.system.init_system('theNewName', '1234', 21, "israel")
+        self.system.sign_up('shklark', '234', 2334, 'teman')
         self.system.sign_up('TheWorker', '6', 22, 'luv')
-        # self.system.login('theNewName4', '1234')
-
-        # self.system.create_store('aStore', 'theNewName')
-        # self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'anItem', 'price': 43323, 'category': 'fish3'}, 173)
+        self.system.login('theNewName', '1234')
+        self.system.create_store('aStore', 'theNewName')
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'one',
+                                                                   'price': 43323, 'category': 'nums'}, 173)
         # self.system.add_to_cart('aStore', 'anItem', 63, 'theNewName')
-        # self.system.add_manager_to_store('aStore', 'TheWorker', {'Edit': 1, 'Remove': 1,
-        #                                                          'Add': 0, 'Discounts': 0}, 'theNewName')
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'two',
+                                                                   'price': 12, 'category': 'nums'}, 18)
+        self.system.add_item_to_inventory('theNewName', 'aStore', {'name': 'three',
+                                                                   'price': 555, 'category': 'nums'}, 62)
+        self.system.create_store('bStore', 'theNewName')
+        self.system.add_item_to_inventory('theNewName', 'bStore', {'name': 'four',
+                                                                   'price': 4, 'category': 'nums'}, 4)
+        a_inventory = self.system.get_store_inventory_from_db('aStore')
+        print(a_inventory)
 
     def test_db_specific(self):
         self.system.init_system('ssss', '1234', 21, "israel")

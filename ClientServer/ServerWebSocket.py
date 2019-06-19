@@ -27,17 +27,17 @@ checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
 
-service.sign_up("storeowner1", "111", 32, 'israel')
-service.sign_up("storeowner2", "111", 40, 'israel')
-service.sign_up("storeowner3", "111", 40, 'israel')
-service.sign_up("storeman1", "111", 25, 'israel')
-service.login("storeowner1", "111")
-service.create_store("osem", "storeowner1")
-service.add_new_owner("osem", "storeowner2","storeowner1")
+#service.sign_up("storeowner1", "111", 32, 'israel')
+#service.sign_up("storeowner2", "111", 40, 'israel')
+#service.sign_up("storeowner3", "111", 40, 'israel')
+#service.sign_up("storeman1", "111", 25, 'israel')
+#service.login("storeowner1", "111")
+#service.create_store("osem", "storeowner1")
+#service.add_new_owner("osem", "storeowner2","storeowner1")
 #service.add_new_owner("osem", "storeowner3","storeowner1")
 #service.add_new_manager('storeman1','osem',{'Edit':True, 'Add':True,'Remove':True})
-service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
-service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
+#service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "osem", 100, "storeowner1")
+#service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'}, "osem", 100, "storeowner1")
 #service.add_to_cart('osem','soup',2)
 #service.add_to_cart('osem','bamba',2)
 #service.get_basket()
@@ -51,7 +51,7 @@ service.add_item_to_inventory({'name': 'soup', 'price': 10, 'category': 'snacks'
 # service.create_store("osem")
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
-service.logout("storeowner1")
+#service.logout("storeowner1")
 
 # #######################################TEST
 ws = 0
@@ -147,8 +147,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'], data['username'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'], data['username'])
-    elif data['action'] == 'edit_product':
-        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'], data['username'])
+    elif data['action'] == 'edit_item_quantity':
+        ans = service.edit_item_quantity(data['name'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
@@ -157,6 +157,8 @@ async def datahandler(data, websocket):
         ans = service.get_basket_size(data['username'])
     elif data['action'] == 'get_basket_subtotal':
         ans = service.get_basket_subtotal(data['username'])
+    elif data['action'] == 'new_guest':
+        ans = service.new_guest(data['username'])
     elif data['action'] == 'get_stores':
         ans = service.get_stores()
     elif data['action'] == 'new_guest':
@@ -171,8 +173,10 @@ async def datahandler(data, websocket):
         ans = service.add_store_policy(data['new_owner_name'], data['username'], data['store_name'])
     elif data['action'] == 'has_alert':
         ans = service.has_alert(data['username'])
-    elif data['action'] == 'ping':
-        ans = 'pong'
+    elif data['action'] == 'get_notification':
+        ans = service.get_notifications(data['username'])
+    elif data['action'] == 'remove_user_notifications':
+        ans = service.remove_user_notifications(data['username'])
     else:
         logging.error(
             "unsupported event: {}", data)

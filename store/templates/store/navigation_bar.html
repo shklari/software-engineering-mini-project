@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
-    <link rel="stylesheet" href="{% static 'static_dirs/sass/bootstrap/_glyphicons.scss' %}" type="text/css">
 
     <script src="{% static 'js/client.js' %}"></script>
 
@@ -52,6 +51,7 @@
           border-radius: 2px;
         }
         .notification .badge {
+            display: none;
           position: absolute;
           top: 15px;
           right: -7px;
@@ -187,20 +187,39 @@
     <script>
         var checkalertfunction=()=>{
         send_msg({action:"has_alert", username:read_cookie('username')},()=> {
-                    alert('notify')
                     $(document).ready(function() {
                      $("#notify").fadeIn(1000).show();
                     });
         },()=>{});
-        setTimeout(checkalertfunction, 6000);
+        setTimeout(checkalertfunction, 4000);
     };
+    var confirmBox = function (message) {
+        var person = prompt("Please enter owner name:", "");
+        var store='';
+      if (person == null || person == "" ) {
+        return;
+      } else {
+        store = prompt("Please enter store name:", "");
+        if (person == null || person == "" ) {
+            return;
+        }
+        send_msg({action:'approveNewOwner',new_owner:person,store:store},()=>{},()=>{})
+      }
+    };
+
+    var clearNotifications = function () {
+        send_msg({action:'remove_user_notifications',username:read_cookie('username')})
+        $('#box').hide();
+
+    }
+
     </script>
     <meta charset="UTF-8">
     <title>Navigation bar</title>
 
     <div id="id01" class="modal2">
         <div class="modal-content2 animate">
-            <div class="imgcontainer2">      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="imgcontainer2"> <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="{% static 'images/img_avatar2.png' %}" alt="Avatar" class="avatar">
             </div>
 
@@ -339,6 +358,7 @@
   .notifications-wrapper1 {
      overflow:auto;
       max-height:250px;
+      background-color: white;
     }
 .menu-title1 {
     color: #ffffff;
@@ -415,17 +435,15 @@ ul.dropdown-menu1.notifications1 .notifications-wrapper1 a.content:hover {
 ul.dropdown-menu1.notifications1 {
     padding: 0px;
 }
-.dropdown1 .glyphicon-bell1 {
-    vertical-align: middle;
-}
+
 .dropdown1{
     display: none;mix-width: 25%;
-    top:0;
-    list-style:none;
-    overflow: auto;
+    top:50px;
+    min-width: 255px;
+    max-width: 255px;
+    overflow: paged-y;
     z-index: 1;
     position: fixed;
-    background-color: white;
 }
 
 </style>
@@ -433,15 +451,36 @@ ul.dropdown-menu1.notifications1 {
 <script>
 function CustomAlert(){
     this.render = function(dialog){
-        $("#box").fadeIn(1000).show()
-        var mes = '<a class="content" href="#">\n' +
+        document.getElementById('mes_list').innerHTML='<a class="content" href="#">\n' +
             '       <div class="notification-item1">\n' +
-            '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
-            '        <h4 class="item-title1">Evaluation Deadline  <small> 1 day ago</small></h4>\n' +
-            '        <p class="item-info1">Mr hassan has followed you!</p>\n' +
+            '        <h4 class="item-title1">There is no any notification</h4>\n' +
             '      </div>\n' +
             '    </a>';
-        document.getElementById('mes_list').innerHTML=mes;
+        send_msg({action:'get_notification',username:read_cookie('username')},(res,val)=>{
+            //var messages = val['messages'];
+            var mes = '';
+            val.forEach((message)=>{
+                var action ='';
+                if(message['type']=='1') {action = 'onclick="confirmBox("' + message['message'] +'")"'}
+                    mes += '<span '+action+' class="content" >\n' +
+                        '       <div class="notification-item1">\n' +
+                        '       <img src="http://www.leapcms.com/images/100pixels1.gif">\n' +
+                        '        <h4 class="item-title1">New message from : ' + message['sender'] + '<small> ' + message['time'] + '</small></h4>\n' +
+                        '        <p class="item-info1">' + message['message'] + '</p>\n' +
+                        '      </div>\n' +
+                        '    </span>';
+
+            });
+
+            document.getElementById('mes_list').innerHTML=mes;
+        },()=>{
+            document.getElementById('mes_list').innerHTML='<a class="content" href="#">\n' +
+            '       <div class="notification-item1">\n' +
+            '        <h1>There is no any notification</h1>\n' +
+            '      </div>\n' +
+            '    </a>';
+        });
+        $("#box").fadeIn(1000).show();
         $("#notify").hide();
     }
 	this.ok = function(){
@@ -460,18 +499,16 @@ var Alert = new CustomAlert();
 
     <li class="dropdown1" id="box">
   <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-    <i class="glyphicon glyphicon-bell1"></i>
   </a>
 
-  <br class="dropdown-menu1 notifications1" role="menu" aria-labelledby="dLabel">
-<script src="/static/static_dirs/sass/bootstrap/_glyphicons.scss"></script>
+  <br class="notifications1" role="menu" aria-labelledby="dLabel">
     <div class="notification-heading1"><h4 class="menu-title1">Notifications</h4><span style="cursor: pointer;" onclick="$('#box').hide()" class="menu-title1 pull-right">&#x274C;</span>
     </div>
    <div id="mes_list" class="notifications-wrapper1">
 
 
-   </div></br>
-      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="">
+   </div>
+      <button id="clearbtn" type="button" class="btn bg-danger fs-it-btn" onclick="clearNotifications()">
 		    <i class="fa icon-trash" aria-hidden="true"></i>
 		    <span class="fs-it-btn-vertical-line"></span>
 		    Clear All</button>
@@ -519,7 +556,7 @@ var Alert = new CustomAlert();
                                 if (cookie==null || cookie =='false' || cookie==''){
                                     document.write("<a id='login' style='cursor: pointer;'><i class='icon-login'></i> login</a>");
                                 } else {
-                                    setTimeout(checkalertfunction, 6000);
+                                    setTimeout(checkalertfunction, 4000);
                                     document.write("<a id='logout' style='cursor: pointer'><i class='icon-log-out'></i> logout</a>");
                                 }
                             </script></li>
@@ -534,9 +571,9 @@ var Alert = new CustomAlert();
 
                         <li class="search">
                             <div class="input-group">
-                                <input type="text" placeholder="Search..">
+                                <input type="text" placeholder="Search.." id="search">
                                 <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
+						        <button class="btn btn-primary" type="button" id="btnsearch" href="/search_items"><i class="icon-search"></i></button>
 						      </span>
                             </div>
                         </li>
@@ -623,6 +660,13 @@ var Alert = new CustomAlert();
         window.location.href = '/';
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
+    }
+    var btnsearch = document.getElementById('btnsearch');
+    btnsearch.onclick = function(event) {
+        var keyword = document.getElementById('search').value;
+        window.location.href = '/search_items/';
+        write_cookie('keyword', keyword);
+
     }
     window.onclick = function(event) {
         if (event.target == modal) {

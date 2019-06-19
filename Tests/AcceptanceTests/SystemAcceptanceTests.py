@@ -89,9 +89,9 @@ class SystemTestCase(unittest.TestCase):
     # 1.1 # init will succeed only if the external systems.init() will return true
     def test_init(self):
         # set up stub ext systems:
-        self.system.real.sys.collecting_system = self.collecting
-        self.system.real.sys.supplying_system = self.supplying
-        self.system.real.sys.traceability_system = self.consistency
+        self.system.sys.collecting_system = self.collecting
+        self.system.sys.supplying_system = self.supplying
+        self.system.sys.traceability_system = self.consistency
         #test
         self.collecting.switch()
         self.supplying.switch()

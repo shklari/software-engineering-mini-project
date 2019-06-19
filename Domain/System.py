@@ -1,7 +1,6 @@
 from django.utils.datetime_safe import datetime
 
 from Domain.Cart import Cart
-from Domain.ExternalSystems import *
 from Domain.User import User
 from Domain.Guest import Guest
 from Domain.Store import Store
@@ -12,6 +11,8 @@ from log.Log import Log
 from DataAccess.mongoDB import DB
 import functools
 from Domain.BuyingPolicy import *
+from Domain.SupplyingSystem import SupplyingSystem
+from Domain.CollectingSystem import CollectingSystem
 
 
 class System:
@@ -27,7 +28,7 @@ class System:
         self.log = Log("", "")
         self.supplying_system = SupplyingSystem()
         self.collecting_system = CollectingSystem()
-        self.traceability_system = TraceabilitySystem()
+        # self.traceability_system = TraceabilitySystem()
 
     def get_user_or_guest(self, username):
         if username in self.loggedInUsers:
@@ -43,13 +44,14 @@ class System:
         self.guests[guest_id] = Guest()
 
     def init_system(self, system_manager_user_name, system_manager_password, system_manager_age, system_manager_country):
-        if not self.supplying_system.init() or not self.traceability_system.init() or not self.collecting_system.init():
+        if not self.supplying_system.supply_handshake() or not self.collecting_system.collect_handshake():
             return ResponseObject(False, False, "Can't init external systems")
-        result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,
-                              system_manager_country)
-        if not result.success:
-            self.log.set_info("error: System manager could not sign up", "eventLog")
-            return ResponseObject(False, None, "System manager could not sign up")
+        result=''
+        if not self.get_user(system_manager_user_name):
+            result = self.sign_up(system_manager_user_name, system_manager_password, system_manager_age,system_manager_country)
+            if not result.success:
+                self.log.set_info("error: System manager could not sign up", "eventLog")
+                return ResponseObject(False, None, "System manager could not sign up")
         enc_password = pbkdf2_sha256.hash(system_manager_password)
         manager = SystemManager(system_manager_user_name, enc_password, system_manager_age, system_manager_country)
         self.database.add_user(manager)
@@ -172,7 +174,7 @@ class System:
             for owner in owner_list:
                 approved = True if owner.username == username else False
                 waitingList.append({'owner': owner.username, 'approved': approved})
-                self.send_notification_to_user(username, owner.username, timeStamp, message)
+                self.send_notification_to_user(username, owner.username, timeStamp, message,'1')
             store.waitingForBecomeOwner.append({'waitingName': new_owner_name, 'waitingList': waitingList})
             self.database.add_store_owner(store_name, new_owner_name, username)
             return ResponseObject(True, False, "Waiting for the approval of the other owners")
@@ -191,8 +193,7 @@ class System:
         if not add.success:
             return ResponseObject(False, False, "Error: can't add " + item['name'] + " to" + store_name + "store\n"
                                   + add.message)
-        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity,
-                               {"type": 0, "combo": 0, "args": 0, "override": 0})
+        self.database.add_item(item['name'], store_name, item['price'], item['category'], quantity, 0)
         self.log.set_info("adding item" + item['name'] + "to" + store_name + "succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
@@ -331,29 +332,66 @@ class System:
         self.database.remove_store_manager(manager_to_remove, store_name)
         return ResponseObject(True, True, "")
 
-    def buy_items(self, items, username):
+    # helper function for buy_items
+    def get_total_amount(self, items):
+        total_price = 0
+        for item in items:
+            store = self.get_store(item['store_name'])
+            item_obj = store.search_item_by_name(item['name'])
+            if not item_obj:
+                return False
+            total_price += item_obj.apply_discount()
+        return total_price
+
+    def get_supply(self, supply_details):
+        if not self.supplying_system.supply_handshake():
+            return False
+        transaction = self.supplying_system.supply(supply_details['name'], supply_details['address'],
+                                                   supply_details['city'], supply_details['country'],
+                                                   supply_details['zip'])
+        if transaction < 0:
+            return False
+        return transaction
+
+    def pay(self, collect_details):
+        if not self.collecting_system.collect_handshake():
+            return False
+        transaction = self.collecting_system.pay(collect_details['card_number'], collect_details['month'],
+                                                 collect_details['year'], collect_details['holder'],
+                                                 collect_details['ccv'], collect_details['id'])
+        if transaction < 0:
+            return False
+        return transaction
+
+    def buy_items(self, items, username, supply_details, collect_details):
         # check if items exist in basket??
         for item in items:
             store = self.get_store(item['store_name'])
             if not store.success:
                 self.log.set_info("error: buy items failed: store does not exist", "eventLog")
                 return ResponseObject(False, False, "buy items failed: Store " + item['store_name'] + " does not exist")
-            if not self.supplying_system.get_supply(item['name']):
-                self.log.set_info("error: buy items failed: item is out of stock", "eventLog")
-                return ResponseObject(False, False, "Item " + item['name'] + " is currently out of stock")
+        # get current user
         find_user = self.get_user_or_guest(username)
         if not find_user.success:
             return find_user
         curr_user = find_user.value
-        # TODO: apply discount
-        amount = functools.reduce(lambda acc, it: (acc + it['price']), items, 0)
-        flag = self.collecting_system.collect(amount, curr_user.creditDetails)
-        if flag == 0:
-            self.log.set_info("error: buy items failed: payment rejected", "eventLog")
-            return ResponseObject(False, False, "Payment rejected")
+        amount = self.get_total_amount(items)
+        if not amount:
+            return ResponseObject(False, False, "Buy items failed: one of the items doesn't exist in the system")
+        # get supply
+        supply_id = self.get_supply(supply_details)
+        if not supply_id:
+            return ResponseObject(False, False, "Buy items failed: can't get supply for user " + username)
+        # payment
+        pay_id = self.pay(collect_details)
+        if not pay_id:
+            return ResponseObject(False, False, "Buy items failed: Payment Rejected")
+        # remove items from user's basket
         for item in items:
             removed = curr_user.remove_from_cart(item['store_name'], item['name'])
             if not removed.success:
+                self.supplying_system.cancel_supply(supply_id)
+                self.collecting_system.cancel_pay(pay_id)
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
         # TODO: update db !
@@ -411,7 +449,7 @@ class System:
         for stor in self.stores:
             if store_name == stor.name:
                 self.log.set_info("get store succeeded", "eventLog")
-                store_from_db = self.database.get_store(store_name)
+                # store_from_db = self.database.get_store(store_name)
                 return ResponseObject(True, stor, "")
         self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
         return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
@@ -488,7 +526,7 @@ class System:
 
     def get_total_system_inventory(self):
         # TODO: get inventory from db !
-        inventory_from_db = self.database.get_inventory_from_db()
+        # inventory_from_db = self.database.get_inventory_from_db()
         retList = []
         for store in self.stores:
             for item in store.inventory:
@@ -496,6 +534,9 @@ class System:
                             'quantity': item['quantity'], 'store_name': store.name}
                 retList.append(new_item)
         return ResponseObject(True, retList, "")
+
+    def get_store_inventory_from_db(self, store_name):
+        return self.database.get_store_inventory_from_db(store_name)
 
     def get_user_type(self, username):
         if username == self.system_manager.username:
@@ -514,11 +555,21 @@ class System:
 
     def get_stores(self):
         # TODO: get info from db !
-        stores_from_db = self.database.get_all_stores_from_db()
+        # stores_from_db = self.database.get_all_stores_from_db()
         return self.stores
 
-    def send_notification_to_user(self, sender_username, receiver_username, key, message):
-        self.database.add_notification(sender_username, receiver_username, key, message)
+    def send_notification_to_user(self, sender_username, receiver_username, key, message, typ):
+        self.database.add_notification(sender_username, receiver_username, key, message, typ)
+
+    def get_user_notifications_from_db(self, user_name):
+        res = self.database.get_user_notification(user_name)
+        return ResponseObject(True, res, '')
+        # response = {True, ret_list, ''}
+        # return response
+
+    def remove_user_notifications_from_db(self, user_name):
+        self.database.remove_user_notifications(user_name)
+        return ResponseObject(True, True, '')
 
     def add_item_policy(self, item_name, store_name, policy, user_name):
         # TODO: update db !
@@ -581,6 +632,3 @@ class System:
     def dateToStamp(self):
         now = datetime.now()
         return datetime.timestamp(now)
-
-    def stampToDate(self,stamp):
-        return datetime.fromtimestamp(stamp)
