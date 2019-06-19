@@ -361,7 +361,7 @@ class System:
     def get_total_amount(self, items):
         total_price = 0
         for item in items:
-            store = self.get_store(item['store_name'])
+            store = self.get_store(item['store_name']).value
             item_obj = store.search_item_by_name(item['name'])
             if not item_obj:
                 return False

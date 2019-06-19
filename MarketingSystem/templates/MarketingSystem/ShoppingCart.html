@@ -295,7 +295,7 @@
         </script>
         <script>
             var shop_onsuccess = (res, data) => {
-                document.getElementById('checkout_btn').style.display='block';
+
                 for (var i in data) {
                     container = '<div class="block-4"><h2>Shop : '+data[i]['store']+'</h2><br>';
                     //document.getElementById('pr').innerHTML += container;
@@ -381,8 +381,13 @@
 
         </div>
 
-        <span id="checkout_btn" class="checkout" style="display: none">Checkout</span>
 
+        <button id="checkout" class="checkout" onclick="window.location.href='/checkout/'" href="/checkout/">Checkout</button>
+        <script>
+            document.getElementById('checkout_btn').onclick=function () {
+                window.location.href='/checkout/';
+            }
+        </script>
         <script>
             var btn = document.getElementById("checkout_btn");
             btn.onclick = function (event) {
