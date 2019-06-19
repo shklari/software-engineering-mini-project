@@ -528,11 +528,11 @@ class System:
         return self.database.does_user_exist(username)
 
     def add_to_cart(self, store_name, item_name, quantity, username):
-        result = self.get_store(store_name)
-        if not result.success:
-            self.log.set_info("error: adding to cart failed: no such store", "eventLog")
-            return ResponseObject(False, False, result.message)
-        store = result.value
+        store = self.get_store_from_domain(store_name)
+        # if not result.success:
+        #     self.log.set_info("error: adding to cart failed: no such store", "eventLog")
+        #     return ResponseObject(False, False, result.message)
+        #store = result.value
         available = store.get_item_if_available(item_name, quantity)
         if not available:
             self.log.set_info("error: adding to cart failed: item is not available", "eventLog")
