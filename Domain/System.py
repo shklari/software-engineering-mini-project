@@ -358,7 +358,7 @@ class System:
             return False
         transaction = self.collecting_system.pay(collect_details['card_number'], collect_details['month'],
                                                  collect_details['year'], collect_details['holder'],
-                                                 collect_details['ccv'], collect_details['id'])
+                                                 collect_details['ccv'], collect_details['policyid'])
         if transaction < 0:
             return False
         return transaction
@@ -527,7 +527,7 @@ class System:
     def get_total_system_inventory(self):
         # TODO: get inventory from db !
         # inventory_from_db = self.database.get_inventory_from_db()
-        inventory = self.database.get_all_products()
+
         retList = []
         prods = self.database.get_all_products()
         for item in prods:

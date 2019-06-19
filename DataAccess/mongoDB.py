@@ -207,7 +207,7 @@ class DB:
         return comp_policy
 
     def get_all_products(self):
-        items = self.mydb["Items"]
+        items = self.mydb["Items"].find({})
         ret = []
         for item in items:
             obj = {"name": item['name'], "item": Item(item['name'], item['store'], item['price'],
