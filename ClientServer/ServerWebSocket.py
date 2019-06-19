@@ -23,7 +23,7 @@ users_list = []
 
 service = ServiceImpl()
 
-checkinit = service.init("avabash", "123456",21,'')
+# checkinit = service.init("avabash", "123456",21,'')
 
 # #######################################TEST
 
@@ -57,6 +57,23 @@ checkinit = service.init("avabash", "123456",21,'')
 # service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "osem"}, "osem", 3)
 
 #service.logout("storeowner1")
+service.add_item_to_inventory({'name': 'bamba', 'price': 2, 'category': 'snacks'}, "S2", 100, "U11")
+service.add_item_to_inventory({'name': 'bisli', 'price': 2, 'category': 'snacks'}, "S2", 100, "U11")
+# service.add_item_to_inventory({'name': "bamba", 'price': 20, 'category': "snakes", 'store_name': "S2"}, "S2", 3)
+# service.add_item_to_inventory({'name': "bisli", 'price': 20, 'category': "snakes", 'store_name': "S2"}, "S2", 3)
+
+# service.init("A1", "123456",21,'')
+#
+# service.sign_up("U1", "111", 32, 'israel')
+# service.sign_up("U2", "111", 32, 'israel')
+# service.sign_up("U11", "111", 32, 'israel')
+# service.sign_up("U12", "111", 32, 'israel')
+# service.sign_up("U13", "111", 32, 'israel')
+#
+# service.login("U11", "111")
+#service.create_store("S2", "U11")
+
+
 
 # #######################################TEST
 ws = 0
@@ -152,8 +169,8 @@ async def datahandler(data, websocket):
         ans = service.remove_owner(data['store_name'], data['owner_to_remove'], data['username'])
     elif data['action'] == 'remove_manager':
         ans = service.remove_manager(data['store_name'], data['manager_to_remove'], data['username'])
-    elif data['action'] == 'edit_product':
-        ans = service.edit_product(data['name'], data['store_name'], data['quantity'], data['price'], data['username'])
+    elif data['action'] == 'edit_item_quantity':
+        ans = service.edit_item_quantity(data['name'], data['store_name'], data['quantity'], data['username'])
     elif data['action'] == 'shop_all':
         ans = service.shop_all()
     elif data['action'] == 'get_basket':
