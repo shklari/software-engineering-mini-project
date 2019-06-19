@@ -269,10 +269,10 @@
         <div class="column-labels">
             <label class="product-image">Image</label>
             <label class="product-details">Product</label>
-            <label class="product-price">Price</label>
-            <label class="product-quantity">Quantity</label>
+            <label class="product-price"><strong>Price</strong></label>
+            <label class="product-quantity"><strong>Quantity</strong></label>
             <label class="product-removal">Remove</label>
-            <label class="product-line-price">Total</label>
+            <label class="product-line-price"><strong>Total</strong></label>
         </div>
 
         <div id="pr"></div>
@@ -381,7 +381,21 @@
 
         </div>
 
-        <a class="checkout" href="/checkout">Checkout</a>
+        <span id="checkout_btn" class="checkout">Checkout</span>
+
+        <script>
+            var btn = document.getElementById("checkout_btn");
+            btn.onclick = function (event) {
+                var tot = +read_cookie('subtotal');
+                if(tot <= 0){
+                    btn.href = "#";
+                    alert("No items to purchase!");
+                }
+                else{
+                    btn.href = "/checkout";
+                }
+            }
+        </script>
 
     </div>
     </body>

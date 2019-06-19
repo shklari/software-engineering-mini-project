@@ -660,19 +660,19 @@ var Alert = new CustomAlert();
         window.location.href = '/';
         document.cookie = "login = true;domain=;path=/";
         window.location.href = '/';
-    }
+    };
     var btnsearch = document.getElementById('btnsearch');
     btnsearch.onclick = function(event) {
         var keyword = document.getElementById('search').value;
         window.location.href = '/search_items/';
         write_cookie('keyword', keyword);
 
-    }
+    };
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
     var logout_onsuccess =  (res) =>{
         alert(res);
         document.cookie = "login = false;domain=;path=/";
@@ -682,7 +682,7 @@ var Alert = new CustomAlert();
     var logout_onfailure =  (res) =>{
         alert(res);
     };
-    if(document.getElementById('login')!=undefined){
+    if(document.getElementById('login')!== undefined){
         document.getElementById('login').onclick = function (event) {
             document.getElementById('id01').style.display='block';
         }
