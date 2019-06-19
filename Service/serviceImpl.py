@@ -266,7 +266,7 @@ class ServiceImpl(ServiceInterface):
         if result.success :
             timestamp = self.sys.dateToStamp()
             self.ownersAlert.notify('notify', [new_owner_name], "you are now a owner of " + store_name + "store")
-            self.sys.send_notification_to_user(store_name,new_owner_name, timestamp, 'Congratulations, you have become a new owner of the store')
+            self.sys.send_notification_to_user(store_name,new_owner_name, timestamp, 'Congratulations, you have become a new owner of the store','0')
             return ResponseObject(True, True, '')
         else:
             return ResponseObject(False, True, '')
