@@ -3,32 +3,10 @@ from django.utils.datetime_safe import datetime
 
 from Domain.Item import Item
 from Domain.Store import Store
+from Domain.StoreManager import StoreManager
 from Domain.StoreOwner import StoreOwner
 from Domain.User import User
 from Domain.BuyingPolicy import *
-
-
-@staticmethod
-def parse_item_policy(policy, item_name):
-    new_policy = None
-    if policy['type'] == 'age':
-        new_policy = AgeLimitationUserPolicy(policy['args'])
-    elif policy['type'] == 'country':
-        new_policy = CountryLimitationUserPolicy(policy['args'])
-    elif policy['type'] == 'min':
-        new_policy = MinQuantityItemPolicy(item_name, policy['args'])
-    elif policy['type'] == 'max':
-        new_policy = MaxQuantityItemPolicy(item_name, policy['args'])
-    return new_policy
-
-@staticmethod
-def parse_store_policy(policy, store_name):
-    new_policy = None
-    if policy['type'] == 'min':
-        new_policy = MinQuantityStorePolicy(store_name, policy['args'])
-    elif policy['type'] == 'max':
-        new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
-    return new_policy
 
 
 class DB:
@@ -38,6 +16,26 @@ class DB:
         self.mydb = self.myclient["Store"]
 
     # adder functions
+
+    def parse_item_policy(self, policy, item_name):
+        new_policy = None
+        if policy['type'] == 'age':
+            new_policy = AgeLimitationUserPolicy(policy['args'])
+        elif policy['type'] == 'country':
+            new_policy = CountryLimitationUserPolicy(policy['args'])
+        elif policy['type'] == 'min':
+            new_policy = MinQuantityItemPolicy(item_name, policy['args'])
+        elif policy['type'] == 'max':
+            new_policy = MaxQuantityItemPolicy(item_name, policy['args'])
+        return new_policy
+
+    def parse_store_policy(self, policy, store_name):
+        new_policy = None
+        if policy['type'] == 'min':
+            new_policy = MinQuantityStorePolicy(store_name, policy['args'])
+        elif policy['type'] == 'max':
+            new_policy = MaxQuantityStorePolicy(store_name, policy['args'])
+        return new_policy
 
     def add_user(self, user):
         collection = self.mydb["Users"]
@@ -96,9 +94,10 @@ class DB:
                       "key": key, "message": message, "type": type}
         collection.insert_one(not_to_add)
 
-    def add_cart(self, user_name, store_name, item_name, quantity):
+    def add_cart(self, user_name, store_name, item_name, quantity, price, category):
         collection = self.mydb["Cart"]
-        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name, "quantity": quantity}
+        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name,
+                       "quantity": quantity, "price": price, "category": category}
         collection.insert_one(cart_to_add)
 
     def add_policy_to_item(self, item_name, store_name, policy_type, policy_combo, policy_args, policy_override):
@@ -155,9 +154,15 @@ class DB:
         if self.does_store_exist(store_name):
             #owner_name = self.mydb.StoreOwners.find_one({"store_name": store_name}, {"owner": 1})
             #owner = self.get_user(owner_name)
+            store = self.mydb['Stores'].find_one({"name": store_name})
+            policyid = store['policy']
             owners = self.get_store_owners_from_db(store_name)
+            managers = self.get_store_managers_from_db(store_name)
             inventory = self.get_store_inventory_from_db(store_name)
-            the_store = Store(store_name,owners, inventory)
+            the_store = Store(store_name, owners, inventory)
+            the_store.storeManagers = managers
+            policy = self.get_store_policy_by_id(policyid, store_name)
+            the_store.set_buying_policy(policy)
             return the_store
         return None
 
@@ -218,18 +223,6 @@ class DB:
             ret_list.append(msg)
         return ret_list
 
-    def get_item_policy_by_id(self, policyId, item_name):
-        sons = self.mydb.PolicyComposed.find({"father": policyId})
-        policy = self.mydb.Policies.find_one({"policyid": policyId})
-        if len(sons) == 0:
-            return parse_item_policy(policy, item_name)
-        comp_policy = AndCompositeBuyingPolicy() if policy['combo'] == "true" else OrCompositeBuyingPolicy()
-        for iter in sons:
-            sonId = iter['son']
-            sonpolicy = self.get_item_policy_by_id(sonId, item_name)
-            comp_policy.add_policy(sonpolicy)
-        return comp_policy
-
     def get_all_products(self):
         items = self.mydb["Items"].find({})
         ret = []
@@ -250,21 +243,45 @@ class DB:
             ret_list.append(owner_to_add)
         return ret_list
 
+    def get_store_managers_from_db(self, store_name):
+        curs = self.mydb.StoreManagers.find({"store_name": store_name})
+        ret_list = []
+        for manager in curs:
+            usr = self.get_user(manager['manager'])
+            manager_to_add = StoreManager(usr.username, usr.password, usr.age, usr.country, manager['appointer'],
+                                          manager['permission'])
+            ret_list.append(manager_to_add)
+        return ret_list
+
+    def get_item_policy_by_id(self, policyId, item_name):
+        sons = self.mydb.PolicyComposed.find({"father": policyId})
+        policy = self.mydb.Policies.find_one({"policyid": policyId})
+        if len(sons) == 0:
+            return self.parse_item_policy(policy, item_name)
+        comp_policy = AndCompositeBuyingPolicy() if policy['combo'] == "true" else OrCompositeBuyingPolicy()
+        for iter in sons:
+            sonId = iter['son']
+            sonpolicy = self.get_item_policy_by_id(sonId, item_name)
+            comp_policy.add_policy(sonpolicy)
+        return comp_policy
+
     def get_item_policy_by_name(self, item_name, store_name):
         policyId = self.mydb.Items.find_one({"name": item_name, "store": store_name})['policy']
         if policyId == 0:
             return ItemPolicy()
         return self.get_item_policy_by_id(policyId, item_name)
 
-    def get_store_policy_by_id(self, policyId, item_name):
+    def get_store_policy_by_id(self, policyId, store_name):
+        if policyId == 0:
+            return
         sons = self.mydb.PolicyComposed.find({"father": policyId})
         policy = self.mydb.Policies.find_one({"policyid": policyId})
-        if len(sons) == 0:
-            return parse_store_policy(policy, item_name)
+        if sons.count() == 0:
+            return self.parse_store_policy(policy, store_name)
         comp_policy = AndCompositeBuyingPolicy() if policy['combo'] == "true" else OrCompositeBuyingPolicy()
         for iter in sons:
             sonId = iter['son']
-            sonpolicy = self.get_item_policy_by_id(sonId, item_name)
+            sonpolicy = self.get_store_policy_by_id(sonId, store_name)
             comp_policy.add_policy(sonpolicy)
         return comp_policy
 
@@ -379,3 +396,11 @@ class DB:
     def remove_basket(self, user_name):
         collection = self.mydb["Cart"]
         collection.delete_many({"user_name": user_name})
+
+    def get_bascket_db(self, username):
+        items = self.mydb.Cart.find({"user_name": username})
+        ret_list = []
+        for itm in items:
+            itm_to_add = Item(itm['item_name'], itm['price'], itm['category'], itm['store_name'])
+            ret_list.append(itm_to_add)
+        return ret_list

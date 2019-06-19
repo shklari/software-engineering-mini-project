@@ -110,7 +110,13 @@ class MinQuantityItemPolicy(ItemPolicy):
         return policy.check_contr(self)
 
 
-class MaxQuantityItemPolicy(ItemPolicy):
+class StorePolicy(ImmediateBuyingPolicy):
+
+    def policy_type(self):
+        return "store"
+
+
+class MaxQuantityItemPolicy(StorePolicy):
 
     def __init__(self, item, max):
         self.item = item
