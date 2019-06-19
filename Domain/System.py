@@ -155,7 +155,7 @@ class System:
         store = store_result.value
         # add supporting in vote requirement in version 3
         # TODO: get store managers list from db !
-        owner_list = store.storeOwners
+        owner_list = get_store_owners_from_db(store_name)
         # check if username is owner #
         found = False
         for owner in owner_list:
@@ -394,8 +394,12 @@ class System:
                 self.collecting_system.cancel_pay(pay_id)
                 self.log.set_info("error: buy items failed", "eventLog")
                 return ResponseObject(False, False, "Cannot purchase item " + item.name + "\n" + removed.message)
-        # TODO: update db !
-        # Todo : remove items from store inventory
+            store = self.get_store(item['store_name'])
+            quantity_to_remove = self.database.get_quantity_from_cart((item.name, store))
+            quantity_to_remove *= -1
+            self.database.edit_item_quantity_in_db(store, item.name, quantity_to_remove)
+        if isinstance(curr_user, User):
+            self.database.remove_basket(username)
         self.log.set_info("buy items succeeded", "eventLog")
         return ResponseObject(True, amount, "")
 
@@ -446,13 +450,16 @@ class System:
 
     def get_store(self, store_name):
         # TODO: get store from db !
-        for stor in self.stores:
-            if store_name == stor.name:
-                self.log.set_info("get store succeeded", "eventLog")
-                # store_from_db = self.database.get_store(store_name)
-                return ResponseObject(True, stor, "")
-        self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
-        return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
+        store_from_db = self.database.get_store(store_name)
+        resp = ResponseObject(False, None, "no such store") if store_from_db is None else ResponseObject(True, store_from_db, "")
+        return resp
+        # for stor in self.stores:
+        #     if store_name == stor.name:
+        #         self.log.set_info("get store succeeded", "eventLog")
+        #         # store_from_db = self.database.get_store(store_name)
+        #         return ResponseObject(True, stor, "")
+        # self.log.set_info("error: get store failed: store doesn't exist in the system", "eventLog")
+        # return ResponseObject(False, None, "Store " + store_name + " doesn't exist in the system")
 
     def get_basket(self, username):
         # TODO: basket from db !
@@ -541,17 +548,8 @@ class System:
     def get_user_type(self, username):
         if username == self.system_manager.username:
             return "sys_manager"
-        for store in self.stores:
-            for owner in store.storeOwners:
-                if username == owner.username:
-                    return "store_owner"
-            for manager in store.storeManagers:
-                if username == manager.username:
-                    return "store_manager"
-        # if username in self.users:
-        if self.does_user_exist_in_db(username):
-            return "user"
-        return "guest"
+        return self.database.get_user_type(username)
+
 
     def get_stores(self):
         # TODO: get info from db !
