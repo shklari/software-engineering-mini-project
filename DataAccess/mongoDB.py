@@ -404,3 +404,12 @@ class DB:
             itm_to_add = Item(itm['item_name'], itm['price'], itm['category'], itm['store_name'])
             ret_list.append(itm_to_add)
         return ret_list
+
+    def get_cart_db(self, store_name,username):
+        items = self.mydb.Cart.find({"user_name": username, "store_name":store_name})
+        ret_list = []
+        for itm in items:
+            itm_to_add = Item(itm['item_name'], itm['price'], itm['category'], itm['store_name'])
+            ret_list.append(itm_to_add)
+        return ret_list
+

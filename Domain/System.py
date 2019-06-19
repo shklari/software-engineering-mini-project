@@ -494,7 +494,7 @@ class System:
         curr_user = find_user.value
         non_empty = 0
         basket_ret = []
-        basket = get_bascket_db(username)#curr_user.get_basket()
+        basket = self.database.get_bascket_db(username)#curr_user.get_basket()
         for cart in basket.carts:
             if len(cart.items_and_quantities) > 0:
                 non_empty = 1
@@ -528,11 +528,11 @@ class System:
         return self.database.does_user_exist(username)
 
     def add_to_cart(self, store_name, item_name, quantity, username):
-        store = self.get_store_from_domain(store_name)
-        # if not result.success:
-        #     self.log.set_info("error: adding to cart failed: no such store", "eventLog")
-        #     return ResponseObject(False, False, result.message)
-        #store = result.value
+        store = self.get_store(store_name)
+        if not store.success:
+            self.log.set_info("error: adding to cart failed: no such store", "eventLog")
+            return ResponseObject(False, False, store.message)
+        store = store.value
         available = store.get_item_if_available(item_name, quantity)
         if not available:
             self.log.set_info("error: adding to cart failed: item is not available", "eventLog")
@@ -542,9 +542,10 @@ class System:
             return find_user
         curr_user = find_user.value
         item = store.search_item_by_name(item_name)
-        old_cart = curr_user.get_cart(store_name)
-        tmp_cart = old_cart.value.copy_cart()
-        tmp_cart.add_item_to_cart(item_name, quantity)
+        tmp_cart = self.database.get_cart_db(store_name,username)
+        #old_cart = curr_user.get_cart(store_name)
+        #tmp_cart = old_cart.value.copy_cart()
+        #tmp_cart.add_item_to_cart(item_name, quantity)
         if not store.buying_policy.apply_policy(tmp_cart):
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
@@ -552,7 +553,8 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
-        self.database.add_cart(username, store_name, item_name, quantity, item['price'])
+        if not isinstance(curr_user,Guest):
+            self.database.add_cart(username, store_name, item_name, quantity, item['price'], item['category'])
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 
