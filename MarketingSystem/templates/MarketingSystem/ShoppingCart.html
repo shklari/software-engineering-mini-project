@@ -295,7 +295,7 @@
         </script>
         <script>
             var shop_onsuccess = (res, data) => {
-
+                document.getElementById('checkout_btn').style.display='block';
                 for (var i in data) {
                     container = '<div class="block-4"><h2>Shop : '+data[i]['store']+'</h2><br>';
                     //document.getElementById('pr').innerHTML += container;
@@ -381,7 +381,7 @@
 
         </div>
 
-        <span id="checkout_btn" class="checkout">Checkout</span>
+        <span id="checkout_btn" class="checkout" style="display: none">Checkout</span>
 
         <script>
             var btn = document.getElementById("checkout_btn");
