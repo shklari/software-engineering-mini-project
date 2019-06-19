@@ -552,7 +552,7 @@ class System:
             self.log.set_info("error: adding to cart failed: store policy", "eventLog")
             return ResponseObject(False, False, "Store policy")
         curr_user.add_to_cart(store_name, item_name, quantity)
-        self.database.add_cart(username, store_name, item_name, quantity)
+        self.database.add_cart(username, store_name, item_name, quantity, item['price'])
         self.log.set_info("adding to cart succeeded", "eventLog")
         return ResponseObject(True, True, "")
 

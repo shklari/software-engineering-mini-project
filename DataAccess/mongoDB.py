@@ -96,9 +96,10 @@ class DB:
                       "key": key, "message": message, "type": type}
         collection.insert_one(not_to_add)
 
-    def add_cart(self, user_name, store_name, item_name, quantity):
+    def add_cart(self, user_name, store_name, item_name, quantity, price, category):
         collection = self.mydb["Cart"]
-        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name, "quantity": quantity}
+        cart_to_add = {"user_name": user_name, "store_name": store_name, "item_name": item_name,
+                       "quantity": quantity, "price": price, "category": category}
         collection.insert_one(cart_to_add)
 
     def add_policy_to_item(self, item_name, store_name, policy_type, policy_combo, policy_args, policy_override):
@@ -384,6 +385,6 @@ class DB:
         items = self.mydb.Cart.find({"user_name": username})
         ret_list = []
         for itm in items:
-            itm_to_add = self.get_item_from_store(itm['item_name'], itm['store_name'])
+            itm_to_add = Item(itm['item_name'], itm['price'], itm['category'], itm['store_name'])
             ret_list.append(itm_to_add)
         return ret_list
