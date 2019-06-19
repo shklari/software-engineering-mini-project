@@ -316,7 +316,7 @@ class Store(object):
 
     def search_item_by_name(self, item_name):
         for item in self.inventory:
-            if item['name'] == item_name:
+            if item['name'] == item_name or item_name in item['name'] or item['name'] in item_name:
                 print(item['val'])
                 return item['val']
         return False
@@ -337,7 +337,7 @@ class Store(object):
     def search_item_by_category(self, category):
         result_list = []
         for item in self.inventory:
-            if item['val'].category == category:
+            if item['val'].category == category or item['val'].category in category or category in item['val'].category:
                 result_list.append(item['val'])
         return result_list
 
