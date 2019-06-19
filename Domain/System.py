@@ -532,8 +532,6 @@ class System:
         return ResponseObject(True, True, "")
 
     def get_total_system_inventory(self):
-        # TODO: get inventory from db !
-        # inventory_from_db = self.database.get_inventory_from_db()
 
         retList = []
         prods = self.database.get_all_products()
